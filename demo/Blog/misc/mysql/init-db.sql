@@ -17,7 +17,7 @@ create table comments (
     sender varchar(64) not null,
     email varchar(64) not null,
     url varchar(1024),
-    body text,
+    body text not null,
     created timestamp(0) default now() not null,
     post bigint not null,
     foreign key (post) references posts(id)
