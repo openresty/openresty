@@ -66,7 +66,9 @@ $model or die "No --model given.\n";
 
 my $database = 'test';
 
-my $dsn = "DBI:mysql:database=$database;host=$server;port=$port";
+$port ||= 3306;
+
+my $dsn = "DBI:mysql:database=$database;host=$server;port=$port;mysql_server_prepare=1";
 my $dbh = DBI->connect($dsn, $user, $password, { RaiseError => 1, AutoCommit => 0 });
 
 if ($reset) {
@@ -102,7 +104,7 @@ while (<>) {
         my $cols = join ',', @cols;
         my @holders = map { '?' } @cols;
         my $holders = join ',', @holders;
-        $sth = $dbh->prepare("insert into ($cols) values ($holders)");
+        $sth = $dbh->prepare("insert into $model ($cols) values ($holders)");
     }
 
     my @vals;
@@ -113,14 +115,14 @@ while (<>) {
     $sth->execute(@vals);
     $inserted++;
 
-    if (@rows % $step == 0) {
-        $inserted += insert_rows(\@rows);
-        @rows = ();
+    if ($inserted % $step == 0) {
         print STDERR "\r", ($update_col ? "Updated" : "Inserted"), " rows: $inserted (row $.)";
     }
 }
 
 print STDERR "\n$inserted row(s) inserted.\n";
+
+$dbh->disconnect();
 
 warn "\nFor tatal $inserted records inserted.\n";
 #print encode('UTF-8', YAML::Syck::Dump(\@rows));

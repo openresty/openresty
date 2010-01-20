@@ -15,7 +15,7 @@ drop table if exists comments;
 create table comments (
     id serial,
     sender varchar(64) not null,
-    email varchar(64) not null,
+    email varchar(64),
     url varchar(1024),
     body text not null,
     created timestamp(0) default now() not null,
