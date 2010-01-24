@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="sixapart-standard">
+
+[%- PROCESS 'header.tt' -%]
+
+<body class="layout-two-column-left">
+    <a name="top" class="blog-top"></a>
+    <!-- <a class="anchor-location"></a> -->
+    <div id="container">
+        <div id="container-inner" class="pkg">
+
+            <!-- banner -->
+            [%- PROCESS 'banner.tt' %]
+
+            <div id="pagebody">
+                <div id="pagebody-inner" class="pkg">
+                    <div id="alpha">
+                        <div id="alpha-inner" class="pkg">
+
+                            <!-- sidebar -->
+                            [%- PROCESS 'sidebar.tt' %]
+
+                        </div>
+                    </div>
+                    <div id="beta">
+                        <div class="pkg pager"></div>
+                        <div id="beta-inner" class="pkg">
+                            <!-- entries -->
+                        </div>
+                        <div class="pkg pager"></div>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+            [%- PROCESS 'footer.tt' %]
+    </div>
+</div>
+</body>
+</html>
+

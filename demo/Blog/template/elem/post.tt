@@ -1,0 +1,32 @@
+<h2 class="date-header">[% post.created %]</h2>
+<div class="entry">
+    <h3 class="entry-header">
+        <a href="#post-[% post.id %]">
+            [%- post.title -%]
+        </a>
+    </h3>
+    <div class="entry-content">
+        <div class="entry-body">
+            [%- post.content -%]
+            <p/>
+        </div>
+    </div>
+    <div class="entry-footer">
+        <p class="entry-footer-info">
+            <span class="post-footers">
+                Posted by [% post.author %] at
+                [% post.created %] in
+                <a href="#post-[% post.id %]">Articles</a>
+            </span>
+            <span class="separator">|</span>
+            <a class="permalink" href="#post-[% post.id %]">Permalink</a>
+            <span class="separator">|</span>
+            <a href="#post-[% post.id %]:comments">Comments
+                (<span class="comment-count" post="[% post.id %]">[% post.comments %]</span>)
+            </a>
+        </p>
+        <!-- technorati tags -->
+        <!-- post footer links -->
+    </div>
+</div>
+

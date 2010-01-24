@@ -1,0 +1,71 @@
+[%- index = month + 1 %]
+<h2 class="module-header">[% months.$index %] [% year %]</h2>
+<div class="module-content">
+    <table id="calendar-nav">
+        <tbody>
+          <tr>
+            <th>
+                <a class="nav-arrow"
+                   href="javascript:void(0)"
+                   onclick="getCalendar([% year - 1 %], [% month %])">
+                   &lt;&lt;
+                </a>
+            </th>
+            <th>
+                <a class="nav-arrow"
+                   href="javascript:void(0)"
+                   onclick="getCalendar([% month - 1 < 0 ? year - 1 : year %], [% month - 1 < 0 ? 11 : month - 1 %])">
+                   &lt;
+                </a>
+            </th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+            <th>
+                <a class="nav-arrow"
+                   href="javascript:void(0)"
+                   onclick="getCalendar([% month + 1 > 11 ? year + 1: year %], [% month + 1 > 11 ? 0 : month + 1 %])">
+                   &gt;
+                </a>
+            </th>
+            <th>
+                <a class="nav-arrow"
+                   href="javascript:void(0)"
+                   onclick="getCalendar([% year + 1 %], [% month %])">
+                   &gt;&gt;
+                </a>
+            </th>
+          </tr>
+        </tbody>
+    </table>
+    <table summary="Monthly calendar with links to each day's posts">
+        <tbody>
+          <tr>
+            <th>Sun</th>
+            <th>Mon</th>
+            <th>Tue</th>
+            <th>Wed</th>
+            <th>Thu</th>
+            <th>Fri</th>
+            <th>Sat</th>
+          </tr>
+        [%- day = 1; %]
+        [%- WHILE day <= end_of_month %]
+          <tr>
+            [%- day_of_week = 0 %]
+            [%- WHILE day_of_week <= 6 %]
+                [%- today_mark = day == today ? 'class="today-cell"' : '' %]
+                [%- IF (day > end_of_month) || (day == 1 && day_of_week < first_day_of_week) -%]
+                    <td>&nbsp;</td>
+                [%- ELSE -%]
+                    <td id="day-[% year %]-[% month %]-[% day %]" [% today_mark %]>[% day %]</td>
+                    [%- day = day + 1 %]
+                [%- END %]
+                [%- day_of_week = day_of_week + 1 %]
+            [%- END %]
+        [%- END %]
+          </tr>
+        </tbody>
+    </table>
+</div>
+

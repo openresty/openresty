@@ -1,0 +1,27 @@
+<ul class="module-list">
+[% FOREACH archive IN archives -%]
+    <li class="module-list-item">
+        [%- index = archive.month %]
+        <a href="#archive/[% archive.year %]/[% archive.month %]">[% months.$index %] [% archive.year %] ([% archive.count %])</a>
+    </li>
+[% END -%]
+</ul>
+
+<p class="module-more">
+
+[% IF offset > 0 %]
+    <a href="javascript:getArchiveList([% offset - count %])">&lt;&lt;</a>
+[% END %]
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+[% IF archives.size == count %]
+    <a id="more-archives" href="javascript:getArchiveList([% offset + count %]);">
+    Next...
+    </a>
+[% END %]
+
+</p>
+

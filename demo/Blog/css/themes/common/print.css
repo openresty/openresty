@@ -1,0 +1,205 @@
+/* Reset (Eric Meyer, http://meyerweb.com/) */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+	vertical-align: baseline;
+}
+/* remember to define focus styles! */
+:focus {
+	outline: 0;
+}
+body {
+	line-height: 1;
+	color: black;
+	background: white;
+}
+ol, ul {
+	list-style: none;
+}
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+	border-collapse: separate;
+	border-spacing: 0;
+}
+caption, th, td {
+	text-align: left;
+	font-weight: normal;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: "";
+}
+blockquote, q {
+	quotes: "" "";
+}
+
+
+/* Base Weblog Print Styles (Six Apart, Ltd., http://sixapart.com/) */
+
+body
+{
+	color: #000;
+	font-size: 10pt;
+	line-height: 1.5;
+	font-family: Georgia, serif;
+}
+
+a
+{
+	color: #000;
+	text-decoration: underline;
+}
+
+#banner,
+.entry,
+.trackbacks,
+.trackbacks-info,
+.comments,
+.comments-info,
+.archive
+{
+	margin-bottom: 1.5em;
+}
+
+#banner-header
+{
+	font-size: 15pt;
+	font-weight: bold;
+}
+
+#banner-description { font-size: 12pt; }
+
+#banner-header a,
+.entry-header a
+{
+	text-decoration: none;
+}
+
+.entry-header,
+.trackbacks-header,
+.comments-header,
+.archive-header,
+.content-header
+{
+	margin-bottom: 0.5em;
+	font-weight: bold;
+}
+
+.entry-header, .archive-header, .content-header { font-size: 12pt; }
+
+.trackbacks-header, .comments-header { font-size: 10pt; }
+
+.trackbacks, .comments { font-size: 9pt; }
+
+.entry-content p,
+.entry-content blockquote,
+.entry-content pre,
+.entry-content dl,
+.entry-content ol,
+.entry-content ul,
+.trackback-content p,
+.comment-content p,
+.comment-content blockquote,
+.comment-content pre,
+.comment-content dl,
+.comment-content ol,
+.comment-content ul,
+.archive-content ul
+{
+	margin-bottom: 0.5em;
+}
+
+.entry-content blockquote,
+.comment-content blockquote
+{
+	margin-left: 1em;
+	border-left: 1pt solid #000;
+	padding-left: 1em;
+}
+
+.entry-content pre,
+.comment-content pre
+{
+	margin-left: 1em;
+	border-left: 1pt solid #000;
+	padding-left: 1em;
+	font-family: Monaco, monospace;
+}
+
+.entry-content code,
+.comment-content code
+{
+	font-family: Monaco, monospace;
+}
+
+.entry-content ol,
+.entry-content ul,
+.comment-content ol,
+.comment-content ul,
+.archive-content ul
+{
+	padding-left: 2em;
+}
+
+.entry-content ol,
+.comment-content ol
+{
+	list-style-type: decimal;
+}
+
+.entry-content ul,
+.comment-content ul,
+.archive-content ul
+{
+	list-style-type: disc;
+}
+
+.entry-content table td,
+.comment-content table td
+{
+	padding: 0 1em 0.5em 0;
+}
+
+.layout-two-column-left #alpha,
+.layout-two-column-right #beta,
+.layout-three-column #alpha,
+.layout-three-column #gamma,
+.layout-three-column-right #beta,
+.layout-three-column-right #gamma,
+.layout-artistic #beta,
+.layout-calendar #beta,
+.layout-moblog1 #alpha,
+.layout-moblog1 #gamma,
+.layout-moblog2 #alpha,
+.layout-moblog2 #gamma,
+.layout-moblog2 #delta,
+.layout-timeline #beta,
+.content-nav,
+#comment-form
+{
+	display: none;
+}
+
+.entry, .entry-content, .entry-footer, .entry-excerpt,
+.entry-body, .entry-more-link, .entry-more,
+.trackbacks, .trackbacks-info, .trackback-content, .trackback-footer,
+.comments, .comments-info, .comment-content, .comment-footer,
+.comments-open-content, .comments-open-footer, .comments-closed,
+.archive, .archive-content, .date-header
+{
+	clear: both;
+}

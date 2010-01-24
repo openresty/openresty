@@ -1,0 +1,28 @@
+<ul class="module-list">
+[% last_id %]
+[% FOREACH post IN posts -%]
+    <li class="module-list-item">
+        <a href="#post-[% post.id %]">[% post.title %]</a>
+    </li>
+    [%- last_id = post.id %]
+[% END -%]
+</ul>
+
+<p class="module-more">
+
+[% IF offset > 0 %]
+    <a href="javascript:getRecentPosts([% offset - count %])">&lt;&lt;</a>
+[% END %]
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+[% IF last_id > 1 && posts.size == count %]
+    <a id="more-recent-posts" href="javascript:getRecentPosts([% offset + count %]);">
+    Next...
+    </a>
+[% END %]
+
+</p>
+

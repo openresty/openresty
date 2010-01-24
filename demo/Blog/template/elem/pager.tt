@@ -1,0 +1,51 @@
+[% DEFAULT
+    page = 1,
+    page_count = undef,
+    title = 'Pages',
+    prefix = 'post-list/',
+    suffix = ''
+-%]
+
+[% IF page_count <= 10;
+      from = 1;
+      to = page_count;
+   ELSE;
+      from = page - 10 >= 1 ? page - 10 : 1
+      to = page + 9 >= page_count ? page_count : page + 9;
+   END -%]
+
+<center>
+  <table class="paging">
+    <tr>
+      <td>
+        [% title %]:&nbsp; &nbsp;
+      </td>
+      <td>
+      [%- IF page > 1 %]
+        <span class="prev-page">
+            <a href="#[% prefix _ (page - 1) _ suffix %]">Previous</a>
+        </span>
+      [%- END %]
+      </td>
+
+    [%- i = from; %]
+    [%- WHILE i <= to %]
+      [%- IF i == page %]
+        <td class="highlight">[% i %]</td>
+      [%- ELSE %]
+        <td><a href="#[% prefix _ i _ suffix %]">[% i %]</a></td>
+      [%- END %]
+      [%- i = i + 1 %]
+    [%- END %]
+
+      <td>
+      [%- IF page < page_count %]
+        <span class="next-page">
+            <a href="#[% prefix _ (page + 1) _ suffix %]">Next</a>
+        </span>
+      [%- END %]
+      </td>
+    </tr>
+  </table>
+</center>
+<br/>

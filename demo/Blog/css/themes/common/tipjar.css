@@ -1,0 +1,152 @@
+.module-tipjar,
+.module-tipjar-r2 {
+    font-family: 'trebuchet ms', sans-serif;
+}
+
+.module-tipjar .button {
+    margin: 0;
+}
+
+.module-tipjar-r2 .tipjar-button-wrapper {
+	position: relative;
+}
+
+.module-tipjar-r2 .tipjar-button {
+    position: relative;
+    float: left;
+    text-align: left;
+}
+
+.module-tipjar .button h3,
+.module-tipjar .button p,
+.module-tipjar-r2 .tipjar-button h3,
+.module-tipjar-r2 .tipjar-button p {
+    margin: 0;
+    padding: 0;
+    color: #000;
+    line-height: 1.2em;
+}
+
+.module-tipjar .button img,
+.module-tipjar-r2 .tipjar-button img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 0;
+}
+
+.module-tipjar .module-content {
+    position: relative;
+    margin: 10px;
+    padding: 0;
+}
+
+.module-tipjar p {
+    margin-left: 10px;
+}
+
+.module-tipjar-r2 p {
+    margin: 2px 0 0 0;
+}
+
+.module-tipjar #button-1, .module-tipjar-r2 #button-1 { background: url(/.shared/images/tipjar-buttons/tipjar-green-large.gif) left top no-repeat; }
+.module-tipjar #button-2, .module-tipjar-r2 #button-2 { background: url(/.shared/images/tipjar-buttons/tipjar-pink-large.gif) left top no-repeat; }
+.module-tipjar #button-3, .module-tipjar-r2 #button-3 { background: url(/.shared/images/tipjar-buttons/tipjar-green-medium.gif) left top no-repeat; }
+.module-tipjar #button-4, .module-tipjar-r2 #button-4 { background: url(/.shared/images/tipjar-buttons/tipjar-pink-medium.gif) left top no-repeat; }
+.module-tipjar #button-5, .module-tipjar-r2 #button-5 { background: url(/.shared/images/tipjar-buttons/tipjar-green-small.gif) left top no-repeat; }
+.module-tipjar #button-6, .module-tipjar-r2 #button-6 { background: url(/.shared/images/tipjar-buttons/tipjar-pink-small.gif) left top no-repeat; }
+
+.module-tipjar .empty-1,
+.module-tipjar .empty-2,
+.module-tipjar-r2 #button-1,
+.module-tipjar-r2 #button-2,
+.module-tipjar-r2 .empty-1,
+.module-tipjar-r2 .empty-2 {
+    width: 120px;
+    height: 52px;
+}
+
+.module-tipjar #button-1 h3,
+.module-tipjar #button-2 h3,
+.module-tipjar-r2 #button-1 h3,
+.module-tipjar-r2 #button-2 h3 {
+    font-size: 15px;
+    font-weight: bold;
+    padding: 4px 0 0 28px;
+}
+
+.module-tipjar #button-1 p,
+.module-tipjar #button-2 p,
+.module-tipjar-r2 #button-1 p,
+.module-tipjar-r2 #button-2 p {
+    font-size: 11px;
+}
+
+.module-tipjar #button-1 p,
+.module-tipjar #button-2 p {
+    padding: 0 0 24px 28px;
+}
+
+.module-tipjar-r2 #button-1 p,
+.module-tipjar-r2 #button-2 p {
+    padding: 0 0 0 28px;
+}
+
+.module-tipjar .empty-3,
+.module-tipjar .empty-4,
+.module-tipjar-r2 #button-3,
+.module-tipjar-r2 #button-4,
+.module-tipjar-r2 .empty-3,
+.module-tipjar-r2 .empty-4 {
+    width: 88px;
+    height: 31px;
+}
+
+.module-tipjar #button-3 h3,
+.module-tipjar #button-4 h3,
+.module-tipjar-r2 #button-3 h3,
+.module-tipjar-r2 #button-4 h3 {
+    font-size: 13px;
+    font-weight: bold;
+    padding: 0 0 0 5px;
+}
+
+.module-tipjar #button-3 p,
+.module-tipjar #button-4 p,
+.module-tipjar-r2 #button-3 p,
+.module-tipjar-r2 #button-4 p {
+    font-size: 11px;
+}
+
+.module-tipjar #button-3 p,
+.module-tipjar #button-4 p {
+    padding: 0 0 4px 5px;
+}
+
+.module-tipjar-r2 #button-3 p,
+.module-tipjar-r2 #button-4 p {
+    padding: 0 0 0 5px;
+}
+
+.module-tipjar #button-5,
+.module-tipjar #button-6,
+.module-tipjar .empty-5,
+.module-tipjar .empty-6,
+.module-tipjar-r2 #button-5,
+.module-tipjar-r2 #button-6,
+.module-tipjar-r2 .empty-5,
+.module-tipjar-r2 .empty-6 {
+    width: 94px;
+    height: 15px;
+}
+
+.module-tipjar #button-5 h3,
+.module-tipjar #button-6 h3,
+.module-tipjar #button-5 p,
+.module-tipjar #button-6 p,
+.module-tipjar-r2 #button-5 h3,
+.module-tipjar-r2 #button-6 h3,
+.module-tipjar-r2 #button-5 p,
+.module-tipjar-r2 #button-6 p {
+    display: none;
+}

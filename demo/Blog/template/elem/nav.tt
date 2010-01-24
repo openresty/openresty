@@ -1,0 +1,24 @@
+[%
+   SET prev_post = undef;
+   SET next_post = undef;
+   FOREACH post IN posts;
+     IF post.id < current;
+        prev_post = post;
+     ELSE;
+        next_post = post;
+     END;
+    END -%]
+[% IF next_post %]
+<a href="#post-[% next_post.id %]">
+    « [% next_post.title %]
+</a>
+[% END %]
+ |
+<a href="#post-list"> Main </a>
+ |
+[% IF prev_post %]
+<a href="#post-[% prev_post.id %]">
+    [% prev_post.title %] »
+</a>
+[% END %]
+

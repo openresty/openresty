@@ -1,0 +1,30 @@
+<ul class="module-list">
+[% last_id %]
+[% FOREACH comment IN comments -%]
+    <li class="module-list-item">
+        <a href="#post-[% comment.post %]:comment-[% comment.id %]">
+        [% comment.sender | html %]</a> on
+        <a href="#post-[% comment.post %]">[% comment.title | html %]</a>
+    </li>
+    [%- last_id = comment.id %]
+[% END -%]
+</ul>
+
+<p class="module-more">
+
+[% IF offset > 0 %]
+    <a href="javascript:getRecentComments([% offset - count %])">&lt;&lt</a>
+[% END %]
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+&nbsp; &nbsp;
+[% IF last_id > 1 && comments.size == count %]
+    <a id="more-recent-comments" href="javascript:getRecentComments([% offset + count %]);">
+    Next...
+    </a>
+[% END %]
+
+</p>
+

@@ -1,0 +1,98 @@
+<div class="module-calendar module">
+    <!-- calendar.tt -->
+</div>
+
+<div class="module-archives module">
+    <h2 class="module-header">Site search</h2>
+    <div id="search-posts" class="module-content">
+        <form id="form-search" onsubmit="doPostSearch();return false;" action="">
+            <input type="text" size="20" maxlength="125" id="searchbox"/><br/>
+            <input type="submit" value="Search posts"/>
+            <!-- <input type="button" value="Comments"/> -->
+        </form>
+    </div>
+</div>
+
+<div class="module-archives module">
+    <h2 class="module-header">Recent Posts</h2>
+    <div id="recent-posts" class="module-content">
+    </div>
+</div>
+
+<div class="module-recent-comments module">
+    <h2 class="module-header">Recent Comments</h2>
+    <div class="module-content" id="recent-comments">
+    </div>
+</div>
+
+<div class="module-categories module">
+    <h2 class="module-header">Categories</h2>
+    <div class="module-content">
+    </div>
+</div>
+    <div class="module-archives module">
+        <h2 class="module-header">Archives</h2>
+        <div class="module-content" id="archive-list">
+        </div>
+    </div>
+
+[% IF blog_owner == 'agentzh' %]
+<div class="module-feed module">
+    <h2 class="module-header">[% blog_owner %]</h2>
+    <div class="module-content" id="feed-d6e3ea166d4156b0ee0935b704a55dbf5f52a212">
+    </div>
+</div>
+<!-- user photo -->
+    <div class="module-photo module">
+        <div class="module-content"><img src="me.jpg" alt="My Photo" /></div>
+                <br/>
+    </div>
+[% END %]
+
+<div class="module-syndicate module">
+    <h2 class="module-header">RSS feed</h2>
+    <div class="module-content">
+        <!-- this is a hack; we'll use OpenAPI's own RSS feed support later -->
+        <ul class="module-list">
+            <li class="module-list-item">
+                <a href="http://[% resty_server %]/=/feed/Post/_user/[% blog_owner %].Public">Subscribe to the article feed</a>
+            </li>
+            <li class="module-list-item">
+                <a href="http://[% resty_server %]/=/feed/Comment/_user/[% blog_owner %].Public">Subscribe to the comment feed</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="module-download module">
+    <h2 class="module-header"><a
+        href="site-binary.tar.gz">Download this site</a></h2>
+    <div class="module-content">
+        <ul class="module-list">
+            <li class="module-list-item">
+                <a href="site-binary.tar.gz">Compiled form (.tar.gz)</a>
+            </li>
+            <li class="module-list-item">
+                <a target="_blank" href="http://github.com/agentzh/openresty/tree/8463c31834e1d007da26b8b6549e4d06b5963b70/demo/[% blog_owner == 'agentzh' ? "Blog" : "Blog2" %]/">
+                    Source code (Git)
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="module-typelist module">
+    <h2 class="module-header">License</h2>
+    <div class="module-content">
+        <ul class="module-list">
+            <li class="module-list-item">
+                This work is licensed under
+                <a href="http://en.wikipedia.org/wiki/MIT_License">
+                    the MIT License
+                </a>.
+            </li>
+        </ul>
+    </div>
+</div>
+
+

@@ -1,0 +1,82 @@
+.entry-header b {
+    color: #cc0022;
+}
+
+#beta-inner.pkg b {
+    color: #cc0022;
+    font-weight: normal;
+}
+
+input#searchbox {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    color:#369;
+    background:#fff;
+    width: 180px;
+}
+
+div#wait-message {
+    color: red !important;
+    background: white !important;
+    font-size: 18px !important;
+    float: right;
+    position: fixed;
+    top: 2px;
+    right: 30px;
+    padding: 4px;
+    border-width: 2px;
+    border-style: outset;
+    border-color: white;
+    display: block;
+}
+
+td.today-cell {
+    background: #fff;
+}
+
+td.highlight {
+    font-weight: bold;
+    color:#A90A08;
+}
+
+input.required {
+    background: #ffa;
+}
+
+ins.item-body {
+    text-decoration: none;
+}
+
+a.nav-arrow {
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+ins {
+    font-style: normal;
+}
+
+table.paging {
+    border: 0;
+    width: 1%;
+}
+
+table.paging td {
+    font-size: 90%;
+    white-space: nowrap;
+}
+
+.prev-page {
+    text-align: right;
+    font-size: 12pt;
+    color: #00c;
+    font-weight: bold;
+}
+
+.next-page {
+    text-align: left;
+    font-size: 12pt;
+    color: #00c;
+    font-weight: bold;
+}
+

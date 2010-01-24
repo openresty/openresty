@@ -1,0 +1,11 @@
+<div id="copyright">
+    <center>
+        <p>Powered by <a href="http://search.cpan.org/dist/OpenResty">OpenResty</a> and your web browser.</p>
+        <p>Chinese segmentation by <a target="_blank" href="http://code.google.com/p/nlpbamboo">Bamboo</a>
+        <!-- &nbsp; <script type="text/javascript" src="http://www.ohloh.net/projects/25889/widgets/project_thin_badge"></script>
+        -->
+        </p>
+        <p>Copyright © 2008 by Yahoo! China EEEE Works, Alibaba Inc.</p>
+    </center>
+</div>
+

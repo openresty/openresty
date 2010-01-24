@@ -1,0 +1,5 @@
+<div id="post-list-nav" class="content-nav"></div>
+[% FOREACH post IN post_list %]
+    [% PROCESS 'post.tt' %]
+[% END %]
+

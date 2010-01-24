@@ -1,0 +1,17 @@
+[% DEFAULT
+      blog_name  = 'Foo\'s blog',
+      blog_desc  = 'This is my blog'
+-%]
+<div id="banner">
+    <div id="wait-message">
+        <img src="loading.gif" alt=""/>
+        &nbsp; <b>Loading...</b>&nbsp;
+    </div>
+    <div id="banner-inner" class="pkg">
+            <h1 id="banner-header">
+                <a href="#posts/1" onclick="init()" accesskey="1">[% blog_name | html %]</a>
+            </h1>
+            <h2 id="banner-description">[% blog_desc | html %]</h2>
+    </div>
+</div>
+

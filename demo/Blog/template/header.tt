@@ -1,0 +1,36 @@
+[% DEFAULT
+      blog_name  = 'Foo\'s blog',
+      blog_desc  = 'This is my blog';
+-%]
+[% IF NOT pack_js;
+      js_files = [
+        'jquery.js',
+        'blog-jemplate.js',
+        'openresty.js',
+        'dojo.openresty.js',
+        'blog.js',
+      ];
+   ELSE;
+      js_files = ['jquery-dojo.js', 'blog_min.js'];
+   END;
+-%]
+<head>
+    <title>[% blog_name | html %]</title>
+
+    <meta name="description" content="[% blog_desc %]" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="http://search.cpan.org/perldoc?OpenResty" />
+
+    [%- FOREACH js_file IN js_files %]
+        <script type="text/javascript" src="[% js_file %]"></script>
+    [%- END %]
+
+    <link rel="stylesheet" href="blog.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="styles.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="themes/common/print.css" type="text/css" media="print" />
+
+    <link rel="alternate" type="application/rss+xml" title="Posts on '[% blog_name | html %]' (RSS 2.0)" href="http://[% resty_server %]/=/feed/Post/_user/[% blog_owner %].Public" />
+    <link rel="alternate" type="application/rss+xml" title="Comments on '[% blog_name | html %]' (RSS 2.0)" href="http://[% resty_server %]/=/feed/Comment/_user/[% blog_owner %].Public" />
+
+</head>
+
