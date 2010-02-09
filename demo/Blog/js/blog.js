@@ -1,4 +1,5 @@
 var account = 'agentzh';
+//var host = 'http://10.32.24.13:1984';
 var host = 'http://localhost:1984';
 //var host = 'http://api.eeeeworks.org';
 //var host = 'http://api.openresty.org';
@@ -487,14 +488,15 @@ function postComment (form) {
     //openresty.purge();
     setStatus(true, 'afterPostComment');
     openresty.callback = afterPostComment;
-    openresty.formId = 'comment-form';
-    openresty.post('/=/action/NewComment/~/~', data);
+    //openresty.formId = 'comment-form';
+    // TODO openresty.post('/=/batch/NewComment/~/~', data);
+    openresty.get('/=/batch/NewComment/~/~', data);
     return false;
 }
 
 function afterPostComment (res) {
     setStatus(false, 'afterPostComment');
-    //alert("HERE!!!");
+    //alert("HERE!!! afterPostComment");
     if (!openresty.isSuccess(res)) {
         error("Failed to post the comment: " + res.errstr);
     } else {
@@ -505,9 +507,7 @@ function afterPostComment (res) {
         var postId = spans.attr('post');
 
         //debug(JSON.stringify(res));
-        var commentId;
-        var match = res[0].last_row.match(/\d+$/);
-        if (match.length) commentId = match[0];
+        var commentId = res[0].insert_id;
         location.hash = 'post-' + postId + ':' +
             (commentId ? 'comment-' + commentId : 'comments');
         spans.text(commentCount + 1);
