@@ -6,7 +6,7 @@ use warnings;
 use Getopt::Long;
 use lib 'lib';
 use Params::Util qw( _HASH );
-#use JSON::XS ();
+use JSON::XS ();
 use JSON::Syck;
 #use WWW::OpenResty::Simple;
 use Data::Dumper;
@@ -62,7 +62,7 @@ if ($help) { print usage() }
 $user or die "No --user given.\n";
 $model or die "No --model given.\n";
 
-# my $json_xs = JSON::XS->new->utf8->allow_nonref;
+my $json_xs = JSON::XS->new->utf8->allow_nonref;
 
 my $database = 'test';
 
@@ -83,12 +83,13 @@ local $| = 1;
 
 my ($sth);
 
+my @cols;
 while (<>) {
     #select(undef, undef, undef, 0.1);
     #warn "count: ", scalar(@elems), "\n";
     next if $. <= $skip;
-    # my $row = $json_xs->decode($_);
-    my $row = JSON::Syck::Load($_);
+    my $row = $json_xs->decode($_);
+    #my $row = JSON::Syck::Load($_);
 
 
     if (!defined $row->{id}) {
@@ -100,7 +101,7 @@ while (<>) {
     }
 
     if (!defined $sth) {
-        my @cols = sort keys %$row;
+        @cols = reverse sort keys %$row;
         my $cols = join ',', @cols;
         my @holders = map { '?' } @cols;
         my $holders = join ',', @holders;
@@ -108,7 +109,7 @@ while (<>) {
     }
 
     my @vals;
-    for my $col (sort keys %$row) {
+    for my $col (@cols) {
         push @vals, $row->{$col};
     }
 

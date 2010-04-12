@@ -1,6 +1,6 @@
 var account = 'agentzh';
-//var host = 'http://10.32.24.13:1984';
-var host = 'http://localhost:1984';
+//var host = 'http://10.32.24.16:8080';
+var host = 'http://localhost:8080';
 //var host = 'http://api.eeeeworks.org';
 //var host = 'http://api.openresty.org';
 //var host = 'http://10.62.136.86';
@@ -41,6 +41,7 @@ function error (msg) {
 function debug (msg) {
     $("#copyright").append(msg + "<br/>");
 }
+
 
 $.fn.postprocess = function (className, options) {
     return this.find("a[@href*='#']").each( function () {

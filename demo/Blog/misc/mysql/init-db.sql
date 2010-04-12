@@ -2,7 +2,7 @@
 drop table if exists posts;
 create table posts (
     id serial,
-    title varchar(128) not null,
+    title text not null,
     content text not null,
     author varchar(64) not null,
     created timestamp(0) default now() not null,

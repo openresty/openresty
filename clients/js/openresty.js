@@ -263,7 +263,7 @@ $ClientP.post = function (url) {
     // if (!formId) throw "No form specified.";
 
     if (this.session) args._session = this.session;
-    if (!this.session && !args._user)
+    if (!this.session && !args._user && this.user)
         args._user = this.user;
 
     args._last_response = this.genId();
@@ -353,7 +353,7 @@ $ClientP.get = function (url, args) {
     //if (!this.user) throw "No user specified for OpenResty.";
 
     if (this.session) args._session = this.session;
-    if (!this.session && !args._user)
+    if (!this.session && !args._user && this.user)
         args._user = this.user;
 
     //args.password = this.password || '';
