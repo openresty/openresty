@@ -59,4 +59,6 @@ diff.txt
 etc/compiled.actions
 etc/taobao_vip.conf
 lib/OpenResty/Handler/YLogin.pm
-
+util/
+demo/
+clients/
