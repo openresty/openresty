@@ -144,10 +144,10 @@ mv ngx_http_auth_request_module-* auth-request-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.03
-cp ~/rpm/SOURCES/lz-st-nginx-module-$ver.tar.gz ./ || exit 1
-tar -xzf lz-st-nginx-module-$ver.tar.gz || exit 1
-#mv lz-st-nginx-module-* lz-st-nginx-module-$ver
+ver=0.8
+$root/util/get-tarball "https://github.com/FRiCKLE/ngx_postgres/tarball/0.8" -O ngx_postgres-$ver.tar.gz || exit 1
+tar -xzf ngx_postgres-$ver.tar.gz || exit 1
+mv FRiCKLE-ngx_postgres-* ngx_postgres-$ver || exit 1
 
 #################################
 
