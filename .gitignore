@@ -65,3 +65,4 @@ util/blog-rows.sql
 util/comments.sql
 util/posts.sql
 ngx_openresty-*
+work/
