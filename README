@@ -9,9 +9,31 @@ that all these modules are played well together.
 
 The bundled software components are copyrighted by the respective copyright holders.
 
-Git repository
+To build ngx_openresty, just uncompress the latest ngx_openresty tarball
+listed on http://openresty.org and then enter the
+ngx_openresty-* directory,
+and type the following commands:
 
-    https://github.com/agentzh/ngx_openresty
+    ./configure --prefix=/opt/ngx_openresty \
+        --with-http_lua_module \
+        --with-http_drizzle_module \
+        --with-http_rds_json_module
+
+    make
+
+    make install
+
+For bundle maintainers:
+
+    The bundle's source is at the following git repository:
+
+        https://github.com/agentzh/ngx_openresty
+
+    To reproduce the bundle tarball, just do
+
+        make
+
+    at the top of the bundle source tree.
 
 The bundle itself is licensed under the 2-clause BSD license.
 

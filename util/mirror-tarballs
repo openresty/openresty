@@ -155,6 +155,7 @@ rm *.tar.gz
 
 cd ..
 cp $root/util/configure ./
+cp $root/README ./
 
 cd $root
 
