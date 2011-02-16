@@ -11,7 +11,7 @@ The bundled software components are copyrighted by the respective copyright hold
 
 To build ngx_openresty, follow the following steps
 
-1. Download the latest ngx_openresty tarball
+1. download the latest ngx_openresty tarball
 listed on <http://openresty.org >,
    say, ngx_openresty-0.8.54.0.tar.gz
 
@@ -23,11 +23,11 @@ listed on <http://openresty.org >,
             --with-http_drizzle_module \
             --with-http_rds_json_module
 
-3. Build everything locally
+3. build everything locally
 
         make
 
-4. Install ngx_openresty into the target directory that you specified by
+4. install ngx_openresty into the target directory that you specified by
    the --prefix option in Step 2.
 
         make install
