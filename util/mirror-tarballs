@@ -165,6 +165,12 @@ rm "patch-lua-$ver-2" || exit 1
 
 #################################
 
+ver=2.0.0-beta6
+$root/util/get-tarball "http://luajit.org/download/LuaJIT-$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
+tar -xzf LuaJIT-$ver.tar.gz || exit 1
+
+#################################
+
 rm *.tar.gz
 
 cd ..
