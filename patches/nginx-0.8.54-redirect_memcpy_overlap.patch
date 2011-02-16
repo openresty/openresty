@@ -1,0 +1,15 @@
+--- nginx-0.8.54/src/http/ngx_http_script.c	2010-05-14 17:56:37.000000000 +0800
++++ nginx-0.8.54-patched/src/http/ngx_http_script.c	2010-06-07 17:15:27.399312041 +0800
+@@ -983,7 +983,11 @@
+                          NGX_UNESCAPE_REDIRECT);
+ 
+         if (src < e->pos) {
+-            dst = ngx_copy(dst, src, e->pos - src);
++            if (src != dst) {
++                memmove(dst, src, e->pos - src);
++            }
++
++            dst += e->pos - src;
+         }
+ 
+         e->pos = dst;

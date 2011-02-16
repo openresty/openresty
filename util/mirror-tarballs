@@ -1,0 +1,162 @@
+#!/bin/bash
+
+root=$(readlink -f -- "$(dirname -- "$0")/..")
+
+debug=
+main_ver=0.8.54
+minor_ver=0
+version=$main_ver.$minor_ver
+name=ngx_openresty-$version
+work=$root/work
+
+if [ -z $debug ]; then
+    rm -rf $name || exit 1
+    mkdir -p $name/bundle || exit 1
+fi
+
+cd $name/bundle || exit 1
+
+if [ ! -d $work ]; then
+    mkdir $work || exit 1
+fi
+
+ver="$main_ver"
+$root/util/get-tarball "http://nginx.org/download/nginx-$ver.tar.gz" -O nginx-$ver.tar.gz || exit 1
+tar -xzf nginx-$ver.tar.gz || exit 1
+cd nginx-$ver || exit 1
+
+# patch the patch
+
+cp $root/patches/nginx-$main_ver-server_header.patch server_header.patch || exit 1
+sed -i $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" \
+    server_header.patch || exit 1
+
+patch -p2 < server_header.patch || exit 1
+
+patch -p1 < $root/patches/nginx-$main_ver-redirect_memcpy_overlap.patch || exit 1
+
+patch -p1 < $root/patches/nginx-$main_ver-no_error_pages.patch || exit 1
+
+rm -f *.patch || exit 1
+
+cd .. || exit 1
+
+ver=0.36rc1
+$root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
+tar -xzf echo-nginx-module-$ver.tar.gz
+mv agentzh-echo-nginx-module-* echo-nginx-module-$ver
+
+ver=0.03rc2
+$root/util/get-tarball "http://github.com/agentzh/xss-nginx-module/tarball/v$ver" -O xss-nginx-module-$ver.tar.gz || exit 1
+tar -xzf xss-nginx-module-$ver.tar.gz || exit 1
+mv agentzh-xss-nginx-module-* xss-nginx-module-$ver || exit 1
+
+ver=0.2.14
+$root/util/get-tarball "http://github.com/simpl/ngx_devel_kit/tarball/v$ver" -O ngx_devel_kit-$ver.tar.gz
+tar -xzf ngx_devel_kit-$ver.tar.gz || exit 1
+mv simpl-ngx_devel_kit-* ngx_devel_kit-$ver || exit 1
+
+ver=0.21rc2
+$root/util/get-tarball "http://github.com/agentzh/set-misc-nginx-module/tarball/v$ver" -O set-misc-nginx-module-$ver.tar.gz || exit 1
+tar -xzf set-misc-nginx-module-$ver.tar.gz || exit 1
+mv agentzh-set-misc-nginx-module-* set-misc-nginx-module-$ver || exit 1
+
+ver=0.11rc2
+$root/util/get-tarball "http://github.com/agentzh/rds-json-nginx-module/tarball/v$ver" -O rds-json-nginx-module-$ver.tar.gz || exit 1
+tar -xzf rds-json-nginx-module-$ver.tar.gz || exit 1
+mv agentzh-rds-json-nginx-module-* rds-json-nginx-module-$ver || exit 1
+
+ver=0.14
+$root/util/get-tarball "http://github.com/agentzh/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
+tar -xzf headers-more-nginx-module-$ver.tar.gz || exit 1
+mv agentzh-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
+
+#################################
+
+ver=0.0.15rc5
+$root/util/get-tarball "http://github.com/chaoslawful/drizzle-nginx-module/tarball/v$ver" -O drizzle-nginx-module-$ver.tar.gz || exit 1
+tar -xzf drizzle-nginx-module-$ver.tar.gz || exit 1
+mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
+
+#################################
+
+ver=0.1.6rc1
+$root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
+tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
+mv chaoslawful-lua-nginx-module-* lua-nginx-module-$ver || exit 1
+
+#################################
+
+ver=0.02
+$root/util/get-tarball "http://github.com/agentzh/array-var-nginx-module/tarball/v$ver" -O array-var-nginx-module-$ver.tar.gz || exit 1
+tar -xzf array-var-nginx-module-$ver.tar.gz || exit 1
+mv agentzh-array-var-nginx-module-* array-var-nginx-module-$ver || exit 1
+
+#################################
+
+ver=0.12rc1
+$root/util/get-tarball "http://github.com/agentzh/memc-nginx-module/tarball/v$ver" -O memc-nginx-module-$ver.tar.gz || exit 1
+tar -xzf memc-nginx-module-$ver.tar.gz || exit 1
+mv agentzh-memc-nginx-module-* memc-nginx-module-$ver || exit 1
+
+#################################
+
+ver=0.12rc1
+$root/util/get-tarball "http://github.com/agentzh/srcache-nginx-module/tarball/v$ver" -O srcache-nginx-module-$ver.tar.gz || exit 1
+tar -xzf srcache-nginx-module-$ver.tar.gz || exit 1
+mv agentzh-srcache-nginx-module-* srcache-nginx-module-$ver || exit 1
+
+#################################
+
+ver=0.07rc4
+$root/util/get-tarball "http://github.com/calio/form-input-nginx-module/tarball/v$ver" -O form-input-nginx-module-$ver.tar.gz || exit 1
+tar -xzf form-input-nginx-module-$ver.tar.gz || exit 1
+mv calio-form-input-nginx-module-* form-input-nginx-module-$ver || exit 1
+
+#################################
+
+ver=0.10rc1
+$root/util/get-tarball "http://github.com/calio/iconv-nginx-module/tarball/v$ver" -O iconv-nginx-module-$ver.tar.gz || exit 1
+tar -xzf iconv-nginx-module-$ver.tar.gz || exit 1
+mv calio-iconv-nginx-module-* iconv-nginx-module-$ver || exit 1
+
+#################################
+
+ver=0.01
+$root/util/get-tarball "http://github.com/agentzh/encrypted-session-nginx-module/tarball/v$ver" -O encrypted-session-nginx-module-$ver.tar.gz || exit 1
+tar -xzf encrypted-session-nginx-module-$ver.tar.gz || exit 1
+mv agentzh-encrypted-session-nginx-module-* encrypted-session-nginx-module-$ver || exit 1
+
+#################################
+
+
+ver=0.3
+$root/util/get-tarball "http://mdounin.ru/files/ngx_http_upstream_keepalive-$ver.tar.gz" -O upstream_keepalive-$ver.tar.gz || exit 1
+tar -xzf upstream_keepalive-$ver.tar.gz || exit 1
+mv ngx_http_upstream_keepalive-* upstream-keepalive-nginx-module-$ver || exit 1
+
+#################################
+
+ver=0.2
+$root/util/get-tarball "http://mdounin.ru/hg/ngx_http_auth_request_module/archive/tip.tar.gz" -O auth_request-$ver.tar.gz || exit 1
+tar -xzf auth_request-$ver.tar.gz || exit 1
+mv ngx_http_auth_request_module-* auth-request-nginx-module-$ver || exit 1
+
+#################################
+
+ver=0.03
+cp ~/rpm/SOURCES/lz-st-nginx-module-$ver.tar.gz ./ || exit 1
+tar -xzf lz-st-nginx-module-$ver.tar.gz || exit 1
+#mv lz-st-nginx-module-* lz-st-nginx-module-$ver
+
+#################################
+
+rm *.tar.gz
+
+cd ..
+cp $root/util/configure ./
+
+cd $root
+
+tar czf $name.tar.gz $name
+

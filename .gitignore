@@ -9,7 +9,6 @@ haskell/bin/openhesty
 haskell/openhesty.txt
 !*.t.json
 cover_db
-Makefile
 bin/test-account.sh
 blib
 haskell/big.sql
@@ -59,6 +58,10 @@ diff.txt
 etc/compiled.actions
 etc/taobao_vip.conf
 lib/OpenResty/Handler/YLogin.pm
-util/
 demo/
 clients/
+util/a.sql
+util/blog-rows.sql
+util/comments.sql
+util/posts.sql
+ngx_openresty-*
