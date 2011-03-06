@@ -198,6 +198,7 @@ cd nginx-0.8.54
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
   --with-http_ssl_module
+cd ../..
 
 
 
@@ -232,6 +233,7 @@ cd nginx-0.8.54
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
   --with-http_ssl_module
+cd ../..
 
 
 
@@ -251,7 +253,7 @@ cp -r bundle/ build/
 cd build
 cd LuaJIT-2.0.0-beta6
 make PREFIX=/usr/local/openresty/luajit
-make PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root install
+make install PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
@@ -275,4 +277,5 @@ cd nginx-0.8.54
   --add-module=../rds-json-nginx-module-0.11rc2 \
   --with-ld-opt='-Wl,-rpath=/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
+cd ../..
 

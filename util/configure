@@ -12,6 +12,10 @@ sub cd ($);
 sub auto_complete ($);
 sub usage ($);
 
+my (@make_cmds, @make_install_cmds);
+
+my $ngx_dir;
+
 my @modules = (
     [http_iconv => 'iconv-nginx-module', 'disabled'],
     [http_echo => 'echo-nginx-module'],
@@ -122,6 +126,16 @@ my $cmd = "./configure --prefix=$ngx_prefix"
 
 shell $cmd, $dry_run;
 
+push @make_cmds, "cd build/$ngx_dir && "
+    . "\$(MAKE)";
+
+push @make_install_cmds, "cd build/$ngx_dir && "
+    . "\$(MAKE) install DESTDIR=\$(DESTDIR)";
+
+cd '../..'; # to the root
+
+gen_makefile();
+
 sub env ($$) {
     my ($name, $val) = @_;
     print "export $name='$val'\n";
@@ -224,7 +238,13 @@ sub build_resty_opts {
         cd $luajit_src;
 
         shell "make PREFIX=$luajit_prefix", $dry_run;
-        shell "make PREFIX=$luajit_prefix DESTDIR=$luajit_root install", $dry_run;
+        shell "make install PREFIX=$luajit_prefix DESTDIR=$luajit_root", $dry_run;
+
+        push @make_cmds, "cd build/$luajit_src && "
+            . "\$(MAKE) PREFIX=$luajit_prefix";
+
+        push @make_install_cmds, "cd build/$luajit_src && "
+            . "\$(MAKE) install PREFIX=$luajit_prefix DESTDIR=\$(DESTDIR)";
 
         env LUAJIT_LIB => "$luajit_root$luajit_prefix/lib";
         env LUAJIT_INC => "$luajit_root$luajit_prefix/include/luajit-2.0";
@@ -234,6 +254,8 @@ sub build_resty_opts {
         cd '..';
 
     } elsif ($opts->{lua}) {
+        # build stdandard lua
+
         my $lua_src = glob('lua-5.*');
 
         if (!defined $lua_src) {
@@ -258,12 +280,16 @@ sub build_resty_opts {
         env LUA_LIB => "$lua_root$lua_prefix/lib";
         env LUA_INC => "$lua_root$lua_prefix/include";
 
+        push @make_cmds, "cd build/$lua_src && \$(MAKE) linux";
+        push @make_install_cmds, "cd build/$lua_src && "
+            . "\$(MAKE) install INSTALL_TOP=\$(DESTDIR)$lua_prefix";
+
         cd '..';
     }
 
     # prepare nginx configure line
 
-    my $ngx_dir = auto_complete "nginx";
+    $ngx_dir = auto_complete "nginx";
 
     cd $ngx_dir;
 
@@ -481,5 +507,15 @@ _EOC_
 
     warn $msg;
     exit $retval;
+}
+
+sub gen_makefile {
+    open my $out, ">Makefile" or
+        die "Cannot open Makefile for writing: $!\n";
+
+    print $out "all:\n\t" . join("\n\t", @make_cmds) . "\n\n";
+    print $out "install:\n\t" . join("\n\t", @make_install_cmds) . "\n";
+
+    close $out;
 }
 
