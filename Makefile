@@ -6,6 +6,9 @@ all:
 test: all
 	prove -r t
 
-try: all
+try-luajit: all
 	cd ngx_openresty-`./util/ver` && ./configure --with-luajit
+
+try-lua: all
+	cd ngx_openresty-`./util/ver` && ./configure
 
