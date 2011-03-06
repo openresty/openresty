@@ -224,6 +224,37 @@ sub build_resty_opts {
 
     # build 3rd-party C libraries if required
 
+    if ($opts->{libdrizzle}) {
+        my $libdrizzle_src = auto_complete 'libdrizzle';
+        my $libdrizzle_prefix = "$prefix/libdrizzle";
+        my $libdrizzle_root = File::Spec->rel2abs("libdrizzle-root");
+
+        if (-d $libdrizzle_root) {
+            shell "rm -rf $libdrizzle_root";
+        }
+
+        mkdir $libdrizzle_root or
+            die "create create directory libdrizzle-root: $!\n";
+
+        cd $libdrizzle_src;
+
+        shell "./configure --prefix=$libdrizzle_prefix", $dry_run;
+        shell "make", $dry_run;
+        shell "make install DESTDIR=$libdrizzle_root", $dry_run;
+
+        push @make_cmds, "cd build/$libdrizzle_src && \$(MAKE)";
+
+        push @make_install_cmds, "cd build/$libdrizzle_src && "
+            . "\$(MAKE) install DESTDIR=\$(DESTDIR)";
+
+        env LIBDRIZZLE_LIB => "$libdrizzle_root$libdrizzle_prefix/lib";
+        env LIBDRIZZLE_INC => "$libdrizzle_root$libdrizzle_prefix/include";
+
+        push @ngx_rpaths, "$libdrizzle_prefix/lib";
+
+        cd '..';
+    }
+
     if ($opts->{luajit}) {
         my $luajit_src = auto_complete 'LuaJIT';
         my $luajit_prefix = "$prefix/luajit";
