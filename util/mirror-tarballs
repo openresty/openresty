@@ -3,9 +3,9 @@
 root=$(readlink -f -- "$(dirname -- "$0")/..")
 
 debug=
-main_ver=0.8.54
-minor_ver=0
-version=$main_ver.$minor_ver
+
+. util/ver
+
 name=ngx_openresty-$version
 work=$root/work
 
