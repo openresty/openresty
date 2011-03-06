@@ -10,7 +10,7 @@ sub cd ($);
 my $ver = `bash util/ver`;
 chomp $ver;
 
-shell "make";
+#shell "make";
 
 cd "ngx_openresty-$ver";
 shell "./configure --help > help.txt";
