@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 use Test::More tests => 1;
-use Test::Differences;
+use Text::Diff;
 
 sub shell (@);
 sub cd ($);
@@ -25,7 +25,7 @@ open $in, "../t/help.txt" or
 my $expected = do { local $/; <$in> };
 close $in;
 
-eq_or_diff $got, $expected, "--help ok";
+is_diff($got, $expected, "--help ok");
 
 sub shell (@) {
     print "@_\n";
@@ -36,5 +36,16 @@ sub cd ($) {
     my $dir = shift;
     print("cd $dir\n");
     chdir $dir or die "failed to cd $dir: $!\n";
+}
+
+sub is_diff {
+    my ($actual, $expected, $name) = @_;
+
+    if (!defined $name) {
+        $name = '';
+    }
+
+    ok $actual eq $expected,
+       $name . "\n" . Text::Diff::diff(\$expected, \$actual);
 }
 
