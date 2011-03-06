@@ -7,5 +7,5 @@ test: all
 	prove -r t
 
 try: all
-	cd ngx_openresty-`./util/ver` && ./configure
+	cd ngx_openresty-`./util/ver` && ./configure --with-luajit
 

@@ -12,8 +12,6 @@ __DATA__
 
 === TEST 1: --help
 --- cmd: ./configure --help
---- exit: 0
---- err
 --- out
   --help                             this message
 
@@ -172,14 +170,17 @@ Options directly inherited from nginx
 
 === TEST 2: default
 --- cmd: ./configure --dry-run
---- exit: 0
---- err
 --- out
 cp -r bundle/ build/
 cd build
+cd lua-5.1.4
+make linux
+make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
+export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/lib' \
   --with-cc-opt='-O2' \
   --add-module=../echo-nginx-module-0.36rc1 \
   --add-module=../xss-nginx-module-0.03rc2 \
@@ -205,9 +206,14 @@ cd nginx-0.8.54
 --- out
 cp -r bundle/ build/
 cd build
+cd lua-5.1.4
+make linux
+make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
+export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/lib' \
   --with-cc-opt='-O0' \
   --with-debug \
   --add-module=../echo-nginx-module-0.36rc1 \
@@ -235,4 +241,38 @@ cd nginx-0.8.54
 --- err
 --with-http_ssl_module conflicts with --without-http_ssl_module
 --- out
+
+
+
+=== TEST 5: --with-luajit
+--- cmd: ./configure --with-luajit --dry-run
+--- out
+cp -r bundle/ build/
+cd build
+cd LuaJIT-2.0.0-beta6
+make PREFIX=/usr/local/openresty/luajit
+make PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root install
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
+cd ..
+cd nginx-0.8.54
+./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
+  --add-module=../echo-nginx-module-0.36rc1 \
+  --add-module=../xss-nginx-module-0.03rc2 \
+  --add-module=../ngx_devel_kit-0.2.14 \
+  --add-module=../set-misc-nginx-module-0.21rc2 \
+  --add-module=../form-input-nginx-module-0.07rc4 \
+  --add-module=../encrypted-session-nginx-module-0.01 \
+  --add-module=../drizzle-nginx-module-0.0.15rc9 \
+  --add-module=../lua-nginx-module-0.1.6rc1 \
+  --add-module=../headers-more-nginx-module-0.14 \
+  --add-module=../srcache-nginx-module-0.12rc1 \
+  --add-module=../array-var-nginx-module-0.02 \
+  --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../auth-request-nginx-module-0.2 \
+  --add-module=../rds-json-nginx-module-0.11rc2 \
+  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/luajit/lib' \
+  --with-http_ssl_module
 

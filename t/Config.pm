@@ -12,11 +12,15 @@ sub run_test ($);
 sub shell (@);
 sub cd ($);
 
+our $BuildRoot;
+
 sub run_tests {
     my $ver = `bash util/ver`;
     chomp $ver;
 
     cd "ngx_openresty-$ver";
+
+    $BuildRoot = File::Spec->rel2abs("./build");
 
     for my $block (blocks()) {
         run_test($block);
@@ -42,11 +46,15 @@ sub run_test ($) {
     my $expected_err = $block->err;
     if (!defined $expected_err) {
         $expected_err = '';
+    } else {
+        $expected_err =~ s/\$OPENRESTY_BUILD_DIR\b/$BuildRoot/gs;
     }
 
     my $expected_out = $block->out;
     if (!defined $expected_out) {
         $expected_out = '';
+    } else {
+        $expected_out =~ s/\$OPENRESTY_BUILD_DIR\b/$BuildRoot/gs;
     }
 
     is($stdout, $expected_out, "$name - stdout ok");

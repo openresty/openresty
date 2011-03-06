@@ -6,7 +6,8 @@ use warnings;
 
 use File::Spec;
 
-sub shell (@);
+sub shell ($@);
+sub env ($$);
 sub cd ($);
 sub auto_complete ($);
 sub usage ($);
@@ -64,6 +65,7 @@ my $with_resty_mods_regex;
 my $prefix = '/usr/local/openresty';
 my %resty_opts;
 my $dry_run;
+my @ngx_rpaths;
 
 my @ngx_opts;
 for my $opt (@ARGV) {
@@ -112,21 +114,29 @@ for my $opt (@ARGV) {
 my $ngx_prefix = "$prefix/nginx";
 
 my $cmd = "./configure --prefix=$ngx_prefix"
-    . " \\\n  --with-ld-opt='-Wl,-rpath=$prefix/lib'"
     . build_resty_opts(\%resty_opts)
+    . (@ngx_rpaths ? " \\\n  --with-ld-opt='-Wl,-rpath="
+        . join(":", @ngx_rpaths) . "'" : "")
     . (@ngx_opts ? " \\\n  " . join(" ", @ngx_opts) : "");
    ;
 
-if ($dry_run) {
-    print "$cmd\n";
-    exit 0;
+shell $cmd, $dry_run;
+
+sub env ($$) {
+    my ($name, $val) = @_;
+    print "export $name='$val'\n";
+    $ENV{$name} = $val;
 }
 
-shell $cmd;
+sub shell ($@) {
+    my ($cmd, $dry_run) = @_;
 
-sub shell (@) {
-    print "@_\n";
-    system(@_) == 0 or die "failed to run command @_\n";
+    print "$cmd\n";
+
+    unless ($dry_run) {
+        system($cmd) == 0 or
+            die "failed to run command @_\n";
+    }
 }
 
 sub auto_complete ($) {
@@ -160,8 +170,8 @@ sub build_resty_opts {
         }
     }
 
-    if ($opts->{luajit}) {
-        $opts->{no_lua} = 1;
+    if (! $opts->{luajit} && ! $opts->{no_http_lua}) {
+        $opts->{lua} = 1;
     }
 
     if (! $opts->{no_http_drizzle}) {
@@ -173,13 +183,13 @@ sub build_resty_opts {
     }
 
     if (! $opts->{no_http_ssl} && ! $opts->{http_ssl}) {
-        $resty_opts{http_ssl} = 1;
+        $opts->{http_ssl} = 1;
         push @ngx_opts, '--with-http_ssl_module';
     }
 
     my $opts_line = '';
 
-    if ($resty_opts{debug}) {
+    if ($opts->{debug}) {
         $opts_line .= " \\\n  --with-cc-opt='-O0' \\\n  --with-debug";
     } else {
         $opts_line .= " \\\n  --with-cc-opt='-O2'";
@@ -197,6 +207,62 @@ sub build_resty_opts {
 
     cd 'build';
 
+    # build 3rd-party C libraries if required
+
+    if ($opts->{luajit}) {
+        my $luajit_src = auto_complete 'LuaJIT';
+        my $luajit_prefix = "$prefix/luajit";
+        my $luajit_root = File::Spec->rel2abs("luajit-root");
+
+        if (-d $luajit_root) {
+            shell "rm -rf $luajit_root";
+        }
+
+        mkdir $luajit_root or
+            die "create create directory luajit-root: $!\n";
+
+        cd $luajit_src;
+
+        shell "make PREFIX=$luajit_prefix", $dry_run;
+        shell "make PREFIX=$luajit_prefix DESTDIR=$luajit_root install", $dry_run;
+
+        env LUAJIT_LIB => "$luajit_root$luajit_prefix/lib";
+        env LUAJIT_INC => "$luajit_root$luajit_prefix/include/luajit-2.0";
+
+        push @ngx_rpaths, "$luajit_prefix/lib";
+
+        cd '..';
+
+    } elsif ($opts->{lua}) {
+        my $lua_src = glob('lua-5.*');
+
+        if (!defined $lua_src) {
+            die "No lua5 found";
+        }
+
+        my $lua_prefix = "$prefix/lua";
+        my $lua_root = File::Spec->rel2abs("lua-root");
+
+        if (-d $lua_root) {
+            shell "rm -rf $lua_root";
+        }
+
+        mkdir $lua_root or
+            die "create create directory lua-root: $!\n";
+
+        cd $lua_src;
+
+        shell "make linux", $dry_run;
+        shell "make install INSTALL_TOP=$lua_root$lua_prefix", $dry_run;
+
+        env LUA_LIB => "$lua_root$lua_prefix/lib";
+        env LUA_INC => "$lua_root$lua_prefix/include";
+
+        cd '..';
+    }
+
+    # prepare nginx configure line
+
     my $ngx_dir = auto_complete "nginx";
 
     cd $ngx_dir;
@@ -205,9 +271,10 @@ sub build_resty_opts {
         my ($name, $prefix, $attr) = @$mod;
 
         if ($attr && $attr eq 'disabled') {
-            next if not $resty_opts{"$name"};
+            next if not $opts->{"$name"};
+
         } else {
-            next if $resty_opts{"no_$name"};
+            next if $opts->{"no_$name"};
         }
 
         my $dir = auto_complete "../$prefix";
