@@ -95,6 +95,10 @@ for my $opt (@ARGV) {
 
     } elsif ($opt eq '--with-http_ssl_module') {
         $resty_opts{http_ssl} = 1;
+        push @ngx_opts, $opt;
+
+    } elsif ($opt eq '--without-http_ssl_module') {
+        $resty_opts{no_http_ssl} = 1;
 
     } elsif ($opt =~ /^--\w.*/) {
         push @ngx_opts, $opt;

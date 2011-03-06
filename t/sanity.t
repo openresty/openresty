@@ -1,69 +1,193 @@
-use strict;
-use warnings;
+# vi:ft=
 
-use Test::More tests => 2;
-use Text::Diff;
+use t::Config;
 
-sub shell (@);
-sub cd ($);
+plan tests => 3 * blocks();
 
-my $ver = `bash util/ver`;
-chomp $ver;
+#no_diff();
 
-#shell "make";
+run_tests();
 
-cd "ngx_openresty-$ver";
+__DATA__
 
-{
-    shell "./configure --help > help.txt 2>&1";
+=== TEST 1: --help
+--- cmd: ./configure --help
+--- exit: 0
+--- err
+--- out
+  --help                             this message
 
-    open my $in, "help.txt" or
-        die "Cannot open help.txt for reading: $!\n";
-    my $got = do { local $/; <$in> };
-    close $in;
+  --prefix=PATH                      set the installation prefix
 
-    open $in, "../t/help.txt" or
-        die "Cannot open ../t/help.txt for reading: $!\n";
-    my $expected = do { local $/; <$in> };
-    close $in;
+  --with-debug                       enable the debugging logging and also enable -O0
 
-    is_diff($got, $expected, "--help ok");
-}
+  --without-http_echo_module         disable ngx_http_echo_module
+  --without-http_xss_module          disable ngx_http_xss_module
+  --without-http_form_input_module   disable ngx_http_form_input_module
+  --without-http_encrypted_session_module
+                                     disable ngx_http_encrypted_session_module
+  --without-http_drizzle_module      disable ngx_http_drizzle_module
+  --without-http_lua_module          disable ngx_http_lua_module
+  --without-http_headers_more_module disable ngx_http_headers_more_module
+  --without-http_srcache_module      disable ngx_http_srcache_module
+  --without-http_array_var_module    disable ngx_http_array_var_module
+  --without-http_memc_module         disable ngx_http_memc_module
+  --without-http_upstream_keepalive_module
+                                     disable ngx_http_upstream_keepalive_module
+  --without-http_auth_request_module disable ngx_http_auth_request_module
+  --without-http_rds_json_module     disable ngx_http_rds_json_module
+  --without-ngx_devel_kit_module     disable ngx_devel_kit_module
+  --without-http_ssl_module          disable ngx_http_ssl_module
 
-{
-    shell "./configure --dry-run > default.txt 2>&1";
-    open my $in, "default.txt" or
-        die "Cannot open default.txt for reading: $!\n";
-    my $got = do { local $/; <$in> };
-    close $in;
+  --with-http_iconv_module           enable ngx_http_iconv_module
+  --with-http_postgres_module        enable ngx_http_postgres_module
+  --with-luajit                      enable LuaJIT 2.0
 
-    open $in, "../t/default.txt" or
-        die "Cannot open ../t/default.txt for reading: $!\n";
-    my $expected = do { local $/; <$in> };
-    close $in;
+Options directly inherited from nginx
 
-    is_diff($got, $expected, "default configure ok");
-}
+  --sbin-path=PATH                   set path to the nginx binary file
+  --conf-path=PATH                   set path to the nginx.conf file
+  --error-log-path=PATH              set path to the error log
+  --pid-path=PATH                    set path to nginx.pid file
+  --lock-path=PATH                   set path to nginx.lock file
 
-sub shell (@) {
-    print "@_\n";
-    system(@_) == 0 or die "failed to run command @_\n";
-}
+  --user=USER                        set non-privilege user
+                                     for the worker processes
+  --group=GROUP                      set non-privilege group
+                                     for the worker processes
 
-sub cd ($) {
-    my $dir = shift;
-    print("cd $dir\n");
-    chdir $dir or die "failed to cd $dir: $!\n";
-}
+  --builddir=DIR                     set the build directory
 
-sub is_diff {
-    my ($actual, $expected, $name) = @_;
+  --with-rtsig_module                enable rtsig module
+  --with-select_module               enable select module
+  --without-select_module            disable select module
+  --with-poll_module                 enable poll module
+  --without-poll_module              disable poll module
 
-    if (!defined $name) {
-        $name = '';
-    }
+  --with-file-aio                    enable file aio support
+  --with-ipv6                        enable ipv6 support
 
-    ok $actual eq $expected,
-       $name . "\n" . Text::Diff::diff(\$expected, \$actual);
-}
+  --with-http_realip_module          enable ngx_http_realip_module
+  --with-http_addition_module        enable ngx_http_addition_module
+  --with-http_xslt_module            enable ngx_http_xslt_module
+  --with-http_image_filter_module    enable ngx_http_image_filter_module
+  --with-http_geoip_module           enable ngx_http_geoip_module
+  --with-http_sub_module             enable ngx_http_sub_module
+  --with-http_dav_module             enable ngx_http_dav_module
+  --with-http_flv_module             enable ngx_http_flv_module
+  --with-http_gzip_static_module     enable ngx_http_gzip_static_module
+  --with-http_random_index_module    enable ngx_http_random_index_module
+  --with-http_secure_link_module     enable ngx_http_secure_link_module
+  --with-http_degradation_module     enable ngx_http_degradation_module
+  --with-http_stub_status_module     enable ngx_http_stub_status_module
+
+  --without-http_charset_module      disable ngx_http_charset_module
+  --without-http_gzip_module         disable ngx_http_gzip_module
+  --without-http_ssi_module          disable ngx_http_ssi_module
+  --without-http_userid_module       disable ngx_http_userid_module
+  --without-http_access_module       disable ngx_http_access_module
+  --without-http_auth_basic_module   disable ngx_http_auth_basic_module
+  --without-http_autoindex_module    disable ngx_http_autoindex_module
+  --without-http_geo_module          disable ngx_http_geo_module
+  --without-http_map_module          disable ngx_http_map_module
+  --without-http_split_clients_module disable ngx_http_split_clients_module
+  --without-http_referer_module      disable ngx_http_referer_module
+  --without-http_rewrite_module      disable ngx_http_rewrite_module
+  --without-http_proxy_module        disable ngx_http_proxy_module
+  --without-http_fastcgi_module      disable ngx_http_fastcgi_module
+  --without-http_uwsgi_module        disable ngx_http_uwsgi_module
+  --without-http_scgi_module         disable ngx_http_scgi_module
+  --without-http_memcached_module    disable ngx_http_memcached_module
+  --without-http_limit_zone_module   disable ngx_http_limit_zone_module
+  --without-http_limit_req_module    disable ngx_http_limit_req_module
+  --without-http_empty_gif_module    disable ngx_http_empty_gif_module
+  --without-http_browser_module      disable ngx_http_browser_module
+  --without-http_upstream_ip_hash_module
+                                     disable ngx_http_upstream_ip_hash_module
+
+  --with-http_perl_module            enable ngx_http_perl_module
+  --with-perl_modules_path=PATH      set path to the perl modules
+  --with-perl=PATH                   set path to the perl binary
+
+  --http-log-path=PATH               set path to the http access log
+  --http-client-body-temp-path=PATH  set path to the http client request body
+                                     temporary files
+  --http-proxy-temp-path=PATH        set path to the http proxy temporary files
+  --http-fastcgi-temp-path=PATH      set path to the http fastcgi temporary
+                                     files
+  --http-uwsgi-temp-path=PATH        set path to the http uwsgi temporary files
+  --http-scgi-temp-path=PATH         set path to the http scgi temporary files
+
+  --without-http                     disable HTTP server
+  --without-http-cache               disable HTTP cache
+
+  --with-mail                        enable POP3/IMAP4/SMTP proxy module
+  --with-mail_ssl_module             enable ngx_mail_ssl_module
+  --without-mail_pop3_module         disable ngx_mail_pop3_module
+  --without-mail_imap_module         disable ngx_mail_imap_module
+  --without-mail_smtp_module         disable ngx_mail_smtp_module
+
+  --with-google_perftools_module     enable ngx_google_perftools_module
+  --with-cpp_test_module             enable ngx_cpp_test_module
+
+  --add-module=PATH                  enable an external module
+
+  --with-cc=PATH                     set path to C compiler
+  --with-cpp=PATH                    set path to C preprocessor
+  --with-cc-opt=OPTIONS              set additional options for C compiler
+  --with-ld-opt=OPTIONS              set additional options for linker
+  --with-cpu-opt=CPU                 build for specified CPU, the valid values:
+                                     pentium, pentiumpro, pentium3, pentium4,
+                                     athlon, opteron, sparc32, sparc64, ppc64
+
+  --without-pcre                     disable PCRE library usage
+  --with-pcre                        force PCRE library usage
+  --with-pcre=DIR                    set path to PCRE library sources
+  --with-pcre-opt=OPTIONS            set additional options for PCRE building
+
+  --with-md5=DIR                     set path to md5 library sources
+  --with-md5-opt=OPTIONS             set additional options for md5 building
+  --with-md5-asm                     use md5 assembler sources
+
+  --with-sha1=DIR                    set path to sha1 library sources
+  --with-sha1-opt=OPTIONS            set additional options for sha1 building
+  --with-sha1-asm                    use sha1 assembler sources
+
+  --with-zlib=DIR                    set path to zlib library sources
+  --with-zlib-opt=OPTIONS            set additional options for zlib building
+  --with-zlib-asm=CPU                use zlib assembler sources optimized
+                                     for specified CPU, the valid values:
+                                     pentium, pentiumpro
+
+  --with-libatomic                   force libatomic_ops library usage
+  --with-libatomic=DIR               set path to libatomic_ops library sources
+
+  --with-openssl=DIR                 set path to OpenSSL library sources
+  --with-openssl-opt=OPTIONS         set additional options for OpenSSL building
+
+  --dry-run                          dry running the configure, for testing only
+
+
+
+=== TEST 2: default
+--- cmd: ./configure --dry-run
+--- exit: 0
+--- err
+--- out
+cp -r bundle/ build/
+cd build
+cd nginx-0.8.54
+./configure --prefix=/usr/local/openresty/nginx --with-ld-opt='-Wl,-rpath=/usr/local/openresty/nginx/lib' --with-cc-opt='-O2'
+
+
+
+=== TEST 3: --with-http_ssl_module & --without-http_ssl_module
+--- cmd: ./configure --with-http_ssl_module --without-http_ssl_module
+--- exit: 255
+--- err
+--with-http_ssl_module conflicts with --without-http_ssl_module
+--- out
+cp -r bundle/ build/
+cd build
+cd nginx-0.8.54
 
