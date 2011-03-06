@@ -2,7 +2,7 @@
 
 use t::Config;
 
-plan tests => 3 * blocks();
+plan tests => 3 * blocks() + 3;
 
 #no_diff();
 
@@ -199,6 +199,19 @@ cd nginx-0.8.54
   --add-module=../rds-json-nginx-module-0.11rc2 \
   --with-http_ssl_module
 cd ../..
+--- makefile
+.PHONY: all install
+
+all:
+	cd build/lua-5.1.4 && $(MAKE) linux
+	cd build/nginx-0.8.54 && $(MAKE)
+
+install:
+	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+
+clean:
+	rm -rf build
 
 
 
@@ -234,6 +247,19 @@ cd nginx-0.8.54
   --add-module=../rds-json-nginx-module-0.11rc2 \
   --with-http_ssl_module
 cd ../..
+--- makefile
+.PHONY: all install
+
+all:
+	cd build/lua-5.1.4 && $(MAKE) linux
+	cd build/nginx-0.8.54 && $(MAKE)
+
+install:
+	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+
+clean:
+	rm -rf build
 
 
 
@@ -278,4 +304,17 @@ cd nginx-0.8.54
   --with-ld-opt='-Wl,-rpath=/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
+--- makefile
+.PHONY: all install
+
+all:
+	cd build/LuaJIT-2.0.0-beta6 && $(MAKE) PREFIX=/usr/local/openresty/luajit
+	cd build/nginx-0.8.54 && $(MAKE)
+
+install:
+	cd build/LuaJIT-2.0.0-beta6 && $(MAKE) install PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+
+clean:
+	rm -rf build
 

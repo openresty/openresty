@@ -60,6 +60,18 @@ sub run_test ($) {
     is($stdout, $expected_out, "$name - stdout ok");
     is($stderr, $expected_err, "$name - stderr ok");
     is($retval >> 8, $expected_exit, "$name - exit code ok");
+
+    if (defined $block->makefile) {
+        open my $in, "Makefile" or
+            die "cannot open Makefile for reading: $!";
+        my $got = do { local $/; <$in> };
+        close $in;
+
+        my $expected_makefile = $block->makefile;
+        $expected_makefile =~ s/\$OPENRESTY_BUILD_DIR\b/$BuildRoot/gs;
+
+        is($got, $expected_makefile, "$name - Makefile ok");
+    }
 }
 
 sub shell (@) {

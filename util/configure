@@ -133,6 +133,7 @@ push @make_install_cmds, "cd build/$ngx_dir && "
     . "\$(MAKE) install DESTDIR=\$(DESTDIR)";
 
 cd '../..'; # to the root
+#die "pwd: " .. `pwd`;
 
 gen_makefile();
 
@@ -513,8 +514,13 @@ sub gen_makefile {
     open my $out, ">Makefile" or
         die "Cannot open Makefile for writing: $!\n";
 
+    print $out ".PHONY: all install\n\n";
+
     print $out "all:\n\t" . join("\n\t", @make_cmds) . "\n\n";
-    print $out "install:\n\t" . join("\n\t", @make_install_cmds) . "\n";
+
+    print $out "install:\n\t" . join("\n\t", @make_install_cmds) . "\n\n";
+
+    print $out "clean:\n\trm -rf build\n";
 
     close $out;
 }
