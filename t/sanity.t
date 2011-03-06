@@ -187,7 +187,4 @@ cd nginx-0.8.54
 --- err
 --with-http_ssl_module conflicts with --without-http_ssl_module
 --- out
-cp -r bundle/ build/
-cd build
-cd nginx-0.8.54
 

@@ -108,6 +108,14 @@ for my $opt (@ARGV) {
     }
 }
 
+my $ngx_prefix = "$prefix/nginx";
+
+my $cmd = "./configure --prefix=$ngx_prefix"
+    . " --with-ld-opt='-Wl,-rpath=$ngx_prefix/lib'"
+    . build_resty_opts(\%resty_opts)
+    . (@ngx_opts ? " " . join(" ", @ngx_opts) : "");
+   ;
+
 if (-d 'build') {
     system("rm -rf build");
 }
@@ -123,14 +131,6 @@ cd 'build';
 my $ngx_dir = auto_complete "nginx";
 
 cd $ngx_dir;
-
-my $ngx_prefix = "$prefix/nginx";
-
-my $cmd = "./configure --prefix=$ngx_prefix"
-    . " --with-ld-opt='-Wl,-rpath=$ngx_prefix/lib'"
-    . build_resty_opts(\%resty_opts)
-    . (@ngx_opts ? " " . join(" ", @ngx_opts) : "");
-   ;
 
 if ($dry_run) {
     print "$cmd\n";
