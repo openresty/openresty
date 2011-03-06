@@ -147,3 +147,5 @@ Options directly inherited from nginx
 
   --with-openssl=DIR                 set path to OpenSSL library sources
   --with-openssl-opt=OPTIONS         set additional options for OpenSSL building
+
+  --dry-run                          dry running the configure, for testing only

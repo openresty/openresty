@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 1;
+use Test::More tests => 2;
 use Text::Diff;
 
 sub shell (@);
@@ -13,19 +13,37 @@ chomp $ver;
 #shell "make";
 
 cd "ngx_openresty-$ver";
-shell "./configure --help > help.txt";
 
-open my $in, "help.txt" or
-    die "Cannot open help.txt for reading: $!\n";
-my $got = do { local $/; <$in> };
-close $in;
+{
+    shell "./configure --help > help.txt 2>&1";
 
-open $in, "../t/help.txt" or
-    die "Cannot open ../t/help.txt for reading: $!\n";
-my $expected = do { local $/; <$in> };
-close $in;
+    open my $in, "help.txt" or
+        die "Cannot open help.txt for reading: $!\n";
+    my $got = do { local $/; <$in> };
+    close $in;
 
-is_diff($got, $expected, "--help ok");
+    open $in, "../t/help.txt" or
+        die "Cannot open ../t/help.txt for reading: $!\n";
+    my $expected = do { local $/; <$in> };
+    close $in;
+
+    is_diff($got, $expected, "--help ok");
+}
+
+{
+    shell "./configure --dry-run > default.txt 2>&1";
+    open my $in, "default.txt" or
+        die "Cannot open default.txt for reading: $!\n";
+    my $got = do { local $/; <$in> };
+    close $in;
+
+    open $in, "../t/default.txt" or
+        die "Cannot open ../t/default.txt for reading: $!\n";
+    my $expected = do { local $/; <$in> };
+    close $in;
+
+    is_diff($got, $expected, "default configure ok");
+}
 
 sub shell (@) {
     print "@_\n";

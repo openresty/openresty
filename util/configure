@@ -62,9 +62,15 @@ my $with_resty_mods_regex;
 
 my $prefix = '/usr/local/openresty';
 my %resty_opts;
+my $dry_run;
 
 my @ngx_opts;
 for my $opt (@ARGV) {
+    if ($opt eq '--dry-run') {
+        $dry_run = 1;
+        next;
+    }
+
     if ($opt =~ /^--prefix=(.*)/) {
         $prefix = $1;
 
@@ -119,12 +125,13 @@ my $ngx_prefix = "$prefix/nginx";
 my $cmd = "./configure --prefix=$ngx_prefix"
     . " --with-ld-opt='-Wl,-rpath=$ngx_prefix/lib'"
     . build_resty_opts(\%resty_opts)
-    . " " . join(" ", @ngx_opts);
+    . (@ngx_opts ? " " . join(" ", @ngx_opts) : "");
    ;
 
-warn $cmd;
-
-exit 0;
+if ($dry_run) {
+    print "$cmd\n";
+    exit 0;
+}
 
 shell $cmd;
 
@@ -183,6 +190,8 @@ sub build_resty_opts {
     } else {
         $opts_line .= " --with-cc-opt='-O2'";
     }
+
+    return $opts_line;
 }
 
 sub usage ($) {
@@ -370,6 +379,8 @@ Options directly inherited from nginx
 
   --with-openssl=DIR                 set path to OpenSSL library sources
   --with-openssl-opt=OPTIONS         set additional options for OpenSSL building
+
+  --dry-run                          dry running the configure, for testing only
 _EOC_
 
     if ($retval == 0) {
