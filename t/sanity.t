@@ -181,7 +181,19 @@ cd nginx-0.8.54
 
 
 
-=== TEST 3: --with-http_ssl_module & --without-http_ssl_module
+=== TEST 3: --with-debug
+--- cmd: ./configure --with-debug --dry-run
+--- exit: 0
+--- err
+--- out
+cp -r bundle/ build/
+cd build
+cd nginx-0.8.54
+./configure --prefix=/usr/local/openresty/nginx --with-ld-opt='-Wl,-rpath=/usr/local/openresty/nginx/lib' --with-cc-opt='-O0' --with-debug
+
+
+
+=== TEST 4: --with-http_ssl_module & --without-http_ssl_module
 --- cmd: ./configure --with-http_ssl_module --without-http_ssl_module
 --- exit: 255
 --- err
