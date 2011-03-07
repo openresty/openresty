@@ -1,0 +1,67 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+sub cd ($);
+
+my $ver = `bash util/ver`;
+chomp $ver;
+
+cd "ngx_openresty-$ver/bundle";
+
+opendir(my $dh, '.') or
+    die "cannot opendir .: $!";
+
+my @dirs = grep { /\d+\.\d+/ && -d "$_" } readdir($dh);
+
+closedir $dh;
+
+cd '../../t';
+
+opendir($dh, '.') or
+    die "cannot opendir .: $!";
+
+my @t_files = grep { /\.t$/ } readdir($dh);
+
+closedir $dh;
+
+for my $t_file (@t_files) {
+    open my $in, $t_file or
+        die "Cannot open $t_file for reading: $!\n";
+
+    my $outfile = $t_file . '_';
+    open my $out, ">$outfile" or
+        die "Cannot open $outfile for writing: $!\n";
+
+    my $changed;
+    while (<$in>) {
+        for my $dir (@dirs) {
+            (my $pat = $dir) =~ s/\d.*//;
+            my $orig = $_;
+            if (s{\.\./$pat\S+}{../$dir}g && $orig ne $_) {
+                $changed++;
+
+                warn "\n- $orig";
+                warn "+ $_";
+            }
+        }
+
+        print $out $_;
+    }
+
+    close $out;
+
+    warn "Wrote t/$outfile\n";
+
+    close $in;
+}
+
+print join "\n", @dirs;
+
+sub cd ($) {
+    my $dir = shift;
+    print("cd $dir\n");
+    chdir $dir or die "failed to cd $dir: $!\n";
+}
+

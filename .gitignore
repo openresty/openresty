@@ -67,3 +67,4 @@ util/posts.sql
 ngx_openresty-*
 work/
 reindex
+t/*.t_
