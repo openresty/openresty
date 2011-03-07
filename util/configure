@@ -70,6 +70,7 @@ my $prefix = '/usr/local/openresty';
 my %resty_opts;
 my $dry_run;
 my @ngx_rpaths;
+my @ngx_cc_opts;
 
 my @ngx_opts;
 for my $opt (@ARGV) {
@@ -86,6 +87,9 @@ for my $opt (@ARGV) {
 
     } elsif ($opt eq '--help') {
         usage 0;
+
+    } elsif ($opt =~ /^--with-cc-opt=(.*)/) {
+        push @ngx_cc_opts, $1;
 
     } elsif ($opt =~ $without_resty_mods_regex) {
         die "No $1\n";
@@ -205,10 +209,14 @@ sub build_resty_opts {
     my $opts_line = '';
 
     if ($opts->{debug}) {
-        $opts_line .= " \\\n  --with-cc-opt='-O0' \\\n  --with-debug";
+        unshift @ngx_cc_opts, '-O0';
+        $opts_line .= " \\\n  --with-debug";
+
     } else {
-        $opts_line .= " \\\n  --with-cc-opt='-O2'";
+        unshift @ngx_cc_opts, '-O2';
     }
+
+    $opts_line .= " \\\n  --with-cc-opt='@ngx_cc_opts'";
 
     if (-d 'build') {
         system("rm -rf build");
