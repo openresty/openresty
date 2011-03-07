@@ -27,6 +27,7 @@ in your PATH environment, and then follow the following steps:
    specify various options, as in
 
         ./configure --prefix=/opt/openresty \
+            --with-luajit \
             --without-http_drizzle_module \
             --with-http_iconv_module \
             --with-http_postgres_module
