@@ -11,17 +11,26 @@ The bundled software components are copyrighted by the respective copyright hold
 
 To build ngx_openresty, follow the following steps
 
-1. download the latest ngx_openresty tarball
-listed on <http://openresty.org >,
-   say, ngx_openresty-0.8.54.0.tar.gz
+1. download the latest ngx_openresty tarball can be downloaded from
+
+     http://agentzh.org/misc/nginx/ngx_openresty-0.8.54.0.tar.gz
+
+   we will eventually migrate to the openresty.org domain.
 
 2. and then enter the ngx_openresty-0.8.54.0/ directory,
    and type the following command to configure:
 
-        ./configure --prefix=/opt/ngx_openresty \
-            --with-http_lua_module \
-            --with-http_drizzle_module \
-            --with-http_rds_json_module
+        ./configure
+
+   by default, --prefix=/usr/local/openresty is assumed. You can
+   specify various options, as in
+
+        ./configure --prefix=/opt/openresty \
+            --without-http_drizzle_module \
+            --with-http_iconv_module \
+            --with-http_postgres_module
+
+    try ./configure --help to see more options.
 
 3. build everything locally
 
@@ -43,6 +52,30 @@ For bundle maintainers:
         make
 
     at the top of the bundle source tree.
+
+The following packages are bundled in the 0.8.54.0 release:
+
+    xss-nginx-module-0.03rc2
+    srcache-nginx-module-0.12rc2
+    LuaJIT-2.0.0-beta6
+    upstream-keepalive-nginx-module-0.3
+    headers-more-nginx-module-0.14
+    echo-nginx-module-0.36rc2
+    ngx_postgres-0.8
+    drizzle-nginx-module-0.0.15rc9
+    auth-request-nginx-module-0.2
+    nginx-0.8.54
+    libdrizzle-0.8
+    memc-nginx-module-0.12rc1
+    ngx_lua-0.1.6rc2
+    array-var-nginx-module-0.02
+    set-misc-nginx-module-0.21rc2
+    iconv-nginx-module-0.10rc3
+    rds-json-nginx-module-0.11rc2
+    lua-5.1.4
+    encrypted-session-nginx-module-0.01
+    form-input-nginx-module-0.07rc4
+    ngx_devel_kit-0.2.14
 
 The bundle itself is licensed under the 2-clause BSD license.
 
