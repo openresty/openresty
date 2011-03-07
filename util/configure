@@ -70,9 +70,9 @@ my $prefix = '/usr/local/openresty';
 my %resty_opts;
 my $dry_run;
 my @ngx_rpaths;
-my @ngx_cc_opts;
 
-my @ngx_opts;
+my (@ngx_opts, @ngx_cc_opts, @ngx_ld_opts);
+
 for my $opt (@ARGV) {
     if ($opt eq '--dry-run') {
         $dry_run = 1;
@@ -90,6 +90,9 @@ for my $opt (@ARGV) {
 
     } elsif ($opt =~ /^--with-cc-opt=(.*)/) {
         push @ngx_cc_opts, $1;
+
+    } elsif ($opt =~ /^--with-ld-opt=(.*)/) {
+        push @ngx_ld_opts, $1;
 
     } elsif ($opt =~ $without_resty_mods_regex) {
         die "No $1\n";
@@ -121,12 +124,22 @@ for my $opt (@ARGV) {
 
 my $ngx_prefix = "$prefix/nginx";
 
+my $resty_opts = build_resty_opts(\%resty_opts);
+
+if (@ngx_rpaths) {
+    unshift @ngx_ld_opts, "-Wl,-rpath=" . join(":", @ngx_rpaths);
+}
+
+my $ld_opts = '';
+if (@ngx_ld_opts) {
+    $ld_opts = " \\\n  --with-ld-opt='@ngx_ld_opts'";
+}
+
 my $cmd = "./configure --prefix=$ngx_prefix"
-    . build_resty_opts(\%resty_opts)
-    . (@ngx_rpaths ? " \\\n  --with-ld-opt='-Wl,-rpath="
-        . join(":", @ngx_rpaths) . "'" : "")
-    . (@ngx_opts ? " \\\n  " . join(" ", @ngx_opts) : "");
-   ;
+    . $resty_opts
+    . $ld_opts
+    . (@ngx_opts ? " \\\n  @ngx_opts" : "");
+    ;
 
 shell $cmd, $dry_run;
 
