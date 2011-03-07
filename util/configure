@@ -26,7 +26,7 @@ my @modules = (
     [http_encrypted_session => 'encrypted-session-nginx-module'],
     [http_drizzle => 'drizzle-nginx-module'],
     [http_postgres => 'drizzle-nginx-module', 'disabled'],
-    [http_lua => 'lua-nginx-module'],
+    [http_lua => 'ngx_lua'],
     [http_headers_more => 'headers-more-nginx-module'],
     [http_srcache => 'srcache-nginx-module'],
     [http_array_var => 'array-var-nginx-module'],
@@ -95,14 +95,14 @@ for my $opt (@ARGV) {
         push @ngx_ld_opts, $1;
 
     } elsif ($opt =~ $without_resty_mods_regex) {
-        die "No $1\n";
-        $resty_opts{"no_http_$1"} = 1;
+        #die "no_$1\n";
+        $resty_opts{"no_$1"} = 1;
 
     } elsif ($opt eq '--without-ngx_devel_kit_module') {
         $resty_opts{no_ndk} = 1;
 
     } elsif ($opt =~ $with_resty_mods_regex) {
-        $resty_opts{"http_$1"} = 1;
+        $resty_opts{"$1"} = 1;
 
     } elsif ($opt eq '--with-luajit') {
         $resty_opts{luajit} = 1;
@@ -173,7 +173,7 @@ sub shell ($@) {
 
 sub auto_complete ($) {
     my $name = shift;
-    my @dirs = glob "$name-*" or
+    my @dirs = glob "$name-[0-9]*" or
         die "No source directory found for $name\n";
 
     if (@dirs > 1) {
@@ -309,7 +309,7 @@ sub build_resty_opts {
     } elsif ($opts->{lua}) {
         # build stdandard lua
 
-        my $lua_src = glob('lua-5.*');
+        my $lua_src = auto_complete 'lua';
 
         if (!defined $lua_src) {
             die "No lua5 found";
