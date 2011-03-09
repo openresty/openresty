@@ -1034,8 +1034,8 @@ clean:
 
 
 
-=== TEST 16: --with-http_drizzle_module on Mac
---- cmd: ./configure --with-http_drizzle_module --dry-run --platform=MacOS
+=== TEST 16: --with-http_drizzle_module on Solaris
+--- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
 cp -r bundle/ build/
 cd build
@@ -1047,7 +1047,7 @@ export LIBDRIZZLE_LIB='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/
 export LIBDRIZZLE_INC='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/include'
 cd ..
 cd lua-5.1.4
-make macosx
+make solaris
 make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
@@ -1071,14 +1071,14 @@ cd nginx-0.8.54
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
   --with-ld-opt='-Wl,-rpath=/usr/local/openresty/libdrizzle/lib' \
-  --with-http_drizzle_module --with-http_ssl_module
+  --with-http_ssl_module
 cd ../..
 --- makefile
 .PHONY: all install
 
 all:
 	cd build/libdrizzle-0.8 && $(MAKE)
-	cd build/lua-5.1.4 && $(MAKE) macosx
+	cd build/lua-5.1.4 && $(MAKE) solaris
 	cd build/nginx-0.8.54 && $(MAKE)
 
 install:
