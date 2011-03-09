@@ -378,6 +378,7 @@ sub build_resty_opts {
         env LUA_INC => "$lua_root$lua_prefix/include";
 
         push @make_cmds, "cd build/$lua_src && \$(MAKE) $platform";
+
         push @make_install_cmds, "cd build/$lua_src && "
             . "\$(MAKE) install INSTALL_TOP=\$(DESTDIR)$lua_prefix";
 

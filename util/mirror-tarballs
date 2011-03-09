@@ -161,6 +161,12 @@ cd ../.. || exit 1
 
 rm "patch-lua-$ver-2" || exit 1
 
+cp $root/patches/lua-$ver-makefile_install_fix.patch lua-makefile-fix.patch || exit 1
+
+patch -p0 < lua-makefile-fix.patch || exit 1
+
+rm lua-makefile-fix.patch
+
 #################################
 
 ver=2.0.0-beta6
