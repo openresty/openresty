@@ -206,7 +206,7 @@ sub shell ($@) {
 
     unless ($dry_run) {
         system($cmd) == 0 or
-            die "failed to run command @_\n";
+            die "failed to run command: $cmd\n";
     }
 }
 
