@@ -9,16 +9,16 @@ that all these modules are played well together.
 
 The bundled software components are copyrighted by the respective copyright holders.
 
-To build ngx_openresty, you need a working perl (at least perl 5.6.x)
+To build ngx_openresty, you need a working perl (perl 5.6.0 or better)
 in your PATH environment, and then follow the following steps:
 
 1. download the latest ngx_openresty tarball can be downloaded from
 
-     http://agentzh.org/misc/nginx/ngx_openresty-0.8.54.0.tar.gz
+     http://agentzh.org/misc/nginx/ngx_openresty-0.8.54.1.tar.gz
 
    we will eventually migrate to the openresty.org domain.
 
-2. and then enter the ngx_openresty-0.8.54.0/ directory,
+2. and then enter the ngx_openresty-0.8.54.1/ directory,
    and type the following command to configure:
 
         ./configure
@@ -33,6 +33,10 @@ in your PATH environment, and then follow the following steps:
             --with-http_postgres_module
 
     try ./configure --help to see more options.
+
+    For Solaris, it's common to install libraries like OpenSSL to /lib,
+    so when it complaints about OpenSSL and you have indeed
+    already installed it, specify the --with-ld-opt='-L/lib' option.
 
 3. build everything locally
 
@@ -55,7 +59,7 @@ For bundle maintainers:
 
     at the top of the bundle source tree.
 
-The following packages are bundled in the 0.8.54.0 release:
+The following packages are bundled in the 0.8.54.1 release:
 
     xss-nginx-module-0.03rc2
     srcache-nginx-module-0.12rc2
