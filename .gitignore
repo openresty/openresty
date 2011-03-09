@@ -68,3 +68,4 @@ ngx_openresty-*
 work/
 reindex
 t/*.t_
+upload

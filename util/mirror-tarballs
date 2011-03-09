@@ -2,8 +2,6 @@
 
 root=$(readlink -f -- "$(dirname -- "$0")/..")
 
-debug=
-
 . util/ver
 
 name=ngx_openresty-$version

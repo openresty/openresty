@@ -14,18 +14,41 @@ sub usage ($);
 
 my (@make_cmds, @make_install_cmds);
 
-my $platform = $^O;
+my $OS = $^O;
 
 my $ngx_dir;
 
 for my $opt (@ARGV) {
     if ($opt =~ /^--platform=(.*)/) {
-        $platform = $1;
+        $OS = $1;
         undef $opt;
     }
 }
 
-my $on_solaris = ($platform =~ /solaris|sunos/i);
+my ($platform, $on_solaris);
+
+if ($OS =~ /solaris|sunos/i) {
+    $platform = 'solaris';
+    $on_solaris = $platform;
+
+} elsif ($OS eq 'linux') {
+    $platform = $OS;
+
+} elsif ($OS eq 'MSWin32') {
+    die "MS Windows not supported. Abort.\n";
+
+} elsif ($OS =~ /^(?:MacOS|rhapsody)$/) {
+    $platform = 'macosx';
+
+} elsif ($OS eq 'freebsd') {
+    $platform = $OS;
+
+} elsif ($OS =~ /^(?:openbsd|netbsd)$/) {
+    $platform = 'bsd';
+
+} else {
+    $platform = 'posix';
+}
 
 my @modules = (
     [http_iconv => 'iconv-nginx-module', 'disabled'],
@@ -94,6 +117,9 @@ for my $opt (@ARGV) {
 
     if ($opt =~ /^--prefix=(.*)/) {
         $prefix = $1;
+
+    } elsif ($opt eq '--without-lua51') {
+        $resty_opts{no_lua} = 1;
 
     } elsif ($opt eq '--with-debug') {
         $resty_opts{debug} = 1;
@@ -215,7 +241,7 @@ sub build_resty_opts {
         }
     }
 
-    if (! $opts->{luajit} && ! $opts->{no_http_lua}) {
+    if (! $opts->{luajit} && ! $opts->{no_http_lua} && ! $opts->{no_lua}) {
         $opts->{lua} = 1;
     }
 
@@ -345,13 +371,13 @@ sub build_resty_opts {
 
         cd $lua_src;
 
-        shell "make linux", $dry_run;
+        shell "make $platform", $dry_run;
         shell "make install INSTALL_TOP=$lua_root$lua_prefix", $dry_run;
 
         env LUA_LIB => "$lua_root$lua_prefix/lib";
         env LUA_INC => "$lua_root$lua_prefix/include";
 
-        push @make_cmds, "cd build/$lua_src && \$(MAKE) linux";
+        push @make_cmds, "cd build/$lua_src && \$(MAKE) $platform";
         push @make_install_cmds, "cd build/$lua_src && "
             . "\$(MAKE) install INSTALL_TOP=\$(DESTDIR)$lua_prefix";
 
@@ -444,6 +470,8 @@ _EOC_
     $msg .= $with_resty_opts;
 
     $msg .= <<'_EOC_';
+
+  --without-lua51                    disable the bundled Lua 5.1 interpreter
   --with-luajit                      enable LuaJIT 2.0
 
 Options directly inherited from nginx
