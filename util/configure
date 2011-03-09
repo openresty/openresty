@@ -14,7 +14,18 @@ sub usage ($);
 
 my (@make_cmds, @make_install_cmds);
 
+my $platform = $^O;
+
 my $ngx_dir;
+
+for my $opt (@ARGV) {
+    if ($opt =~ /^--platform=(.*)/) {
+        $platform = $1;
+        undef $opt;
+    }
+}
+
+my $on_solaris = ($platform =~ /solaris|sunos/i);
 
 my @modules = (
     [http_iconv => 'iconv-nginx-module', 'disabled'],
@@ -24,7 +35,7 @@ my @modules = (
     [http_set_misc => 'set-misc-nginx-module'],
     [http_form_input => 'form-input-nginx-module'],
     [http_encrypted_session => 'encrypted-session-nginx-module'],
-    [http_drizzle => 'drizzle-nginx-module'],
+    [http_drizzle => 'drizzle-nginx-module', $on_solaris ? 'disabled' : () ],
     [http_postgres => 'ngx_postgres', 'disabled'],
     [http_lua => 'ngx_lua'],
     [http_headers_more => 'headers-more-nginx-module'],
@@ -74,6 +85,8 @@ my @ngx_rpaths;
 my (@ngx_opts, @ngx_cc_opts, @ngx_ld_opts);
 
 for my $opt (@ARGV) {
+    next unless defined $opt;
+
     if ($opt eq '--dry-run') {
         $dry_run = 1;
         next;
@@ -206,7 +219,12 @@ sub build_resty_opts {
         $opts->{lua} = 1;
     }
 
-    if (! $opts->{no_http_drizzle}) {
+    if ($on_solaris) {
+        if ($opts->{http_drizzle}) {
+            $opts->{libdrizzle} = 1;
+        }
+
+    } elsif (! $opts->{no_http_drizzle}) {
         $opts->{libdrizzle} = 1;
     }
 
@@ -551,6 +569,7 @@ Options directly inherited from nginx
   --with-openssl-opt=OPTIONS         set additional options for OpenSSL building
 
   --dry-run                          dry running the configure, for testing only
+  --platform=PLATFORM                forcibly specify a platform name, for testing only
 _EOC_
 
     if ($retval == 0) {
