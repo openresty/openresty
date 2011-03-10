@@ -57,7 +57,7 @@ for my $t_file (@t_files) {
     close $in;
 }
 
-print join "\n", @dirs;
+print join "\n", map { "    $_" } sort @dirs;
 
 sub cd ($) {
     my $dir = shift;

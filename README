@@ -14,11 +14,11 @@ in your PATH environment, and then follow the following steps:
 
 1. download the latest ngx_openresty tarball can be downloaded from
 
-     http://agentzh.org/misc/nginx/ngx_openresty-0.8.54.1.tar.gz
+     http://agentzh.org/misc/nginx/ngx_openresty-0.8.54.2.tar.gz
 
    we will eventually migrate to the openresty.org domain.
 
-2. and then enter the ngx_openresty-0.8.54.1/ directory,
+2. and then enter the ngx_openresty-0.8.54.2/ directory,
    and type the following command to configure:
 
         ./configure
@@ -59,29 +59,30 @@ For bundle maintainers:
 
     at the top of the bundle source tree.
 
-The following packages are bundled in the 0.8.54.1 release:
+The following packages are bundled in the 0.8.54.2 release:
 
-    xss-nginx-module-0.03rc2
-    srcache-nginx-module-0.12rc2
     LuaJIT-2.0.0-beta6
-    upstream-keepalive-nginx-module-0.3
-    headers-more-nginx-module-0.14
-    echo-nginx-module-0.36rc2
-    ngx_postgres-0.8
-    drizzle-nginx-module-0.0.15rc9
-    auth-request-nginx-module-0.2
-    nginx-0.8.54
-    libdrizzle-0.8
-    memc-nginx-module-0.12rc1
-    ngx_lua-0.1.6rc2
     array-var-nginx-module-0.02
-    set-misc-nginx-module-0.21rc2
-    iconv-nginx-module-0.10rc3
-    rds-json-nginx-module-0.11rc2
-    lua-5.1.4
+    auth-request-nginx-module-0.2
+    drizzle-nginx-module-0.0.15rc9
+    echo-nginx-module-0.36rc2
     encrypted-session-nginx-module-0.01
     form-input-nginx-module-0.07rc4
-    ngx_devel_kit-0.2.14
+    headers-more-nginx-module-0.14
+    iconv-nginx-module-0.10rc3
+    libdrizzle-0.8
+    lua-5.1.4
+    memc-nginx-module-0.12rc1
+    nginx-0.8.54
+    ngx_devel_kit-0.2.17
+    ngx_lua-0.1.6rc2
+    ngx_postgres-0.8
+    rds-json-nginx-module-0.11rc2
+    redis2-nginx-module-0.06
+    set-misc-nginx-module-0.21
+    srcache-nginx-module-0.12rc2
+    upstream-keepalive-nginx-module-0.3
+    xss-nginx-module-0.03rc2
 
 The bundle itself is licensed under the 2-clause BSD license.
 
