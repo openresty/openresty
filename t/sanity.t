@@ -31,6 +31,7 @@ __DATA__
   --without-http_srcache_module      disable ngx_http_srcache_module
   --without-http_array_var_module    disable ngx_http_array_var_module
   --without-http_memc_module         disable ngx_http_memc_module
+  --without-http_redis2_module       disable ngx_http_redis2_module
   --without-http_upstream_keepalive_module
                                      disable ngx_http_upstream_keepalive_module
   --without-http_auth_request_module disable ngx_http_auth_request_module
@@ -204,6 +205,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -262,6 +264,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -328,6 +331,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -385,6 +389,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -442,6 +447,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -491,6 +497,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -545,6 +552,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -595,6 +603,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -643,6 +652,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -691,6 +701,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -746,6 +757,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -790,6 +802,7 @@ clean:
   --without-http_srcache_module      disable ngx_http_srcache_module
   --without-http_array_var_module    disable ngx_http_array_var_module
   --without-http_memc_module         disable ngx_http_memc_module
+  --without-http_redis2_module       disable ngx_http_redis2_module
   --without-http_upstream_keepalive_module
                                      disable ngx_http_upstream_keepalive_module
   --without-http_auth_request_module disable ngx_http_auth_request_module
@@ -956,6 +969,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -1010,6 +1024,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
@@ -1067,6 +1082,7 @@ cd nginx-0.8.54
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12rc1 \
+  --add-module=../redis2-nginx-module-0.06 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \

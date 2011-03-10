@@ -65,6 +65,7 @@ my @modules = (
     [http_srcache => 'srcache-nginx-module'],
     [http_array_var => 'array-var-nginx-module'],
     [http_memc => 'memc-nginx-module'],
+    [http_redis2 => 'redis2-nginx-module'],
     [http_upstream_keepalive => 'upstream-keepalive-nginx-module'],
     [http_auth_request => 'auth-request-nginx-module'],
     [http_rds_json => 'rds-json-nginx-module'],
