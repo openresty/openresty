@@ -9,6 +9,12 @@ that all these modules are played well together.
 
 The bundled software components are copyrighted by the respective copyright holders.
 
+A quick note to Debian and Ubuntu users:
+    You're recommended to install the following packages using apt-get before
+    installing this bundle:
+
+        apt-get install libreadline-dev libpcre3-dev libssl-dev perl
+
 To build ngx_openresty, you need a working perl (perl 5.6.0 or better)
 in your PATH environment, and then follow the following steps:
 
