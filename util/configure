@@ -167,7 +167,7 @@ my $ngx_prefix = "$prefix/nginx";
 my $resty_opts = build_resty_opts(\%resty_opts);
 
 if (@ngx_rpaths) {
-    unshift @ngx_ld_opts, "-Wl,-rpath=" . join(":", @ngx_rpaths);
+    unshift @ngx_ld_opts, "-Wl,-rpath," . join(":", @ngx_rpaths);
 }
 
 my $ld_opts = '';
