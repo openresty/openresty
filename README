@@ -15,6 +15,12 @@ A quick note to Debian and Ubuntu users:
 
         apt-get install libreadline-dev libpcre3-dev libssl-dev perl
 
+A quick note to Fedora/RedHat users:
+    You're recommended to install the following packages using yum before
+    installing this bundle:
+
+        yum install readline-devel pcre-devel openssl-devel
+
 A quick note to Mac OS X (Darwin) users:
     You're recommended to install prerequisites PCRE using some package
     management tool, like Homebrew:
