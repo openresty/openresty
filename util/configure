@@ -37,7 +37,7 @@ if ($OS =~ /solaris|sunos/i) {
 } elsif ($OS eq 'MSWin32') {
     die "MS Windows not supported. Abort.\n";
 
-} elsif ($OS =~ /^(?:MacOS|rhapsody)$/) {
+} elsif ($OS =~ /^(?:MacOS|darwin|rhapsody)$/) {
     $platform = 'macosx';
 
 } elsif ($OS eq 'freebsd') {
@@ -49,6 +49,8 @@ if ($OS =~ /solaris|sunos/i) {
 } else {
     $platform = 'posix';
 }
+
+warn "Platform: $platform ($OS)\n";
 
 my @modules = (
     [http_iconv => 'iconv-nginx-module', 'disabled'],
