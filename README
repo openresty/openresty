@@ -15,6 +15,14 @@ A quick note to Debian and Ubuntu users:
 
         apt-get install libreadline-dev libpcre3-dev libssl-dev perl
 
+A quick note to Mac OS X (Darwin) users:
+    You're recommended to install prerequisites PCRE using some package
+    management tool, like Homebrew:
+
+        brew install pcre
+
+    Alternatively you can install PCRE from source all by yourself :)
+
 To build ngx_openresty, you need a working perl (perl 5.6.0 or better)
 in your PATH environment, and then follow the following steps:
 
