@@ -28,11 +28,11 @@ in your PATH environment, and then follow the following steps:
 
 1. download the latest ngx_openresty tarball can be downloaded from
 
-     http://agentzh.org/misc/nginx/ngx_openresty-0.8.54.2.tar.gz
+     http://agentzh.org/misc/nginx/ngx_openresty-0.8.54.3.tar.gz
 
    we will eventually migrate to the openresty.org domain.
 
-2. and then enter the ngx_openresty-0.8.54.2/ directory,
+2. and then enter the ngx_openresty-0.8.54.3/ directory,
    and type the following command to configure:
 
         ./configure
@@ -73,7 +73,7 @@ For bundle maintainers:
 
     at the top of the bundle source tree.
 
-The following packages are bundled in the 0.8.54.2 release:
+The following packages are bundled in the 0.8.54.3 release:
 
     LuaJIT-2.0.0-beta6
     array-var-nginx-module-0.02
@@ -89,7 +89,7 @@ The following packages are bundled in the 0.8.54.2 release:
     memc-nginx-module-0.12rc1
     nginx-0.8.54
     ngx_devel_kit-0.2.17
-    ngx_lua-0.1.6rc2
+    ngx_lua-0.1.6rc3
     ngx_postgres-0.8
     rds-json-nginx-module-0.11rc2
     redis2-nginx-module-0.06
