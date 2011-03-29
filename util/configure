@@ -50,8 +50,6 @@ if ($OS =~ /solaris|sunos/i) {
     $platform = 'posix';
 }
 
-warn "Platform: $platform ($OS)\n";
-
 my @modules = (
     [http_iconv => 'iconv-nginx-module', 'disabled'],
     [http_echo => 'echo-nginx-module'],
@@ -163,6 +161,8 @@ for my $opt (@ARGV) {
         die "Invalid option $opt\n";
     }
 }
+
+print "platform: $platform ($OS)\n";
 
 my $ngx_prefix = "$prefix/nginx";
 

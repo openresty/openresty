@@ -175,6 +175,7 @@ Options directly inherited from nginx
 === TEST 2: default
 --- cmd: ./configure --dry-run
 --- out
+platform: linux (linux)
 cp -r bundle/ build/
 cd build
 cd libdrizzle-0.8
@@ -200,7 +201,7 @@ cd nginx-0.8.54
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc2 \
+  --add-module=../ngx_lua-0.1.6rc3 \
   --add-module=../headers-more-nginx-module-0.14 \
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -209,7 +210,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/libdrizzle/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -233,6 +234,7 @@ clean:
 === TEST 3: --with-debug
 --- cmd: ./configure --with-debug --dry-run
 --- out
+platform: linux (linux)
 cp -r bundle/ build/
 cd build
 cd libdrizzle-0.8
@@ -259,7 +261,7 @@ cd nginx-0.8.54
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc2 \
+  --add-module=../ngx_lua-0.1.6rc3 \
   --add-module=../headers-more-nginx-module-0.14 \
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -268,7 +270,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/libdrizzle/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -295,12 +297,14 @@ clean:
 --- err
 --with-http_ssl_module conflicts with --without-http_ssl_module
 --- out
+platform: linux (linux)
 
 
 
 === TEST 5: --with-luajit
 --- cmd: ./configure --with-luajit --dry-run
 --- out
+platform: linux (linux)
 cp -r bundle/ build/
 cd build
 cd libdrizzle-0.8
@@ -326,7 +330,7 @@ cd nginx-0.8.54
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc2 \
+  --add-module=../ngx_lua-0.1.6rc3 \
   --add-module=../headers-more-nginx-module-0.14 \
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -335,7 +339,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/libdrizzle/lib:/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib:/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -359,6 +363,7 @@ clean:
 === TEST 6: --with-cc-opt
 --- cmd: ./configure --with-luajit --with-cc-opt="-O3" --dry-run
 --- out
+platform: linux (linux)
 cp -r bundle/ build/
 cd build
 cd libdrizzle-0.8
@@ -384,7 +389,7 @@ cd nginx-0.8.54
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc2 \
+  --add-module=../ngx_lua-0.1.6rc3 \
   --add-module=../headers-more-nginx-module-0.14 \
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -393,7 +398,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/libdrizzle/lib:/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib:/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -417,6 +422,7 @@ clean:
 === TEST 7: --with-ld-opt
 --- cmd: ./configure --with-luajit --with-ld-opt="-llua" --dry-run
 --- out
+platform: linux (linux)
 cp -r bundle/ build/
 cd build
 cd libdrizzle-0.8
@@ -442,7 +448,7 @@ cd nginx-0.8.54
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc2 \
+  --add-module=../ngx_lua-0.1.6rc3 \
   --add-module=../headers-more-nginx-module-0.14 \
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -451,7 +457,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/libdrizzle/lib:/usr/local/openresty/luajit/lib -llua' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib:/usr/local/openresty/luajit/lib -llua' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -475,6 +481,7 @@ clean:
 === TEST 8: --without-http_drizzle_module
 --- cmd: ./configure --with-luajit --without-http_drizzle_module --dry-run
 --- out
+platform: linux (linux)
 cp -r bundle/ build/
 cd build
 cd LuaJIT-2.0.0-beta6
@@ -492,7 +499,7 @@ cd nginx-0.8.54
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.1.6rc2 \
+  --add-module=../ngx_lua-0.1.6rc3 \
   --add-module=../headers-more-nginx-module-0.14 \
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -501,7 +508,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -523,6 +530,7 @@ clean:
 === TEST 9: --with-luajit & --without-http_lua_module
 --- cmd: ./configure --with-luajit --without-http_lua_module --dry-run
 --- out
+platform: linux (linux)
 cp -r bundle/ build/
 cd build
 cd libdrizzle-0.8
@@ -556,7 +564,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/libdrizzle/lib:/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib:/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -580,6 +588,7 @@ clean:
 === TEST 10: --without-http_lua_module
 --- cmd: ./configure --without-http_lua_module --dry-run
 --- out
+platform: linux (linux)
 cp -r bundle/ build/
 cd build
 cd libdrizzle-0.8
@@ -607,7 +616,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/libdrizzle/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -629,6 +638,7 @@ clean:
 === TEST 11: --without-http_drizzle_module & --with-http_postgres_module
 --- cmd: ./configure --with-luajit --without-http_drizzle_module --with-http_postgres_module --dry-run
 --- out
+platform: linux (linux)
 cp -r bundle/ build/
 cd build
 cd LuaJIT-2.0.0-beta6
@@ -647,7 +657,7 @@ cd nginx-0.8.54
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_postgres-0.8 \
-  --add-module=../ngx_lua-0.1.6rc2 \
+  --add-module=../ngx_lua-0.1.6rc3 \
   --add-module=../headers-more-nginx-module-0.14 \
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -656,7 +666,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -678,6 +688,7 @@ clean:
 === TEST 12: --without-http_drizzle_module & --with-http_iconv_module
 --- cmd: ./configure --with-luajit --without-http_drizzle_module --with-http_iconv_module --dry-run
 --- out
+platform: linux (linux)
 cp -r bundle/ build/
 cd build
 cd LuaJIT-2.0.0-beta6
@@ -696,7 +707,7 @@ cd nginx-0.8.54
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.1.6rc2 \
+  --add-module=../ngx_lua-0.1.6rc3 \
   --add-module=../headers-more-nginx-module-0.14 \
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -705,7 +716,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -727,6 +738,7 @@ clean:
 === TEST 13: --prefix
 --- cmd: ./configure --prefix=/opt/blah --dry-run
 --- out
+platform: linux (linux)
 cp -r bundle/ build/
 cd build
 cd libdrizzle-0.8
@@ -752,7 +764,7 @@ cd nginx-0.8.54
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc2 \
+  --add-module=../ngx_lua-0.1.6rc3 \
   --add-module=../headers-more-nginx-module-0.14 \
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -761,7 +773,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/opt/blah/libdrizzle/lib' \
+  --with-ld-opt='-Wl,-rpath,/opt/blah/libdrizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -947,6 +959,7 @@ Options directly inherited from nginx
 === TEST 15: default on solaris
 --- cmd: ./configure --dry-run --platform=solaris
 --- out
+platform: solaris (solaris)
 cp -r bundle/ build/
 cd build
 cd lua-5.1.4
@@ -964,7 +977,7 @@ cd nginx-0.8.54
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.1.6rc2 \
+  --add-module=../ngx_lua-0.1.6rc3 \
   --add-module=../headers-more-nginx-module-0.14 \
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -994,6 +1007,7 @@ clean:
 === TEST 16: --with-http_drizzle_module on solaris
 --- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
+platform: solaris (solaris)
 cp -r bundle/ build/
 cd build
 cd libdrizzle-0.8
@@ -1019,7 +1033,7 @@ cd nginx-0.8.54
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc2 \
+  --add-module=../ngx_lua-0.1.6rc3 \
   --add-module=../headers-more-nginx-module-0.14 \
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -1028,7 +1042,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/libdrizzle/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -1049,9 +1063,10 @@ clean:
 
 
 
-=== TEST 16: --with-http_drizzle_module on Solaris
+=== TEST 17: --with-http_drizzle_module on Solaris
 --- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
+platform: solaris (solaris)
 cp -r bundle/ build/
 cd build
 cd libdrizzle-0.8
@@ -1077,7 +1092,7 @@ cd nginx-0.8.54
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc2 \
+  --add-module=../ngx_lua-0.1.6rc3 \
   --add-module=../headers-more-nginx-module-0.14 \
   --add-module=../srcache-nginx-module-0.12rc2 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -1086,7 +1101,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath=/usr/local/openresty/libdrizzle/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
