@@ -62,6 +62,10 @@ in your PATH environment, and then follow the following steps:
 
         make
 
+   Note that, "make -jN" may not work at least for FreeBSD's "bsdmake"; use
+   gmake (i.e., GNU make) instead or avoid using the jobserver feature with
+   your make.
+
 4. install ngx_openresty into the target directory that you specified by
    the --prefix option in Step 2.
 
