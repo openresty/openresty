@@ -78,7 +78,7 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.1.6rc3
+ver=0.1.6rc4
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -149,7 +149,7 @@ mv FRiCKLE-ngx_postgres-* ngx_postgres-$ver || exit 1
 
 #################################
 
-ver=0.06
+ver=0.07rc1
 $root/util/get-tarball "http://github.com/agentzh/redis2-nginx-module/tarball/v$ver" -O redis2-nginx-module-$ver.tar.gz || exit 1
 tar -xzf redis2-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
