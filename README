@@ -34,11 +34,11 @@ in your PATH environment, and then follow the following steps:
 
 1. download the latest ngx_openresty tarball can be downloaded from
 
-     http://agentzh.org/misc/nginx/ngx_openresty-0.8.54.3.tar.gz
+     http://agentzh.org/misc/nginx/ngx_openresty-0.8.54.4.tar.gz
 
    we will eventually migrate to the openresty.org domain.
 
-2. and then enter the ngx_openresty-0.8.54.3/ directory,
+2. and then enter the ngx_openresty-0.8.54.4/ directory,
    and type the following command to configure:
 
         ./configure
@@ -89,30 +89,38 @@ For bundle maintainers:
 
     at the top of the bundle source tree.
 
-The following packages are bundled in the 0.8.54.3 release:
+The following packages are bundled in the 0.8.54.4 release:
 
-    LuaJIT-2.0.0-beta6
+    LuaJIT-2.0.0-beta7
     array-var-nginx-module-0.02
     auth-request-nginx-module-0.2
     drizzle-nginx-module-0.0.15rc9
     echo-nginx-module-0.36rc2
     encrypted-session-nginx-module-0.01
     form-input-nginx-module-0.07rc4
-    headers-more-nginx-module-0.14
+    headers-more-nginx-module-0.15rc1
     iconv-nginx-module-0.10rc3
     libdrizzle-0.8
     lua-5.1.4
     memc-nginx-module-0.12rc1
     nginx-0.8.54
     ngx_devel_kit-0.2.17
-    ngx_lua-0.1.6rc3
+    ngx_lua-0.1.6rc8
     ngx_postgres-0.8
     rds-json-nginx-module-0.11rc2
-    redis2-nginx-module-0.06
+    redis2-nginx-module-0.07rc1
     set-misc-nginx-module-0.21
-    srcache-nginx-module-0.12rc2
+    srcache-nginx-module-0.12rc4
     upstream-keepalive-nginx-module-0.3
     xss-nginx-module-0.03rc2
+
+REPORT BUGS
+
+You're very welcome to report issues on GitHub:
+
+    https://github.com/agentzh/ngx_openresty/issues
+
+COPYRIGHT & LICENSE
 
 The bundle itself is licensed under the 2-clause BSD license.
 
