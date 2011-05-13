@@ -44,7 +44,18 @@ for my $t_file (@t_files) {
 
                 warn "\n- $orig";
                 warn "+ $_";
+            } elsif (s{\bbuild/$pat\S+}{build/$dir}g && $orig ne $_) {
+                $changed++;
+
+                warn "\n- $orig";
+                warn "+ $_";
+            } elsif (s{^cd $pat\S+}{cd $dir}g && $orig ne $_) {
+                $changed++;
+
+                warn "\n- $orig";
+                warn "+ $_";
             }
+
         }
 
         print $out $_;
@@ -57,7 +68,7 @@ for my $t_file (@t_files) {
     close $in;
 }
 
-print join "\n", map { "    $_" } sort @dirs;
+print join("\n", map { "    $_" } sort @dirs), "\n";
 
 sub cd ($) {
     my $dir = shift;
