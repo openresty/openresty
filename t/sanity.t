@@ -194,14 +194,14 @@ cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc8 \
+  --add-module=../ngx_lua-0.1.6rc9 \
   --add-module=../headers-more-nginx-module-0.15rc1 \
   --add-module=../srcache-nginx-module-0.12rc4 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -254,14 +254,14 @@ cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
   --with-cc-opt='-O0' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc8 \
+  --add-module=../ngx_lua-0.1.6rc9 \
   --add-module=../headers-more-nginx-module-0.15rc1 \
   --add-module=../srcache-nginx-module-0.12rc4 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -323,14 +323,14 @@ cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc8 \
+  --add-module=../ngx_lua-0.1.6rc9 \
   --add-module=../headers-more-nginx-module-0.15rc1 \
   --add-module=../srcache-nginx-module-0.12rc4 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -382,14 +382,14 @@ cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2 -O3' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc8 \
+  --add-module=../ngx_lua-0.1.6rc9 \
   --add-module=../headers-more-nginx-module-0.15rc1 \
   --add-module=../srcache-nginx-module-0.12rc4 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -441,14 +441,14 @@ cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc8 \
+  --add-module=../ngx_lua-0.1.6rc9 \
   --add-module=../headers-more-nginx-module-0.15rc1 \
   --add-module=../srcache-nginx-module-0.12rc4 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -493,13 +493,13 @@ cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.1.6rc8 \
+  --add-module=../ngx_lua-0.1.6rc9 \
   --add-module=../headers-more-nginx-module-0.15rc1 \
   --add-module=../srcache-nginx-module-0.12rc4 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -549,7 +549,7 @@ cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
@@ -601,7 +601,7 @@ cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
@@ -650,14 +650,14 @@ cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_postgres-0.8 \
-  --add-module=../ngx_lua-0.1.6rc8 \
+  --add-module=../ngx_lua-0.1.6rc9 \
   --add-module=../headers-more-nginx-module-0.15rc1 \
   --add-module=../srcache-nginx-module-0.12rc4 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -701,13 +701,13 @@ cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
   --add-module=../iconv-nginx-module-0.10rc3 \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.1.6rc8 \
+  --add-module=../ngx_lua-0.1.6rc9 \
   --add-module=../headers-more-nginx-module-0.15rc1 \
   --add-module=../srcache-nginx-module-0.12rc4 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -757,14 +757,14 @@ cd ..
 cd nginx-0.8.54
 ./configure --prefix=/opt/blah/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc8 \
+  --add-module=../ngx_lua-0.1.6rc9 \
   --add-module=../headers-more-nginx-module-0.15rc1 \
   --add-module=../srcache-nginx-module-0.12rc4 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -971,13 +971,13 @@ cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.1.6rc8 \
+  --add-module=../ngx_lua-0.1.6rc9 \
   --add-module=../headers-more-nginx-module-0.15rc1 \
   --add-module=../srcache-nginx-module-0.12rc4 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -1026,14 +1026,14 @@ cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc8 \
+  --add-module=../ngx_lua-0.1.6rc9 \
   --add-module=../headers-more-nginx-module-0.15rc1 \
   --add-module=../srcache-nginx-module-0.12rc4 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -1085,14 +1085,14 @@ cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc2 \
+  --add-module=../echo-nginx-module-0.36rc3 \
   --add-module=../xss-nginx-module-0.03rc2 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.0.15rc9 \
-  --add-module=../ngx_lua-0.1.6rc8 \
+  --add-module=../ngx_lua-0.1.6rc9 \
   --add-module=../headers-more-nginx-module-0.15rc1 \
   --add-module=../srcache-nginx-module-0.12rc4 \
   --add-module=../array-var-nginx-module-0.02 \
