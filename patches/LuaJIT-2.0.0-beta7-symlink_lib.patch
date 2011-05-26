@@ -1,0 +1,17 @@
+--- LuaJIT-2.0.0-beta7/Makefile	2011-05-05 22:30:00.000000000 +0800
++++ LuaJIT-2.0.0-beta7-patched/Makefile	2011-05-26 15:32:02.888893148 +0800
+@@ -113,13 +113,8 @@
+ 	  $(RM) $(FILE_PC).tmp
+ 	cd src && $(INSTALL_F) $(FILES_INC) $(INSTALL_INC)
+ 	cd lib && $(INSTALL_F) $(FILES_JITLIB) $(INSTALL_JITLIB)
++	$(SYMLINK) $(INSTALL_TNAME) $(INSTALL_TSYM)
+ 	@echo "==== Successfully installed LuaJIT $(VERSION) to $(PREFIX) ===="
+-	@echo ""
+-	@echo "Note: the beta releases deliberately do NOT install a symlink for luajit"
+-	@echo "You can do this now by running this command (with sudo):"
+-	@echo ""
+-	@echo "  $(SYMLINK) $(INSTALL_TNAME) $(INSTALL_TSYM)"
+-	@echo ""
+ 
+ ##############################################################################
+ 
