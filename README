@@ -15,9 +15,6 @@ A quick note to Debian and Ubuntu users:
 
         apt-get install libreadline-dev libpcre3-dev libssl-dev perl
 
-    On some Debian systems, when --with-luajit is specified, it is required
-    to specify the option --with-ld-opt="-ldl" as well.
-
 A quick note to Fedora/RedHat users:
     You're recommended to install the following packages using yum before
     installing this bundle:
@@ -60,6 +57,13 @@ in your PATH environment, and then follow the following steps:
     For Solaris, it's common to install libraries like OpenSSL to /lib,
     so when it complaints about OpenSSL and you have indeed
     already installed it, specify the --with-ld-opt='-L/lib' option.
+
+    At least on some Debian systems, when --with-luajit is specified,
+    it is required to specify the option --with-ld-opt="-ldl" as well.
+
+    Errors in running the ./configure script can be found in this file:
+
+        build/nginx-0.8.54/objs/autoconf.err
 
 3. build everything locally
 
