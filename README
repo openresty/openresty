@@ -73,7 +73,8 @@ in your PATH environment, and then follow the following steps:
 
 Then you can start your server this way:
 
-    /usr/local/openresty/nginx/sbin/nginx -p /path/to/your/server/root -c /path/to/your/nginx.conf
+    /usr/local/openresty/nginx/sbin/nginx -p /path/to/your/server/root \
+            -c /path/to/your/nginx.conf
 
 assuming you're using the default "prefix", i.e., /usr/local/openresty, in Step 2.
 
