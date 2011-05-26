@@ -15,6 +15,18 @@ A quick note to Debian and Ubuntu users:
 
         apt-get install libreadline-dev libpcre3-dev libssl-dev perl
 
+    If you want to enable LuaJIT, ensure that your system's "ldconfig"
+    utility is in your PATH environment. You can check out
+    the path of your "ldconfig" by using the "whereis" command:
+
+        whereis ldconfig
+
+    On Debian systems, it's usually /sbin, and you just need to add
+    it to your PATH this way:
+
+        PATH=/sbin:$PATH
+        export PATH
+
 A quick note to Fedora/RedHat users:
     You're recommended to install the following packages using yum before
     installing this bundle:
@@ -57,9 +69,6 @@ in your PATH environment, and then follow the following steps:
     For Solaris, it's common to install libraries like OpenSSL to /lib,
     so when it complaints about OpenSSL and you have indeed
     already installed it, specify the --with-ld-opt='-L/lib' option.
-
-    At least on some Debian systems, when --with-luajit is specified,
-    it is required to specify the option --with-ld-opt="-ldl" as well.
 
     Errors in running the ./configure script can be found in this file:
 
