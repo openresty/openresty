@@ -15,6 +15,9 @@ A quick note to Debian and Ubuntu users:
 
         apt-get install libreadline-dev libpcre3-dev libssl-dev perl
 
+    On some Debian systems, when --with-luajit is specified, it is required
+    to specify the option --with-ld-opt="-ldl" as well.
+
 A quick note to Fedora/RedHat users:
     You're recommended to install the following packages using yum before
     installing this bundle:
