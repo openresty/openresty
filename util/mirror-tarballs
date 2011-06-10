@@ -1,6 +1,7 @@
 #!/bin/bash
 
-root=$(readlink -f -- "$(dirname -- "$0")/..")
+#root=$(readlink -f -- "$(dirname -- "$0")/..")
+root=`perl -MCwd -e'print Cwd::abs_path(shift)' $(dirname -- "$0")/..`
 
 . util/ver
 

@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use File::Spec;
+use ExtUtils::MakeMaker ();
 
 sub shell ($@);
 sub env ($$);
@@ -258,12 +259,16 @@ sub build_resty_opts {
     }
 
     if ($opts->{no_http_ssl} && $opts->{http_ssl}) {
-        die "--with-http_ssl_module conflicts with --without-http_ssl_module\n";
+        die "--with-http_ssl_module conflicts with --without-http_ssl_module.\n";
     }
 
     if (! $opts->{no_http_ssl} && ! $opts->{http_ssl}) {
         $opts->{http_ssl} = 1;
         push @ngx_opts, '--with-http_ssl_module';
+    }
+
+    if ($platform eq 'linux' && $opts->{luajit} && ! can_run("ldconfig")) {
+        die "you need to have ldconfig in your PATH env when enabling luajit.\n";
     }
 
     my $opts_line = '';
@@ -626,5 +631,22 @@ sub gen_makefile {
     print $out "clean:\n\trm -rf build\n";
 
     close $out;
+}
+
+# check if we can run some command
+sub can_run {
+        my ($cmd) = @_;
+
+        #warn "can run: @_\n";
+        my $_cmd = $cmd;
+        return $_cmd if (-x $_cmd or $_cmd = MM->maybe_command($_cmd));
+
+        for my $dir ((split /$Config::Config{path_sep}/, $ENV{PATH}), '.') {
+                next if $dir eq '';
+                my $abs = File::Spec->catfile($dir, $_[0]);
+                return $abs if (-x $abs or $abs = MM->maybe_command($abs));
+        }
+
+        return;
 }
 
