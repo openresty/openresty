@@ -291,7 +291,7 @@ sub build_resty_opts {
         die "build/ directory already exists\n";
     }
 
-    shell "cp -r bundle/ build/";
+    shell "cp -rp bundle/ build/";
 
     cd 'build';
 
