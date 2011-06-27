@@ -46,11 +46,11 @@ in your PATH environment, and then follow the following steps:
 
 1. download the latest ngx_openresty tarball can be downloaded from
 
-     http://agentzh.org/misc/nginx/ngx_openresty-0.8.54.6.tar.gz
+     http://agentzh.org/misc/nginx/ngx_openresty-0.8.54.7.tar.gz
 
    we will eventually migrate to the openresty.org domain.
 
-2. and then enter the ngx_openresty-0.8.54.6/ directory,
+2. and then enter the ngx_openresty-0.8.54.7/ directory,
    and type the following command to configure:
 
         ./configure
@@ -106,30 +106,30 @@ For bundle maintainers:
 
     at the top of the bundle source tree.
 
-The following packages are bundled in the 0.8.54.6 release:
+The following packages are bundled in the 0.8.54.7 release:
 
-    LuaJIT-2.0.0-beta7
+    LuaJIT-2.0.0-beta8
     array-var-nginx-module-0.02
     auth-request-nginx-module-0.2
-    drizzle-nginx-module-0.0.15rc10
-    echo-nginx-module-0.36rc3
+    drizzle-nginx-module-0.0.15rc11
+    echo-nginx-module-0.36rc4
     encrypted-session-nginx-module-0.01
     form-input-nginx-module-0.07rc4
-    headers-more-nginx-module-0.15rc1
+    headers-more-nginx-module-0.15rc3
     iconv-nginx-module-0.10rc3
     libdrizzle-0.8
     lua-5.1.4
-    memc-nginx-module-0.12rc1
+    memc-nginx-module-0.12rc2
     nginx-0.8.54
     ngx_devel_kit-0.2.17
-    ngx_lua-0.1.6rc12
+    ngx_lua-0.1.6rc15
     ngx_postgres-0.8
     rds-json-nginx-module-0.11rc2
-    redis2-nginx-module-0.07rc2
+    redis2-nginx-module-0.07rc3
     set-misc-nginx-module-0.21
-    srcache-nginx-module-0.12rc4
+    srcache-nginx-module-0.12rc5
     upstream-keepalive-nginx-module-0.3
-    xss-nginx-module-0.03rc2
+    xss-nginx-module-0.03rc3
 
 REPORT BUGS
 
