@@ -25,7 +25,6 @@ __DATA__
   --without-http_form_input_module   disable ngx_http_form_input_module
   --without-http_encrypted_session_module
                                      disable ngx_http_encrypted_session_module
-  --without-http_drizzle_module      disable ngx_http_drizzle_module
   --without-http_lua_module          disable ngx_http_lua_module
   --without-http_headers_more_module disable ngx_http_headers_more_module
   --without-http_srcache_module      disable ngx_http_srcache_module
@@ -40,6 +39,7 @@ __DATA__
   --without-http_ssl_module          disable ngx_http_ssl_module
 
   --with-http_iconv_module           enable ngx_http_iconv_module
+  --with-http_drizzle_module         enable ngx_http_drizzle_module
   --with-http_postgres_module        enable ngx_http_postgres_module
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
@@ -178,13 +178,6 @@ Options directly inherited from nginx
 platform: linux (linux)
 cp -rp bundle/ build/
 cd build
-cd libdrizzle-0.8
-./configure --prefix=/usr/local/openresty/libdrizzle
-make
-make install DESTDIR=$OPENRESTY_BUILD_DIR/libdrizzle-root
-export LIBDRIZZLE_LIB='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/lib'
-export LIBDRIZZLE_INC='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/include'
-cd ..
 cd lua-5.1.4
 make linux
 make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
@@ -200,7 +193,6 @@ cd nginx-0.8.54
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.0.15rc11 \
   --add-module=../ngx_lua-0.1.6rc15 \
   --add-module=../headers-more-nginx-module-0.15rc3 \
   --add-module=../srcache-nginx-module-0.12rc5 \
@@ -210,19 +202,16 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
 .PHONY: all install
 
 all:
-	cd build/libdrizzle-0.8 && $(MAKE)
 	cd build/lua-5.1.4 && $(MAKE) linux
 	cd build/nginx-0.8.54 && $(MAKE)
 
 install:
-	cd build/libdrizzle-0.8 && $(MAKE) install DESTDIR=$(DESTDIR)
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
 
@@ -237,13 +226,6 @@ clean:
 platform: linux (linux)
 cp -rp bundle/ build/
 cd build
-cd libdrizzle-0.8
-./configure --prefix=/usr/local/openresty/libdrizzle
-make
-make install DESTDIR=$OPENRESTY_BUILD_DIR/libdrizzle-root
-export LIBDRIZZLE_LIB='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/lib'
-export LIBDRIZZLE_INC='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/include'
-cd ..
 cd lua-5.1.4
 make linux
 make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
@@ -260,7 +242,6 @@ cd nginx-0.8.54
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.0.15rc11 \
   --add-module=../ngx_lua-0.1.6rc15 \
   --add-module=../headers-more-nginx-module-0.15rc3 \
   --add-module=../srcache-nginx-module-0.12rc5 \
@@ -270,19 +251,16 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
 .PHONY: all install
 
 all:
-	cd build/libdrizzle-0.8 && $(MAKE)
 	cd build/lua-5.1.4 && $(MAKE) linux
 	cd build/nginx-0.8.54 && $(MAKE)
 
 install:
-	cd build/libdrizzle-0.8 && $(MAKE) install DESTDIR=$(DESTDIR)
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
 
@@ -307,13 +285,6 @@ platform: linux (linux)
 platform: linux (linux)
 cp -rp bundle/ build/
 cd build
-cd libdrizzle-0.8
-./configure --prefix=/usr/local/openresty/libdrizzle
-make
-make install DESTDIR=$OPENRESTY_BUILD_DIR/libdrizzle-root
-export LIBDRIZZLE_LIB='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/lib'
-export LIBDRIZZLE_INC='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/include'
-cd ..
 cd LuaJIT-2.0.0-beta8
 make PREFIX=/usr/local/openresty/luajit
 make install PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
@@ -329,7 +300,6 @@ cd nginx-0.8.54
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.0.15rc11 \
   --add-module=../ngx_lua-0.1.6rc15 \
   --add-module=../headers-more-nginx-module-0.15rc3 \
   --add-module=../srcache-nginx-module-0.12rc5 \
@@ -339,19 +309,17 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib:/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
 .PHONY: all install
 
 all:
-	cd build/libdrizzle-0.8 && $(MAKE)
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
 	cd build/nginx-0.8.54 && $(MAKE)
 
 install:
-	cd build/libdrizzle-0.8 && $(MAKE) install DESTDIR=$(DESTDIR)
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
 
@@ -366,13 +334,6 @@ clean:
 platform: linux (linux)
 cp -rp bundle/ build/
 cd build
-cd libdrizzle-0.8
-./configure --prefix=/usr/local/openresty/libdrizzle
-make
-make install DESTDIR=$OPENRESTY_BUILD_DIR/libdrizzle-root
-export LIBDRIZZLE_LIB='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/lib'
-export LIBDRIZZLE_INC='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/include'
-cd ..
 cd LuaJIT-2.0.0-beta8
 make PREFIX=/usr/local/openresty/luajit
 make install PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
@@ -388,7 +349,6 @@ cd nginx-0.8.54
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.0.15rc11 \
   --add-module=../ngx_lua-0.1.6rc15 \
   --add-module=../headers-more-nginx-module-0.15rc3 \
   --add-module=../srcache-nginx-module-0.12rc5 \
@@ -398,19 +358,17 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib:/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
 .PHONY: all install
 
 all:
-	cd build/libdrizzle-0.8 && $(MAKE)
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
 	cd build/nginx-0.8.54 && $(MAKE)
 
 install:
-	cd build/libdrizzle-0.8 && $(MAKE) install DESTDIR=$(DESTDIR)
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
 
@@ -425,65 +383,6 @@ clean:
 platform: linux (linux)
 cp -rp bundle/ build/
 cd build
-cd libdrizzle-0.8
-./configure --prefix=/usr/local/openresty/libdrizzle
-make
-make install DESTDIR=$OPENRESTY_BUILD_DIR/libdrizzle-root
-export LIBDRIZZLE_LIB='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/lib'
-export LIBDRIZZLE_INC='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/include'
-cd ..
-cd LuaJIT-2.0.0-beta8
-make PREFIX=/usr/local/openresty/luajit
-make install PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
-export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
-export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
-cd ..
-cd nginx-0.8.54
-./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc4 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../set-misc-nginx-module-0.21 \
-  --add-module=../form-input-nginx-module-0.07rc4 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.0.15rc11 \
-  --add-module=../ngx_lua-0.1.6rc15 \
-  --add-module=../headers-more-nginx-module-0.15rc3 \
-  --add-module=../srcache-nginx-module-0.12rc5 \
-  --add-module=../array-var-nginx-module-0.02 \
-  --add-module=../memc-nginx-module-0.12rc2 \
-  --add-module=../redis2-nginx-module-0.07rc3 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
-  --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib:/usr/local/openresty/luajit/lib -llua' \
-  --with-http_ssl_module
-cd ../..
---- makefile
-.PHONY: all install
-
-all:
-	cd build/libdrizzle-0.8 && $(MAKE)
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-0.8.54 && $(MAKE)
-
-install:
-	cd build/libdrizzle-0.8 && $(MAKE) install DESTDIR=$(DESTDIR)
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
-
-clean:
-	rm -rf build
-
-
-
-=== TEST 8: --without-http_drizzle_module
---- cmd: ./configure --with-luajit --without-http_drizzle_module --dry-run
---- out
-platform: linux (linux)
-cp -rp bundle/ build/
-cd build
 cd LuaJIT-2.0.0-beta8
 make PREFIX=/usr/local/openresty/luajit
 make install PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
@@ -508,7 +407,7 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -llua' \
   --with-http_ssl_module
 cd ../..
 --- makefile
@@ -527,19 +426,12 @@ clean:
 
 
 
-=== TEST 9: --with-luajit & --without-http_lua_module
+=== TEST 8: --with-luajit & --without-http_lua_module
 --- cmd: ./configure --with-luajit --without-http_lua_module --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build/
 cd build
-cd libdrizzle-0.8
-./configure --prefix=/usr/local/openresty/libdrizzle
-make
-make install DESTDIR=$OPENRESTY_BUILD_DIR/libdrizzle-root
-export LIBDRIZZLE_LIB='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/lib'
-export LIBDRIZZLE_INC='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/include'
-cd ..
 cd LuaJIT-2.0.0-beta8
 make PREFIX=/usr/local/openresty/luajit
 make install PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
@@ -555,7 +447,6 @@ cd nginx-0.8.54
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.0.15rc11 \
   --add-module=../headers-more-nginx-module-0.15rc3 \
   --add-module=../srcache-nginx-module-0.12rc5 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -564,19 +455,17 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib:/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
 .PHONY: all install
 
 all:
-	cd build/libdrizzle-0.8 && $(MAKE)
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
 	cd build/nginx-0.8.54 && $(MAKE)
 
 install:
-	cd build/libdrizzle-0.8 && $(MAKE) install DESTDIR=$(DESTDIR)
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
 
@@ -585,19 +474,12 @@ clean:
 
 
 
-=== TEST 10: --without-http_lua_module
+=== TEST 9: --without-http_lua_module
 --- cmd: ./configure --without-http_lua_module --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build/
 cd build
-cd libdrizzle-0.8
-./configure --prefix=/usr/local/openresty/libdrizzle
-make
-make install DESTDIR=$OPENRESTY_BUILD_DIR/libdrizzle-root
-export LIBDRIZZLE_LIB='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/lib'
-export LIBDRIZZLE_INC='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/include'
-cd ..
 cd nginx-0.8.54
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -607,7 +489,6 @@ cd nginx-0.8.54
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.0.15rc11 \
   --add-module=../headers-more-nginx-module-0.15rc3 \
   --add-module=../srcache-nginx-module-0.12rc5 \
   --add-module=../array-var-nginx-module-0.02 \
@@ -616,18 +497,15 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
 .PHONY: all install
 
 all:
-	cd build/libdrizzle-0.8 && $(MAKE)
 	cd build/nginx-0.8.54 && $(MAKE)
 
 install:
-	cd build/libdrizzle-0.8 && $(MAKE) install DESTDIR=$(DESTDIR)
 	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -635,119 +513,12 @@ clean:
 
 
 
-=== TEST 11: --without-http_drizzle_module & --with-http_postgres_module
---- cmd: ./configure --with-luajit --without-http_drizzle_module --with-http_postgres_module --dry-run
---- out
-platform: linux (linux)
-cp -rp bundle/ build/
-cd build
-cd LuaJIT-2.0.0-beta8
-make PREFIX=/usr/local/openresty/luajit
-make install PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
-export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
-export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
-cd ..
-cd nginx-0.8.54
-./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36rc4 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../set-misc-nginx-module-0.21 \
-  --add-module=../form-input-nginx-module-0.07rc4 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_postgres-0.8 \
-  --add-module=../ngx_lua-0.1.6rc15 \
-  --add-module=../headers-more-nginx-module-0.15rc3 \
-  --add-module=../srcache-nginx-module-0.12rc5 \
-  --add-module=../array-var-nginx-module-0.02 \
-  --add-module=../memc-nginx-module-0.12rc2 \
-  --add-module=../redis2-nginx-module-0.07rc3 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
-  --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-http_ssl_module
-cd ../..
---- makefile
-.PHONY: all install
-
-all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-0.8.54 && $(MAKE)
-
-install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
-
-clean:
-	rm -rf build
-
-
-
-=== TEST 12: --without-http_drizzle_module & --with-http_iconv_module
---- cmd: ./configure --with-luajit --without-http_drizzle_module --with-http_iconv_module --dry-run
---- out
-platform: linux (linux)
-cp -rp bundle/ build/
-cd build
-cd LuaJIT-2.0.0-beta8
-make PREFIX=/usr/local/openresty/luajit
-make install PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
-export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
-export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
-cd ..
-cd nginx-0.8.54
-./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
-  --add-module=../iconv-nginx-module-0.10rc3 \
-  --add-module=../echo-nginx-module-0.36rc4 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../set-misc-nginx-module-0.21 \
-  --add-module=../form-input-nginx-module-0.07rc4 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.1.6rc15 \
-  --add-module=../headers-more-nginx-module-0.15rc3 \
-  --add-module=../srcache-nginx-module-0.12rc5 \
-  --add-module=../array-var-nginx-module-0.02 \
-  --add-module=../memc-nginx-module-0.12rc2 \
-  --add-module=../redis2-nginx-module-0.07rc3 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
-  --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-http_ssl_module
-cd ../..
---- makefile
-.PHONY: all install
-
-all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-0.8.54 && $(MAKE)
-
-install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
-
-clean:
-	rm -rf build
-
-
-
-=== TEST 13: --prefix
+=== TEST 10: --prefix
 --- cmd: ./configure --prefix=/opt/blah --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build/
 cd build
-cd libdrizzle-0.8
-./configure --prefix=/opt/blah/libdrizzle
-make
-make install DESTDIR=$OPENRESTY_BUILD_DIR/libdrizzle-root
-export LIBDRIZZLE_LIB='$OPENRESTY_BUILD_DIR/libdrizzle-root/opt/blah/libdrizzle/lib'
-export LIBDRIZZLE_INC='$OPENRESTY_BUILD_DIR/libdrizzle-root/opt/blah/libdrizzle/include'
-cd ..
 cd lua-5.1.4
 make linux
 make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua
@@ -763,7 +534,6 @@ cd nginx-0.8.54
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.0.15rc11 \
   --add-module=../ngx_lua-0.1.6rc15 \
   --add-module=../headers-more-nginx-module-0.15rc3 \
   --add-module=../srcache-nginx-module-0.12rc5 \
@@ -773,19 +543,16 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/opt/blah/libdrizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
 .PHONY: all install
 
 all:
-	cd build/libdrizzle-0.8 && $(MAKE)
 	cd build/lua-5.1.4 && $(MAKE) linux
 	cd build/nginx-0.8.54 && $(MAKE)
 
 install:
-	cd build/libdrizzle-0.8 && $(MAKE) install DESTDIR=$(DESTDIR)
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/opt/blah/lua
 	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
 
@@ -794,7 +561,7 @@ clean:
 
 
 
-=== TEST 14: --help on solaris
+=== TEST 11: --help on solaris
 --- cmd: ./configure --help --platform=solaris
 --- out
   --help                             this message
@@ -956,7 +723,7 @@ Options directly inherited from nginx
 
 
 
-=== TEST 15: default on solaris
+=== TEST 12: default on solaris
 --- cmd: ./configure --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
@@ -1004,19 +771,12 @@ clean:
 
 
 
-=== TEST 16: --with-http_drizzle_module on solaris
+=== TEST 13: --with-http_drizzle_module on solaris
 --- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
 cp -rp bundle/ build/
 cd build
-cd libdrizzle-0.8
-./configure --prefix=/usr/local/openresty/libdrizzle
-make
-make install DESTDIR=$OPENRESTY_BUILD_DIR/libdrizzle-root
-export LIBDRIZZLE_LIB='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/lib'
-export LIBDRIZZLE_INC='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/include'
-cd ..
 cd lua-5.1.4
 make solaris
 make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
@@ -1032,7 +792,7 @@ cd nginx-0.8.54
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.0.15rc11 \
+  --add-module=../drizzle-nginx-module-0.0.15rc13 \
   --add-module=../ngx_lua-0.1.6rc15 \
   --add-module=../headers-more-nginx-module-0.15rc3 \
   --add-module=../srcache-nginx-module-0.12rc5 \
@@ -1042,19 +802,16 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
 .PHONY: all install
 
 all:
-	cd build/libdrizzle-0.8 && $(MAKE)
 	cd build/lua-5.1.4 && $(MAKE) solaris
 	cd build/nginx-0.8.54 && $(MAKE)
 
 install:
-	cd build/libdrizzle-0.8 && $(MAKE) install DESTDIR=$(DESTDIR)
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
 
@@ -1063,19 +820,12 @@ clean:
 
 
 
-=== TEST 17: --with-http_drizzle_module on Solaris
+=== TEST 14: --with-http_drizzle_module on Solaris
 --- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
 cp -rp bundle/ build/
 cd build
-cd libdrizzle-0.8
-./configure --prefix=/usr/local/openresty/libdrizzle
-make
-make install DESTDIR=$OPENRESTY_BUILD_DIR/libdrizzle-root
-export LIBDRIZZLE_LIB='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/lib'
-export LIBDRIZZLE_INC='$OPENRESTY_BUILD_DIR/libdrizzle-root/usr/local/openresty/libdrizzle/include'
-cd ..
 cd lua-5.1.4
 make solaris
 make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
@@ -1091,7 +841,7 @@ cd nginx-0.8.54
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.0.15rc11 \
+  --add-module=../drizzle-nginx-module-0.0.15rc13 \
   --add-module=../ngx_lua-0.1.6rc15 \
   --add-module=../headers-more-nginx-module-0.15rc3 \
   --add-module=../srcache-nginx-module-0.12rc5 \
@@ -1101,19 +851,16 @@ cd nginx-0.8.54
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.11rc2 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/libdrizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
 .PHONY: all install
 
 all:
-	cd build/libdrizzle-0.8 && $(MAKE)
 	cd build/lua-5.1.4 && $(MAKE) solaris
 	cd build/nginx-0.8.54 && $(MAKE)
 
 install:
-	cd build/libdrizzle-0.8 && $(MAKE) install DESTDIR=$(DESTDIR)
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
 

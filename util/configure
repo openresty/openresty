@@ -59,7 +59,7 @@ my @modules = (
     [http_set_misc => 'set-misc-nginx-module'],
     [http_form_input => 'form-input-nginx-module'],
     [http_encrypted_session => 'encrypted-session-nginx-module'],
-    [http_drizzle => 'drizzle-nginx-module', $on_solaris ? 'disabled' : () ],
+    [http_drizzle => 'drizzle-nginx-module', 'disabled'],
     [http_postgres => 'ngx_postgres', 'disabled'],
     [http_lua => 'ngx_lua'],
     [http_headers_more => 'headers-more-nginx-module'],
@@ -249,15 +249,6 @@ sub build_resty_opts {
         $opts->{lua} = 1;
     }
 
-    if ($on_solaris) {
-        if ($opts->{http_drizzle}) {
-            $opts->{libdrizzle} = 1;
-        }
-
-    } elsif (! $opts->{no_http_drizzle}) {
-        $opts->{libdrizzle} = 1;
-    }
-
     if ($opts->{no_http_ssl} && $opts->{http_ssl}) {
         die "--with-http_ssl_module conflicts with --without-http_ssl_module.\n";
     }
@@ -296,37 +287,6 @@ sub build_resty_opts {
     cd 'build';
 
     # build 3rd-party C libraries if required
-
-    if ($opts->{libdrizzle}) {
-        my $libdrizzle_src = auto_complete 'libdrizzle';
-        my $libdrizzle_prefix = "$prefix/libdrizzle";
-        my $libdrizzle_root = File::Spec->rel2abs("libdrizzle-root");
-
-        if (-d $libdrizzle_root) {
-            shell "rm -rf $libdrizzle_root";
-        }
-
-        mkdir $libdrizzle_root or
-            die "create create directory libdrizzle-root: $!\n";
-
-        cd $libdrizzle_src;
-
-        shell "./configure --prefix=$libdrizzle_prefix", $dry_run;
-        shell "make", $dry_run;
-        shell "make install DESTDIR=$libdrizzle_root", $dry_run;
-
-        push @make_cmds, "cd build/$libdrizzle_src && \$(MAKE)";
-
-        push @make_install_cmds, "cd build/$libdrizzle_src && "
-            . "\$(MAKE) install DESTDIR=\$(DESTDIR)";
-
-        env LIBDRIZZLE_LIB => "$libdrizzle_root$libdrizzle_prefix/lib";
-        env LIBDRIZZLE_INC => "$libdrizzle_root$libdrizzle_prefix/include";
-
-        push @ngx_rpaths, "$libdrizzle_prefix/lib";
-
-        cd '..';
-    }
 
     if ($opts->{luajit}) {
         my $luajit_src = auto_complete 'LuaJIT';

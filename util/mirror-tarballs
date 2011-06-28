@@ -74,7 +74,7 @@ mv agentzh-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.0.15rc11
+ver=0.0.15rc13
 $root/util/get-tarball "http://github.com/chaoslawful/drizzle-nginx-module/tarball/v$ver" -O drizzle-nginx-module-$ver.tar.gz || exit 1
 tar -xzf drizzle-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
@@ -184,18 +184,6 @@ $root/util/get-tarball "http://luajit.org/download/LuaJIT-$ver.tar.gz" -O "LuaJI
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 
 #patch -p0 < $root/patches/LuaJIT-$ver-symlink_lib.patch || exit 1
-
-#################################
-
-ver=0.8
-$root/util/get-tarball "http://launchpad.net/libdrizzle/trunk/0.8/+download/libdrizzle-0.8.tar.gz" -O "libdrizzle-$ver.tar.gz" || exit 1
-tar -xzf libdrizzle-$ver.tar.gz || exit 1
-
-$root/util/get-tarball "http://agentzh.org/misc/nginx/libdrizzle-0.8-parsebug_and_mac_fixes.patch" -O "parsebug_and_mac_fixes.patch" || exit 1
-
-patch -p0 < parsebug_and_mac_fixes.patch
-
-rm parsebug_and_mac_fixes.patch || exit 1
 
 #################################
 
