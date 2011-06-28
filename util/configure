@@ -148,6 +148,9 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--with-luajit') {
         $resty_opts{luajit} = 1;
 
+    } elsif ($opt =~ /^--with-libdrizzle=(.*)/) {
+        $resty_opts{libdrizzle} = $1;
+
     } elsif ($opt eq '--with-http_ssl_module') {
         $resty_opts{http_ssl} = 1;
         push @ngx_opts, $opt;
@@ -258,6 +261,10 @@ sub build_resty_opts {
         push @ngx_opts, '--with-http_ssl_module';
     }
 
+    if (! $opts->{http_drizzle} && $opts->{libdrizzle}) {
+        die "The http_drizzle_module is not enabled while --with-libdrizzle is specified.\n";
+    }
+
     if ($platform eq 'linux' && $opts->{luajit} && ! can_run("ldconfig")) {
         die "you need to have ldconfig in your PATH env when enabling luajit.\n";
     }
@@ -287,6 +294,13 @@ sub build_resty_opts {
     cd 'build';
 
     # build 3rd-party C libraries if required
+
+    if (my $drizzle_prefix = $opts->{libdrizzle}) {
+        my $drizzle_lib = "$drizzle_prefix/lib";
+        env LIBDRIZZLE_LIB => "$drizzle_prefix/lib";
+        env LIBDRIZZLE_INC => "$drizzle_prefix/include/libdrizzle-1.0";
+        push @ngx_rpaths, $drizzle_lib;
+    }
 
     if ($opts->{luajit}) {
         my $luajit_src = auto_complete 'LuaJIT';
@@ -442,6 +456,7 @@ _EOC_
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
   --with-luajit                      enable LuaJIT 2.0
+  --with-libdrizzle=DIR              specify the libdrizzle 1.0 installation prefix
 
 Options directly inherited from nginx
 

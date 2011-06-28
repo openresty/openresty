@@ -2,7 +2,7 @@
 
 use t::Config;
 
-plan tests => 4 * blocks() - 3;
+plan tests => 4 * blocks() - 4;
 
 #no_diff();
 
@@ -44,6 +44,7 @@ __DATA__
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
   --with-luajit                      enable LuaJIT 2.0
+  --with-libdrizzle=DIR              specify the libdrizzle 1.0 installation prefix
 
 Options directly inherited from nginx
 
@@ -595,6 +596,7 @@ clean:
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
   --with-luajit                      enable LuaJIT 2.0
+  --with-libdrizzle=DIR              specify the libdrizzle 1.0 installation prefix
 
 Options directly inherited from nginx
 
@@ -858,6 +860,68 @@ cd ../..
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) solaris
+	cd build/nginx-0.8.54 && $(MAKE)
+
+install:
+	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+
+clean:
+	rm -rf build
+
+
+
+=== TEST 15: ngx_drizzle not enabled but specify --with-libdrizzle
+--- cmd: ./configure --with-libdrizzle=/opt/drizzle --dry-run
+--- out
+platform: linux (linux)
+--- err
+The http_drizzle_module is not enabled while --with-libdrizzle is specified.
+--- exit: 255
+
+
+=== TEST 16: ngx_drizzle enabled and --with-libdrizzle is specified
+--- cmd: ./configure --with-libdrizzle=/opt/drizzle --with-http_drizzle_module --dry-run
+--- out
+platform: linux (linux)
+cp -rp bundle/ build/
+cd build
+export LIBDRIZZLE_LIB='/opt/drizzle/lib'
+export LIBDRIZZLE_INC='/opt/drizzle/include/libdrizzle-1.0'
+cd lua-5.1.4
+make linux
+make install INSTALL_TOP=/home/agentz/git/ngx_openresty/ngx_openresty-0.8.54.8rc1/build/lua-root/usr/local/openresty/lua
+export LUA_LIB='/home/agentz/git/ngx_openresty/ngx_openresty-0.8.54.8rc1/build/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='/home/agentz/git/ngx_openresty/ngx_openresty-0.8.54.8rc1/build/lua-root/usr/local/openresty/lua/include'
+cd ..
+cd nginx-0.8.54
+./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
+  --add-module=../echo-nginx-module-0.36rc4 \
+  --add-module=../xss-nginx-module-0.03rc3 \
+  --add-module=../ngx_devel_kit-0.2.17 \
+  --add-module=../set-misc-nginx-module-0.21 \
+  --add-module=../form-input-nginx-module-0.07rc4 \
+  --add-module=../encrypted-session-nginx-module-0.01 \
+  --add-module=../drizzle-nginx-module-0.0.15rc13 \
+  --add-module=../ngx_lua-0.1.6rc15 \
+  --add-module=../headers-more-nginx-module-0.15rc3 \
+  --add-module=../srcache-nginx-module-0.12rc5 \
+  --add-module=../array-var-nginx-module-0.02 \
+  --add-module=../memc-nginx-module-0.12rc2 \
+  --add-module=../redis2-nginx-module-0.07rc3 \
+  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../auth-request-nginx-module-0.2 \
+  --add-module=../rds-json-nginx-module-0.11rc2 \
+  --with-ld-opt='-Wl,-rpath,/opt/drizzle/lib' \
+  --with-http_ssl_module
+cd ../..
+--- err
+--- makefile
+.PHONY: all install
+
+all:
+	cd build/lua-5.1.4 && $(MAKE) linux
 	cd build/nginx-0.8.54 && $(MAKE)
 
 install:
