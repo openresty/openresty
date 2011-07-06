@@ -66,19 +66,19 @@ $root/util/get-tarball "http://github.com/agentzh/set-misc-nginx-module/tarball/
 tar -xzf set-misc-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-set-misc-nginx-module-* set-misc-nginx-module-$ver || exit 1
 
-ver=0.11rc2
+ver=0.11
 $root/util/get-tarball "http://github.com/agentzh/rds-json-nginx-module/tarball/v$ver" -O rds-json-nginx-module-$ver.tar.gz || exit 1
 tar -xzf rds-json-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-json-nginx-module-* rds-json-nginx-module-$ver || exit 1
 
-ver=0.15rc3
+ver=0.15
 $root/util/get-tarball "http://github.com/agentzh/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
 tar -xzf headers-more-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.0.15rc14
+ver=0.1.0
 $root/util/get-tarball "http://github.com/chaoslawful/drizzle-nginx-module/tarball/v$ver" -O drizzle-nginx-module-$ver.tar.gz || exit 1
 tar -xzf drizzle-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
