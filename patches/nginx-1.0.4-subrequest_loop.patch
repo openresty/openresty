@@ -1,0 +1,40 @@
+# HG changeset patch
+# User Maxim Dounin <mdounin@mdounin.ru>
+# Date 1309187571 -14400
+# Node ID 283a416b2235d5383c12a975edc8866f007fb628
+# Parent  f5fc40783ddcbf4db33859ee2a9bce54cf32c350
+Core: protect from subrequest loops.
+
+Without protection subrequest loop results in r->count overflow and
+SIGSEGV.  Protection was broken in 0.7.25.
+
+Note that this also limits number of parallel subrequests.  This
+wasn't exactly the case before 0.7.25 as local subrequests were
+completed directly.
+
+See here for details:
+
+http://nginx.org/pipermail/nginx-ru/2010-February/032184.html
+
+diff --git a/src/http/ngx_http_core_module.c b/src/http/ngx_http_core_module.c
+--- a/src/http/ngx_http_core_module.c
++++ b/src/http/ngx_http_core_module.c
+@@ -2287,7 +2287,6 @@ ngx_http_subrequest(ngx_http_request_t *
+    sr->start_sec = tp->sec;
+    sr->start_msec = tp->msec;
+ 
+-    r->main->subrequests++;
+    r->main->count++;
+ 
+    *psr = sr;
+diff --git a/src/http/ngx_http_request.c b/src/http/ngx_http_request.c
+--- a/src/http/ngx_http_request.c
++++ b/src/http/ngx_http_request.c
+@@ -1981,6 +1981,7 @@ ngx_http_finalize_request(ngx_http_reque
+        if (r == c->data) {
+ 
+            r->main->count--;
++            r->main->subrequests++;
+ 
+            if (!r->logged) {
+

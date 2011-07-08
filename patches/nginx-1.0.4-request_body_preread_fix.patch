@@ -1,0 +1,17 @@
+# HG changeset patch
+# User Maxim Dounin <mdounin@mdounin.ru>
+# Date 1309776931 -14400
+# Node ID e7b2f945d55ae44a2295facf9e3336dc4633e5b5
+# Parent  610e909bb9e29766188aa86fae3abe0bd3432940
+Core: fix body if it's preread and there are extra data.
+
+--- nginx-0.8.54/src/http/ngx_http_request_body.c	2011-07-05 12:11:21.619264633 +0800
++++ nginx-0.8.54-patched/src/http/ngx_http_request_body.c	2011-07-05 12:14:30.694321554 +0800
+@@ -141,6 +141,7 @@
+ 
+             /* the whole request body was pre-read */
+ 
++            b->last = b->pos + r->headers_in.content_length_n;
+             r->header_in->pos += (size_t) r->headers_in.content_length_n;
+             r->request_length += r->headers_in.content_length_n;
+ 

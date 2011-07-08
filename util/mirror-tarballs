@@ -32,7 +32,7 @@ sed -i $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" \
 
 patch -p2 < server_header.patch || exit 1
 
-patch -p1 < $root/patches/nginx-$main_ver-redirect_memcpy_overlap.patch || exit 1
+#patch -p1 < $root/patches/nginx-$main_ver-redirect_memcpy_overlap.patch || exit 1
 
 patch -p1 < $root/patches/nginx-$main_ver-no_error_pages.patch || exit 1
 
