@@ -5,7 +5,6 @@ use strict;
 use warnings;
 
 use File::Spec;
-use ExtUtils::MakeMaker ();
 
 sub shell ($@);
 sub env ($$);
@@ -614,12 +613,12 @@ sub can_run {
 
         #warn "can run: @_\n";
         my $_cmd = $cmd;
-        return $_cmd if (-x $_cmd or $_cmd = MM->maybe_command($_cmd));
+        return $_cmd if -x $_cmd;
 
         for my $dir ((split /$Config::Config{path_sep}/, $ENV{PATH}), '.') {
                 next if $dir eq '';
                 my $abs = File::Spec->catfile($dir, $_[0]);
-                return $abs if (-x $abs or $abs = MM->maybe_command($abs));
+                return $abs if -x $abs;
         }
 
         return;
