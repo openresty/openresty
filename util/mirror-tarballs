@@ -48,7 +48,7 @@ rm -f *.patch || exit 1
 
 cd .. || exit 1
 
-ver=0.36
+ver=0.37rc1
 $root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz
 mv agentzh-echo-nginx-module-* echo-nginx-module-$ver
