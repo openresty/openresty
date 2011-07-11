@@ -615,7 +615,10 @@ sub can_run {
         my $_cmd = $cmd;
         return $_cmd if -x $_cmd;
 
-        for my $dir ((split /$Config::Config{path_sep}/, $ENV{PATH}), '.') {
+        # FIXME: this is a hack; MSWin32 is not supported anyway
+        my $path_sep = ':';
+
+        for my $dir ((split /$path_sep/, $ENV{PATH}), '.') {
                 next if $dir eq '';
                 my $abs = File::Spec->catfile($dir, $_[0]);
                 return $abs if -x $abs;
