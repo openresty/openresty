@@ -185,10 +185,10 @@ make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-0.8.54
+cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36 \
+  --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
@@ -196,7 +196,7 @@ cd nginx-0.8.54
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.2.0 \
   --add-module=../headers-more-nginx-module-0.15 \
-  --add-module=../srcache-nginx-module-0.12rc6 \
+  --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
   --add-module=../redis2-nginx-module-0.07rc5 \
@@ -210,11 +210,11 @@ cd ../..
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) linux
-	cd build/nginx-0.8.54 && $(MAKE)
+	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -233,11 +233,11 @@ make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-0.8.54
+cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
   --with-cc-opt='-O0' \
-  --add-module=../echo-nginx-module-0.36 \
+  --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
@@ -245,7 +245,7 @@ cd nginx-0.8.54
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.2.0 \
   --add-module=../headers-more-nginx-module-0.15 \
-  --add-module=../srcache-nginx-module-0.12rc6 \
+  --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
   --add-module=../redis2-nginx-module-0.07rc5 \
@@ -259,11 +259,11 @@ cd ../..
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) linux
-	cd build/nginx-0.8.54 && $(MAKE)
+	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -292,10 +292,10 @@ make install PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/lua
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-0.8.54
+cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36 \
+  --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
@@ -303,7 +303,7 @@ cd nginx-0.8.54
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.2.0 \
   --add-module=../headers-more-nginx-module-0.15 \
-  --add-module=../srcache-nginx-module-0.12rc6 \
+  --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
   --add-module=../redis2-nginx-module-0.07rc5 \
@@ -318,11 +318,11 @@ cd ../..
 
 all:
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-0.8.54 && $(MAKE)
+	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -341,10 +341,10 @@ make install PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/lua
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-0.8.54
+cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2 -O3' \
-  --add-module=../echo-nginx-module-0.36 \
+  --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
@@ -352,7 +352,7 @@ cd nginx-0.8.54
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.2.0 \
   --add-module=../headers-more-nginx-module-0.15 \
-  --add-module=../srcache-nginx-module-0.12rc6 \
+  --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
   --add-module=../redis2-nginx-module-0.07rc5 \
@@ -367,11 +367,11 @@ cd ../..
 
 all:
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-0.8.54 && $(MAKE)
+	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -390,10 +390,10 @@ make install PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/lua
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-0.8.54
+cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36 \
+  --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
@@ -401,7 +401,7 @@ cd nginx-0.8.54
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.2.0 \
   --add-module=../headers-more-nginx-module-0.15 \
-  --add-module=../srcache-nginx-module-0.12rc6 \
+  --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
   --add-module=../redis2-nginx-module-0.07rc5 \
@@ -416,11 +416,11 @@ cd ../..
 
 all:
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-0.8.54 && $(MAKE)
+	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -439,17 +439,17 @@ make install PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/lua
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-0.8.54
+cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36 \
+  --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../headers-more-nginx-module-0.15 \
-  --add-module=../srcache-nginx-module-0.12rc6 \
+  --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
   --add-module=../redis2-nginx-module-0.07rc5 \
@@ -464,11 +464,11 @@ cd ../..
 
 all:
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-0.8.54 && $(MAKE)
+	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -481,17 +481,17 @@ clean:
 platform: linux (linux)
 cp -rp bundle/ build/
 cd build
-cd nginx-0.8.54
+cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36 \
+  --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../headers-more-nginx-module-0.15 \
-  --add-module=../srcache-nginx-module-0.12rc6 \
+  --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
   --add-module=../redis2-nginx-module-0.07rc5 \
@@ -504,10 +504,10 @@ cd ../..
 .PHONY: all install
 
 all:
-	cd build/nginx-0.8.54 && $(MAKE)
+	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -526,10 +526,10 @@ make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include'
 cd ..
-cd nginx-0.8.54
+cd nginx-1.0.4
 ./configure --prefix=/opt/blah/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36 \
+  --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
@@ -537,7 +537,7 @@ cd nginx-0.8.54
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.2.0 \
   --add-module=../headers-more-nginx-module-0.15 \
-  --add-module=../srcache-nginx-module-0.12rc6 \
+  --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
   --add-module=../redis2-nginx-module-0.07rc5 \
@@ -551,11 +551,11 @@ cd ../..
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) linux
-	cd build/nginx-0.8.54 && $(MAKE)
+	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/opt/blah/lua
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -737,10 +737,10 @@ make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-0.8.54
+cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36 \
+  --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
@@ -748,7 +748,7 @@ cd nginx-0.8.54
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.2.0 \
   --add-module=../headers-more-nginx-module-0.15 \
-  --add-module=../srcache-nginx-module-0.12rc6 \
+  --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
   --add-module=../redis2-nginx-module-0.07rc5 \
@@ -762,11 +762,11 @@ cd ../..
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) solaris
-	cd build/nginx-0.8.54 && $(MAKE)
+	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -785,19 +785,19 @@ make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-0.8.54
+cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36 \
+  --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.1.0 \
+  --add-module=../drizzle-nginx-module-0.1.1rc1 \
   --add-module=../ngx_lua-0.2.0 \
   --add-module=../headers-more-nginx-module-0.15 \
-  --add-module=../srcache-nginx-module-0.12rc6 \
+  --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
   --add-module=../redis2-nginx-module-0.07rc5 \
@@ -811,11 +811,11 @@ cd ../..
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) solaris
-	cd build/nginx-0.8.54 && $(MAKE)
+	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -834,19 +834,19 @@ make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-0.8.54
+cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36 \
+  --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.1.0 \
+  --add-module=../drizzle-nginx-module-0.1.1rc1 \
   --add-module=../ngx_lua-0.2.0 \
   --add-module=../headers-more-nginx-module-0.15 \
-  --add-module=../srcache-nginx-module-0.12rc6 \
+  --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
   --add-module=../redis2-nginx-module-0.07rc5 \
@@ -860,11 +860,11 @@ cd ../..
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) solaris
-	cd build/nginx-0.8.54 && $(MAKE)
+	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -890,23 +890,23 @@ export LIBDRIZZLE_LIB='/opt/drizzle/lib'
 export LIBDRIZZLE_INC='/opt/drizzle/include/libdrizzle-1.0'
 cd lua-5.1.4
 make linux
-make install INSTALL_TOP=/home/agentz/git/ngx_openresty/ngx_openresty-0.8.54.9/build/lua-root/usr/local/openresty/lua
-export LUA_LIB='/home/agentz/git/ngx_openresty/ngx_openresty-0.8.54.9/build/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='/home/agentz/git/ngx_openresty/ngx_openresty-0.8.54.9/build/lua-root/usr/local/openresty/lua/include'
+make install INSTALL_TOP=/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.0/build/lua-root/usr/local/openresty/lua
+export LUA_LIB='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.0/build/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.0/build/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-0.8.54
+cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
-  --add-module=../echo-nginx-module-0.36 \
+  --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.1.0 \
+  --add-module=../drizzle-nginx-module-0.1.1rc1 \
   --add-module=../ngx_lua-0.2.0 \
   --add-module=../headers-more-nginx-module-0.15 \
-  --add-module=../srcache-nginx-module-0.12rc6 \
+  --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
   --add-module=../redis2-nginx-module-0.07rc5 \
@@ -922,11 +922,11 @@ cd ../..
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) linux
-	cd build/nginx-0.8.54 && $(MAKE)
+	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-0.8.54 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
