@@ -278,7 +278,7 @@ sub build_resty_opts {
         $opts_line .= " \\\n  --with-debug";
 
     } else {
-        unshift @ngx_cc_opts, '-O2';
+        #unshift @ngx_cc_opts, '-O2';
     }
 
     $opts_line .= " \\\n  --with-cc-opt='@ngx_cc_opts'";
