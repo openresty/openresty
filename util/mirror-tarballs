@@ -32,20 +32,28 @@ sed -i $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" \
 
 patch -p2 < server_header.patch || exit 1
 
-patch -p1 < $root/patches/nginx-$main_ver-redirect_memcpy_overlap.patch || exit 1
+#patch -p1 < $root/patches/nginx-$main_ver-redirect_memcpy_overlap.patch || exit 1
 
 patch -p1 < $root/patches/nginx-$main_ver-no_error_pages.patch || exit 1
+
+patch -p1 < $root/patches/nginx-$main_ver-no_Werror.patch || exit 1
+
+patch -p1 < $root/patches/nginx-$main_ver-request_body_preread_fix.patch || exit 1
+
+patch -p1 < $root/patches/nginx-$main_ver-request_body_in_single_buf.patch || exit 1
+
+patch -p1 -l < $root/patches/nginx-$main_ver-subrequest_loop.patch || exit 1
 
 rm -f *.patch || exit 1
 
 cd .. || exit 1
 
-ver=0.36rc3
+ver=0.37rc1
 $root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz
 mv agentzh-echo-nginx-module-* echo-nginx-module-$ver
 
-ver=0.03rc2
+ver=0.03rc3
 $root/util/get-tarball "http://github.com/agentzh/xss-nginx-module/tarball/v$ver" -O xss-nginx-module-$ver.tar.gz || exit 1
 tar -xzf xss-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-xss-nginx-module-* xss-nginx-module-$ver || exit 1
@@ -60,26 +68,26 @@ $root/util/get-tarball "http://github.com/agentzh/set-misc-nginx-module/tarball/
 tar -xzf set-misc-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-set-misc-nginx-module-* set-misc-nginx-module-$ver || exit 1
 
-ver=0.11rc2
+ver=0.11
 $root/util/get-tarball "http://github.com/agentzh/rds-json-nginx-module/tarball/v$ver" -O rds-json-nginx-module-$ver.tar.gz || exit 1
 tar -xzf rds-json-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-json-nginx-module-* rds-json-nginx-module-$ver || exit 1
 
-ver=0.15rc3
+ver=0.15
 $root/util/get-tarball "http://github.com/agentzh/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
 tar -xzf headers-more-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.0.15rc10
+ver=0.1.1rc1
 $root/util/get-tarball "http://github.com/chaoslawful/drizzle-nginx-module/tarball/v$ver" -O drizzle-nginx-module-$ver.tar.gz || exit 1
 tar -xzf drizzle-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.1.6rc14
+ver=0.2.0
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -93,14 +101,14 @@ mv agentzh-array-var-nginx-module-* array-var-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.12rc1
+ver=0.12
 $root/util/get-tarball "http://github.com/agentzh/memc-nginx-module/tarball/v$ver" -O memc-nginx-module-$ver.tar.gz || exit 1
 tar -xzf memc-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-memc-nginx-module-* memc-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.12rc4
+ver=0.12
 $root/util/get-tarball "http://github.com/agentzh/srcache-nginx-module/tarball/v$ver" -O srcache-nginx-module-$ver.tar.gz || exit 1
 tar -xzf srcache-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-srcache-nginx-module-* srcache-nginx-module-$ver || exit 1
@@ -150,7 +158,7 @@ mv FRiCKLE-ngx_postgres-* ngx_postgres-$ver || exit 1
 
 #################################
 
-ver=0.07rc2
+ver=0.07rc5
 $root/util/get-tarball "http://github.com/agentzh/redis2-nginx-module/tarball/v$ver" -O redis2-nginx-module-$ver.tar.gz || exit 1
 tar -xzf redis2-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
@@ -177,23 +185,11 @@ rm lua-makefile-fix.patch
 
 #################################
 
-ver=2.0.0-beta7
+ver=2.0.0-beta8
 $root/util/get-tarball "http://luajit.org/download/LuaJIT-$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 
-patch -p0 < $root/patches/LuaJIT-$ver-symlink_lib.patch || exit 1
-
-#################################
-
-ver=0.8
-$root/util/get-tarball "http://launchpad.net/libdrizzle/trunk/0.8/+download/libdrizzle-0.8.tar.gz" -O "libdrizzle-$ver.tar.gz" || exit 1
-tar -xzf libdrizzle-$ver.tar.gz || exit 1
-
-$root/util/get-tarball "http://agentzh.org/misc/nginx/libdrizzle-0.8-parsebug_and_mac_fixes.patch" -O "parsebug_and_mac_fixes.patch" || exit 1
-
-patch -p0 < parsebug_and_mac_fixes.patch
-
-rm parsebug_and_mac_fixes.patch || exit 1
+#patch -p0 < $root/patches/LuaJIT-$ver-symlink_lib.patch || exit 1
 
 #################################
 

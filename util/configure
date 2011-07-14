@@ -5,7 +5,6 @@ use strict;
 use warnings;
 
 use File::Spec;
-use ExtUtils::MakeMaker ();
 
 sub shell ($@);
 sub env ($$);
@@ -59,7 +58,7 @@ my @modules = (
     [http_set_misc => 'set-misc-nginx-module'],
     [http_form_input => 'form-input-nginx-module'],
     [http_encrypted_session => 'encrypted-session-nginx-module'],
-    [http_drizzle => 'drizzle-nginx-module', $on_solaris ? 'disabled' : () ],
+    [http_drizzle => 'drizzle-nginx-module', 'disabled'],
     [http_postgres => 'ngx_postgres', 'disabled'],
     [http_lua => 'ngx_lua'],
     [http_headers_more => 'headers-more-nginx-module'],
@@ -147,6 +146,9 @@ for my $opt (@ARGV) {
 
     } elsif ($opt eq '--with-luajit') {
         $resty_opts{luajit} = 1;
+
+    } elsif ($opt =~ /^--with-libdrizzle=(.*)/) {
+        $resty_opts{libdrizzle} = $1;
 
     } elsif ($opt eq '--with-http_ssl_module') {
         $resty_opts{http_ssl} = 1;
@@ -249,15 +251,6 @@ sub build_resty_opts {
         $opts->{lua} = 1;
     }
 
-    if ($on_solaris) {
-        if ($opts->{http_drizzle}) {
-            $opts->{libdrizzle} = 1;
-        }
-
-    } elsif (! $opts->{no_http_drizzle}) {
-        $opts->{libdrizzle} = 1;
-    }
-
     if ($opts->{no_http_ssl} && $opts->{http_ssl}) {
         die "--with-http_ssl_module conflicts with --without-http_ssl_module.\n";
     }
@@ -265,6 +258,10 @@ sub build_resty_opts {
     if (! $opts->{no_http_ssl} && ! $opts->{http_ssl}) {
         $opts->{http_ssl} = 1;
         push @ngx_opts, '--with-http_ssl_module';
+    }
+
+    if (! $opts->{http_drizzle} && $opts->{libdrizzle}) {
+        die "The http_drizzle_module is not enabled while --with-libdrizzle is specified.\n";
     }
 
     if ($platform eq 'linux' && $opts->{luajit} && ! can_run("ldconfig")) {
@@ -291,41 +288,17 @@ sub build_resty_opts {
         die "build/ directory already exists\n";
     }
 
-    shell "cp -r bundle/ build/";
+    shell "cp -rp bundle/ build/";
 
     cd 'build';
 
     # build 3rd-party C libraries if required
 
-    if ($opts->{libdrizzle}) {
-        my $libdrizzle_src = auto_complete 'libdrizzle';
-        my $libdrizzle_prefix = "$prefix/libdrizzle";
-        my $libdrizzle_root = File::Spec->rel2abs("libdrizzle-root");
-
-        if (-d $libdrizzle_root) {
-            shell "rm -rf $libdrizzle_root";
-        }
-
-        mkdir $libdrizzle_root or
-            die "create create directory libdrizzle-root: $!\n";
-
-        cd $libdrizzle_src;
-
-        shell "./configure --prefix=$libdrizzle_prefix", $dry_run;
-        shell "make", $dry_run;
-        shell "make install DESTDIR=$libdrizzle_root", $dry_run;
-
-        push @make_cmds, "cd build/$libdrizzle_src && \$(MAKE)";
-
-        push @make_install_cmds, "cd build/$libdrizzle_src && "
-            . "\$(MAKE) install DESTDIR=\$(DESTDIR)";
-
-        env LIBDRIZZLE_LIB => "$libdrizzle_root$libdrizzle_prefix/lib";
-        env LIBDRIZZLE_INC => "$libdrizzle_root$libdrizzle_prefix/include";
-
-        push @ngx_rpaths, "$libdrizzle_prefix/lib";
-
-        cd '..';
+    if (my $drizzle_prefix = $opts->{libdrizzle}) {
+        my $drizzle_lib = "$drizzle_prefix/lib";
+        env LIBDRIZZLE_LIB => "$drizzle_prefix/lib";
+        env LIBDRIZZLE_INC => "$drizzle_prefix/include/libdrizzle-1.0";
+        push @ngx_rpaths, $drizzle_lib;
     }
 
     if ($opts->{luajit}) {
@@ -482,6 +455,7 @@ _EOC_
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
   --with-luajit                      enable LuaJIT 2.0
+  --with-libdrizzle=DIR              specify the libdrizzle 1.0 installation prefix
 
 Options directly inherited from nginx
 
@@ -639,12 +613,15 @@ sub can_run {
 
         #warn "can run: @_\n";
         my $_cmd = $cmd;
-        return $_cmd if (-x $_cmd or $_cmd = MM->maybe_command($_cmd));
+        return $_cmd if -x $_cmd;
 
-        for my $dir ((split /$Config::Config{path_sep}/, $ENV{PATH}), '.') {
+        # FIXME: this is a hack; MSWin32 is not supported anyway
+        my $path_sep = ':';
+
+        for my $dir ((split /$path_sep/, $ENV{PATH}), '.') {
                 next if $dir eq '';
                 my $abs = File::Spec->catfile($dir, $_[0]);
-                return $abs if (-x $abs or $abs = MM->maybe_command($abs));
+                return $abs if -x $abs;
         }
 
         return;
