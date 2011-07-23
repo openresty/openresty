@@ -278,7 +278,9 @@ sub build_resty_opts {
         #unshift @ngx_cc_opts, '-O2';
     }
 
-    $opts_line .= " \\\n  --with-cc-opt='@ngx_cc_opts'";
+    if (@ngx_cc_opts) {
+        $opts_line .= " \\\n  --with-cc-opt='@ngx_cc_opts'";
+    }
 
     if (-d 'build') {
         system("rm -rf build");
@@ -596,7 +598,7 @@ sub gen_makefile {
     open my $out, ">Makefile" or
         die "Cannot open Makefile for writing: $!\n";
 
-    print $out ".PHONY: all install\n\n";
+    print $out ".PHONY: all install clean\n\n";
 
     print $out "all:\n\t" . join("\n\t", @make_cmds) . "\n\n";
 

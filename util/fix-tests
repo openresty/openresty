@@ -44,12 +44,12 @@ for my $t_file (@t_files) {
 
                 warn "\n- $orig";
                 warn "+ $_";
-            } elsif (s{\bbuild/$pat\S+}{build/$dir}g && $orig ne $_) {
+            } elsif (s{\bbuild/$pat[^/ \t\n]*\d[^/ \t\n]*}{build/$dir}g && $orig ne $_) {
                 $changed++;
 
                 warn "\n- $orig";
                 warn "+ $_";
-            } elsif (s{^cd $pat\S+}{cd $dir}g && $orig ne $_) {
+            } elsif (s{^cd $pat[^/ \t\n]+}{cd $dir}g && $orig ne $_) {
                 $changed++;
 
                 warn "\n- $orig";

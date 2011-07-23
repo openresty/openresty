@@ -187,26 +187,25 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
   --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.0 \
+  --add-module=../ngx_lua-0.2.1rc2 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
-  --add-module=../redis2-nginx-module-0.07rc5 \
+  --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
 --- makefile
-.PHONY: all install
+.PHONY: all install clean
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) linux
@@ -243,19 +242,19 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.0 \
+  --add-module=../ngx_lua-0.2.1rc2 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
-  --add-module=../redis2-nginx-module-0.07rc5 \
+  --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
 --- makefile
-.PHONY: all install
+.PHONY: all install clean
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) linux
@@ -294,27 +293,26 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
   --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.0 \
+  --add-module=../ngx_lua-0.2.1rc2 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
-  --add-module=../redis2-nginx-module-0.07rc5 \
+  --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
-.PHONY: all install
+.PHONY: all install clean
 
 all:
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
@@ -343,27 +341,27 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2 -O3' \
+  --with-cc-opt='-O3' \
   --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.0 \
+  --add-module=../ngx_lua-0.2.1rc2 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
-  --add-module=../redis2-nginx-module-0.07rc5 \
+  --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
-.PHONY: all install
+.PHONY: all install clean
 
 all:
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
@@ -392,27 +390,26 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
   --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.0 \
+  --add-module=../ngx_lua-0.2.1rc2 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
-  --add-module=../redis2-nginx-module-0.07rc5 \
+  --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -llua' \
   --with-http_ssl_module
 cd ../..
 --- makefile
-.PHONY: all install
+.PHONY: all install clean
 
 all:
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
@@ -441,7 +438,6 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
   --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
@@ -452,15 +448,15 @@ cd nginx-1.0.4
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
-  --add-module=../redis2-nginx-module-0.07rc5 \
+  --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 --- makefile
-.PHONY: all install
+.PHONY: all install clean
 
 all:
 	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) PREFIX=/usr/local/openresty/luajit
@@ -483,7 +479,6 @@ cp -rp bundle/ build/
 cd build
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
   --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
@@ -494,14 +489,14 @@ cd nginx-1.0.4
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
-  --add-module=../redis2-nginx-module-0.07rc5 \
+  --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
 --- makefile
-.PHONY: all install
+.PHONY: all install clean
 
 all:
 	cd build/nginx-1.0.4 && $(MAKE)
@@ -528,26 +523,25 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include'
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/opt/blah/nginx \
-  --with-cc-opt='-O2' \
   --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.0 \
+  --add-module=../ngx_lua-0.2.1rc2 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
-  --add-module=../redis2-nginx-module-0.07rc5 \
+  --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
 --- makefile
-.PHONY: all install
+.PHONY: all install clean
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) linux
@@ -739,26 +733,25 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
   --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.0 \
+  --add-module=../ngx_lua-0.2.1rc2 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
-  --add-module=../redis2-nginx-module-0.07rc5 \
+  --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
 --- makefile
-.PHONY: all install
+.PHONY: all install clean
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) solaris
@@ -787,27 +780,26 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
   --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.1.1rc1 \
-  --add-module=../ngx_lua-0.2.0 \
+  --add-module=../drizzle-nginx-module-0.1.1rc2 \
+  --add-module=../ngx_lua-0.2.1rc2 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
-  --add-module=../redis2-nginx-module-0.07rc5 \
+  --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
 --- makefile
-.PHONY: all install
+.PHONY: all install clean
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) solaris
@@ -836,27 +828,26 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
   --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.1.1rc1 \
-  --add-module=../ngx_lua-0.2.0 \
+  --add-module=../drizzle-nginx-module-0.1.1rc2 \
+  --add-module=../ngx_lua-0.2.1rc2 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
-  --add-module=../redis2-nginx-module-0.07rc5 \
+  --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
 --- makefile
-.PHONY: all install
+.PHONY: all install clean
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) solaris
@@ -890,35 +881,34 @@ export LIBDRIZZLE_LIB='/opt/drizzle/lib'
 export LIBDRIZZLE_INC='/opt/drizzle/include/libdrizzle-1.0'
 cd lua-5.1.4
 make linux
-make install INSTALL_TOP=/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.0/build/lua-root/usr/local/openresty/lua
-export LUA_LIB='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.0/build/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.0/build/lua-root/usr/local/openresty/lua/include'
+make install INSTALL_TOP=/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.1rc2/build/lua-root/usr/local/openresty/lua
+export LUA_LIB='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.1rc2/build/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.1rc2/build/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
   --add-module=../echo-nginx-module-0.37rc1 \
   --add-module=../xss-nginx-module-0.03rc3 \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../set-misc-nginx-module-0.21 \
   --add-module=../form-input-nginx-module-0.07rc4 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.1.1rc1 \
-  --add-module=../ngx_lua-0.2.0 \
+  --add-module=../drizzle-nginx-module-0.1.1rc2 \
+  --add-module=../ngx_lua-0.2.1rc2 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.02 \
   --add-module=../memc-nginx-module-0.12 \
-  --add-module=../redis2-nginx-module-0.07rc5 \
+  --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.11 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-ld-opt='-Wl,-rpath,/opt/drizzle/lib' \
   --with-http_ssl_module
 cd ../..
 --- err
 --- makefile
-.PHONY: all install
+.PHONY: all install clean
 
 all:
 	cd build/lua-5.1.4 && $(MAKE) linux
