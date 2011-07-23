@@ -105,11 +105,18 @@ my $prefix = '/usr/local/openresty';
 my %resty_opts;
 my $dry_run;
 my @ngx_rpaths;
+my $cc;
 
 my (@ngx_opts, @ngx_cc_opts, @ngx_ld_opts);
 
 for my $opt (@ARGV) {
     next unless defined $opt;
+
+    if ($opt =~ /^--with-cc=(.+)/) {
+        $cc = $1;
+        push @ngx_opts, $opt;
+        next;
+    }
 
     if ($opt eq '--dry-run') {
         $dry_run = 1;
@@ -317,14 +324,21 @@ sub build_resty_opts {
 
         cd $luajit_src;
 
-        shell "make PREFIX=$luajit_prefix", $dry_run;
-        shell "make install PREFIX=$luajit_prefix DESTDIR=$luajit_root", $dry_run;
+        my $extra_opts = '';
+
+        if (defined $cc) {
+            $extra_opts .= " CC=$cc";
+        }
+
+        shell "make$extra_opts PREFIX=$luajit_prefix", $dry_run;
+
+        shell "make install$extra_opts PREFIX=$luajit_prefix DESTDIR=$luajit_root", $dry_run;
 
         push @make_cmds, "cd build/$luajit_src && "
-            . "\$(MAKE) PREFIX=$luajit_prefix";
+            . "\$(MAKE)$extra_opts PREFIX=$luajit_prefix";
 
         push @make_install_cmds, "cd build/$luajit_src && "
-            . "\$(MAKE) install PREFIX=$luajit_prefix DESTDIR=\$(DESTDIR)";
+            . "\$(MAKE) install$extra_opts PREFIX=$luajit_prefix DESTDIR=\$(DESTDIR)";
 
         env LUAJIT_LIB => "$luajit_root$luajit_prefix/lib";
         env LUAJIT_INC => "$luajit_root$luajit_prefix/include/luajit-2.0";
@@ -354,16 +368,21 @@ sub build_resty_opts {
 
         cd $lua_src;
 
-        shell "make $platform", $dry_run;
-        shell "make install INSTALL_TOP=$lua_root$lua_prefix", $dry_run;
+        my $extra_opts = '';
+        if (defined $cc) {
+            $extra_opts .= " CC=$cc";
+        }
+
+        shell "make$extra_opts $platform", $dry_run;
+        shell "make install$extra_opts INSTALL_TOP=$lua_root$lua_prefix", $dry_run;
 
         env LUA_LIB => "$lua_root$lua_prefix/lib";
         env LUA_INC => "$lua_root$lua_prefix/include";
 
-        push @make_cmds, "cd build/$lua_src && \$(MAKE) $platform";
+        push @make_cmds, "cd build/$lua_src && \$(MAKE)$extra_opts $platform";
 
         push @make_install_cmds, "cd build/$lua_src && "
-            . "\$(MAKE) install INSTALL_TOP=\$(DESTDIR)$lua_prefix";
+            . "\$(MAKE) install$extra_opts INSTALL_TOP=\$(DESTDIR)$lua_prefix";
 
         cd '..';
     }

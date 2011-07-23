@@ -871,6 +871,7 @@ The http_drizzle_module is not enabled while --with-libdrizzle is specified.
 --- exit: 255
 
 
+
 === TEST 16: ngx_drizzle enabled and --with-libdrizzle is specified
 --- cmd: ./configure --with-libdrizzle=/opt/drizzle --with-http_drizzle_module --dry-run
 --- out
@@ -916,6 +917,53 @@ all:
 
 install:
 	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+
+clean:
+	rm -rf build
+
+
+
+=== TEST 17: --with-cc
+--- cmd: ./configure --with-cc=gcc-4.2 --dry-run --platform=solaris
+--- out
+platform: solaris (solaris)
+cp -rp bundle/ build/
+cd build
+cd lua-5.1.4
+make CC=gcc-4.2 solaris
+make install CC=gcc-4.2 INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
+export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd ..
+cd nginx-1.0.4
+./configure --prefix=/usr/local/openresty/nginx \
+  --add-module=../echo-nginx-module-0.37rc1 \
+  --add-module=../xss-nginx-module-0.03rc3 \
+  --add-module=../ngx_devel_kit-0.2.17 \
+  --add-module=../set-misc-nginx-module-0.21 \
+  --add-module=../form-input-nginx-module-0.07rc4 \
+  --add-module=../encrypted-session-nginx-module-0.01 \
+  --add-module=../ngx_lua-0.2.1rc2 \
+  --add-module=../headers-more-nginx-module-0.15 \
+  --add-module=../srcache-nginx-module-0.12 \
+  --add-module=../array-var-nginx-module-0.02 \
+  --add-module=../memc-nginx-module-0.12 \
+  --add-module=../redis2-nginx-module-0.07 \
+  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../auth-request-nginx-module-0.2 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
+  --with-cc=gcc-4.2 --with-http_ssl_module
+cd ../..
+--- makefile
+.PHONY: all install clean
+
+all:
+	cd build/lua-5.1.4 && $(MAKE) CC=gcc-4.2 solaris
+	cd build/nginx-1.0.4 && $(MAKE)
+
+install:
+	cd build/lua-5.1.4 && $(MAKE) install CC=gcc-4.2 INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
