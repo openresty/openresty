@@ -181,7 +181,7 @@ cp $root/patches/lua-$ver-makefile_install_fix.patch lua-makefile-fix.patch || e
 
 patch -p0 < lua-makefile-fix.patch || exit 1
 
-rm lua-makefile-fix.patch
+rm lua-makefile-fix.patch || exit 1
 
 #################################
 
@@ -189,7 +189,11 @@ ver=2.0.0-beta8
 $root/util/get-tarball "http://luajit.org/download/LuaJIT-$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 
-#patch -p0 < $root/patches/LuaJIT-$ver-symlink_lib.patch || exit 1
+cd LuaJIT-$ver || exit 1;
+$root/util/get-tarball http://luajit.org/download/beta8_hotfix1.patch -O beta8_hotfix1.patch
+patch -p1 < beta8_hotfix1.patch || exit 1
+rm beta8_hotfix1.patch || exit 1
+cd ..
 
 #################################
 
