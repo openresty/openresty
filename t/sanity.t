@@ -978,8 +978,8 @@ platform: linux (linux)
 cp -rp bundle/ build/
 cd build
 cd LuaJIT-2.0.0-beta8
-make TARGET_STRIP= CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit
-make install TARGET_STRIP= CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
+make CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit
+make install CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
@@ -1009,11 +1009,61 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP= CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit
+	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit
 	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP= CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+
+clean:
+	rm -rf build
+
+
+
+=== TEST 19: --with-debug & luajit & --with-cc=cl
+--- cmd: ./configure --with-luajit --with-debug --dry-run --with-cc=cl
+--- out
+platform: linux (linux)
+cp -rp bundle/ build/
+cd build
+cd LuaJIT-2.0.0-beta8
+make CCDEBUG=-g Q= HOST_CC=cl PREFIX=/usr/local/openresty/luajit
+make install CCDEBUG=-g Q= HOST_CC=cl PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
+cd ..
+cd nginx-1.0.4
+./configure --prefix=/usr/local/openresty/nginx \
+  --with-debug \
+  --with-cc-opt='-O0' \
+  --add-module=../echo-nginx-module-0.37rc1 \
+  --add-module=../xss-nginx-module-0.03rc3 \
+  --add-module=../ngx_devel_kit-0.2.17 \
+  --add-module=../set-misc-nginx-module-0.22rc1 \
+  --add-module=../form-input-nginx-module-0.07rc5 \
+  --add-module=../encrypted-session-nginx-module-0.01 \
+  --add-module=../ngx_lua-0.2.1rc2 \
+  --add-module=../headers-more-nginx-module-0.15 \
+  --add-module=../srcache-nginx-module-0.12 \
+  --add-module=../array-var-nginx-module-0.03rc1 \
+  --add-module=../memc-nginx-module-0.12 \
+  --add-module=../redis2-nginx-module-0.07 \
+  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../auth-request-nginx-module-0.2 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-cc=cl --with-http_ssl_module
+cd ../..
+--- makefile
+.PHONY: all install clean
+
+all:
+	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) CCDEBUG=-g Q= HOST_CC=cl PREFIX=/usr/local/openresty/luajit
+	cd build/nginx-1.0.4 && $(MAKE)
+
+install:
+	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install CCDEBUG=-g Q= HOST_CC=cl PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
