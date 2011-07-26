@@ -324,10 +324,14 @@ sub build_resty_opts {
 
         cd $luajit_src;
 
-        my $extra_opts = '';
+        my $extra_opts = ' TARGET_STRIP=';
 
         if (defined $cc) {
-            $extra_opts .= " CC=$cc";
+            $extra_opts .= " HOST_CC=$cc";
+        }
+
+        if ($opts->{debug}) {
+            $extra_opts .= ' CCDEBUG=-g Q=';
         }
 
         shell "make$extra_opts PREFIX=$luajit_prefix", $dry_run;
