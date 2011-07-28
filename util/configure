@@ -324,7 +324,7 @@ sub build_resty_opts {
 
         cd $luajit_src;
 
-        my $extra_opts = ' TARGET_STRIP=';
+        my $extra_opts = ' TARGET_STRIP=@:';
 
         if ($opts->{debug}) {
             $extra_opts = ' CCDEBUG=-g Q=';
