@@ -286,8 +286,8 @@ platform: linux (linux)
 cp -rp bundle/ build/
 cd build
 cd LuaJIT-2.0.0-beta8
-make TARGET_STRIP= PREFIX=/usr/local/openresty/luajit
-make install TARGET_STRIP= PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
+make TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+make install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
@@ -315,11 +315,11 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP= PREFIX=/usr/local/openresty/luajit
+	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP= PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -334,8 +334,8 @@ platform: linux (linux)
 cp -rp bundle/ build/
 cd build
 cd LuaJIT-2.0.0-beta8
-make TARGET_STRIP= PREFIX=/usr/local/openresty/luajit
-make install TARGET_STRIP= PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
+make TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+make install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
@@ -364,11 +364,11 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP= PREFIX=/usr/local/openresty/luajit
+	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP= PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -383,8 +383,8 @@ platform: linux (linux)
 cp -rp bundle/ build/
 cd build
 cd LuaJIT-2.0.0-beta8
-make TARGET_STRIP= PREFIX=/usr/local/openresty/luajit
-make install TARGET_STRIP= PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
+make TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+make install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
@@ -412,11 +412,11 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP= PREFIX=/usr/local/openresty/luajit
+	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP= PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -431,8 +431,8 @@ platform: linux (linux)
 cp -rp bundle/ build/
 cd build
 cd LuaJIT-2.0.0-beta8
-make TARGET_STRIP= PREFIX=/usr/local/openresty/luajit
-make install TARGET_STRIP= PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
+make TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+make install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
@@ -459,11 +459,11 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP= PREFIX=/usr/local/openresty/luajit
+	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 	cd build/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP= PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -882,9 +882,9 @@ export LIBDRIZZLE_LIB='/opt/drizzle/lib'
 export LIBDRIZZLE_INC='/opt/drizzle/include/libdrizzle-1.0'
 cd lua-5.1.4
 make linux
-make install INSTALL_TOP=/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.1rc5/build/lua-root/usr/local/openresty/lua
-export LUA_LIB='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.1rc5/build/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.1rc5/build/lua-root/usr/local/openresty/lua/include'
+make install INSTALL_TOP=/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.1/build/lua-root/usr/local/openresty/lua
+export LUA_LIB='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.1/build/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.1/build/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
