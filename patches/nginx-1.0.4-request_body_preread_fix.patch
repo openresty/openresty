@@ -5,8 +5,8 @@
 # Parent  610e909bb9e29766188aa86fae3abe0bd3432940
 Core: fix body if it's preread and there are extra data.
 
---- nginx-0.8.54/src/http/ngx_http_request_body.c	2011-07-05 12:11:21.619264633 +0800
-+++ nginx-0.8.54-patched/src/http/ngx_http_request_body.c	2011-07-05 12:14:30.694321554 +0800
+--- nginx-1.0.4/src/http/ngx_http_request_body.c	2011-07-05 12:11:21.619264633 +0800
++++ nginx-1.0.4-patched/src/http/ngx_http_request_body.c	2011-07-05 12:14:30.694321554 +0800
 @@ -141,6 +141,7 @@
  
              /* the whole request body was pre-read */
