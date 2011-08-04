@@ -157,6 +157,9 @@ for my $opt (@ARGV) {
     } elsif ($opt =~ /^--with-libdrizzle=(.*)/) {
         $resty_opts{libdrizzle} = $1;
 
+    } elsif ($opt =~ /^--with-libpq=(.*)/) {
+        $resty_opts{libpq} = $1;
+
     } elsif ($opt eq '--with-http_ssl_module') {
         $resty_opts{http_ssl} = 1;
         push @ngx_opts, $opt;
@@ -271,6 +274,10 @@ sub build_resty_opts {
         die "The http_drizzle_module is not enabled while --with-libdrizzle is specified.\n";
     }
 
+    if (! $opts->{http_postgres} && $opts->{libpq}) {
+        die "The http_postgres_module is not enabled while --with-libpq is specified.\n";
+    }
+
     if ($platform eq 'linux' && $opts->{luajit} && ! can_run("ldconfig")) {
         die "you need to have ldconfig in your PATH env when enabling luajit.\n";
     }
@@ -305,9 +312,16 @@ sub build_resty_opts {
 
     if (my $drizzle_prefix = $opts->{libdrizzle}) {
         my $drizzle_lib = "$drizzle_prefix/lib";
-        env LIBDRIZZLE_LIB => "$drizzle_prefix/lib";
+        env LIBDRIZZLE_LIB => $drizzle_lib;
         env LIBDRIZZLE_INC => "$drizzle_prefix/include/libdrizzle-1.0";
         push @ngx_rpaths, $drizzle_lib;
+    }
+
+    if (my $pg_prefix = $opts->{libpq}) {
+        my $pg_lib = "$pg_prefix/lib";
+        env LIBPQ_LIB => $pg_lib;
+        env LIBPQ_INC => "$pg_prefix/include";
+        push @ngx_rpaths, $pg_lib;
     }
 
     if ($opts->{luajit}) {
@@ -480,7 +494,8 @@ _EOC_
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
   --with-luajit                      enable LuaJIT 2.0
-  --with-libdrizzle=DIR              specify the libdrizzle 1.0 installation prefix
+  --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
+  --with-libpq=DIR                   specify the libpq (or postgresql) installation prefix
 
 Options directly inherited from nginx
 

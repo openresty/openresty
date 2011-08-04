@@ -44,6 +44,13 @@ for my $t_file (@t_files) {
 
                 warn "\n- $orig";
                 warn "+ $_";
+
+            } elsif (s{ngx_openresty-\d+\.\d+\.\d+\.\d+(?:rc\d+)?}{ngx_openresty-$ver} && $orig ne $_) {
+                $changed++;
+
+                warn "\n- $orig";
+                warn "+ $_";
+
             } elsif (s{\bbuild/$pat[^/ \t\n]*\d[^/ \t\n]*}{build/$dir}g && $orig ne $_) {
                 $changed++;
 
