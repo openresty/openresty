@@ -2,7 +2,7 @@
 
 use t::Config;
 
-plan tests => 83;
+plan tests => 96;
 
 #no_diff();
 
@@ -49,6 +49,7 @@ __DATA__
   --with-luajit                      enable LuaJIT 2.0
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
   --with-libpq=DIR                   specify the libpq (or postgresql) installation prefix
+  --with-pg_config=PATH              specify the path of the pg_config utility
 
 Options directly inherited from nginx
 
@@ -599,6 +600,7 @@ clean:
   --with-luajit                      enable LuaJIT 2.0
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
   --with-libpq=DIR                   specify the libpq (or postgresql) installation prefix
+  --with-pg_config=PATH              specify the path of the pg_config utility
 
 Options directly inherited from nginx
 
@@ -1187,4 +1189,83 @@ install:
 clean:
 	rm -rf build
 
+
+
+=== TEST 23: --with-libpq & --with-pg_config
+--- cmd: ./configure --with-libpq=/foo/bar --with-pg_config=/baz
+--- exit: 255
+--- err
+--with-pg_config is not allowed when --with-libpq is already specified.
+--- out
+
+
+
+=== TEST 24: --with-pg_config & --with-libpq
+--- cmd: ./configure --with-pg_config=/baz --with-libpq=/foo/bar
+--- exit: 255
+--- err
+--with-libpq is not allowed when --with-pg_config is already specified.
+--- out
+
+
+
+=== TEST 25: ngx_postgres enabled and --with-pg_config is specified
+--- cmd: ./configure --with-pg_config=pg_config --with-http_postgres_module --dry-run
+--- out
+platform: linux (linux)
+cp -rp bundle/ build/
+cd build
+export LIBPQ_LIB='/usr/lib64'
+export LIBPQ_INC='/usr/include'
+cd lua-5.1.4
+make linux
+make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
+export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd ..
+cd nginx-1.0.4
+./configure --prefix=/usr/local/openresty/nginx \
+  --add-module=../ngx_devel_kit-0.2.17 \
+  --add-module=../echo-nginx-module-0.37rc1 \
+  --add-module=../xss-nginx-module-0.03rc3 \
+  --add-module=../set-misc-nginx-module-0.22rc2 \
+  --add-module=../form-input-nginx-module-0.07rc5 \
+  --add-module=../encrypted-session-nginx-module-0.01 \
+  --add-module=../ngx_postgres-0.9rc1 \
+  --add-module=../ngx_lua-0.2.1rc2 \
+  --add-module=../headers-more-nginx-module-0.15 \
+  --add-module=../srcache-nginx-module-0.12 \
+  --add-module=../array-var-nginx-module-0.03rc1 \
+  --add-module=../memc-nginx-module-0.12 \
+  --add-module=../redis2-nginx-module-0.07 \
+  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../auth-request-nginx-module-0.2 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
+  --with-ld-opt='-Wl,-rpath,/usr/lib64' \
+  --with-http_ssl_module
+cd ../..
+--- err
+--- makefile
+.PHONY: all install clean
+
+all:
+	cd build/lua-5.1.4 && $(MAKE) linux
+	cd build/nginx-1.0.4 && $(MAKE)
+
+install:
+	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+
+clean:
+	rm -rf build
+
+
+
+=== TEST 26: ngx_postgres not enabled but specify --with-pg_config
+--- cmd: ./configure --with-pg_config=pg_config --dry-run
+--- out
+platform: linux (linux)
+--- err
+The http_postgres_module is not enabled while --with-pg_config is specified.
+--- exit: 255
 

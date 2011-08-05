@@ -159,6 +159,17 @@ for my $opt (@ARGV) {
 
     } elsif ($opt =~ /^--with-libpq=(.*)/) {
         $resty_opts{libpq} = $1;
+        if ($resty_opts{pg_config}) {
+            die "--with-libpq is not allowed when ",
+                "--with-pg_config is already specified.\n";
+        }
+
+    } elsif ($opt =~ /^--with-pg_config=(.*)/) {
+        $resty_opts{pg_config} = $1;
+        if ($resty_opts{libpq}) {
+            die "--with-pg_config is not allowed when ",
+                "--with-libpq is already specified.\n";
+        }
 
     } elsif ($opt eq '--with-no-pool-patch') {
         $resty_opts{no_pool} = 1;
@@ -281,6 +292,10 @@ sub build_resty_opts {
         die "The http_postgres_module is not enabled while --with-libpq is specified.\n";
     }
 
+    if (! $opts->{http_postgres} && $opts->{pg_config}) {
+        die "The http_postgres_module is not enabled while --with-pg_config is specified.\n";
+    }
+
     if ($platform eq 'linux' && $opts->{luajit} && ! can_run("ldconfig")) {
         die "you need to have ldconfig in your PATH env when enabling luajit.\n";
     }
@@ -332,6 +347,30 @@ sub build_resty_opts {
         my $pg_lib = "$pg_prefix/lib";
         env LIBPQ_LIB => $pg_lib;
         env LIBPQ_INC => "$pg_prefix/include";
+        push @ngx_rpaths, $pg_lib;
+    }
+
+    if (my $pg_config = $opts->{pg_config}) {
+        if (!can_run($pg_config)) {
+            die "pg_config is not runnable.\n";
+        }
+
+        my $cmd = "$pg_config --libdir";
+        my $pg_lib = `$cmd`;
+        chomp $pg_lib;
+        if (!defined $pg_lib) {
+            die "Failed to run command $cmd\n";
+        }
+
+        $cmd = "$pg_config --includedir";
+        my $pg_inc = `$cmd`;
+        chomp $pg_inc;
+        if (!defined $pg_inc) {
+            die "Failed to run command $cmd\n";
+        }
+
+        env LIBPQ_LIB => $pg_lib;
+        env LIBPQ_INC => $pg_inc;
         push @ngx_rpaths, $pg_lib;
     }
 
@@ -510,6 +549,7 @@ _EOC_
   --with-luajit                      enable LuaJIT 2.0
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
   --with-libpq=DIR                   specify the libpq (or postgresql) installation prefix
+  --with-pg_config=PATH              specify the path of the pg_config utility
 
 Options directly inherited from nginx
 
@@ -663,21 +703,23 @@ sub gen_makefile {
 
 # check if we can run some command
 sub can_run {
-        my ($cmd) = @_;
+    my ($cmd) = @_;
 
-        #warn "can run: @_\n";
-        my $_cmd = $cmd;
-        return $_cmd if -x $_cmd;
+    #warn "can run: @_\n";
+    my $_cmd = $cmd;
+    return $_cmd if -x $_cmd;
 
-        # FIXME: this is a hack; MSWin32 is not supported anyway
-        my $path_sep = ':';
+    return undef if $_cmd =~ m{[\\/]};
 
-        for my $dir ((split /$path_sep/, $ENV{PATH}), '.') {
-                next if $dir eq '';
-                my $abs = File::Spec->catfile($dir, $_[0]);
-                return $abs if -x $abs;
-        }
+    # FIXME: this is a hack; MSWin32 is not supported anyway
+    my $path_sep = ':';
 
-        return;
+    for my $dir ((split /$path_sep/, $ENV{PATH}), '.') {
+        next if $dir eq '';
+        my $abs = File::Spec->catfile($dir, $_[0]);
+        return $abs if -x $abs;
+    }
+
+    return undef;
 }
 
