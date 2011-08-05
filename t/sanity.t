@@ -17,7 +17,10 @@ __DATA__
 
   --prefix=PATH                      set the installation prefix
 
-  --with-debug                       enable the debugging logging and also enable -O0
+  --with-debug                       enable the debugging logging and also enable -O0 -g for gcc.
+                                     this not only affects nginx, but also other components.
+
+  --with-no-pool-patch               enable the no-pool patch for debugging memory issues.
 
   --without-http_echo_module         disable ngx_http_echo_module
   --without-http_xss_module          disable ngx_http_xss_module
@@ -564,7 +567,10 @@ clean:
 
   --prefix=PATH                      set the installation prefix
 
-  --with-debug                       enable the debugging logging and also enable -O0
+  --with-debug                       enable the debugging logging and also enable -O0 -g for gcc.
+                                     this not only affects nginx, but also other components.
+
+  --with-no-pool-patch               enable the no-pool patch for debugging memory issues.
 
   --without-http_echo_module         disable ngx_http_echo_module
   --without-http_xss_module          disable ngx_http_xss_module

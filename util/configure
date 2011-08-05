@@ -160,6 +160,9 @@ for my $opt (@ARGV) {
     } elsif ($opt =~ /^--with-libpq=(.*)/) {
         $resty_opts{libpq} = $1;
 
+    } elsif ($opt eq '--with-no-pool-patch') {
+        $resty_opts{no_pool} = 1;
+
     } elsif ($opt eq '--with-http_ssl_module') {
         $resty_opts{http_ssl} = 1;
         push @ngx_opts, $opt;
@@ -310,6 +313,14 @@ sub build_resty_opts {
 
     # build 3rd-party C libraries if required
 
+    if ($opts->{no_pool}) {
+        if (! can_run("patch")) {
+            die "no \"patch\" utility found in your PATH environment.\n";
+        }
+
+        shell "patch -p0 < nginx-no_pool.patch";
+    }
+
     if (my $drizzle_prefix = $opts->{libdrizzle}) {
         my $drizzle_lib = "$drizzle_prefix/lib";
         env LIBDRIZZLE_LIB => $drizzle_lib;
@@ -436,7 +447,10 @@ sub usage ($) {
 
   --prefix=PATH                      set the installation prefix
 
-  --with-debug                       enable the debugging logging and also enable -O0
+  --with-debug                       enable the debugging logging and also enable -O0 -g for gcc.
+                                     this not only affects nginx, but also other components.
+
+  --with-no-pool-patch               enable the no-pool patch for debugging memory issues.
 
 _EOC_
 
