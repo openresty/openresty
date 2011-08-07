@@ -123,6 +123,11 @@ for my $opt (@ARGV) {
         next;
     }
 
+    if ($opt =~ /^--with-make=(.*)/) {
+        $resty_opts{make} = $1;
+        next;
+    }
+
     if ($opt =~ /^--prefix=(.*)/) {
         $prefix = $1;
 
@@ -261,6 +266,26 @@ sub cd ($) {
 sub build_resty_opts {
     my $opts = shift;
 
+    my $make;
+
+    if ($opts->{make}) {
+        $make = $opts->{make};
+        if (! can_run($make)) {
+            die "make utility $make cannot be run.\n";
+        }
+
+    } else {
+        if (can_run("gmake")) {
+            $make = 'gmake';
+
+        } elsif (can_run("make")) {
+            $make = "make";
+
+        } else {
+            die "No gmake nor make found in PATH.\n";
+        }
+    }
+
     if ($opts->{no_ndk}) {
         for my $name (qw(lua set_misc iconv lz_session form_input array_var)) {
             if (! $opts->{"no_http_$name"}) {
@@ -398,9 +423,9 @@ sub build_resty_opts {
             $extra_opts .= " CC=$cc";
         }
 
-        shell "make$extra_opts PREFIX=$luajit_prefix", $dry_run;
+        shell "${make}$extra_opts PREFIX=$luajit_prefix", $dry_run;
 
-        shell "make install$extra_opts PREFIX=$luajit_prefix DESTDIR=$luajit_root", $dry_run;
+        shell "${make} install$extra_opts PREFIX=$luajit_prefix DESTDIR=$luajit_root", $dry_run;
 
         push @make_cmds, "cd build/$luajit_src && "
             . "\$(MAKE)$extra_opts PREFIX=$luajit_prefix";
@@ -441,8 +466,8 @@ sub build_resty_opts {
             $extra_opts .= " CC=$cc";
         }
 
-        shell "make$extra_opts $platform", $dry_run;
-        shell "make install$extra_opts INSTALL_TOP=$lua_root$lua_prefix", $dry_run;
+        shell "${make}$extra_opts $platform", $dry_run;
+        shell "${make} install$extra_opts INSTALL_TOP=$lua_root$lua_prefix", $dry_run;
 
         env LUA_LIB => "$lua_root$lua_prefix/lib";
         env LUA_INC => "$lua_root$lua_prefix/include";
@@ -647,6 +672,8 @@ Options directly inherited from nginx
   --with-cpu-opt=CPU                 build for specified CPU, the valid values:
                                      pentium, pentiumpro, pentium3, pentium4,
                                      athlon, opteron, sparc32, sparc64, ppc64
+
+  --with-make=PATH                   specify the default make utility to be used
 
   --without-pcre                     disable PCRE library usage
   --with-pcre                        force PCRE library usage
