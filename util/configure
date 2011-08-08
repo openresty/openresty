@@ -14,6 +14,9 @@ sub usage ($);
 
 my (@make_cmds, @make_install_cmds);
 
+my $root_dir = `pwd`;
+chomp $root_dir;
+
 my $OS = $^O;
 
 my $ngx_dir;
@@ -217,10 +220,10 @@ my $cmd = "./configure --prefix=$ngx_prefix"
 
 shell $cmd, $dry_run;
 
-push @make_cmds, "cd build/$ngx_dir && "
+push @make_cmds, "cd $root_dir/build/$ngx_dir && "
     . "\$(MAKE)";
 
-push @make_install_cmds, "cd build/$ngx_dir && "
+push @make_install_cmds, "cd $root_dir/build/$ngx_dir && "
     . "\$(MAKE) install DESTDIR=\$(DESTDIR)";
 
 cd '../..'; # to the root
@@ -427,10 +430,10 @@ sub build_resty_opts {
 
         shell "${make} install$extra_opts PREFIX=$luajit_prefix DESTDIR=$luajit_root", $dry_run;
 
-        push @make_cmds, "cd build/$luajit_src && "
+        push @make_cmds, "cd $root_dir/build/$luajit_src && "
             . "\$(MAKE)$extra_opts PREFIX=$luajit_prefix";
 
-        push @make_install_cmds, "cd build/$luajit_src && "
+        push @make_install_cmds, "cd $root_dir/build/$luajit_src && "
             . "\$(MAKE) install$extra_opts PREFIX=$luajit_prefix DESTDIR=\$(DESTDIR)";
 
         env LUAJIT_LIB => "$luajit_root$luajit_prefix/lib";
@@ -472,9 +475,9 @@ sub build_resty_opts {
         env LUA_LIB => "$lua_root$lua_prefix/lib";
         env LUA_INC => "$lua_root$lua_prefix/include";
 
-        push @make_cmds, "cd build/$lua_src && \$(MAKE)$extra_opts $platform";
+        push @make_cmds, "cd $root_dir/build/$lua_src && \$(MAKE)$extra_opts $platform";
 
-        push @make_install_cmds, "cd build/$lua_src && "
+        push @make_install_cmds, "cd $root_dir/build/$lua_src && "
             . "\$(MAKE) install$extra_opts INSTALL_TOP=\$(DESTDIR)$lua_prefix";
 
         cd '..';

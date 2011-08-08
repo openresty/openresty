@@ -200,7 +200,7 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.22rc2 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -215,12 +215,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/lua-5.1.4 && $(MAKE) linux
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -249,7 +249,7 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.22rc2 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -264,12 +264,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/lua-5.1.4 && $(MAKE) linux
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -306,7 +306,7 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.22rc2 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -322,12 +322,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -355,7 +355,7 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.22rc2 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -371,12 +371,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -403,7 +403,7 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.22rc2 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -419,12 +419,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -466,12 +466,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -506,10 +506,10 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -536,7 +536,7 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.22rc2 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -551,12 +551,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/lua-5.1.4 && $(MAKE) linux
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/opt/blah/lua
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/opt/blah/lua
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -753,7 +753,7 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.22rc2 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -768,12 +768,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/lua-5.1.4 && $(MAKE) solaris
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) solaris
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -801,7 +801,7 @@ cd nginx-1.0.4
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.1.1rc3 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -816,12 +816,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/lua-5.1.4 && $(MAKE) solaris
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) solaris
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -849,7 +849,7 @@ cd nginx-1.0.4
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.1.1rc3 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -864,12 +864,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/lua-5.1.4 && $(MAKE) solaris
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) solaris
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -909,7 +909,7 @@ cd nginx-1.0.4
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.1.1rc3 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -926,12 +926,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/lua-5.1.4 && $(MAKE) linux
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -958,7 +958,7 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.22rc2 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -973,12 +973,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/lua-5.1.4 && $(MAKE) CC=gcc-4.2 solaris
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) CC=gcc-4.2 solaris
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/lua-5.1.4 && $(MAKE) install CC=gcc-4.2 INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install CC=gcc-4.2 INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1007,7 +1007,7 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.22rc2 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -1023,12 +1023,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1057,7 +1057,7 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.22rc2 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -1073,12 +1073,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) CCDEBUG=-g Q= CC=cl PREFIX=/usr/local/openresty/luajit
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) CCDEBUG=-g Q= CC=cl PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/LuaJIT-2.0.0-beta8 && $(MAKE) install CCDEBUG=-g Q= CC=cl PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install CCDEBUG=-g Q= CC=cl PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1118,7 +1118,7 @@ cd nginx-1.0.4
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_postgres-0.9rc1 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -1135,12 +1135,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/lua-5.1.4 && $(MAKE) linux
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1168,7 +1168,7 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.22rc2 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -1183,12 +1183,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/lua-5.1.4 && $(MAKE) linux
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1197,7 +1197,7 @@ clean:
 
 === TEST 23: --with-libpq & --with-pg_config
 --- cmd: ./configure --with-libpq=/foo/bar --with-pg_config=/baz
---- exit: 255
+--- exit: 9
 --- err
 --with-pg_config is not allowed when --with-libpq is already specified.
 --- out
@@ -1206,7 +1206,7 @@ clean:
 
 === TEST 24: --with-pg_config & --with-libpq
 --- cmd: ./configure --with-pg_config=/baz --with-libpq=/foo/bar
---- exit: 255
+--- exit: 9
 --- err
 --with-libpq is not allowed when --with-pg_config is already specified.
 --- out
@@ -1236,7 +1236,7 @@ cd nginx-1.0.4
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_postgres-0.9rc1 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -1253,12 +1253,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/lua-5.1.4 && $(MAKE) linux
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1283,9 +1283,9 @@ cp -rp bundle/ build/
 cd build
 cd lua-5.1.4
 make linux
-make install INSTALL_TOP=/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.2rc8/build/lua-root/usr/local/openresty/lua
-export LUA_LIB='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.2rc8/build/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.2rc8/build/lua-root/usr/local/openresty/lua/include'
+make install INSTALL_TOP=/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.2rc11/build/lua-root/usr/local/openresty/lua
+export LUA_LIB='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.2rc11/build/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.2rc11/build/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
@@ -1295,7 +1295,7 @@ cd nginx-1.0.4
   --add-module=../set-misc-nginx-module-0.22rc2 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.2.1rc3 \
+  --add-module=../ngx_lua-0.2.1rc4 \
   --add-module=../headers-more-nginx-module-0.15 \
   --add-module=../srcache-nginx-module-0.12 \
   --add-module=../array-var-nginx-module-0.03rc1 \
@@ -1311,12 +1311,12 @@ cd ../..
 .PHONY: all install clean
 
 all:
-	cd build/lua-5.1.4 && $(MAKE) linux
-	cd build/nginx-1.0.4 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd build/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd build/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
