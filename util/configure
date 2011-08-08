@@ -446,6 +446,11 @@ _END_
             $extra_opts .= ' CFLAGS=-I..';
         }
 
+        if ($on_solaris) {
+            $extra_opts .= " INSTALL_X='$root_dir/build/install -m 0755' " .
+                    "INSTALL_F='$root_dir/build/install -m 0644'";
+        }
+
         if (defined $cc) {
             $extra_opts .= " CC=$cc";
         }

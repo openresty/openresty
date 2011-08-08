@@ -1,0 +1,79 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use Getopt::Std qw(getopts);
+
+my %opts;
+getopts("m:", \%opts) or usage();
+
+my $mode = $opts{m};
+
+if (!defined $mode) {
+    die "No -m option specified.\n";
+}
+
+my $mod = $opts{m};
+
+if (@ARGV < 2) {
+    usage();
+}
+
+my $dst = pop;
+
+my @src = @ARGV;
+
+my $target_dir;
+
+if (@src > 1 || $dst =~ m{/$}) {
+    $target_dir = $dst;
+
+} elsif (-d $dst) {
+    $target_dir = $dst;
+
+} elsif ($dst =~ m{(.+)/}) {
+    $target_dir = $1;
+
+} else {
+    $target_dir = '.';
+}
+
+if (!-d $target_dir) {
+    shell("mkdir -p $target_dir");
+}
+
+shell("cp @src $dst");
+
+if (-f $dst) {
+    chmod oct($mode), $dst or
+        die "failed to change mode of $dst to $mode.\n";
+
+    exit;
+}
+
+for my $src (@src) {
+    my $name;
+
+    if ($src =~ m{/([^/]+)$}) {
+        $name = $1;
+
+    } else {
+        $name = $src;
+    }
+
+    my $target = "$target_dir/$name";
+    chmod oct($mode), $target or
+        die "failed to change mode of $target to $mode.\n";
+}
+
+sub usage {
+    die "Usage: install -m <attrs> <src>... <dst>\n";
+}
+
+sub shell {
+    my $cmd = shift;
+    system($cmd) == 0 or
+        die "failed to run command $cmd\n";
+}
+

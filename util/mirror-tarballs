@@ -208,6 +208,7 @@ rm *.tar.gz
 cd ..
 cp $root/util/configure ./
 cp $root/README ./
+cp $root/util/install bundle/
 
 cd $root
 
