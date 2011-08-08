@@ -201,6 +201,8 @@ print "platform: $platform ($OS)\n";
 
 my $ngx_prefix = "$prefix/nginx";
 
+my $postamble = '';
+
 my $resty_opts = build_resty_opts(\%resty_opts);
 
 if (@ngx_rpaths) {
@@ -230,6 +232,10 @@ cd '../..'; # to the root
 #die "pwd: " .. `pwd`;
 
 gen_makefile();
+
+if ($postamble) {
+    print $postamble;
+}
 
 sub env ($$) {
     my ($name, $val) = @_;
@@ -281,13 +287,27 @@ sub build_resty_opts {
         if (can_run("gmake")) {
             $make = 'gmake';
 
-        } elsif (can_run("make")) {
-            $make = "make";
-
         } else {
-            die "No gmake nor make found in PATH.\n";
+            # no gmake found
+
+            if ($platform =~ /bsd/i && $opts->{luajit}) {
+                die "you need to install gmake to build LuaJIT.\n";
+            }
+
+            if (can_run("make")) {
+                $make = "make";
+
+            } else {
+                die "No gmake nor make found in PATH.\n";
+            }
         }
     }
+
+    $postamble .= <<"_END_";
+Type the following commands to build and install:
+    $make
+    $make install
+_END_
 
     if ($opts->{no_ndk}) {
         for my $name (qw(lua set_misc iconv lz_session form_input array_var)) {
@@ -420,6 +440,10 @@ sub build_resty_opts {
 
         if ($opts->{debug}) {
             $extra_opts = ' CCDEBUG=-g Q=';
+        }
+
+        if ($platform =~ /bsd/i) {
+            $extra_opts .= ' CFLAGS=-I..';
         }
 
         if (defined $cc) {

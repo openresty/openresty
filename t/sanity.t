@@ -211,6 +211,9 @@ cd nginx-1.0.4
   --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -260,6 +263,9 @@ cd nginx-1.0.4
   --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -318,6 +324,9 @@ cd nginx-1.0.4
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -367,6 +376,9 @@ cd nginx-1.0.4
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -415,6 +427,9 @@ cd nginx-1.0.4
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -llua' \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -462,6 +477,9 @@ cd nginx-1.0.4
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -502,6 +520,9 @@ cd nginx-1.0.4
   --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -547,6 +568,9 @@ cd nginx-1.0.4
   --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -764,6 +788,9 @@ cd nginx-1.0.4
   --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -812,6 +839,9 @@ cd nginx-1.0.4
   --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -860,6 +890,9 @@ cd nginx-1.0.4
   --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -921,6 +954,9 @@ cd nginx-1.0.4
   --with-ld-opt='-Wl,-rpath,/opt/drizzle/lib' \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- err
 --- makefile
 .PHONY: all install clean
@@ -969,6 +1005,9 @@ cd nginx-1.0.4
   --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-cc=gcc-4.2 --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -1019,6 +1058,9 @@ cd nginx-1.0.4
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -1069,6 +1111,9 @@ cd nginx-1.0.4
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-cc=cl --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -1130,6 +1175,9 @@ cd nginx-1.0.4
   --with-ld-opt='-Wl,-rpath,/opt/postgres/lib' \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- err
 --- makefile
 .PHONY: all install clean
@@ -1179,6 +1227,9 @@ cd nginx-1.0.4
   --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- makefile
 .PHONY: all install clean
 
@@ -1248,6 +1299,9 @@ cd nginx-1.0.4
   --with-ld-opt='-Wl,-rpath,/usr/lib64' \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
 --- err
 --- makefile
 .PHONY: all install clean
@@ -1283,9 +1337,9 @@ cp -rp bundle/ build/
 cd build
 cd lua-5.1.4
 make linux
-make install INSTALL_TOP=/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.2rc11/build/lua-root/usr/local/openresty/lua
-export LUA_LIB='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.2rc11/build/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.2rc11/build/lua-root/usr/local/openresty/lua/include'
+make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
+export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.0.4
 ./configure --prefix=/usr/local/openresty/nginx \
@@ -1306,6 +1360,9 @@ cd nginx-1.0.4
   --add-module=../rds-json-nginx-module-0.12rc1 \
   --with-http_ssl_module
 cd ../..
+Type the following commands to build and install:
+    make
+    make install
 --- err
 --- makefile
 .PHONY: all install clean
