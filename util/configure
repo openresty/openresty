@@ -137,6 +137,9 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--without-lua51') {
         $resty_opts{no_lua} = 1;
 
+    } elsif ($opt eq '--without-lua_cjson') {
+        $resty_opts{no_lua_cjson} = 1;
+
     } elsif ($opt eq '--with-debug') {
         $resty_opts{debug} = 1;
 
@@ -510,6 +513,53 @@ _END_
             . "\$(MAKE) install$extra_opts INSTALL_TOP=\$(DESTDIR)$lua_prefix";
 
         cd '..';
+
+    }
+
+    if ($opts->{lua} || $opts->{luajit}) {
+        # build lua modules
+
+        my $lualib_prefix = "$prefix/lualib";
+
+        my $ngx_lua_dir = auto_complete 'ngx_lua';
+
+        open my $in, ">>$ngx_lua_dir/config" or
+            die "Cannot open $ngx_lua_dir/config for appending: $!\n";
+
+        print $in <<"_EOC_";
+
+CFLAGS=\$"\$CFLAGS -DLUA_DEFAULT_PATH='\\"$lualib_prefix/?.lua\\"'"
+CFLAGS=\$"\$CFLAGS -DLUA_DEFAULT_CPATH='\\"$lualib_prefix/?.so\\"'"
+_EOC_
+
+        close $in;
+
+        unless ($opts->{no_lua_cjson}) {
+            my $dir = auto_complete 'lua-cjson';
+
+
+            if (!defined $dir) {
+                die "No lua-cjson found";
+            }
+
+            my $install;
+            if ($on_solaris) {
+                $install = "$root_dir/build/install";
+            } else {
+                $install = "install";
+            }
+
+            my $lua_inc = $ENV{LUA_INC};
+
+            my $extra_opts = " DESTDIR=\$(DESTDIR) LUA_INCLUDE_DIR=$lua_inc " .
+                "LUA_LIB_DIR=$lualib_prefix";
+
+            push @make_cmds, "cd $root_dir/build/$dir && ".
+                "\$(MAKE)$extra_opts";
+
+            push @make_install_cmds, "cd $root_dir/build/$dir && " .
+                "\$(MAKE) install$extra_opts";
+        }
     }
 
     # prepare nginx configure line
