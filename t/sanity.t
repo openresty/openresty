@@ -1424,7 +1424,7 @@ all:
 	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE)
 
 install:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: INSTALL_X='/home/agentz/git/ngx_openresty/ngx_openresty-1.0.4.2rc13/build/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd $OPENRESTY_BUILD_DIR/nginx-1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
