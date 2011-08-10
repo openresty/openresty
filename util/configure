@@ -675,6 +675,7 @@ _EOC_
 
     $msg .= <<'_EOC_';
 
+  --without-lua_cjson                disable the lua-cjson library
   --without-lua51                    disable the bundled Lua 5.1 interpreter
   --with-luajit                      enable LuaJIT 2.0
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
