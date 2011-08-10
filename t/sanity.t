@@ -219,12 +219,12 @@ Type the following commands to build and install:
 
 all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.2 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.2 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.0.5 && $(MAKE)
 
 install:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.2 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.2 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -1482,4 +1482,58 @@ install:
 
 clean:
 	rm -rf build
+
+
+
+=== TEST 30: default (on Mac OS X)
+--- ONLY
+--- cmd: ./configure --dry-run --platform=darwin
+--- out
+platform: macosx (darwin)
+cp -rp bundle/ build/
+cd build
+cd lua-5.1.4
+gmake macosx
+gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
+export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd ..
+cd nginx-1.0.5
+./configure --prefix=/usr/local/openresty/nginx \
+  --add-module=../ngx_devel_kit-0.2.17 \
+  --add-module=../echo-nginx-module-0.37rc1 \
+  --add-module=../xss-nginx-module-0.03rc3 \
+  --add-module=../set-misc-nginx-module-0.22rc2 \
+  --add-module=../form-input-nginx-module-0.07rc5 \
+  --add-module=../encrypted-session-nginx-module-0.01 \
+  --add-module=../ngx_lua-0.2.1rc4 \
+  --add-module=../headers-more-nginx-module-0.15 \
+  --add-module=../srcache-nginx-module-0.12 \
+  --add-module=../array-var-nginx-module-0.03rc1 \
+  --add-module=../memc-nginx-module-0.12 \
+  --add-module=../redis2-nginx-module-0.07 \
+  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../auth-request-nginx-module-0.2 \
+  --add-module=../rds-json-nginx-module-0.12rc1 \
+  --with-http_ssl_module
+cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
+--- makefile
+.PHONY: all install clean
+
+all:
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) macosx
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.2 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.5 && $(MAKE)
+
+install:
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.2 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+
+clean:
+	rm -rf build
+
 

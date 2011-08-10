@@ -1,0 +1,13 @@
+diff --git a/lua_cjson.c b/lua_cjson.c
+index 4b1915a..b46e915 100644
+--- a/lua_cjson.c
++++ b/lua_cjson.c
+@@ -501,7 +501,7 @@ static int lua_array_length(lua_State *l, json_config_t *cfg)
+     /* table, startkey */
+     while (lua_next(l, -2) != 0) {
+         /* table, key, value */
+-        if (lua_isnumber(l, -2) &&
++        if (lua_type(l, -2) == LUA_TNUMBER &&
+             (k = lua_tonumber(l, -2))) {
+             /* Integer >= 1 ? */
+             if (floor(k) == k && k >= 1) {

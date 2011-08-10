@@ -528,31 +528,43 @@ _END_
 
         print $in <<"_EOC_";
 
-CFLAGS=\$"\$CFLAGS -DLUA_DEFAULT_PATH='\\"$lualib_prefix/?.lua\\"'"
-CFLAGS=\$"\$CFLAGS -DLUA_DEFAULT_CPATH='\\"$lualib_prefix/?.so\\"'"
+ngx_lua_dquote='"'
+CFLAGS="\$CFLAGS -DLUA_DEFAULT_PATH='\$ngx_lua_dquote$lualib_prefix/?.lua\$ngx_lua_dquote'"
+CFLAGS="\$CFLAGS -DLUA_DEFAULT_CPATH='\$ngx_lua_dquote$lualib_prefix/?.so\$ngx_lua_dquote'"
 _EOC_
 
         close $in;
 
         unless ($opts->{no_lua_cjson}) {
             my $dir = auto_complete 'lua-cjson';
-
-
             if (!defined $dir) {
                 die "No lua-cjson found";
             }
 
-            my $install;
-            if ($on_solaris) {
-                $install = "$root_dir/build/install";
-            } else {
-                $install = "install";
-            }
+            my $lua_inc;
+            if ($opts->{luajit}) {
+                $lua_inc = $ENV{LUAJIT_INC};
 
-            my $lua_inc = $ENV{LUA_INC};
+            } else {
+                $lua_inc = $ENV{LUA_INC};
+            }
 
             my $extra_opts = " DESTDIR=\$(DESTDIR) LUA_INCLUDE_DIR=$lua_inc " .
                 "LUA_LIB_DIR=$lualib_prefix";
+
+            if ($on_solaris) {
+                $extra_opts .= " INSTALL=$root_dir/build/install";
+            }
+
+            if ($platform eq 'macosx') {
+                $extra_opts .= " LDFLAGS='-bundle -undefined dynamic_lookup'";
+            }
+
+            if (defined $cc) {
+                $extra_opts .= " CC=$cc";
+            } else {
+                $extra_opts .= " CC=gcc";
+            }
 
             push @make_cmds, "cd $root_dir/build/$dir && ".
                 "\$(MAKE)$extra_opts";
