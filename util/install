@@ -6,15 +6,14 @@ use warnings;
 use Getopt::Std qw(getopts);
 
 my %opts;
-getopts("m:", \%opts) or usage();
+getopts("dm:", \%opts) or usage();
 
 my $mode = $opts{m};
 
-if (!defined $mode) {
-    die "No -m option specified.\n";
+if ($opts{d}) {
+    shell("mkdir -p @ARGV");
+    exit;
 }
-
-my $mod = $opts{m};
 
 if (@ARGV < 2) {
     usage();
@@ -46,8 +45,10 @@ if (!-d $target_dir) {
 shell("cp @src $dst");
 
 if (-f $dst) {
-    chmod oct($mode), $dst or
-        die "failed to change mode of $dst to $mode.\n";
+    if (defined $mode) {
+        chmod oct($mode), $dst or
+            die "failed to change mode of $dst to $mode.\n";
+    }
 
     exit;
 }
@@ -62,13 +63,15 @@ for my $src (@src) {
         $name = $src;
     }
 
-    my $target = "$target_dir/$name";
-    chmod oct($mode), $target or
-        die "failed to change mode of $target to $mode.\n";
+    if (defined $mode) {
+        my $target = "$target_dir/$name";
+        chmod oct($mode), $target or
+            die "failed to change mode of $target to $mode.\n";
+    }
 }
 
 sub usage {
-    die "Usage: install -m <attrs> <src>... <dst>\n";
+    die "Usage: install [-d] [-m <attrs>] <src>... <dst>\n";
 }
 
 sub shell {
