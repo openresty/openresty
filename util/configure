@@ -553,7 +553,18 @@ _EOC_
                 "LUA_LIB_DIR=$lualib_prefix";
 
             if ($on_solaris) {
-                $extra_opts .= " INSTALL=$root_dir/build/install CFLAGS=\"-g -O3 -Wall -pedantic -D'isinf(x)=0'\"";
+                $extra_opts .= " INSTALL=$root_dir/build/install";
+                if ($opts->{debug}) {
+                    $extra_opts .= " CFLAGS=\"-g -O0 -Wall -pedantic -D'isinf(x)=0'\"";
+
+                } else {
+                    $extra_opts .= " CFLAGS=\"-g -O3 -Wall -pedantic -D'isinf(x)=0'\"";
+                }
+
+            } else {
+                if ($opts->{debug}) {
+                    $extra_opts .= " CFLAGS=\"-g -O0 -Wall -pedantic\"";
+                }
             }
 
             if ($platform eq 'macosx') {
