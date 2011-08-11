@@ -51,7 +51,7 @@ for my $t_file (@t_files) {
                 warn "\n- $orig";
                 warn "+ $_";
 
-            } elsif (s{\bbuild/$pat[^/ \t\n]*\d[^/ \t\n]*}{build/$dir}g && $orig ne $_) {
+            } elsif (s{OPENRESTY_BUILD_DIR/$pat[^/ \t\n\w]*\d[^/ \t\n]*}{OPENRESTY_BUILD_DIR/$dir}g && $orig ne $_) {
                 $changed++;
 
                 warn "\n- $orig";

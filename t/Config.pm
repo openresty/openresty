@@ -13,6 +13,9 @@ sub shell (@);
 sub cd ($);
 
 our $BuildRoot;
+our @SavedTests;
+our $RootDir = `pwd`;
+chomp $RootDir;
 
 sub run_tests {
     my $ver = `bash util/ver`;
@@ -29,6 +32,7 @@ sub run_tests {
 
 sub run_test ($) {
     my $block = shift;
+
     my $name = $block->name;
     my $cmd = $block->cmd or
         die "No --- cmd defined for $name\n";
@@ -54,24 +58,125 @@ sub run_test ($) {
     if (!defined $expected_out) {
         $expected_out = '';
     } else {
-        $expected_out =~ s/\$OPENRESTY_BUILD_DIR\b/$BuildRoot/gs;
+        #$expected_out =~ s/\$OPENRESTY_BUILD_DIR\b/$BuildRoot/gs;
     }
+
+    #die $BuildRoot;
+
+    $stdout =~ s/\Q$BuildRoot\E/\$OPENRESTY_BUILD_DIR/g;
 
     is($stdout, $expected_out, "$name - stdout ok");
     is($stderr, $expected_err, "$name - stderr ok");
     is($retval >> 8, $expected_exit, "$name - exit code ok");
 
+    my $makefile;
+
     if (defined $block->makefile) {
         open my $in, "Makefile" or
             die "cannot open Makefile for reading: $!";
-        my $got = do { local $/; <$in> };
+        $makefile = do { local $/; <$in> };
         close $in;
 
         my $expected_makefile = $block->makefile;
-        $expected_makefile =~ s/\$OPENRESTY_BUILD_DIR\b/$BuildRoot/gs;
+        #$expected_makefile =~ s/\$OPENRESTY_BUILD_DIR\b/$BuildRoot/gs;
 
-        is($got, $expected_makefile, "$name - Makefile ok");
+        $makefile =~ s/\Q$BuildRoot\E/\$OPENRESTY_BUILD_DIR/g;
+
+        is($makefile, $expected_makefile, "$name - Makefile ok");
     }
+
+    push @SavedTests, {
+        cmd => $cmd,
+        name => $name,
+        exit => $retval >> 8,
+        err => $stderr,
+        out => $stdout,
+        makefile => $makefile,
+    };
+}
+
+END {
+    if ($0 =~ /_$/) {
+        return;
+    }
+
+    chdir "$RootDir";
+    #warn `pwd`;
+
+    my $outfile = $0 . '_';
+    if (-f $outfile) {
+        unlink $outfile;
+    }
+
+    open my $in, $0 or
+        die "cannot open $0 for reading: $!\n";
+
+    while (<$in>) {
+        if (/^--- (?:ONLY|LAST)$/) {
+            return;
+        }
+    }
+
+    close $in;
+
+    open my $out, ">$outfile" or
+        die "cannot open $outfile for writing: $!\n";
+
+    open $in, $0 or
+        die "cannot open $0 for reading: $!\n";
+    while (<$in>) {
+        print $out $_;
+        if (/^__DATA__$/) {
+            last;
+        }
+    }
+    close $in;
+
+    print $out "\n";
+
+    my $n = @SavedTests;
+
+    my $i = 0;
+    for my $block (@SavedTests) {
+        my $name = $block->{name};
+        my $cmd = $block->{cmd};
+        my $stdout = $block->{out};
+        my $makefile = $block->{makefile};
+        my $exit = $block->{exit};
+        my $err = $block->{err};
+
+        #$stdout =~ s/$BuildRoot/\$OPENRESTY_BUILD_DIR/g;
+
+        print $out <<"_EOC_";
+=== $name
+--- cmd: $cmd
+--- out
+$stdout
+_EOC_
+
+        if ($makefile) {
+            #$makefile =~ s/$BuildRoot\b/\$OPENRESTY_BUILD_DIR/g;
+            print $out "--- makefile\n$makefile";
+        }
+
+        if ($err) {
+            print $out "--- err\n$err";
+        }
+
+        if ($exit) {
+            print $out "--- exit: $exit\n";
+        }
+
+        if ($i++ < $n - 1) {
+            print $out "\n\n\n";
+        }
+    }
+
+    print $out "\n";
+
+    close $out;
+
+    warn "wrote $outfile\n";
 }
 
 sub shell (@) {
