@@ -144,6 +144,9 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--without-lua_redis_parser') {
         $resty_opts{no_lua_redis_parser} = 1;
 
+    } elsif ($opt eq '--without-lua_rds_parser') {
+        $resty_opts{no_lua_rds_parser} = 1;
+
     } elsif ($opt eq '--with-debug') {
         $resty_opts{debug} = 1;
 
@@ -634,6 +637,53 @@ _EOC_
             push @make_install_cmds, "cd $root_dir/build/$dir && " .
                 "\$(MAKE) install$extra_opts";
         }
+
+        unless ($opts->{no_lua_rds_parser}) {
+            my $dir = auto_complete 'lua-rds-parser';
+            if (!defined $dir) {
+                die "No lua-rds-parser found";
+            }
+
+            my $lua_inc;
+            if ($opts->{luajit}) {
+                $lua_inc = $ENV{LUAJIT_INC};
+
+            } else {
+                $lua_inc = $ENV{LUA_INC};
+            }
+
+            my $extra_opts = " DESTDIR=\$(DESTDIR) LUA_INCLUDE_DIR=$lua_inc " .
+                "LUA_LIB_DIR=$lualib_prefix";
+
+            if ($on_solaris) {
+                $extra_opts .= " INSTALL=$root_dir/build/install";
+                if ($opts->{debug}) {
+                    $extra_opts .= " CFLAGS=\"-g -O0 -Wall\"";
+
+                }
+
+            } else {
+                if ($opts->{debug}) {
+                    $extra_opts .= " CFLAGS=\"-g -O0 -Wall\"";
+                }
+            }
+
+            if ($platform eq 'macosx') {
+                $extra_opts .= " LDFLAGS='-bundle -undefined dynamic_lookup'";
+            }
+
+            if (defined $cc) {
+                $extra_opts .= " CC=$cc";
+            } else {
+                $extra_opts .= " CC=gcc";
+            }
+
+            push @make_cmds, "cd $root_dir/build/$dir && ".
+                "\$(MAKE)$extra_opts";
+
+            push @make_install_cmds, "cd $root_dir/build/$dir && " .
+                "\$(MAKE) install$extra_opts";
+        }
     }
 
     # prepare nginx configure line
@@ -728,6 +778,7 @@ _EOC_
 
   --without-lua_cjson                disable the lua-cjson library
   --without-lua_redis_parser         disable the lua-redis-parser library
+  --without-lua_rds_parser           disable the lua-rds-parser library
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
   --with-luajit                      enable LuaJIT 2.0
