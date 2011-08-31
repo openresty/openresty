@@ -72,6 +72,7 @@ my @modules = (
     [http_upstream_keepalive => 'upstream-keepalive-nginx-module'],
     [http_auth_request => 'auth-request-nginx-module'],
     [http_rds_json => 'rds-json-nginx-module'],
+    [http_rds_csv => 'rds-csv-nginx-module'],
 );
 
 my $without_resty_mods_regex;
