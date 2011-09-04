@@ -1,0 +1,27 @@
+# HG changeset patch
+# User Maxim Dounin <mdounin@mdounin.ru>
+# Date 1309799136 -14400
+# Node ID 99e276bba8596bc4df9e638482ee413f4c6bf700
+# Parent  e7b2f945d55ae44a2295facf9e3336dc4633e5b5
+Core: fix body with request_body_in_single_buf.
+
+If there were preread data and request body was big enough first part
+of request body was duplicated.
+
+See report here:
+http://nginx.org/pipermail/nginx/2011-July/027756.html
+
+diff --git a/src/http/ngx_http_request_body.c b/src/http/ngx_http_request_body.c
+--- a/src/http/ngx_http_request_body.c
++++ b/src/http/ngx_http_request_body.c
+@@ -372,7 +372,9 @@ ngx_http_do_read_client_request_body(ngx
+         }
+     }
+ 
+-    if (r->request_body_in_file_only && rb->bufs->next) {
++    if (rb->bufs->next
++        && (r->request_body_in_file_only || r->request_body_in_single_buf))
++    {
+         rb->bufs = rb->bufs->next;
+     }
+ 
