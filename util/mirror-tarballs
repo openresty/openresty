@@ -44,6 +44,8 @@ patch -p1 < $root/patches/nginx-$main_ver-request_body_in_single_buf.patch || ex
 
 patch -p1 -l < $root/patches/nginx-$main_ver-subrequest_loop.patch || exit 1
 
+patch -p1 -l < $root/patches/nginx-$main_ver-gzip_empty_flush_buf.patch || exit 1
+
 rm -f *.patch || exit 1
 
 cd .. || exit 1
@@ -53,7 +55,7 @@ sed -i $"s/NGINX_VERSION \".unknown/NGINX_VERSION \".$minor_ver/" \
     ./nginx-no_pool.patch || exit 1
 rm -rf no-pool-nginx-$ver
 
-ver=0.37rc2
+ver=0.37rc4
 $root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-echo-nginx-module-* echo-nginx-module-$ver || exit 1
@@ -83,7 +85,7 @@ $root/util/get-tarball "http://github.com/agentzh/rds-csv-nginx-module/tarball/v
 tar -xzf rds-csv-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
 
-ver=0.16rc1
+ver=0.16rc2
 $root/util/get-tarball "http://github.com/agentzh/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
 tar -xzf headers-more-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
@@ -97,7 +99,7 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.3.1rc1
+ver=0.3.1rc3
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1

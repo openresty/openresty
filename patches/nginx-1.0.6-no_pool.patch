@@ -1,18 +1,18 @@
-diff -ur nginx-1.0.6/src/core/nginx.h nginx-1.0.6-no-pool/src/core/nginx.h
---- nginx-1.0.6/src/core/nginx.h	2011-05-26 15:31:40.000000000 +0800
-+++ nginx-1.0.6-no-pool/src/core/nginx.h	2011-06-30 17:00:43.540946999 +0800
+diff -ur nginx-1.0.6/src/core/nginx.h nginx-1.0.6-patched/src/core/nginx.h
+--- nginx-1.0.6/src/core/nginx.h	2011-08-29 17:30:22.000000000 +0800
++++ nginx-1.0.6-patched/src/core/nginx.h	2011-09-13 12:11:03.135622101 +0800
 @@ -10,7 +10,7 @@
  
- #define nginx_version      1000004
+ 
+ #define nginx_version      1000006
  #define NGINX_VERSION      "1.0.6"
 -#define NGINX_VER          "ngx_openresty/" NGINX_VERSION ".unknown"
 +#define NGINX_VER          "ngx_openresty/" NGINX_VERSION ".unknown (no pool)"
  
  #define NGINX_VAR          "NGINX"
- #define NGX_OLDPID_EXT     ".oldbin"
-diff -ur nginx-1.0.6/src/core/ngx_array.c nginx-1.0.6-no-pool/src/core/ngx_array.c
+diff -ur nginx-1.0.6/src/core/ngx_array.c nginx-1.0.6-patched/src/core/ngx_array.c
 --- nginx-1.0.6/src/core/ngx_array.c	2008-06-17 23:00:30.000000000 +0800
-+++ nginx-1.0.6-no-pool/src/core/ngx_array.c	2011-06-30 17:00:43.540946999 +0800
++++ nginx-1.0.6-patched/src/core/ngx_array.c	2011-09-14 12:02:56.263128538 +0800
 @@ -39,13 +39,7 @@
  
      p = a->pool;
@@ -68,7 +68,19 @@ diff -ur nginx-1.0.6/src/core/ngx_array.c nginx-1.0.6-no-pool/src/core/ngx_array
      }
  
      elt = (u_char *) a->elts + a->size * a->nelts;
-@@ -112,31 +94,16 @@
+@@ -100,43 +82,25 @@
+ ngx_array_push_n(ngx_array_t *a, ngx_uint_t n)
+ {
+     void        *elt, *new;
+-    size_t       size;
+     ngx_uint_t   nalloc;
+     ngx_pool_t  *p;
+ 
+-    size = n * a->size;
+-
+     if (a->nelts + n > a->nalloc) {
+ 
+         /* the array is full */
  
          p = a->pool;
  
@@ -109,9 +121,9 @@ diff -ur nginx-1.0.6/src/core/ngx_array.c nginx-1.0.6-no-pool/src/core/ngx_array
      }
  
      elt = (u_char *) a->elts + a->size * a->nelts;
-diff -ur nginx-1.0.6/src/core/ngx_palloc.c nginx-1.0.6-no-pool/src/core/ngx_palloc.c
+diff -ur nginx-1.0.6/src/core/ngx_palloc.c nginx-1.0.6-patched/src/core/ngx_palloc.c
 --- nginx-1.0.6/src/core/ngx_palloc.c	2009-12-17 20:25:46.000000000 +0800
-+++ nginx-1.0.6-no-pool/src/core/ngx_palloc.c	2011-06-30 17:06:36.060946999 +0800
++++ nginx-1.0.6-patched/src/core/ngx_palloc.c	2011-09-14 12:03:41.663126519 +0800
 @@ -8,24 +8,31 @@
  #include <ngx_core.h>
  
@@ -342,10 +354,8 @@ diff -ur nginx-1.0.6/src/core/ngx_palloc.c nginx-1.0.6-no-pool/src/core/ngx_pall
 -    m = ngx_memalign(NGX_POOL_ALIGNMENT, psize, pool->log);
 -    if (m == NULL) {
 -        return NULL;
-+    if (size <= 1024) {
-+        return ngx_malloc(pool, size);
-     }
- 
+-    }
+-
 -    new = (ngx_pool_t *) m;
 -
 -    new->d.end = m + psize;
@@ -362,8 +372,10 @@ diff -ur nginx-1.0.6/src/core/ngx_palloc.c nginx-1.0.6-no-pool/src/core/ngx_pall
 -        if (p->d.failed++ > 4) {
 -            current = p->d.next;
 -        }
--    }
--
++    if (size <= 1024) {
++        return ngx_malloc(pool, size);
+     }
+ 
 -    p->d.next = new;
 -
 -    pool->current = current ? current : new;
@@ -373,10 +385,20 @@ diff -ur nginx-1.0.6/src/core/ngx_palloc.c nginx-1.0.6-no-pool/src/core/ngx_pall
  }
  
  
-@@ -226,18 +200,7 @@
+@@ -216,7 +190,6 @@
+ ngx_palloc_large(ngx_pool_t *pool, size_t size)
+ {
+     void              *p;
+-    ngx_uint_t         n;
+     ngx_pool_large_t  *large;
  
-     n = 0;
+     p = ngx_alloc(size, pool->log);
+@@ -224,20 +197,7 @@
+         return NULL;
+     }
  
+-    n = 0;
+-
 -    for (large = pool->large; large; large = large->next) {
 -        if (large->alloc == NULL) {
 -            large->alloc = p;
@@ -393,7 +415,7 @@ diff -ur nginx-1.0.6/src/core/ngx_palloc.c nginx-1.0.6-no-pool/src/core/ngx_pall
      if (large == NULL) {
          ngx_free(p);
          return NULL;
-@@ -262,7 +225,7 @@
+@@ -262,7 +222,7 @@
          return NULL;
      }
  
@@ -402,7 +424,7 @@ diff -ur nginx-1.0.6/src/core/ngx_palloc.c nginx-1.0.6-no-pool/src/core/ngx_pall
      if (large == NULL) {
          ngx_free(p);
          return NULL;
-@@ -279,17 +242,41 @@
+@@ -279,17 +239,41 @@
  ngx_int_t
  ngx_pfree(ngx_pool_t *pool, void *p)
  {
@@ -446,10 +468,9 @@ diff -ur nginx-1.0.6/src/core/ngx_palloc.c nginx-1.0.6-no-pool/src/core/ngx_pall
      }
  
      return NGX_DECLINED;
-Only in nginx-1.0.6-no-pool/src/core: ngx_palloc.c~
-diff -ur nginx-1.0.6/src/core/ngx_palloc.h nginx-1.0.6-no-pool/src/core/ngx_palloc.h
+diff -ur nginx-1.0.6/src/core/ngx_palloc.h nginx-1.0.6-patched/src/core/ngx_palloc.h
 --- nginx-1.0.6/src/core/ngx_palloc.h	2009-12-17 20:25:46.000000000 +0800
-+++ nginx-1.0.6-no-pool/src/core/ngx_palloc.h	2011-06-30 17:00:43.540946999 +0800
++++ nginx-1.0.6-patched/src/core/ngx_palloc.h	2011-09-13 12:11:03.155622101 +0800
 @@ -38,6 +38,7 @@
  
  
