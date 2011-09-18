@@ -138,6 +138,9 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--without-lua51') {
         $resty_opts{no_lua} = 1;
 
+    } elsif ($opt =~ /^--with-lua51=(.*)/) {
+        $resty_opts{lua_path} = $1;
+
     } elsif ($opt eq '--without-lua_cjson') {
         $resty_opts{no_lua_cjson} = 1;
 
@@ -333,7 +336,8 @@ _END_
     }
 
     if (! $opts->{luajit} && ! $opts->{luajit_path}
-        && ! $opts->{no_http_lua} && ! $opts->{no_lua})
+        && ! $opts->{no_http_lua} && ! $opts->{no_lua}
+        && ! $opts->{lua_path})
     {
         $opts->{lua} = 1;
     }
@@ -498,6 +502,13 @@ _END_
 
         cd '..';
 
+    } elsif ($opts->{lua_path}) {
+        my $lua_prefix = $opts->{lua_path};
+        env LUA_LIB => "$lua_prefix/lib";
+        env LUA_INC => "$lua_prefix/include";
+
+        push @ngx_rpaths, "$lua_prefix/lib";
+
     } elsif ($opts->{lua}) {
         # build stdandard lua
 
@@ -536,10 +547,11 @@ _END_
             . "\$(MAKE) install$extra_opts INSTALL_TOP=\$(DESTDIR)$lua_prefix";
 
         cd '..';
-
     }
 
-    if ($opts->{lua} || $opts->{luajit} || $opts->{luajit_path}) {
+    if ($opts->{lua} || $opts->{lua_path}
+        || $opts->{luajit} || $opts->{luajit_path})
+    {
         # build lua modules
 
         my $lualib_prefix = "$prefix/lualib";
@@ -797,6 +809,7 @@ _EOC_
   --without-lua_rds_parser           disable the lua-rds-parser library
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
+  --with-lua51=PATH                  specify the external installation of Lua 5.1 by PATH
   --with-luajit                      enable and build LuaJIT 2.0
   --with-luajit=PATH                 use the external LuaJIT 2.0 installation specified by PATH
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
