@@ -172,6 +172,9 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--with-luajit') {
         $resty_opts{luajit} = 1;
 
+    } elsif ($opt =~ /^--with-luajit=(.*)/) {
+        $resty_opts{luajit_path} = $1;
+
     } elsif ($opt =~ /^--with-libdrizzle=(.*)/) {
         $resty_opts{libdrizzle} = $1;
 
@@ -329,8 +332,14 @@ _END_
         }
     }
 
-    if (! $opts->{luajit} && ! $opts->{no_http_lua} && ! $opts->{no_lua}) {
+    if (! $opts->{luajit} && ! $opts->{luajit_path}
+        && ! $opts->{no_http_lua} && ! $opts->{no_lua})
+    {
         $opts->{lua} = 1;
+    }
+
+    if ($opts->{luajit} && $opts->{luajit_path}) {
+        die "--with-luajit and --with-luajit=PATH are mutually exclusive.\n";
     }
 
     if ($opts->{no_http_ssl} && $opts->{http_ssl}) {
@@ -432,7 +441,14 @@ _END_
         push @ngx_rpaths, $pg_lib;
     }
 
-    if ($opts->{luajit}) {
+    if ($opts->{luajit_path}) {
+        my $luajit_prefix = $opts->{luajit_path};
+        env LUAJIT_LIB => "$luajit_prefix/lib";
+        env LUAJIT_INC => "$luajit_prefix/include/luajit-2.0";
+
+        push @ngx_rpaths, "$luajit_prefix/lib";
+
+    } elsif ($opts->{luajit}) {
         my $luajit_src = auto_complete 'LuaJIT';
         my $luajit_prefix = "$prefix/luajit";
         my $luajit_root = File::Spec->rel2abs("luajit-root");
@@ -523,7 +539,7 @@ _END_
 
     }
 
-    if ($opts->{lua} || $opts->{luajit}) {
+    if ($opts->{lua} || $opts->{luajit} || $opts->{luajit_path}) {
         # build lua modules
 
         my $lualib_prefix = "$prefix/lualib";
@@ -549,7 +565,7 @@ _EOC_
             }
 
             my $lua_inc;
-            if ($opts->{luajit}) {
+            if ($opts->{luajit} || $opts->{luajit_path}) {
                 $lua_inc = $ENV{LUAJIT_INC};
 
             } else {
@@ -598,7 +614,7 @@ _EOC_
             }
 
             my $lua_inc;
-            if ($opts->{luajit}) {
+            if ($opts->{luajit} || $opts->{luajit_path}) {
                 $lua_inc = $ENV{LUAJIT_INC};
 
             } else {
@@ -645,7 +661,7 @@ _EOC_
             }
 
             my $lua_inc;
-            if ($opts->{luajit}) {
+            if ($opts->{luajit} || $opts->{luajit_path}) {
                 $lua_inc = $ENV{LUAJIT_INC};
 
             } else {
@@ -781,7 +797,8 @@ _EOC_
   --without-lua_rds_parser           disable the lua-rds-parser library
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
-  --with-luajit                      enable LuaJIT 2.0
+  --with-luajit                      enable and build LuaJIT 2.0
+  --with-luajit=PATH                 use the external LuaJIT 2.0 installation specified by PATH
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
   --with-libpq=DIR                   specify the libpq (or postgresql) installation prefix
   --with-pg_config=PATH              specify the path of the pg_config utility
