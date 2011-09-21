@@ -215,8 +215,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -275,8 +275,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -344,8 +344,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
@@ -404,8 +404,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
@@ -463,8 +463,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -llua' \
   --with-http_ssl_module
 cd ../..
@@ -521,8 +521,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
@@ -573,8 +573,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -623,8 +623,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -858,8 +858,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -917,8 +917,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -976,8 +976,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1048,8 +1048,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/opt/drizzle/lib' \
   --with-http_ssl_module
 cd ../..
@@ -1107,8 +1107,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-cc=gcc-4.2 --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1167,8 +1167,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
@@ -1228,8 +1228,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-cc=cl --with-http_ssl_module
 cd ../..
@@ -1301,8 +1301,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/opt/postgres/lib' \
   --with-http_ssl_module
 cd ../..
@@ -1361,8 +1361,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1442,8 +1442,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/usr/lib64' \
   --with-http_ssl_module
 cd ../..
@@ -1512,8 +1512,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1570,8 +1570,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
@@ -1629,8 +1629,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
@@ -1688,8 +1688,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1746,8 +1746,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
@@ -1807,8 +1807,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1865,8 +1865,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1921,8 +1921,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1975,8 +1975,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2027,8 +2027,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/tmp/luajit/lib' \
   --with-http_ssl_module
 cd ../..
@@ -2091,8 +2091,8 @@ cd nginx-1.0.6
   --add-module=../redis2-nginx-module-0.07 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc3 \
-  --add-module=../rds-csv-nginx-module-0.02 \
+  --add-module=../rds-json-nginx-module-0.12rc5 \
+  --add-module=../rds-csv-nginx-module-0.03 \
   --with-ld-opt='-Wl,-rpath,/tmp/lua/lib' \
   --with-http_ssl_module
 cd ../..
