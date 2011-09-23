@@ -110,11 +110,17 @@ my %resty_opts;
 my $dry_run;
 my @ngx_rpaths;
 my $cc;
+my $cores;
 
 my (@ngx_opts, @ngx_cc_opts, @ngx_ld_opts);
 
 for my $opt (@ARGV) {
     next unless defined $opt;
+
+    if ($opt =~ /^-j(\d+)/) {
+        $cores = $1;
+        next;
+    }
 
     if ($opt =~ /^--with-cc=(.+)/) {
         $cc = $1;
@@ -485,7 +491,11 @@ _END_
             $extra_opts .= " CC=$cc";
         }
 
-        shell "${make}$extra_opts PREFIX=$luajit_prefix", $dry_run;
+        if (defined $cores) {
+            shell "${make} -j$cores$extra_opts PREFIX=$luajit_prefix", $dry_run;
+        } else {
+            shell "${make}$extra_opts PREFIX=$luajit_prefix", $dry_run;
+        }
 
         shell "${make} install$extra_opts PREFIX=$luajit_prefix DESTDIR=$luajit_root", $dry_run;
 
@@ -535,7 +545,12 @@ _END_
             $extra_opts .= " CC=$cc";
         }
 
-        shell "${make}$extra_opts $platform", $dry_run;
+        if (defined $cores) {
+            shell "${make} -j$cores$extra_opts $platform", $dry_run;
+        } else {
+            shell "${make}$extra_opts $platform", $dry_run;
+        }
+
         shell "${make} install$extra_opts INSTALL_TOP=$lua_root$lua_prefix", $dry_run;
 
         env LUA_LIB => "$lua_root$lua_prefix/lib";
@@ -749,6 +764,9 @@ sub usage ($) {
                                      this not only affects nginx, but also other components.
 
   --with-no-pool-patch               enable the no-pool patch for debugging memory issues.
+
+  -jN                                pass -jN option to make while building the bundled
+                                     Lua 5.1 interpreter or LuaJIT 2.0.
 
 _EOC_
 
