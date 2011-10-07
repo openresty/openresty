@@ -21,7 +21,7 @@ for my $file (@files) {
             or die "failed run command $cmd.\n";
     }
 
-    my $cmd = "sed -i 's/1\.0\.5/1.0.6/g' $newfile";
+    my $cmd = "sed -i 's/\Q$ver\E/$newver/g' $newfile";
     system($cmd) == 0
             or die "failed to run command $cmd.\n";
 
