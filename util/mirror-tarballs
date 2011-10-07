@@ -38,13 +38,15 @@ patch -p1 < $root/patches/nginx-$main_ver-no_error_pages.patch || exit 1
 
 patch -p1 < $root/patches/nginx-$main_ver-no_Werror.patch || exit 1
 
-patch -p1 < $root/patches/nginx-$main_ver-request_body_preread_fix.patch || exit 1
+#patch -p1 < $root/patches/nginx-$main_ver-request_body_preread_fix.patch || exit 1
 
 #patch -p1 < $root/patches/nginx-$main_ver-request_body_in_single_buf.patch || exit 1
 
 patch -p1 -l < $root/patches/nginx-$main_ver-subrequest_loop.patch || exit 1
 
 patch -p1 -l < $root/patches/nginx-$main_ver-gzip_empty_flush_buf.patch || exit 1
+
+patch -p1 < $root/patches/nginx-$main_ver-variable_header_ignore_no_hash.patch || exit 1
 
 rm -f *.patch || exit 1
 
