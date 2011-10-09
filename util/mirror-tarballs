@@ -57,7 +57,7 @@ sed -i $"s/NGINX_VERSION \".unknown/NGINX_VERSION \".$minor_ver/" \
     ./nginx-no_pool.patch || exit 1
 rm -rf no-pool-nginx-$ver
 
-ver=0.37rc4
+ver=0.37rc5
 $root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-echo-nginx-module-* echo-nginx-module-$ver || exit 1
