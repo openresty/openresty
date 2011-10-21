@@ -1,6 +1,15 @@
 diff -ur nginx-1.0.8/src/http/ngx_http_request_body.c nginx-1.0.8-patched/src/http/ngx_http_request_body.c
 --- nginx-1.0.8/src/http/ngx_http_request_body.c	2011-09-30 22:36:19.000000000 +0800
-+++ nginx-1.0.8-patched/src/http/ngx_http_request_body.c	2011-10-21 19:05:53.954380165 +0800
++++ nginx-1.0.8-patched/src/http/ngx_http_request_body.c	2011-10-21 21:54:08.460350482 +0800
+@@ -38,7 +38,7 @@
+ 
+     r->main->count++;
+ 
+-    if (r->request_body || r->discard_body) {
++    if (r->request_body || r->discard_body || r->content_length_n == 0) {
+         post_handler(r);
+         return NGX_OK;
+     }
 @@ -440,7 +440,7 @@
      ssize_t       size;
      ngx_event_t  *rev;
