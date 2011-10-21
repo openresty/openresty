@@ -1,12 +1,12 @@
-diff -ru nginx-1.0.8/src/http/ngx_http_request_body.c nginx-1.0.8-patched/src/http/ngx_http_request_body.c
+diff -ur nginx-1.0.8/src/http/ngx_http_request_body.c nginx-1.0.8-patched/src/http/ngx_http_request_body.c
 --- nginx-1.0.8/src/http/ngx_http_request_body.c	2011-09-30 22:36:19.000000000 +0800
-+++ nginx-1.0.8-patched/src/http/ngx_http_request_body.c	2011-10-21 17:32:45.018613625 +0800
++++ nginx-1.0.8-patched/src/http/ngx_http_request_body.c	2011-10-21 19:05:53.954380165 +0800
 @@ -440,7 +440,7 @@
      ssize_t       size;
      ngx_event_t  *rev;
  
 -    if (r != r->main || r->discard_body) {
-+    if (r != r->main || r->discard_body || r->content_length_n) {
++    if (r != r->main || r->discard_body || r->content_length_n == 0) {
          return NGX_OK;
      }
  
@@ -69,7 +69,29 @@ diff -ru nginx-1.0.8/src/http/ngx_http_request_body.c nginx-1.0.8-patched/src/ht
  }
  
 Only in nginx-1.0.8-patched/src/http: ngx_http_request_body.c~
-diff -ru nginx-1.0.8/src/http/ngx_http_request.h nginx-1.0.8-patched/src/http/ngx_http_request.h
+diff -ur nginx-1.0.8/src/http/ngx_http_request.c nginx-1.0.8-patched/src/http/ngx_http_request.c
+--- nginx-1.0.8/src/http/ngx_http_request.c	2011-09-30 22:36:19.000000000 +0800
++++ nginx-1.0.8-patched/src/http/ngx_http_request.c	2011-10-21 19:06:38.404350692 +0800
+@@ -286,6 +286,8 @@
+ 
+         r->pipeline = hc->pipeline;
+ 
++        r->content_length_n = -1;
++
+         if (hc->nbusy) {
+             r->header_in = hc->busy[0];
+         }
+@@ -297,6 +299,8 @@
+             return;
+         }
+ 
++        r->content_length_n = -1;
++
+         hc->request = r;
+     }
+ 
+Only in nginx-1.0.8-patched/src/http: ngx_http_request.c~
+diff -ur nginx-1.0.8/src/http/ngx_http_request.h nginx-1.0.8-patched/src/http/ngx_http_request.h
 --- nginx-1.0.8/src/http/ngx_http_request.h	2011-08-29 18:39:23.000000000 +0800
 +++ nginx-1.0.8-patched/src/http/ngx_http_request.h	2011-10-21 17:26:13.203807584 +0800
 @@ -366,6 +366,9 @@
