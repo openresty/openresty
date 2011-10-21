@@ -581,6 +581,7 @@ _END_
 ngx_lua_dquote='"'
 CFLAGS="\$CFLAGS -DLUA_DEFAULT_PATH='\$ngx_lua_dquote$lualib_prefix/?.lua\$ngx_lua_dquote'"
 CFLAGS="\$CFLAGS -DLUA_DEFAULT_CPATH='\$ngx_lua_dquote$lualib_prefix/?.so\$ngx_lua_dquote'"
+CFLAGS="\$CFLAGS -DNGINX_ALLOW_REQUEST_BODY_UPDATING"
 _EOC_
 
         close $in;
