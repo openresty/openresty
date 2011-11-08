@@ -312,8 +312,8 @@ sub build_resty_opts {
         } else {
             # no gmake found
 
-            if ($platform =~ /bsd/i && $opts->{luajit}) {
-                die "you need to install gmake to build LuaJIT.\n";
+            if ($platform =~ /bsd/i) {
+                die "error: you need to install gmake (Gnu make) to build LuaJIT.\n";
             }
 
             if (can_run("make")) {

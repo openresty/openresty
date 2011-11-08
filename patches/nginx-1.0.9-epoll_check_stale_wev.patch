@@ -1,0 +1,21 @@
+--- nginx-1.0.9/src/event/modules/ngx_epoll_module.c	2011-09-30 22:12:53.000000000 +0800
++++ nginx-1.0.9-patched/src/event/modules/ngx_epoll_module.c	2011-11-07 18:07:04.764111952 +0800
+@@ -681,6 +681,18 @@
+ 
+         wev = c->write;
+ 
++        if (c->fd == -1 || wev->instance != instance) {
++
++            /*
++             * the stale event from a file descriptor
++             * that was just closed in this iteration
++             */
++
++            ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
++                           "epoll: stale event %p", c);
++            continue;
++        }
++
+         if ((revents & EPOLLOUT) && wev->active) {
+ 
+             if (flags & NGX_POST_THREAD_EVENTS) {
