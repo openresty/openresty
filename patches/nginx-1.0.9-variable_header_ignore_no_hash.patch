@@ -1,5 +1,5 @@
---- nginx-1.0.9/src/http/ngx_http_variables.c	2011-05-30 05:36:17.000000000 -0700
-+++ nginx-1.0.9-patched/src/http/ngx_http_variables.c	2011-09-30 10:59:05.000000000 -0700
+--- nginx-1.0.9/src/http/ngx_http_variables.c	2011-05-30 20:36:17.000000000 +0800
++++ nginx-1.0.9-patched/src/http/ngx_http_variables.c	2011-11-08 21:39:28.509366052 +0800
 @@ -648,7 +648,17 @@
  
      a = (ngx_array_t *) ((char *) r + data);
@@ -44,10 +44,12 @@
          len += h[i]->value.len + sizeof("; ") - 1;
      }
  
-@@ -683,6 +696,11 @@
+@@ -682,7 +695,12 @@
+     v->len = len;
      v->data = p;
  
-     for (i = 0; /* void */ ; i++) {
+-    for (i = 0; /* void */ ; i++) {
++    for (i = 0; i < n; i++) {
 +
 +        if (h[i]->hash == 0) {
 +            continue;
