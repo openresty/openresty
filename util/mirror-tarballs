@@ -52,6 +52,8 @@ patch -p1 < $root/patches/nginx-$main_ver-named_location_clear_mods_ctx.patch ||
 
 patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || exit 1
 
+patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
+
 rm -f *.patch || exit 1
 
 cd .. || exit 1
