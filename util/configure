@@ -313,7 +313,9 @@ sub build_resty_opts {
             # no gmake found
 
             if ($platform =~ /bsd/i) {
-                die "error: you need to install gmake (Gnu make) to build LuaJIT.\n";
+                die "error: I cannot find \"gmake\" (Gnu make) in your PATH ".
+                    "envirnonment. You can also specify your make by the ".
+                    "--with-make=PATH option\n";
             }
 
             if (can_run("make")) {
