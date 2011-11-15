@@ -11,6 +11,7 @@ sub env ($$);
 sub cd ($);
 sub auto_complete ($);
 sub usage ($);
+sub trim ($);
 
 my (@make_cmds, @make_install_cmds);
 
@@ -272,8 +273,14 @@ sub shell ($@) {
 
     unless ($dry_run) {
         system($cmd) == 0 or
-            die "failed to run command: $cmd\n";
+            die "failed to run command: ", trim($cmd), "\n";
     }
+}
+
+sub trim ($) {
+    my $cmd = shift;
+    $cmd =~ s/\n.*/.../s;
+    $cmd;
 }
 
 sub auto_complete ($) {
