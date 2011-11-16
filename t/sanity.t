@@ -916,7 +916,7 @@ cd nginx-1.0.9
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.1.2rc3 \
+  --add-module=../drizzle-nginx-module-0.1.2rc4 \
   --add-module=../ngx_lua-0.3.1rc28 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
   --add-module=../srcache-nginx-module-0.13rc2 \
@@ -975,7 +975,7 @@ cd nginx-1.0.9
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.1.2rc3 \
+  --add-module=../drizzle-nginx-module-0.1.2rc4 \
   --add-module=../ngx_lua-0.3.1rc28 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
   --add-module=../srcache-nginx-module-0.13rc2 \
@@ -1047,7 +1047,7 @@ cd nginx-1.0.9
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.1.2rc3 \
+  --add-module=../drizzle-nginx-module-0.1.2rc4 \
   --add-module=../ngx_lua-0.3.1rc28 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
   --add-module=../srcache-nginx-module-0.13rc2 \
