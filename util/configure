@@ -401,14 +401,14 @@ _END_
     }
 
     if (-d 'build') {
-        system("rm -rf build");
+        system("rm -rf build") == 0 or
+            die "failed to remove directory build/.\n";
     }
 
     if (-f 'build') {
-        die "build/ directory already exists\n";
+        die "file \"build\" already exists. please remove it first.\n";
     }
-
-    shell "cp -rp bundle/ build/";
+    shell "cp -rp bundle/ build";
 
     cd 'build';
 

@@ -195,7 +195,7 @@ Options directly inherited from nginx
 --- cmd: ./configure --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -207,13 +207,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -253,7 +253,7 @@ clean:
 --- cmd: ./configure --with-debug --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -267,13 +267,13 @@ cd nginx-1.0.10
   --with-cc-opt='-O0' \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -324,7 +324,7 @@ platform: linux (linux)
 --- cmd: ./configure --with-luajit --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd LuaJIT-2.0.0-beta8
 gmake TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
@@ -336,13 +336,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -383,7 +383,7 @@ clean:
 --- cmd: ./configure --with-luajit --with-cc-opt="-O3" --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd LuaJIT-2.0.0-beta8
 gmake TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
@@ -396,13 +396,13 @@ cd nginx-1.0.10
   --with-cc-opt='-O3' \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -443,7 +443,7 @@ clean:
 --- cmd: ./configure --with-luajit --with-ld-opt="-llua" --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd LuaJIT-2.0.0-beta8
 gmake TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
@@ -455,13 +455,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -502,7 +502,7 @@ clean:
 --- cmd: ./configure --with-luajit --without-http_lua_module --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd LuaJIT-2.0.0-beta8
 gmake TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
@@ -514,12 +514,12 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -560,18 +560,18 @@ clean:
 --- cmd: ./configure --without-http_lua_module --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -603,7 +603,7 @@ clean:
 --- cmd: ./configure --prefix=/opt/blah --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -615,13 +615,13 @@ cd nginx-1.0.10
 ./configure --prefix=/opt/blah/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -842,7 +842,7 @@ Options directly inherited from nginx
 --- cmd: ./configure --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake solaris
@@ -854,13 +854,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -900,7 +900,7 @@ clean:
 --- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake solaris
@@ -912,14 +912,14 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.1.2rc4 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -959,7 +959,7 @@ clean:
 --- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake solaris
@@ -971,14 +971,14 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.1.2rc4 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1029,7 +1029,7 @@ The http_drizzle_module is not enabled while --with-libdrizzle is specified.
 --- cmd: ./configure --with-libdrizzle=/opt/drizzle --with-http_drizzle_module --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 export LIBDRIZZLE_LIB='/opt/drizzle/lib'
 export LIBDRIZZLE_INC='/opt/drizzle/include/libdrizzle-1.0'
@@ -1043,14 +1043,14 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../drizzle-nginx-module-0.1.2rc4 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1091,7 +1091,7 @@ clean:
 --- cmd: ./configure --with-cc=gcc-4.2 --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake CC=gcc-4.2 solaris
@@ -1103,13 +1103,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1149,7 +1149,7 @@ clean:
 --- cmd: ./configure --with-luajit --with-debug --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd LuaJIT-2.0.0-beta8
 gmake CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit
@@ -1163,13 +1163,13 @@ cd nginx-1.0.10
   --with-cc-opt='-O0' \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1210,7 +1210,7 @@ clean:
 --- cmd: ./configure --with-luajit --with-debug --dry-run --with-cc=cl
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd LuaJIT-2.0.0-beta8
 gmake CCDEBUG=-g Q= CC=cl PREFIX=/usr/local/openresty/luajit
@@ -1224,13 +1224,13 @@ cd nginx-1.0.10
   --with-cc-opt='-O0' \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1282,7 +1282,7 @@ The http_postgres_module is not enabled while --with-libpq is specified.
 --- cmd: ./configure --with-libpq=/opt/postgres --with-http_postgres_module --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 export LIBPQ_LIB='/opt/postgres/lib'
 export LIBPQ_INC='/opt/postgres/include'
@@ -1296,14 +1296,14 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_postgres-0.9rc2 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1344,7 +1344,7 @@ clean:
 --- cmd: ./configure --with-http_iconv_module --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -1357,13 +1357,13 @@ cd nginx-1.0.10
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../iconv-nginx-module-0.10rc5 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1423,7 +1423,7 @@ clean:
 --- cmd: ./configure --with-pg_config=pg_config --with-http_postgres_module --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 export LIBPQ_LIB='/usr/lib64'
 export LIBPQ_INC='/usr/include'
@@ -1437,14 +1437,14 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_postgres-0.9rc2 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1496,7 +1496,7 @@ The http_postgres_module is not enabled while --with-pg_config is specified.
 --- cmd: ./configure --with-make=make --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 make linux
@@ -1508,13 +1508,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1554,7 +1554,7 @@ clean:
 --- cmd: ./configure --with-luajit --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd LuaJIT-2.0.0-beta8
 gmake TARGET_STRIP=@: INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' PREFIX=/usr/local/openresty/luajit
@@ -1566,13 +1566,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1613,7 +1613,7 @@ clean:
 --- cmd: ./configure --with-luajit --dry-run --platform=freebsd
 --- out
 platform: freebsd (freebsd)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd LuaJIT-2.0.0-beta8
 gmake TARGET_STRIP=@: CFLAGS=-I.. PREFIX=/usr/local/openresty/luajit
@@ -1625,13 +1625,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1672,7 +1672,7 @@ clean:
 --- cmd: ./configure --dry-run --platform=darwin
 --- out
 platform: macosx (darwin)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake macosx
@@ -1684,13 +1684,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1730,7 +1730,7 @@ clean:
 --- cmd: ./configure --dry-run --platform=darwin --with-luajit
 --- out
 platform: macosx (darwin)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd LuaJIT-2.0.0-beta8
 gmake TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
@@ -1742,13 +1742,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1789,7 +1789,7 @@ clean:
 --- cmd: ./configure --dry-run --platform=solaris --with-debug
 --- out
 platform: solaris (solaris)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake solaris
@@ -1803,13 +1803,13 @@ cd nginx-1.0.10
   --with-cc-opt='-O0' \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1849,7 +1849,7 @@ clean:
 --- cmd: ./configure --dry-run --without-lua_cjson
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -1861,13 +1861,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1905,7 +1905,7 @@ clean:
 --- cmd: ./configure --dry-run --without-lua_redis_parser --without-lua_cjson
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -1917,13 +1917,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -1959,7 +1959,7 @@ clean:
 --- cmd: ./configure --dry-run --without-lua_rds_parser
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -1971,13 +1971,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -2015,7 +2015,7 @@ clean:
 --- cmd: ./configure --with-luajit=/tmp/luajit --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 export LUAJIT_LIB='/tmp/luajit/lib'
 export LUAJIT_INC='/tmp/luajit/include/luajit-2.0'
@@ -2023,13 +2023,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -2079,7 +2079,7 @@ platform: linux (linux)
 --- cmd: ./configure --dry-run --with-lua51=/tmp/lua
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 export LUA_LIB='/tmp/lua/lib'
 export LUA_INC='/tmp/lua/include'
@@ -2087,13 +2087,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -2132,7 +2132,7 @@ clean:
 --- cmd: ./configure --dry-run -j10
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake -j10 linux
@@ -2144,13 +2144,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
@@ -2190,7 +2190,7 @@ clean:
 --- cmd: ./configure --with-luajit --dry-run -j5
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd LuaJIT-2.0.0-beta8
 gmake -j5 TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
@@ -2202,13 +2202,13 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc3 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
   --add-module=../ngx_lua-0.3.1rc38 \
   --add-module=../headers-more-nginx-module-0.16rc4 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
