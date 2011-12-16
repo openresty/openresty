@@ -2,6 +2,7 @@
 bin/openresty.fcgi
 demo/Admin/.rsync
 *~
+*.swo
 *.json
 *.o
 *.hi
