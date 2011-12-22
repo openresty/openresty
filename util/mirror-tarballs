@@ -54,6 +54,8 @@ patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || e
 
 patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
 
+patch -p1 < $root/patches/nginx-$main_ver-gzip_ok_invalid_read_fix.patch || exit 1
+
 rm -f *.patch || exit 1
 
 cd .. || exit 1
@@ -205,16 +207,16 @@ rm lua-makefile-fix.patch || exit 1
 
 #################################
 
-ver=2.0.0-beta8
+ver=2.0.0-beta9
 $root/util/get-tarball "http://luajit.org/download/LuaJIT-$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 
-cd LuaJIT-$ver || exit 1;
-$root/util/get-tarball http://luajit.org/download/beta8_hotfix1.patch -O beta8_hotfix1.patch
-patch -p1 < beta8_hotfix1.patch || exit 1
-rm beta8_hotfix1.patch || exit 1
-cp $root/misc/unwind-generic.h ./unwind.h || exit 1
-cd ..
+#cd LuaJIT-$ver || exit 1;
+#$root/util/get-tarball http://luajit.org/download/beta8_hotfix1.patch -O beta8_hotfix1.patch
+#patch -p1 < beta8_hotfix1.patch || exit 1
+#rm beta8_hotfix1.patch || exit 1
+#cp $root/misc/unwind-generic.h ./unwind.h || exit 1
+#cd ..
 
 #################################
 
