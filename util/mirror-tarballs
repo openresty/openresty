@@ -54,7 +54,7 @@ patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || e
 
 patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
 
-patch -p1 < $root/patches/nginx-$main_ver-gzip_ok_invalid_read_fix.patch || exit 1
+#patch -p1 < $root/patches/nginx-$main_ver-gzip_ok_invalid_read_fix.patch || exit 1
 
 rm -f *.patch || exit 1
 
