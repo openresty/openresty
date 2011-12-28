@@ -212,6 +212,25 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--without-http_ssl_module') {
         $resty_opts{no_http_ssl} = 1;
 
+    } elsif ($opt =~ /^--add-module=(.*)/) {
+
+        my $mod_path=$1;
+        my $path;
+        my $new_opt;
+
+        if ($mod_path =~ /^\//) {
+            #absolute path
+            $path = $mod_path;
+        }
+        else{
+            #relative path
+            $path = "$root_dir/$mod_path";
+        }
+
+        $new_opt = "--add-module=$path";
+
+        push @ngx_opts, $new_opt;
+
     } elsif ($opt =~ /^--\w.*/) {
         push @ngx_opts, $opt;
 
