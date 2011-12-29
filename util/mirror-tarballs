@@ -46,9 +46,9 @@ patch -p1 -l < $root/patches/nginx-$main_ver-subrequest_loop.patch || exit 1
 
 patch -p1 -l < $root/patches/nginx-$main_ver-gzip_empty_flush_buf.patch || exit 1
 
-patch -p1 < $root/patches/nginx-$main_ver-variable_header_ignore_no_hash.patch || exit 1
+#patch -p1 < $root/patches/nginx-$main_ver-variable_header_ignore_no_hash.patch || exit 1
 
-patch -p1 < $root/patches/nginx-$main_ver-named_location_clear_mods_ctx.patch || exit 1
+#patch -p1 < $root/patches/nginx-$main_ver-named_location_clear_mods_ctx.patch || exit 1
 
 patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || exit 1
 
