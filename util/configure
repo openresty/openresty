@@ -214,22 +214,8 @@ for my $opt (@ARGV) {
 
     } elsif ($opt =~ /^--add-module=(.*)/) {
 
-        my $mod_path=$1;
-        my $path;
-        my $new_opt;
-
-        if ($mod_path =~ /^\//) {
-            #absolute path
-            $path = $mod_path;
-        }
-        else{
-            #relative path
-            $path = "$root_dir/$mod_path";
-        }
-
-        $new_opt = "--add-module=$path";
-
-        push @ngx_opts, $new_opt;
+        my $mod_path = File::Spec->rel2abs($1);
+        push @ngx_opts, "--add-module=$mod_path";
 
     } elsif ($opt =~ /^--\w.*/) {
         push @ngx_opts, $opt;
