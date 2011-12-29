@@ -991,9 +991,9 @@ sub gen_makefile {
 
     print $out ".PHONY: all install clean\n\n";
 
-    print $out "all:\n\t" . join("\n\t", @make_cmds) . "\n\n";
+        print $out "all:\n\t" . join("\n\t", @make_cmds) . "\n\n";
 
-    print $out "install:\n\t" . join("\n\t", @make_install_cmds) . "\n\n";
+    print $out "install: all\n\t" . join("\n\t", @make_install_cmds) . "\n\n";
 
     print $out "clean:\n\trm -rf build\n";
 
