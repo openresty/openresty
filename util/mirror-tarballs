@@ -52,6 +52,10 @@ patch -p1 < $root/patches/nginx-$main_ver-named_location_clear_mods_ctx.patch ||
 
 patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || exit 1
 
+patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
+
+#patch -p1 < $root/patches/nginx-$main_ver-gzip_ok_invalid_read_fix.patch || exit 1
+
 rm -f *.patch || exit 1
 
 cd .. || exit 1
@@ -66,7 +70,7 @@ $root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ve
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-echo-nginx-module-* echo-nginx-module-$ver || exit 1
 
-ver=0.03rc5
+ver=0.03rc8
 $root/util/get-tarball "http://github.com/agentzh/xss-nginx-module/tarball/v$ver" -O xss-nginx-module-$ver.tar.gz || exit 1
 tar -xzf xss-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-xss-nginx-module-* xss-nginx-module-$ver || exit 1
@@ -76,12 +80,12 @@ $root/util/get-tarball "http://github.com/simpl/ngx_devel_kit/tarball/v$ver" -O 
 tar -xzf ngx_devel_kit-$ver.tar.gz || exit 1
 mv simpl-ngx_devel_kit-* ngx_devel_kit-$ver || exit 1
 
-ver=0.22rc3
+ver=0.22rc4
 $root/util/get-tarball "http://github.com/agentzh/set-misc-nginx-module/tarball/v$ver" -O set-misc-nginx-module-$ver.tar.gz || exit 1
 tar -xzf set-misc-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-set-misc-nginx-module-* set-misc-nginx-module-$ver || exit 1
 
-ver=0.12rc6
+ver=0.12rc7
 $root/util/get-tarball "http://github.com/agentzh/rds-json-nginx-module/tarball/v$ver" -O rds-json-nginx-module-$ver.tar.gz || exit 1
 tar -xzf rds-json-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-json-nginx-module-* rds-json-nginx-module-$ver || exit 1
@@ -91,21 +95,21 @@ $root/util/get-tarball "http://github.com/agentzh/rds-csv-nginx-module/tarball/v
 tar -xzf rds-csv-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
 
-ver=0.16rc3
+ver=0.16rc6
 $root/util/get-tarball "http://github.com/agentzh/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
 tar -xzf headers-more-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.1.2rc3
+ver=0.1.2rc4
 $root/util/get-tarball "http://github.com/chaoslawful/drizzle-nginx-module/tarball/v$ver" -O drizzle-nginx-module-$ver.tar.gz || exit 1
 tar -xzf drizzle-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.3.1rc27
+ver=0.3.1rc42
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -119,14 +123,14 @@ mv agentzh-array-var-nginx-module-* array-var-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.13rc1
+ver=0.13rc2
 $root/util/get-tarball "http://github.com/agentzh/memc-nginx-module/tarball/v$ver" -O memc-nginx-module-$ver.tar.gz || exit 1
 tar -xzf memc-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-memc-nginx-module-* memc-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.13rc2
+ver=0.13rc3
 $root/util/get-tarball "http://github.com/agentzh/srcache-nginx-module/tarball/v$ver" -O srcache-nginx-module-$ver.tar.gz || exit 1
 tar -xzf srcache-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-srcache-nginx-module-* srcache-nginx-module-$ver || exit 1
@@ -176,7 +180,7 @@ mv FRiCKLE-ngx_postgres-* ngx_postgres-$ver || exit 1
 
 #################################
 
-ver=0.08rc1
+ver=0.08rc2
 $root/util/get-tarball "http://github.com/agentzh/redis2-nginx-module/tarball/v$ver" -O redis2-nginx-module-$ver.tar.gz || exit 1
 tar -xzf redis2-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
@@ -203,21 +207,21 @@ rm lua-makefile-fix.patch || exit 1
 
 #################################
 
-ver=2.0.0-beta8
+ver=2.0.0-beta9
 $root/util/get-tarball "http://luajit.org/download/LuaJIT-$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 
 cd LuaJIT-$ver || exit 1;
-$root/util/get-tarball http://luajit.org/download/beta8_hotfix1.patch -O beta8_hotfix1.patch
-patch -p1 < beta8_hotfix1.patch || exit 1
-rm beta8_hotfix1.patch || exit 1
+#$root/util/get-tarball http://luajit.org/download/beta8_hotfix1.patch -O beta8_hotfix1.patch
+#patch -p1 < beta8_hotfix1.patch || exit 1
+#rm beta8_hotfix1.patch || exit 1
 cp $root/misc/unwind-generic.h ./unwind.h || exit 1
 cd ..
 
 #################################
 
 ver=1.0.3
-$root/util/get-tarball "http://www.kyne.com.au/~mark/software/lua-cjson-$ver.tar.gz" -O "lua-cjson-$ver.tar.gz" || exit 1
+$root/util/get-tarball "http://www.kyne.com.au/~mark/software/old/lua-cjson-$ver.tar.gz" -O "lua-cjson-$ver.tar.gz" || exit 1
 tar -xzf lua-cjson-$ver.tar.gz || exit 1
 cd lua-cjson-$ver || exit 1
 #patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1

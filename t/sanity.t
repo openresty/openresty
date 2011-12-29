@@ -2,7 +2,7 @@
 
 use t::Config;
 
-plan tests => 151;
+plan tests => 155;
 
 #no_diff();
 
@@ -195,7 +195,7 @@ Options directly inherited from nginx
 --- cmd: ./configure --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -203,23 +203,23 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -234,15 +234,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -253,7 +253,7 @@ clean:
 --- cmd: ./configure --with-debug --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -261,25 +261,25 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
   --with-cc-opt='-O0' \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -294,15 +294,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall -pedantic" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall -pedantic" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -324,31 +324,31 @@ platform: linux (linux)
 --- cmd: ./configure --with-luajit --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
-cd LuaJIT-2.0.0-beta8
+cd LuaJIT-2.0.0-beta9
 gmake TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 gmake install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
@@ -361,18 +361,18 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+install: all
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -383,32 +383,32 @@ clean:
 --- cmd: ./configure --with-luajit --with-cc-opt="-O3" --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
-cd LuaJIT-2.0.0-beta8
+cd LuaJIT-2.0.0-beta9
 gmake TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 gmake install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O3' \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
@@ -421,18 +421,18 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+install: all
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -443,31 +443,31 @@ clean:
 --- cmd: ./configure --with-luajit --with-ld-opt="-llua" --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
-cd LuaJIT-2.0.0-beta8
+cd LuaJIT-2.0.0-beta9
 gmake TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 gmake install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -llua' \
   --with-http_ssl_module
@@ -480,18 +480,18 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+install: all
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -502,30 +502,30 @@ clean:
 --- cmd: ./configure --with-luajit --without-http_lua_module --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
-cd LuaJIT-2.0.0-beta8
+cd LuaJIT-2.0.0-beta9
 gmake TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 gmake install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
@@ -538,18 +538,18 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+install: all
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -560,24 +560,24 @@ clean:
 --- cmd: ./configure --without-http_lua_module --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -589,10 +589,10 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+install: all
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -603,7 +603,7 @@ clean:
 --- cmd: ./configure --prefix=/opt/blah --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -611,23 +611,23 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/opt/blah/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -642,15 +642,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_LIB_DIR=/opt/blah/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_LIB_DIR=/opt/blah/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_LIB_DIR=/opt/blah/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_LIB_DIR=/opt/blah/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/opt/blah/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_LIB_DIR=/opt/blah/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_LIB_DIR=/opt/blah/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_LIB_DIR=/opt/blah/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_LIB_DIR=/opt/blah/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -842,7 +842,7 @@ Options directly inherited from nginx
 --- cmd: ./configure --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake solaris
@@ -850,23 +850,23 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -881,15 +881,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) solaris
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O3 -Wall -pedantic -DMISSING_ISINF" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O3 -Wall -pedantic -DMISSING_ISINF" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -900,7 +900,7 @@ clean:
 --- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake solaris
@@ -908,24 +908,24 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.1.2rc2 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../drizzle-nginx-module-0.1.2rc4 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -940,15 +940,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) solaris
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O3 -Wall -pedantic -DMISSING_ISINF" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O3 -Wall -pedantic -DMISSING_ISINF" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -959,7 +959,7 @@ clean:
 --- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake solaris
@@ -967,24 +967,24 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.1.2rc2 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../drizzle-nginx-module-0.1.2rc4 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -999,15 +999,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) solaris
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O3 -Wall -pedantic -DMISSING_ISINF" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O3 -Wall -pedantic -DMISSING_ISINF" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1029,7 +1029,7 @@ The http_drizzle_module is not enabled while --with-libdrizzle is specified.
 --- cmd: ./configure --with-libdrizzle=/opt/drizzle --with-http_drizzle_module --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 export LIBDRIZZLE_LIB='/opt/drizzle/lib'
 export LIBDRIZZLE_INC='/opt/drizzle/include/libdrizzle-1.0'
@@ -1039,24 +1039,24 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../drizzle-nginx-module-0.1.2rc2 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../drizzle-nginx-module-0.1.2rc4 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/opt/drizzle/lib' \
   --with-http_ssl_module
@@ -1072,15 +1072,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1091,7 +1091,7 @@ clean:
 --- cmd: ./configure --with-cc=gcc-4.2 --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake CC=gcc-4.2 solaris
@@ -1099,23 +1099,23 @@ gmake install CC=gcc-4.2 INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/ope
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-cc=gcc-4.2 --with-http_ssl_module
 cd ../..
@@ -1130,15 +1130,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) CC=gcc-4.2 solaris
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O3 -Wall -pedantic -DMISSING_ISINF" CC=gcc-4.2
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc-4.2
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc-4.2
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc-4.2
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install CC=gcc-4.2 INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O3 -Wall -pedantic -DMISSING_ISINF" CC=gcc-4.2
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc-4.2
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc-4.2
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc-4.2
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1149,33 +1149,33 @@ clean:
 --- cmd: ./configure --with-luajit --with-debug --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
-cd LuaJIT-2.0.0-beta8
+cd LuaJIT-2.0.0-beta9
 gmake CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit
 gmake install CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
   --with-cc-opt='-O0' \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
@@ -1188,18 +1188,18 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall -pedantic" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+install: all
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) install CCDEBUG=-g Q= PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall -pedantic" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1210,33 +1210,33 @@ clean:
 --- cmd: ./configure --with-luajit --with-debug --dry-run --with-cc=cl
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
-cd LuaJIT-2.0.0-beta8
+cd LuaJIT-2.0.0-beta9
 gmake CCDEBUG=-g Q= CC=cl PREFIX=/usr/local/openresty/luajit
 gmake install CCDEBUG=-g Q= CC=cl PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
   --with-cc-opt='-O0' \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-cc=cl --with-http_ssl_module
@@ -1249,18 +1249,18 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) CCDEBUG=-g Q= CC=cl PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) CCDEBUG=-g Q= CC=cl PREFIX=/usr/local/openresty/luajit
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall -pedantic" CC=cl
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=cl
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=cl
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=cl
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install CCDEBUG=-g Q= CC=cl PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+install: all
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) install CCDEBUG=-g Q= CC=cl PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall -pedantic" CC=cl
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=cl
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=cl
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O0 -Wall" CC=cl
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1282,7 +1282,7 @@ The http_postgres_module is not enabled while --with-libpq is specified.
 --- cmd: ./configure --with-libpq=/opt/postgres --with-http_postgres_module --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 export LIBPQ_LIB='/opt/postgres/lib'
 export LIBPQ_INC='/opt/postgres/include'
@@ -1292,24 +1292,24 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_postgres-0.9rc1 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_postgres-0.9rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/opt/postgres/lib' \
   --with-http_ssl_module
@@ -1325,15 +1325,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1344,7 +1344,7 @@ clean:
 --- cmd: ./configure --with-http_iconv_module --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -1352,24 +1352,24 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../iconv-nginx-module-0.10rc5 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -1384,15 +1384,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1423,7 +1423,7 @@ clean:
 --- cmd: ./configure --with-pg_config=pg_config --with-http_postgres_module --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 export LIBPQ_LIB='/usr/lib64'
 export LIBPQ_INC='/usr/include'
@@ -1433,24 +1433,24 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_postgres-0.9rc1 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_postgres-0.9rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/usr/lib64' \
   --with-http_ssl_module
@@ -1466,15 +1466,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1496,7 +1496,7 @@ The http_postgres_module is not enabled while --with-pg_config is specified.
 --- cmd: ./configure --with-make=make --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 make linux
@@ -1504,23 +1504,23 @@ make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -1535,15 +1535,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1554,31 +1554,31 @@ clean:
 --- cmd: ./configure --with-luajit --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
-cd LuaJIT-2.0.0-beta8
+cd LuaJIT-2.0.0-beta9
 gmake TARGET_STRIP=@: INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' PREFIX=/usr/local/openresty/luajit
 gmake install TARGET_STRIP=@: INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
@@ -1591,18 +1591,18 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) TARGET_STRIP=@: INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' PREFIX=/usr/local/openresty/luajit
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O3 -Wall -pedantic -DMISSING_ISINF" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+install: all
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) install TARGET_STRIP=@: INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O3 -Wall -pedantic -DMISSING_ISINF" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1613,31 +1613,31 @@ clean:
 --- cmd: ./configure --with-luajit --dry-run --platform=freebsd
 --- out
 platform: freebsd (freebsd)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
-cd LuaJIT-2.0.0-beta8
+cd LuaJIT-2.0.0-beta9
 gmake TARGET_STRIP=@: CFLAGS=-I.. PREFIX=/usr/local/openresty/luajit
 gmake install TARGET_STRIP=@: CFLAGS=-I.. PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
@@ -1650,18 +1650,18 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: CFLAGS=-I.. PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) TARGET_STRIP=@: CFLAGS=-I.. PREFIX=/usr/local/openresty/luajit
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: CFLAGS=-I.. PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+install: all
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) install TARGET_STRIP=@: CFLAGS=-I.. PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1672,7 +1672,7 @@ clean:
 --- cmd: ./configure --dry-run --platform=darwin
 --- out
 platform: macosx (darwin)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake macosx
@@ -1680,23 +1680,23 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -1711,15 +1711,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) macosx
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1730,31 +1730,31 @@ clean:
 --- cmd: ./configure --dry-run --platform=darwin --with-luajit
 --- out
 platform: macosx (darwin)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
-cd LuaJIT-2.0.0-beta8
+cd LuaJIT-2.0.0-beta9
 gmake TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 gmake install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
@@ -1767,18 +1767,18 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+install: all
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1789,7 +1789,7 @@ clean:
 --- cmd: ./configure --dry-run --platform=solaris --with-debug
 --- out
 platform: solaris (solaris)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake solaris
@@ -1797,25 +1797,25 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
   --with-cc-opt='-O0' \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -1830,15 +1830,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) solaris
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O0 -Wall -pedantic -DMISSING_ISINF" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O0 -Wall" CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O0 -Wall" CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O0 -Wall" CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O0 -Wall -pedantic -DMISSING_ISINF" CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O0 -Wall" CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O0 -Wall" CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O0 -Wall" CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1849,7 +1849,7 @@ clean:
 --- cmd: ./configure --dry-run --without-lua_cjson
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -1857,23 +1857,23 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -1887,14 +1887,14 @@ Type the following commands to build and install:
 all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1905,7 +1905,7 @@ clean:
 --- cmd: ./configure --dry-run --without-lua_redis_parser --without-lua_cjson
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -1913,23 +1913,23 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -1942,13 +1942,13 @@ Type the following commands to build and install:
 
 all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -1959,7 +1959,7 @@ clean:
 --- cmd: ./configure --dry-run --without-lua_rds_parser
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake linux
@@ -1967,23 +1967,23 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -1998,13 +1998,13 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -2015,27 +2015,27 @@ clean:
 --- cmd: ./configure --with-luajit=/tmp/luajit --dry-run
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 export LUAJIT_LIB='/tmp/luajit/lib'
 export LUAJIT_INC='/tmp/luajit/include/luajit-2.0'
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/tmp/luajit/lib' \
   --with-http_ssl_module
@@ -2050,14 +2050,14 @@ Type the following commands to build and install:
 all:
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -2079,27 +2079,27 @@ platform: linux (linux)
 --- cmd: ./configure --dry-run --with-lua51=/tmp/lua
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 export LUA_LIB='/tmp/lua/lib'
 export LUA_INC='/tmp/lua/include'
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/tmp/lua/lib' \
   --with-http_ssl_module
@@ -2114,14 +2114,14 @@ Type the following commands to build and install:
 all:
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -2132,7 +2132,7 @@ clean:
 --- cmd: ./configure --dry-run -j10
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
 cd lua-5.1.4
 gmake -j10 linux
@@ -2140,23 +2140,23 @@ gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
 export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
 export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-http_ssl_module
 cd ../..
@@ -2171,15 +2171,15 @@ all:
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
+install: all
 	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
@@ -2190,31 +2190,31 @@ clean:
 --- cmd: ./configure --with-luajit --dry-run -j5
 --- out
 platform: linux (linux)
-cp -rp bundle/ build/
+cp -rp bundle/ build
 cd build
-cd LuaJIT-2.0.0-beta8
+cd LuaJIT-2.0.0-beta9
 gmake -j5 TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 gmake install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0'
 cd ..
-cd nginx-1.1.5
+cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../echo-nginx-module-0.37rc7 \
-  --add-module=../xss-nginx-module-0.03rc3 \
-  --add-module=../set-misc-nginx-module-0.22rc3 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc23 \
-  --add-module=../headers-more-nginx-module-0.16rc3 \
-  --add-module=../srcache-nginx-module-0.13rc2 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
-  --add-module=../memc-nginx-module-0.13rc1 \
-  --add-module=../redis2-nginx-module-0.08rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
   --add-module=../upstream-keepalive-nginx-module-0.3 \
   --add-module=../auth-request-nginx-module-0.2 \
-  --add-module=../rds-json-nginx-module-0.12rc6 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
@@ -2227,18 +2227,76 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
 
-install:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta8 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+install: all
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.0.0-beta9 && $(MAKE) install TARGET_STRIP=@: PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.1.5 && $(MAKE) install DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.0 LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
+
+clean:
+	rm -rf build
+
+
+
+=== TEST 41: --add-module
+--- cmd: ./configure --add-module=/path/to/some/module --add-module=../some/module/ --dry-run
+--- out
+platform: linux (linux)
+cp -rp bundle/ build
+cd build
+cd lua-5.1.4
+gmake linux
+gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
+export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd ..
+cd nginx-1.0.10
+./configure --prefix=/usr/local/openresty/nginx \
+  --add-module=../ngx_devel_kit-0.2.17 \
+  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
+  --add-module=../form-input-nginx-module-0.07rc5 \
+  --add-module=../encrypted-session-nginx-module-0.01 \
+  --add-module=../ngx_lua-0.3.1rc42 \
+  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
+  --add-module=../array-var-nginx-module-0.03rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
+  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../auth-request-nginx-module-0.2 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
+  --add-module=../rds-csv-nginx-module-0.04 \
+  --add-module=/path/to/some/module --add-module=$OPENRESTY_DIR/../some/module --with-http_ssl_module
+cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
+
+--- makefile
+.PHONY: all install clean
+
+all:
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
+
+install: all
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build

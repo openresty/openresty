@@ -2,6 +2,7 @@ package t::Config;
 
 use Test::Base -Base;
 use IPC::Run3 qw( run3 );
+use Cwd qw( cwd );
 
 our @EXPORT = qw(
     run_tests
@@ -13,6 +14,7 @@ sub shell (@);
 sub cd ($);
 
 our $BuildRoot;
+our $DistRoot;
 our @SavedTests;
 our $RootDir = `pwd`;
 chomp $RootDir;
@@ -23,6 +25,7 @@ sub run_tests {
 
     cd "ngx_openresty-$ver";
 
+    $DistRoot = cwd();
     $BuildRoot = File::Spec->rel2abs("./build");
 
     for my $block (blocks()) {
@@ -52,6 +55,7 @@ sub run_test ($) {
         $expected_err = '';
     } else {
         $expected_err =~ s/\$OPENRESTY_BUILD_DIR\b/$BuildRoot/gs;
+        $expected_err =~ s/\$OPENRESTY_DIR\b/$DistRoot/gs;
     }
 
     my $expected_out = $block->out;
@@ -64,6 +68,7 @@ sub run_test ($) {
     #die $BuildRoot;
 
     $stdout =~ s/\Q$BuildRoot\E/\$OPENRESTY_BUILD_DIR/g;
+    $stdout =~ s/\Q$DistRoot\E/\$OPENRESTY_DIR/g;
 
     is($stdout, $expected_out, "$name - stdout ok");
     is($stderr, $expected_err, "$name - stderr ok");

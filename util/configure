@@ -11,6 +11,7 @@ sub env ($$);
 sub cd ($);
 sub auto_complete ($);
 sub usage ($);
+sub trim ($);
 
 my (@make_cmds, @make_install_cmds);
 
@@ -211,6 +212,11 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--without-http_ssl_module') {
         $resty_opts{no_http_ssl} = 1;
 
+    } elsif ($opt =~ /^--add-module=(.*)/) {
+
+        my $mod_path = File::Spec->rel2abs($1);
+        push @ngx_opts, "--add-module=$mod_path";
+
     } elsif ($opt =~ /^--\w.*/) {
         push @ngx_opts, $opt;
 
@@ -272,8 +278,14 @@ sub shell ($@) {
 
     unless ($dry_run) {
         system($cmd) == 0 or
-            die "failed to run command: $cmd\n";
+            die "failed to run command: ", trim($cmd), "\n";
     }
+}
+
+sub trim ($) {
+    my $cmd = shift;
+    $cmd =~ s/\n.*/.../s;
+    $cmd;
 }
 
 sub auto_complete ($) {
@@ -313,7 +325,9 @@ sub build_resty_opts {
             # no gmake found
 
             if ($platform =~ /bsd/i) {
-                die "error: you need to install gmake (Gnu make) to build LuaJIT.\n";
+                die "error: I cannot find \"gmake\" (Gnu make) in your PATH ".
+                    "envirnonment. You can also specify your make by the ".
+                    "--with-make=PATH option\n";
             }
 
             if (can_run("make")) {
@@ -392,14 +406,14 @@ _END_
     }
 
     if (-d 'build') {
-        system("rm -rf build");
+        system("rm -rf build") == 0 or
+            die "failed to remove directory build/.\n";
     }
 
     if (-f 'build') {
-        die "build/ directory already exists\n";
+        die "file \"build\" already exists. please remove it first.\n";
     }
-
-    shell "cp -rp bundle/ build/";
+    shell "cp -rp bundle/ build";
 
     cd 'build';
 
@@ -977,9 +991,9 @@ sub gen_makefile {
 
     print $out ".PHONY: all install clean\n\n";
 
-    print $out "all:\n\t" . join("\n\t", @make_cmds) . "\n\n";
+        print $out "all:\n\t" . join("\n\t", @make_cmds) . "\n\n";
 
-    print $out "install:\n\t" . join("\n\t", @make_install_cmds) . "\n\n";
+    print $out "install: all\n\t" . join("\n\t", @make_install_cmds) . "\n\n";
 
     print $out "clean:\n\trm -rf build\n";
 
