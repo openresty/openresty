@@ -65,7 +65,7 @@ sed -i $"s/NGINX_VERSION \".unknown/NGINX_VERSION \".$minor_ver/" \
     ./nginx-no_pool.patch || exit 1
 rm -rf no-pool-nginx-$ver
 
-ver=0.37rc7
+ver=0.37rc8
 $root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-echo-nginx-module-* echo-nginx-module-$ver || exit 1
@@ -95,7 +95,7 @@ $root/util/get-tarball "http://github.com/agentzh/rds-csv-nginx-module/tarball/v
 tar -xzf rds-csv-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
 
-ver=0.16rc6
+ver=0.16rc7
 $root/util/get-tarball "http://github.com/agentzh/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
 tar -xzf headers-more-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
@@ -109,7 +109,7 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.3.1rc42
+ver=0.3.1rc45
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -159,7 +159,7 @@ mv agentzh-encrypted-session-nginx-module-* encrypted-session-nginx-module-$ver 
 #################################
 
 
-ver=0.3
+ver=0.7
 $root/util/get-tarball "http://mdounin.ru/files/ngx_http_upstream_keepalive-$ver.tar.gz" -O upstream_keepalive-$ver.tar.gz || exit 1
 tar -xzf upstream_keepalive-$ver.tar.gz || exit 1
 mv ngx_http_upstream_keepalive-* upstream-keepalive-nginx-module-$ver || exit 1
