@@ -2,7 +2,7 @@
 
 use t::Config;
 
-plan tests => 155;
+plan tests => 159;
 
 #no_diff();
 
@@ -190,7 +190,6 @@ Options directly inherited from nginx
 
 
 
-
 === TEST 2: default
 --- cmd: ./configure --dry-run
 --- out
@@ -206,18 +205,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -266,18 +265,18 @@ cd nginx-1.0.10
   --with-debug \
   --with-cc-opt='-O0' \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -335,18 +334,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -395,18 +394,18 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O3' \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -454,18 +453,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -513,17 +512,17 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -565,17 +564,17 @@ cd build
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -614,18 +613,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/opt/blah/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -837,7 +836,6 @@ Options directly inherited from nginx
 
 
 
-
 === TEST 12: default on solaris
 --- cmd: ./configure --dry-run --platform=solaris
 --- out
@@ -853,18 +851,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -911,19 +909,19 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
   --add-module=../drizzle-nginx-module-0.1.2rc4 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -970,19 +968,19 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
   --add-module=../drizzle-nginx-module-0.1.2rc4 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1042,19 +1040,19 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
   --add-module=../drizzle-nginx-module-0.1.2rc4 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1102,18 +1100,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1162,18 +1160,18 @@ cd nginx-1.0.10
   --with-debug \
   --with-cc-opt='-O0' \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1223,18 +1221,18 @@ cd nginx-1.0.10
   --with-debug \
   --with-cc-opt='-O0' \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1295,19 +1293,19 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
   --add-module=../ngx_postgres-0.9rc2 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1356,18 +1354,18 @@ cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
   --add-module=../iconv-nginx-module-0.10rc5 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1436,19 +1434,19 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
   --add-module=../ngx_postgres-0.9rc2 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1507,18 +1505,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1565,18 +1563,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1624,18 +1622,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1683,18 +1681,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1741,18 +1739,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1802,18 +1800,18 @@ cd nginx-1.0.10
   --with-debug \
   --with-cc-opt='-O0' \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1860,18 +1858,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1916,18 +1914,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -1970,18 +1968,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -2022,18 +2020,18 @@ export LUAJIT_INC='/tmp/luajit/include/luajit-2.0'
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -2086,18 +2084,18 @@ export LUA_INC='/tmp/lua/include'
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -2143,18 +2141,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -2201,18 +2199,18 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
@@ -2245,7 +2243,7 @@ clean:
 
 
 
-=== TEST 41: --add-module
+=== TEST 41: relative path as the --add-module option's value
 --- cmd: ./configure --add-module=/path/to/some/module --add-module=../some/module/ --dry-run
 --- out
 platform: linux (linux)
@@ -2260,22 +2258,80 @@ cd ..
 cd nginx-1.0.10
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.17 \
-  --add-module=../echo-nginx-module-0.37rc7 \
+  --add-module=../echo-nginx-module-0.37rc8 \
   --add-module=../xss-nginx-module-0.03rc8 \
   --add-module=../set-misc-nginx-module-0.22rc4 \
   --add-module=../form-input-nginx-module-0.07rc5 \
-  --add-module=../encrypted-session-nginx-module-0.01 \
-  --add-module=../ngx_lua-0.3.1rc42 \
-  --add-module=../headers-more-nginx-module-0.16rc6 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
   --add-module=../srcache-nginx-module-0.13rc3 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc2 \
   --add-module=../redis2-nginx-module-0.08rc2 \
-  --add-module=../upstream-keepalive-nginx-module-0.3 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
   --add-module=../auth-request-nginx-module-0.2 \
   --add-module=../rds-json-nginx-module-0.12rc7 \
   --add-module=../rds-csv-nginx-module-0.04 \
   --add-module=/path/to/some/module --add-module=$OPENRESTY_DIR/../some/module --with-http_ssl_module
+cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
+
+--- makefile
+.PHONY: all install clean
+
+all:
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) linux
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE)
+
+install: all
+	cd $OPENRESTY_BUILD_DIR/lua-5.1.4 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-1.0.3 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.09rc5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=gcc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.0.10 && $(MAKE) install DESTDIR=$(DESTDIR)
+
+clean:
+	rm -rf build
+
+
+
+=== TEST 42: relative path as the --with-openssl option's value
+--- cmd: ./configure --with-openssl=../some/module/ --dry-run
+--- out
+platform: linux (linux)
+cp -rp bundle/ build
+cd build
+cd lua-5.1.4
+gmake linux
+gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua
+export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
+export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd ..
+cd nginx-1.0.10
+./configure --prefix=/usr/local/openresty/nginx \
+  --add-module=../ngx_devel_kit-0.2.17 \
+  --add-module=../echo-nginx-module-0.37rc8 \
+  --add-module=../xss-nginx-module-0.03rc8 \
+  --add-module=../set-misc-nginx-module-0.22rc4 \
+  --add-module=../form-input-nginx-module-0.07rc5 \
+  --add-module=../encrypted-session-nginx-module-0.02 \
+  --add-module=../ngx_lua-0.4.0 \
+  --add-module=../headers-more-nginx-module-0.16rc7 \
+  --add-module=../srcache-nginx-module-0.13rc3 \
+  --add-module=../array-var-nginx-module-0.03rc1 \
+  --add-module=../memc-nginx-module-0.13rc2 \
+  --add-module=../redis2-nginx-module-0.08rc2 \
+  --add-module=../upstream-keepalive-nginx-module-0.7 \
+  --add-module=../auth-request-nginx-module-0.2 \
+  --add-module=../rds-json-nginx-module-0.12rc7 \
+  --add-module=../rds-csv-nginx-module-0.04 \
+  --with-openssl=$OPENRESTY_DIR/../some/module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake

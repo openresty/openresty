@@ -109,7 +109,7 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.3.1rc45
+ver=0.4.0
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -151,7 +151,7 @@ mv calio-iconv-nginx-module-* iconv-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.01
+ver=0.02
 $root/util/get-tarball "http://github.com/agentzh/encrypted-session-nginx-module/tarball/v$ver" -O encrypted-session-nginx-module-$ver.tar.gz || exit 1
 tar -xzf encrypted-session-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-encrypted-session-nginx-module-* encrypted-session-nginx-module-$ver || exit 1
