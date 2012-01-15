@@ -27,8 +27,8 @@ cd nginx-$ver || exit 1
 # patch the patch
 
 cp $root/patches/nginx-$main_ver-server_header.patch server_header.patch || exit 1
-sed -i $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" \
-    server_header.patch || exit 1
+sed $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" server_header.patch \
+    > server_header.patch.tmp && mv -f server_header.patch.tmp server_header.patch || exit 1
 
 patch -p2 < server_header.patch || exit 1
 
@@ -61,8 +61,10 @@ rm -f *.patch || exit 1
 cd .. || exit 1
 
 cp $root/patches/nginx-$main_ver-no_pool.patch ./nginx-no_pool.patch || exit 1
-sed -i $"s/NGINX_VERSION \".unknown/NGINX_VERSION \".$minor_ver/" \
-    ./nginx-no_pool.patch || exit 1
+sed $"s/NGINX_VERSION \".unknown/NGINX_VERSION \".$minor_ver/" \
+    ./nginx-no_pool.patch > ./nginx-no_pool.patch.tmp && \
+    mv ./nginx-no_pool.patch.tmp ./nginx-no_pool.patch \
+    || exit 1
 rm -rf no-pool-nginx-$ver
 
 ver=0.37rc8
