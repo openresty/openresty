@@ -217,6 +217,11 @@ for my $opt (@ARGV) {
         my $mod_path = File::Spec->rel2abs($1);
         push @ngx_opts, "--add-module=$mod_path";
 
+    } elsif ($opt =~ /^--with-openssl=(.*)/) {
+
+        my $path = File::Spec->rel2abs($1);
+        push @ngx_opts, "--with-openssl=$path";
+
     } elsif ($opt =~ /^--\w.*/) {
         push @ngx_opts, $opt;
 
