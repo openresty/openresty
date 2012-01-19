@@ -27,8 +27,8 @@ cd nginx-$ver || exit 1
 # patch the patch
 
 cp $root/patches/nginx-$main_ver-server_header.patch server_header.patch || exit 1
-sed -i $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" \
-    server_header.patch || exit 1
+sed $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" server_header.patch \
+    > server_header.patch.tmp && mv -f server_header.patch.tmp server_header.patch || exit 1
 
 patch -p2 < server_header.patch || exit 1
 
@@ -61,11 +61,13 @@ rm -f *.patch || exit 1
 cd .. || exit 1
 
 cp $root/patches/nginx-$main_ver-no_pool.patch ./nginx-no_pool.patch || exit 1
-sed -i $"s/NGINX_VERSION \".unknown/NGINX_VERSION \".$minor_ver/" \
-    ./nginx-no_pool.patch || exit 1
+sed $"s/NGINX_VERSION \".unknown/NGINX_VERSION \".$minor_ver/" \
+    ./nginx-no_pool.patch > ./nginx-no_pool.patch.tmp && \
+    mv ./nginx-no_pool.patch.tmp ./nginx-no_pool.patch \
+    || exit 1
 rm -rf no-pool-nginx-$ver
 
-ver=0.37rc8
+ver=0.37
 $root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-echo-nginx-module-* echo-nginx-module-$ver || exit 1
@@ -95,7 +97,7 @@ $root/util/get-tarball "http://github.com/agentzh/rds-csv-nginx-module/tarball/v
 tar -xzf rds-csv-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
 
-ver=0.16rc7
+ver=0.16
 $root/util/get-tarball "http://github.com/agentzh/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
 tar -xzf headers-more-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
@@ -109,7 +111,7 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.3.1rc45
+ver=0.4.0
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -151,7 +153,7 @@ mv calio-iconv-nginx-module-* iconv-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.01
+ver=0.02
 $root/util/get-tarball "http://github.com/agentzh/encrypted-session-nginx-module/tarball/v$ver" -O encrypted-session-nginx-module-$ver.tar.gz || exit 1
 tar -xzf encrypted-session-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-encrypted-session-nginx-module-* encrypted-session-nginx-module-$ver || exit 1
