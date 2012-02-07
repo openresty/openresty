@@ -59,6 +59,7 @@ my @modules = (
     [http_iconv => 'iconv-nginx-module', 'disabled'],
     [http_echo => 'echo-nginx-module'],
     [http_xss => 'xss-nginx-module'],
+    [http_coolkit => 'ngx_coolkit'],
     [http_set_misc => 'set-misc-nginx-module'],
     [http_form_input => 'form-input-nginx-module'],
     [http_encrypted_session => 'encrypted-session-nginx-module'],

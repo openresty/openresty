@@ -182,6 +182,13 @@ mv FRiCKLE-ngx_postgres-* ngx_postgres-$ver || exit 1
 
 #################################
 
+ver=0.1
+$root/util/get-tarball "https://github.com/FRiCKLE/ngx_coolkit/tarball/$ver" -O ngx_coolkit-$ver.tar.gz || exit 1
+tar -xzf ngx_coolkit-$ver.tar.gz || exit 1
+mv FRiCKLE-ngx_coolkit-* ngx_coolkit-$ver || exit 1
+
+#################################
+
 ver=0.08rc2
 $root/util/get-tarball "http://github.com/agentzh/redis2-nginx-module/tarball/v$ver" -O redis2-nginx-module-$ver.tar.gz || exit 1
 tar -xzf redis2-nginx-module-$ver.tar.gz || exit 1
