@@ -495,7 +495,8 @@ _END_
         my $extra_opts = ' TARGET_STRIP=@:';
 
         if ($opts->{debug}) {
-            $extra_opts = ' CCDEBUG=-g Q=';
+            $extra_opts = q{ CCDEBUG=-g Q= XCFLAGS='-DLUAJIT_USE_VALGRIND}
+                .q{ -DLUA_USE_APICHECK -DLUA_USE_ASSERT'};
         }
 
         if ($platform =~ /bsd/i) {
