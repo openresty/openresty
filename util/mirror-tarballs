@@ -224,9 +224,10 @@ $root/util/get-tarball "http://luajit.org/download/LuaJIT-$ver.tar.gz" -O "LuaJI
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 
 cd LuaJIT-$ver || exit 1;
-#$root/util/get-tarball http://luajit.org/download/beta8_hotfix1.patch -O beta8_hotfix1.patch
-#patch -p1 < beta8_hotfix1.patch || exit 1
-#rm beta8_hotfix1.patch || exit 1
+$root/util/get-tarball http://luajit.org/download/beta9_hotfix1.patch -O beta9_hotfix1.patch
+patch -p1 < beta9_hotfix1.patch || exit 1
+rm beta9_hotfix1.patch || exit 1
+
 cp $root/misc/unwind-generic.h ./unwind.h || exit 1
 cd ..
 
