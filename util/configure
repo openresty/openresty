@@ -158,6 +158,9 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--without-lua_resty_memcached') {
         $resty_opts{no_lua_resty_memcached} = 1;
 
+    } elsif ($opt eq '--without-lua_resty_redis') {
+        $resty_opts{no_lua_resty_redis} = 1;
+
     } elsif ($opt eq '--without-lua_rds_parser') {
         $resty_opts{no_lua_rds_parser} = 1;
 
@@ -765,6 +768,20 @@ _EOC_
             push @make_install_cmds, "cd $root_dir/build/$dir && " .
                 "\$(MAKE) install$extra_opts";
         }
+
+        unless ($opts->{no_lua_resty_redis}) {
+            my $name = 'lua-resty-redis';
+            my $dir = auto_complete $name;
+            if (!defined $dir) {
+                die "No $name found";
+            }
+
+            my $extra_opts = " DESTDIR=\$(DESTDIR) LUA_LIB_DIR=$lualib_prefix"
+                ." INSTALL=$root_dir/build/install";
+
+            push @make_install_cmds, "cd $root_dir/build/$dir && " .
+                "\$(MAKE) install$extra_opts";
+        }
     }
 
     # prepare nginx configure line
@@ -864,6 +881,7 @@ _EOC_
   --without-lua_redis_parser         disable the lua-redis-parser library
   --without-lua_rds_parser           disable the lua-rds-parser library
   --without-lua_resty_memcached      disable the lua-resty-memcached library
+  --without-lua_resty_redis          disable the lua-resty-redis library
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
   --with-lua51=PATH                  specify the external installation of Lua 5.1 by PATH
