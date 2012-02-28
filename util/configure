@@ -161,6 +161,15 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--without-lua_resty_redis') {
         $resty_opts{no_lua_resty_redis} = 1;
 
+    } elsif ($opt eq '--without-lua_resty_mysql') {
+        $resty_opts{no_lua_resty_mysql} = 1;
+
+    } elsif ($opt eq '--without-lua_resty_upload') {
+        $resty_opts{no_lua_resty_upload} = 1;
+
+    } elsif ($opt eq '--without-lua_resty_string') {
+        $resty_opts{no_lua_resty_string} = 1;
+
     } elsif ($opt eq '--without-lua_rds_parser') {
         $resty_opts{no_lua_rds_parser} = 1;
 
@@ -755,32 +764,20 @@ _EOC_
                 "\$(MAKE) install$extra_opts";
         }
 
-        unless ($opts->{no_lua_resty_memcached}) {
-            my $name = 'lua-resty-memcached';
-            my $dir = auto_complete $name;
-            if (!defined $dir) {
-                die "No $name found";
+        for my $key (qw(memcached redis mysql string upload)) {
+            unless ($opts->{"no_lua_resty_$key"}) {
+                my $name = "lua-resty-$key";
+                my $dir = auto_complete $name;
+                if (!defined $dir) {
+                    die "No $name found";
+                }
+
+                my $extra_opts = " DESTDIR=\$(DESTDIR) LUA_LIB_DIR=$lualib_prefix"
+                    ." INSTALL=$root_dir/build/install";
+
+                push @make_install_cmds, "cd $root_dir/build/$dir && " .
+                    "\$(MAKE) install$extra_opts";
             }
-
-            my $extra_opts = " DESTDIR=\$(DESTDIR) LUA_LIB_DIR=$lualib_prefix"
-                ." INSTALL=$root_dir/build/install";
-
-            push @make_install_cmds, "cd $root_dir/build/$dir && " .
-                "\$(MAKE) install$extra_opts";
-        }
-
-        unless ($opts->{no_lua_resty_redis}) {
-            my $name = 'lua-resty-redis';
-            my $dir = auto_complete $name;
-            if (!defined $dir) {
-                die "No $name found";
-            }
-
-            my $extra_opts = " DESTDIR=\$(DESTDIR) LUA_LIB_DIR=$lualib_prefix"
-                ." INSTALL=$root_dir/build/install";
-
-            push @make_install_cmds, "cd $root_dir/build/$dir && " .
-                "\$(MAKE) install$extra_opts";
         }
     }
 
@@ -882,6 +879,9 @@ _EOC_
   --without-lua_rds_parser           disable the lua-rds-parser library
   --without-lua_resty_memcached      disable the lua-resty-memcached library
   --without-lua_resty_redis          disable the lua-resty-redis library
+  --without-lua_resty_mysql          disable the lua-resty-mysql library
+  --without-lua_resty_upload         disable the lua-resty-upload library
+  --without-lua_resty_string         disable the lua-resty-string library
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
   --with-lua51=PATH                  specify the external installation of Lua 5.1 by PATH
