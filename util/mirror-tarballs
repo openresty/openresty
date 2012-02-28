@@ -114,7 +114,7 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.5.0rc15
+ver=0.5.0rc16
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -253,6 +253,13 @@ ver=0.04
 $root/util/get-tarball "http://github.com/agentzh/lua-rds-parser/tarball/v$ver" -O "lua-rds-parser-$ver.tar.gz" || exit 1
 tar -xzf lua-rds-parser-$ver.tar.gz || exit 1
 mv agentzh-lua-rds-parser-* lua-rds-parser-$ver || exit 1
+
+#################################
+
+ver=0.05
+$root/util/get-tarball "http://github.com/agentzh/lua-resty-memcached/tarball/v$ver" -O "lua-resty-memcached-$ver.tar.gz" || exit 1
+tar -xzf lua-resty-memcached-$ver.tar.gz || exit 1
+mv agentzh-lua-resty-memcached-* lua-resty-memcached-$ver || exit 1
 
 #################################
 
