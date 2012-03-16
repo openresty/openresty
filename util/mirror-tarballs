@@ -138,7 +138,7 @@ mv agentzh-memc-nginx-module-* memc-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.13rc5
+ver=0.13rc6
 $root/util/get-tarball "http://github.com/agentzh/srcache-nginx-module/tarball/v$ver" -O srcache-nginx-module-$ver.tar.gz || exit 1
 tar -xzf srcache-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-srcache-nginx-module-* srcache-nginx-module-$ver || exit 1
