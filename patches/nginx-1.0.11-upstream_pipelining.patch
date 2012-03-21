@@ -19,7 +19,6 @@ diff -ur nginx-1.0.11/src/http/ngx_http_upstream.c nginx-1.0.11-patched/src/http
          u->write_event_handler = ngx_http_upstream_dummy_handler;
  
          (void) ngx_handle_write_event(c->write, 0);
-Only in nginx-1.0.11-patched/src/http: ngx_http_upstream.c~
 diff -ur nginx-1.0.11/src/http/ngx_http_upstream.h nginx-1.0.11-patched/src/http/ngx_http_upstream.h
 --- nginx-1.0.11/src/http/ngx_http_upstream.h	2011-11-01 22:18:10.000000000 +0800
 +++ nginx-1.0.11-patched/src/http/ngx_http_upstream.h	2012-03-21 21:18:21.041237173 +0800
