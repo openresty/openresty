@@ -26,6 +26,9 @@ cd nginx-$ver || exit 1
 
 # patch the patch
 
+echo "INFO: applying the upstream-pipelining patch"
+patch -p1 < $root/patches/nginx-$main_ver-upstream_pipelining.patch || exit 1
+
 cp $root/patches/nginx-$main_ver-server_header.patch server_header.patch || exit 1
 sed $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" server_header.patch \
     > server_header.patch.tmp && mv -f server_header.patch.tmp server_header.patch || exit 1
