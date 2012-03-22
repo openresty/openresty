@@ -306,5 +306,6 @@ cp $root/util/install bundle/
 
 cd $root
 
-tar czf $name.tar.gz $name
+tar cf $name.tar $name
+gzip -f --best $name.tar
 
