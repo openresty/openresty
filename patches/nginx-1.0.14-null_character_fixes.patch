@@ -1,0 +1,113 @@
+--- src/http/modules/ngx_http_fastcgi_module.c
++++ src/http/modules/ngx_http_fastcgi_module.c
+@@ -1501,10 +1501,10 @@ ngx_http_fastcgi_process_header(ngx_http
+                     h->lowcase_key = h->key.data + h->key.len + 1
+                                      + h->value.len + 1;
+ 
+-                    ngx_cpystrn(h->key.data, r->header_name_start,
+-                                h->key.len + 1);
+-                    ngx_cpystrn(h->value.data, r->header_start,
+-                                h->value.len + 1);
++                    ngx_memcpy(h->key.data, r->header_name_start, h->key.len);
++                    h->key.data[h->key.len] = '\0';
++                    ngx_memcpy(h->value.data, r->header_start, h->value.len);
++                    h->value.data[h->value.len] = '\0';
+                 }
+ 
+                 h->hash = r->header_hash;
+--- src/http/modules/ngx_http_proxy_module.c
++++ src/http/modules/ngx_http_proxy_module.c
+@@ -1381,8 +1381,10 @@ ngx_http_proxy_process_header(ngx_http_r
+             h->value.data = h->key.data + h->key.len + 1;
+             h->lowcase_key = h->key.data + h->key.len + 1 + h->value.len + 1;
+ 
+-            ngx_cpystrn(h->key.data, r->header_name_start, h->key.len + 1);
+-            ngx_cpystrn(h->value.data, r->header_start, h->value.len + 1);
++            ngx_memcpy(h->key.data, r->header_name_start, h->key.len);
++            h->key.data[h->key.len] = '\0';
++            ngx_memcpy(h->value.data, r->header_start, h->value.len);
++            h->value.data[h->value.len] = '\0';
+ 
+             if (h->key.len == r->lowcase_index) {
+                 ngx_memcpy(h->lowcase_key, r->lowcase_header, h->key.len);
+--- src/http/modules/ngx_http_scgi_module.c
++++ src/http/modules/ngx_http_scgi_module.c
+@@ -941,8 +941,10 @@ ngx_http_scgi_process_header(ngx_http_re
+             h->value.data = h->key.data + h->key.len + 1;
+             h->lowcase_key = h->key.data + h->key.len + 1 + h->value.len + 1;
+ 
+-            ngx_cpystrn(h->key.data, r->header_name_start, h->key.len + 1);
+-            ngx_cpystrn(h->value.data, r->header_start, h->value.len + 1);
++            ngx_memcpy(h->key.data, r->header_name_start, h->key.len);
++            h->key.data[h->key.len] = '\0';
++            ngx_memcpy(h->value.data, r->header_start, h->value.len);
++            h->value.data[h->value.len] = '\0';
+ 
+             if (h->key.len == r->lowcase_index) {
+                 ngx_memcpy(h->lowcase_key, r->lowcase_header, h->key.len);
+--- src/http/modules/ngx_http_uwsgi_module.c
++++ src/http/modules/ngx_http_uwsgi_module.c
+@@ -985,8 +985,10 @@ ngx_http_uwsgi_process_header(ngx_http_r
+             h->value.data = h->key.data + h->key.len + 1;
+             h->lowcase_key = h->key.data + h->key.len + 1 + h->value.len + 1;
+ 
+-            ngx_cpystrn(h->key.data, r->header_name_start, h->key.len + 1);
+-            ngx_cpystrn(h->value.data, r->header_start, h->value.len + 1);
++            ngx_memcpy(h->key.data, r->header_name_start, h->key.len);
++            h->key.data[h->key.len] = '\0';
++            ngx_memcpy(h->value.data, r->header_start, h->value.len);
++            h->value.data[h->value.len] = '\0';
+ 
+             if (h->key.len == r->lowcase_index) {
+                 ngx_memcpy(h->lowcase_key, r->lowcase_header, h->key.len);
+--- src/http/ngx_http_parse.c
++++ src/http/ngx_http_parse.c
+@@ -874,6 +874,10 @@ ngx_http_parse_header_line(ngx_http_requ
+                     break;
+                 }
+ 
++                if (ch == '\0') {
++                    return NGX_HTTP_PARSE_INVALID_HEADER;
++                }
++
+                 r->invalid_header = 1;
+ 
+                 break;
+@@ -936,6 +940,10 @@ ngx_http_parse_header_line(ngx_http_requ
+                 break;
+             }
+ 
++            if (ch == '\0') {
++                return NGX_HTTP_PARSE_INVALID_HEADER;
++            }
++
+             r->invalid_header = 1;
+ 
+             break;
+@@ -954,6 +962,8 @@ ngx_http_parse_header_line(ngx_http_requ
+                 r->header_start = p;
+                 r->header_end = p;
+                 goto done;
++            case '\0':
++                return NGX_HTTP_PARSE_INVALID_HEADER;
+             default:
+                 r->header_start = p;
+                 state = sw_value;
+@@ -975,6 +985,8 @@ ngx_http_parse_header_line(ngx_http_requ
+             case LF:
+                 r->header_end = p;
+                 goto done;
++            case '\0':
++                return NGX_HTTP_PARSE_INVALID_HEADER;
+             }
+             break;
+ 
+@@ -988,6 +1000,8 @@ ngx_http_parse_header_line(ngx_http_requ
+                 break;
+             case LF:
+                 goto done;
++            case '\0':
++                return NGX_HTTP_PARSE_INVALID_HEADER;
+             default:
+                 state = sw_value;
+                 break;

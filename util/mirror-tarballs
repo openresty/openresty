@@ -41,7 +41,7 @@ patch -p1 < $root/patches/nginx-$main_ver-no_error_pages.patch || exit 1
 
 patch -p1 < $root/patches/nginx-$main_ver-no_Werror.patch || exit 1
 
-patch -p1 < $root/patches/nginx-$main_ver-epoll_check_stale_wev.patch || exit 1
+#patch -p1 < $root/patches/nginx-$main_ver-epoll_check_stale_wev.patch || exit 1
 
 #patch -p1 < $root/patches/nginx-$main_ver-request_body_in_single_buf.patch || exit 1
 
@@ -52,7 +52,7 @@ patch -p1 -l < $root/patches/nginx-$main_ver-subrequest_loop.patch || exit 1
 
 patch -p1 -l < $root/patches/nginx-$main_ver-gzip_empty_flush_buf.patch || exit 1
 
-patch -p1 < $root/patches/nginx-$main_ver-variable_header_ignore_no_hash.patch || exit 1
+#patch -p1 < $root/patches/nginx-$main_ver-variable_header_ignore_no_hash.patch || exit 1
 
 patch -p1 < $root/patches/nginx-$main_ver-named_location_clear_mods_ctx.patch || exit 1
 
@@ -60,8 +60,8 @@ patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || e
 
 patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
 
-echo "INFO: applying null-character-fixes patch"
-patch -p0 < $root/patches/nginx-$main_ver-null_character_fixes.patch || exit 1
+#echo "INFO: applying null-character-fixes patch"
+#patch -p0 < $root/patches/nginx-$main_ver-null_character_fixes.patch || exit 1
 
 #patch -p1 < $root/patches/nginx-$main_ver-gzip_ok_invalid_read_fix.patch || exit 1
 
@@ -120,7 +120,7 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.5.0rc21
+ver=0.5.0rc22
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -276,7 +276,7 @@ mv agentzh-lua-resty-redis-* lua-resty-redis-$ver || exit 1
 
 #################################
 
-ver=0.06
+ver=0.07
 $root/util/get-tarball "http://github.com/agentzh/lua-resty-mysql/tarball/v$ver" -O "lua-resty-mysql-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-mysql-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-mysql-* lua-resty-mysql-$ver || exit 1
