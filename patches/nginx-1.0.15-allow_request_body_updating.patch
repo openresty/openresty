@@ -77,7 +77,6 @@ diff -ur nginx-1.0.15/src/http/ngx_http_request_body.c nginx-1.0.15-patched/src/
      }
  }
  
-Only in nginx-1.0.15-patched/src/http: ngx_http_request_body.c~
 diff -ur nginx-1.0.15/src/http/ngx_http_request.c nginx-1.0.15-patched/src/http/ngx_http_request.c
 --- nginx-1.0.15/src/http/ngx_http_request.c	2011-09-30 22:36:19.000000000 +0800
 +++ nginx-1.0.15-patched/src/http/ngx_http_request.c	2011-10-21 19:06:38.404350692 +0800
@@ -99,7 +98,6 @@ diff -ur nginx-1.0.15/src/http/ngx_http_request.c nginx-1.0.15-patched/src/http/
          hc->request = r;
      }
  
-Only in nginx-1.0.15-patched/src/http: ngx_http_request.c~
 diff -ur nginx-1.0.15/src/http/ngx_http_request.h nginx-1.0.15-patched/src/http/ngx_http_request.h
 --- nginx-1.0.15/src/http/ngx_http_request.h	2011-08-29 18:39:23.000000000 +0800
 +++ nginx-1.0.15-patched/src/http/ngx_http_request.h	2011-10-21 17:26:13.203807584 +0800
@@ -113,5 +111,3 @@ diff -ur nginx-1.0.15/src/http/ngx_http_request.h nginx-1.0.15-patched/src/http/
      ngx_http_headers_in_t             headers_in;
      ngx_http_headers_out_t            headers_out;
  
-Only in nginx-1.0.15-patched/src/http: ngx_http_request.h~
-Only in nginx-1.0.15-patched/src/http: tags
