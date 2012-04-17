@@ -1,0 +1,14 @@
+--- nginx-1.0.15/src/http/ngx_http_request.h	2011-08-29 18:39:23.000000000 +0800
++++ nginx-1.0.15-patched/src/http/ngx_http_request.h	2012-02-20 15:50:43.540762756 +0800
+@@ -9,7 +9,10 @@
+ 
+ 
+ #define NGX_HTTP_MAX_URI_CHANGES           10
+-#define NGX_HTTP_MAX_SUBREQUESTS           50
++
++#ifndef NGX_HTTP_MAX_SUBREQUESTS
++#define NGX_HTTP_MAX_SUBREQUESTS           200
++#endif
+ 
+ /* must be 2^n */
+ #define NGX_HTTP_LC_HEADER_LEN             32
