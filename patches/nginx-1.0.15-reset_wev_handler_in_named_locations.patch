@@ -1,0 +1,11 @@
+--- nginx-1.0.15/src/http/ngx_http_core_module.c	2012-03-05 21:03:39.000000000 +0800
++++ nginx-1.0.15-patched/src/http/ngx_http_core_module.c	2012-05-02 21:57:40.624937882 +0800
+@@ -2567,6 +2567,8 @@
+ 
+             r->phase_handler = cmcf->phase_engine.location_rewrite_index;
+ 
++            r->write_event_handler = ngx_http_core_run_phases;
++
+             ngx_http_core_run_phases(r);
+ 
+             return NGX_DONE;
