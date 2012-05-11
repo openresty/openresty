@@ -123,7 +123,7 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.5.0rc25
+ver=0.5.0rc26
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -144,7 +144,7 @@ mv agentzh-memc-nginx-module-* memc-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.13rc6
+ver=0.13rc7
 $root/util/get-tarball "http://github.com/agentzh/srcache-nginx-module/tarball/v$ver" -O srcache-nginx-module-$ver.tar.gz || exit 1
 tar -xzf srcache-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-srcache-nginx-module-* srcache-nginx-module-$ver || exit 1
