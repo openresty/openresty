@@ -1,0 +1,10 @@
+--- nginx-1.0.15/src/http/ngx_http_request.c	2012-03-05 20:49:32.000000000 +0800
++++ nginx-1.0.15-patched/src/http/ngx_http_request.c	2012-05-11 20:50:01.478111234 +0800
+@@ -1900,6 +1900,7 @@
+ 
+     if (rc == NGX_OK && r->filter_finalize) {
+         c->error = 1;
++        ngx_http_finalize_connection(r);
+         return;
+     }
+ 

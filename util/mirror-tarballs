@@ -63,6 +63,9 @@ patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
 echo applying reset_wev_handler_in_named_locations.patch ...
 patch -p1 < $root/patches/nginx-$main_ver-reset_wev_handler_in_named_locations.patch || exit 1
 
+echo applying filter_finalize_hang.patch ...
+patch -p1 < $root/patches/nginx-$main_ver-filter_finalize_hang.patch || exit 1
+
 #echo "INFO: applying null-character-fixes patch"
 #patch -p0 < $root/patches/nginx-$main_ver-null_character_fixes.patch || exit 1
 
