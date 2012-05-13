@@ -107,7 +107,7 @@ $root/util/get-tarball "http://github.com/agentzh/rds-json-nginx-module/tarball/
 tar -xzf rds-json-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-json-nginx-module-* rds-json-nginx-module-$ver || exit 1
 
-ver=0.05rc1
+ver=0.05rc2
 $root/util/get-tarball "http://github.com/agentzh/rds-csv-nginx-module/tarball/v$ver" -O rds-csv-nginx-module-$ver.tar.gz || exit 1
 tar -xzf rds-csv-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
