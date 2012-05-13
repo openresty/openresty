@@ -515,9 +515,9 @@ _END_
                 .q{ -DLUA_USE_ASSERT'};
         }
 
-        if ($platform =~ /bsd/i) {
-            $extra_opts .= ' CFLAGS=-I..';
-        }
+        #if ($platform =~ /bsd/i) {
+        #$extra_opts .= ' CFLAGS=-I..';
+        #}
 
         if ($on_solaris) {
             $extra_opts .= " INSTALL_X='$root_dir/build/install -m 0755' " .
