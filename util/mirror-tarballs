@@ -302,7 +302,7 @@ mv agentzh-lua-resty-upload-* lua-resty-upload-$ver || exit 1
 
 #################################
 
-ver=0.05
+ver=0.06
 $root/util/get-tarball "http://github.com/agentzh/lua-resty-string/tarball/v$ver" -O "lua-resty-string-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-string-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-string-* lua-resty-string-$ver || exit 1
