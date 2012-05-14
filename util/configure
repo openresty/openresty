@@ -517,12 +517,12 @@ _END_
         if ($opts->{debug}) {
             $luajit_xcflags .= " -DLUA_USE_APICHECK -DLUA_USE_ASSERT";
             $luajit_xcflags =~ s/^ +//;
-            $extra_opts = qq{ CCDEBUG=-g Q= XCFLAGS='$luajit_xcflags'};
+            $extra_opts .= qq{ CCDEBUG=-g Q= XCFLAGS='$luajit_xcflags'};
 
         } else {
             if ($luajit_xcflags) {
                 $luajit_xcflags =~ s/^ +//;
-                $extra_opts = qq{ CCDEBUG=-g XCFLAGS='$luajit_xcflags'};
+                $extra_opts .= qq{ XCFLAGS='$luajit_xcflags'};
             }
         }
 
