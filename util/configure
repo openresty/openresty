@@ -114,6 +114,7 @@ my $dry_run;
 my @ngx_rpaths;
 my $cc;
 my $cores;
+my $luajit_xcflags = '';
 
 my (@ngx_opts, @ngx_cc_opts, @ngx_ld_opts);
 
@@ -201,6 +202,9 @@ for my $opt (@ARGV) {
 
     } elsif ($opt =~ /^--with-luajit=(.*)/) {
         $resty_opts{luajit_path} = $1;
+
+    } elsif ($opt =~ /^--with-luajit-xcflags=(.*)/) {
+        $luajit_xcflags .= " $1";
 
     } elsif ($opt =~ /^--with-libdrizzle=(.*)/) {
         $resty_opts{libdrizzle} = $1;
@@ -511,8 +515,15 @@ _END_
         my $extra_opts = ' TARGET_STRIP=@:';
 
         if ($opts->{debug}) {
-            $extra_opts = q{ CCDEBUG=-g Q= XCFLAGS='-DLUA_USE_APICHECK}
-                .q{ -DLUA_USE_ASSERT'};
+            $luajit_xcflags .= " -DLUA_USE_APICHECK -DLUA_USE_ASSERT";
+            $luajit_xcflags =~ s/^ +//;
+            $extra_opts = qq{ CCDEBUG=-g Q= XCFLAGS='$luajit_xcflags'};
+
+        } else {
+            if ($luajit_xcflags) {
+                $luajit_xcflags =~ s/^ +//;
+                $extra_opts = qq{ CCDEBUG=-g XCFLAGS='$luajit_xcflags'};
+            }
         }
 
         #if ($platform =~ /bsd/i) {
@@ -888,6 +899,7 @@ _EOC_
   --with-lua51=PATH                  specify the external installation of Lua 5.1 by PATH
   --with-luajit                      enable and build LuaJIT 2.0
   --with-luajit=PATH                 use the external LuaJIT 2.0 installation specified by PATH
+  --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.0
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
   --with-libpq=DIR                   specify the libpq (or postgresql) installation prefix
   --with-pg_config=PATH              specify the path of the pg_config utility
