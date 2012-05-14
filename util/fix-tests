@@ -37,7 +37,7 @@ for my $t_file (@t_files) {
     my $changed;
     while (<$in>) {
         for my $dir (@dirs) {
-            (my $pat = $dir) =~ s/\d.*//;
+            (my $pat = $dir) =~ s/-(\d+\..*)/-/;
             my $orig = $_;
             if (s{\.\./$pat\S+}{../$dir}g && $orig ne $_) {
                 $changed++;
