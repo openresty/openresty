@@ -69,6 +69,9 @@ patch -p1 < $root/patches/nginx-$main_ver-filter_finalize_hang.patch || exit 1
 echo applying add_core_vars_polluting_globals.patch ...
 patch -p1 < $root/patches/nginx-$main_ver-add_core_vars_polluting_globals.patch || exit 1
 
+echo applying resolver_debug_log_overflow.patch ...
+patch -p1 < $root/patches/nginx-$main_ver-resolver_debug_log_overflow.patch || exit 1
+
 #echo "INFO: applying null-character-fixes patch"
 #patch -p0 < $root/patches/nginx-$main_ver-null_character_fixes.patch || exit 1
 
