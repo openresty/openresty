@@ -1,0 +1,36 @@
+--- nginx-1.0.15/src/event/modules/ngx_poll_module.c	2012-02-06 04:02:59.000000000 +0800
++++ nginx-1.0.15-patched/src/event/modules/ngx_poll_module.c	2012-06-07 17:22:43.538168219 +0800
+@@ -205,19 +205,21 @@
+ 
+             event_list[ev->index] = event_list[nevents];
+ 
+-            c = ngx_cycle->files[event_list[nevents].fd];
++            if (ngx_cycle->files) {
++                c = ngx_cycle->files[event_list[nevents].fd];
+ 
+-            if (c->fd == -1) {
+-                ngx_log_error(NGX_LOG_ALERT, ev->log, 0,
+-                              "unexpected last event");
+-
+-            } else {
+-                if (c->read->index == (ngx_uint_t) nevents) {
+-                    c->read->index = ev->index;
+-                }
+-
+-                if (c->write->index == (ngx_uint_t) nevents) {
+-                    c->write->index = ev->index;
++                if (c->fd == -1) {
++                    ngx_log_error(NGX_LOG_ALERT, ev->log, 0,
++                                  "unexpected last event");
++
++                } else {
++                    if (c->read->index == (ngx_uint_t) nevents) {
++                        c->read->index = ev->index;
++                    }
++
++                    if (c->write->index == (ngx_uint_t) nevents) {
++                        c->write->index = ev->index;
++                    }
+                 }
+             }
+         }

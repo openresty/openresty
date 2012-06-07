@@ -72,6 +72,9 @@ patch -p1 < $root/patches/nginx-$main_ver-add_core_vars_polluting_globals.patch 
 echo applying resolver_debug_log_overflow.patch ...
 patch -p1 < $root/patches/nginx-$main_ver-resolver_debug_log_overflow.patch || exit 1
 
+echo applying poll_del_event_at_exit.patch ...
+patch -p1 < $root/patches/nginx-$main_ver-poll_del_event_at_exit.patch
+
 #echo "INFO: applying null-character-fixes patch"
 #patch -p0 < $root/patches/nginx-$main_ver-null_character_fixes.patch || exit 1
 
