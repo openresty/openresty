@@ -1,36 +1,20 @@
---- nginx-1.0.15/src/event/modules/ngx_poll_module.c	2012-02-06 04:02:59.000000000 +0800
-+++ nginx-1.0.15-patched/src/event/modules/ngx_poll_module.c	2012-06-07 17:22:43.538168219 +0800
-@@ -205,19 +205,21 @@
+--- nginx-1.0.15/src/os/unix/ngx_process_cycle.c	2012-02-06 04:02:59.000000000 +0800
++++ nginx-1.0.15-patched/src/os/unix/ngx_process_cycle.c	2012-06-15 11:39:11.234286287 +0800
+@@ -707,6 +707,8 @@
+     ngx_exit_log.file = &ngx_exit_log_file;
  
-             event_list[ev->index] = event_list[nevents];
+     ngx_exit_cycle.log = &ngx_exit_log;
++    ngx_exit_cycle.files = ngx_cycle->files;
++    ngx_exit_cycle.files_n = ngx_cycle->files_n;
+     ngx_cycle = &ngx_exit_cycle;
  
--            c = ngx_cycle->files[event_list[nevents].fd];
-+            if (ngx_cycle->files) {
-+                c = ngx_cycle->files[event_list[nevents].fd];
+     ngx_destroy_pool(cycle->pool);
+@@ -1063,6 +1065,8 @@
+     ngx_exit_log.file = &ngx_exit_log_file;
  
--            if (c->fd == -1) {
--                ngx_log_error(NGX_LOG_ALERT, ev->log, 0,
--                              "unexpected last event");
--
--            } else {
--                if (c->read->index == (ngx_uint_t) nevents) {
--                    c->read->index = ev->index;
--                }
--
--                if (c->write->index == (ngx_uint_t) nevents) {
--                    c->write->index = ev->index;
-+                if (c->fd == -1) {
-+                    ngx_log_error(NGX_LOG_ALERT, ev->log, 0,
-+                                  "unexpected last event");
-+
-+                } else {
-+                    if (c->read->index == (ngx_uint_t) nevents) {
-+                        c->read->index = ev->index;
-+                    }
-+
-+                    if (c->write->index == (ngx_uint_t) nevents) {
-+                        c->write->index = ev->index;
-+                    }
-                 }
-             }
-         }
+     ngx_exit_cycle.log = &ngx_exit_log;
++    ngx_exit_cycle.files = ngx_cycle->files;
++    ngx_exit_cycle.files_n = ngx_cycle->files_n;
+     ngx_cycle = &ngx_exit_cycle;
+ 
+     ngx_destroy_pool(cycle->pool);
