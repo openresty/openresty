@@ -45,26 +45,31 @@ patch -p1 < $root/patches/nginx-$main_ver-no_Werror.patch || exit 1
 
 #patch -p1 < $root/patches/nginx-$main_ver-request_body_in_single_buf.patch || exit 1
 
-echo "INFO: applying the max_subrequests patch...";
-patch -p1 < $root/patches/nginx-$main_ver-max_subrequests.patch || exit 1
+#echo "INFO: applying the max_subrequests patch...";
+#patch -p1 < $root/patches/nginx-$main_ver-max_subrequests.patch || exit 1
 
-patch -p1 -l < $root/patches/nginx-$main_ver-subrequest_loop.patch || exit 1
+#echo "INFO: applying the subrequst_loop patch...";
+#patch -p1 -l < $root/patches/nginx-$main_ver-subrequest_loop.patch || exit 1
 
-patch -p1 -l < $root/patches/nginx-$main_ver-gzip_empty_flush_buf.patch || exit 1
+#echo "INFO: applying the gzip_empty_flush_buf patch...";
+#patch -p1 -l < $root/patches/nginx-$main_ver-gzip_empty_flush_buf.patch || exit 1
 
 #patch -p1 < $root/patches/nginx-$main_ver-variable_header_ignore_no_hash.patch || exit 1
 
-patch -p1 < $root/patches/nginx-$main_ver-named_location_clear_mods_ctx.patch || exit 1
+#echo "applying the named_location_clear_mods_ctx patch"
+#patch -p1 < $root/patches/nginx-$main_ver-named_location_clear_mods_ctx.patch || exit 1
 
+echo "applying the allow_request_body_updating patch"
 patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || exit 1
 
+echo "applying the log_escape_non_ascii patch"
 patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
 
-echo applying reset_wev_handler_in_named_locations.patch ...
-patch -p1 < $root/patches/nginx-$main_ver-reset_wev_handler_in_named_locations.patch || exit 1
+#echo applying reset_wev_handler_in_named_locations.patch ...
+#patch -p1 < $root/patches/nginx-$main_ver-reset_wev_handler_in_named_locations.patch || exit 1
 
-echo applying filter_finalize_hang.patch ...
-patch -p1 < $root/patches/nginx-$main_ver-filter_finalize_hang.patch || exit 1
+#echo applying filter_finalize_hang.patch ...
+#patch -p1 < $root/patches/nginx-$main_ver-filter_finalize_hang.patch || exit 1
 
 echo applying add_core_vars_polluting_globals.patch ...
 patch -p1 < $root/patches/nginx-$main_ver-add_core_vars_polluting_globals.patch || exit 1

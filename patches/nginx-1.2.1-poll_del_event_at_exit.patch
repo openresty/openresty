@@ -1,0 +1,20 @@
+--- nginx-1.2.1/src/os/unix/ngx_process_cycle.c	2012-02-06 04:02:59.000000000 +0800
++++ nginx-1.2.1-patched/src/os/unix/ngx_process_cycle.c	2012-06-15 11:39:11.234286287 +0800
+@@ -707,6 +707,8 @@
+     ngx_exit_log.file = &ngx_exit_log_file;
+ 
+     ngx_exit_cycle.log = &ngx_exit_log;
++    ngx_exit_cycle.files = ngx_cycle->files;
++    ngx_exit_cycle.files_n = ngx_cycle->files_n;
+     ngx_cycle = &ngx_exit_cycle;
+ 
+     ngx_destroy_pool(cycle->pool);
+@@ -1063,6 +1065,8 @@
+     ngx_exit_log.file = &ngx_exit_log_file;
+ 
+     ngx_exit_cycle.log = &ngx_exit_log;
++    ngx_exit_cycle.files = ngx_cycle->files;
++    ngx_exit_cycle.files_n = ngx_cycle->files_n;
+     ngx_cycle = &ngx_exit_cycle;
+ 
+     ngx_destroy_pool(cycle->pool);

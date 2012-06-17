@@ -1,0 +1,11 @@
+--- nginx-1.2.1/src/core/ngx_resolver.c	2012-03-05 21:17:56.000000000 +0800
++++ nginx-1.2.1-patched/src/core/ngx_resolver.c	2012-06-01 17:55:55.861130605 +0800
+@@ -987,7 +987,7 @@
+     nan = (query->nan_hi << 8) + query->nan_lo;
+ 
+     ngx_log_debug6(NGX_LOG_DEBUG_CORE, r->log, 0,
+-                   "resolver DNS response %ui fl:%04Xui %ui/%ui/%ui/%ui",
++                   "resolver DNS response %ui fl:%04Xui %ui/%ui/%ud/%ud",
+                    ident, flags, nqs, nan,
+                    (query->nns_hi << 8) + query->nns_lo,
+                    (query->nar_hi << 8) + query->nar_lo);
