@@ -210,7 +210,8 @@ tar -xzf redis-nginx-module-$ver.tar.gz || exit 1
 mv ngx_http_redis-* redis-nginx-module-$ver || exit 1
 
 #################################
-ver=0.9
+
+ver=1.0rc1
 $root/util/get-tarball "https://github.com/FRiCKLE/ngx_postgres/tarball/$ver" -O ngx_postgres-$ver.tar.gz || exit 1
 tar -xzf ngx_postgres-$ver.tar.gz || exit 1
 mv FRiCKLE-ngx_postgres-* ngx_postgres-$ver || exit 1
