@@ -12,8 +12,22 @@ diff -ur nginx-1.2.1/src/core/nginx.h nginx-1.2.1-patched/src/core/nginx.h
  #define NGINX_VAR          "NGINX"
 diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_array.c nginx-1.2.1-patched/src/core/ngx_array.c
 --- nginx-1.2.1/src/core/ngx_array.c	2012-02-06 04:02:59.000000000 +0800
-+++ nginx-1.2.1-patched/src/core/ngx_array.c	2012-06-04 20:11:32.494144287 +0800
-@@ -40,13 +40,11 @@
++++ nginx-1.2.1-patched/src/core/ngx_array.c	2012-06-20 23:10:36.870722387 +0800
+@@ -28,6 +28,7 @@
+     a->size = size;
+     a->nalloc = n;
+     a->pool = p;
++    a->old_elts = NULL;
+ 
+     return a;
+ }
+@@ -36,26 +37,30 @@
+ void
+ ngx_array_destroy(ngx_array_t *a)
+ {
+-    ngx_pool_t  *p;
++    ngx_pool_t          *p;
++    ngx_array_link_t    *link;
  
      p = a->pool;
  
@@ -25,12 +39,28 @@ diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_array.c nginx-1.2.1-patched/s
  
 -    if ((u_char *) a + sizeof(ngx_array_t) == p->d.last) {
 -        p->d.last = (u_char *) a;
--    }
++    for (link = a->old_elts; link; link = link->next) {
++        ngx_pfree(p, link->elts);
+     }
++
 +    ngx_pfree(p, a);
  }
  
  
-@@ -65,29 +63,19 @@
+ void *
+ ngx_array_push(ngx_array_t *a)
+ {
+-    void        *elt, *new;
+-    size_t       size;
+-    ngx_pool_t  *p;
++    void                *elt, *new;
++    size_t               size;
++    ngx_pool_t          *p;
++    ngx_array_link_t    *link;
+ 
+     if (a->nelts == a->nalloc) {
+ 
+@@ -65,29 +70,27 @@
  
          p = a->pool;
  
@@ -61,18 +91,26 @@ diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_array.c nginx-1.2.1-patched/s
 +        new = ngx_palloc(p, 2 * size);
 +        if (new == NULL) {
 +            return NULL;
-         }
++        }
 +
 +        ngx_memcpy(new, a->elts, size);
 +
-+        ngx_pfree(p, a->elts);
++        link = ngx_palloc(p, sizeof(ngx_array_link_t));
++        if (link == NULL) {
++            ngx_pfree(p, new);
++            return NULL;
+         }
++
++        link->next = a->old_elts;
++        link->elts = a->elts;
++        a->old_elts = link;
 +
 +        a->elts = new;
 +        a->nalloc *= 2;
      }
  
      elt = (u_char *) a->elts + a->size * a->nelts;
-@@ -101,43 +89,28 @@
+@@ -101,11 +104,10 @@
  ngx_array_push_n(ngx_array_t *a, ngx_uint_t n)
  {
      void        *elt, *new;
@@ -81,10 +119,11 @@ diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_array.c nginx-1.2.1-patched/s
      ngx_pool_t  *p;
  
 -    size = n * a->size;
--
++    ngx_array_link_t    *link;
+ 
      if (a->nelts + n > a->nalloc) {
  
-         /* the array is full */
+@@ -113,31 +115,27 @@
  
          p = a->pool;
  
@@ -117,20 +156,63 @@ diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_array.c nginx-1.2.1-patched/s
 +        new = ngx_palloc(p, nalloc * a->size);
 +        if (new == NULL) {
 +            return NULL;
-         }
++        }
 +
 +        ngx_memcpy(new, a->elts, a->nelts * a->size);
 +
-+        ngx_pfree(p, a->elts);
++        link = ngx_palloc(p, sizeof(ngx_array_link_t));
++        if (link == NULL) {
++            ngx_pfree(p, new);
++            return NULL;
+         }
++
++        link->next = a->old_elts;
++        link->elts = a->elts;
++        a->old_elts = link;
 +
 +        a->elts = new;
 +        a->nalloc = nalloc;
      }
  
      elt = (u_char *) a->elts + a->size * a->nelts;
+diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_array.h nginx-1.2.1-patched/src/core/ngx_array.h
+--- nginx-1.2.1/src/core/ngx_array.h	2012-02-06 04:02:59.000000000 +0800
++++ nginx-1.2.1-patched/src/core/ngx_array.h	2012-06-20 23:25:38.800624960 +0800
+@@ -13,12 +13,23 @@
+ #include <ngx_core.h>
+ 
+ 
++typedef struct ngx_array_link_s ngx_array_link_t;
++
++
++struct ngx_array_link_s {
++    void                    *elts;
++    ngx_array_link_t        *next;
++};
++
++
+ struct ngx_array_s {
+     void        *elts;
+     ngx_uint_t   nelts;
+     size_t       size;
+     ngx_uint_t   nalloc;
+     ngx_pool_t  *pool;
++
++    ngx_array_link_t *old_elts;
+ };
+ 
+ 
+@@ -40,6 +51,7 @@
+     array->size = size;
+     array->nalloc = n;
+     array->pool = pool;
++    array->old_elts = NULL;
+ 
+     array->elts = ngx_palloc(pool, n * size);
+     if (array->elts == NULL) {
 diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_palloc.c nginx-1.2.1-patched/src/core/ngx_palloc.c
 --- nginx-1.2.1/src/core/ngx_palloc.c	2012-02-06 04:02:59.000000000 +0800
-+++ nginx-1.2.1-patched/src/core/ngx_palloc.c	2012-06-04 20:02:26.667925891 +0800
++++ nginx-1.2.1-patched/src/core/ngx_palloc.c	2012-06-20 22:56:30.148073066 +0800
 @@ -9,32 +9,23 @@
  #include <ngx_core.h>
  
@@ -329,14 +411,15 @@ diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_palloc.c nginx-1.2.1-patched/
 -    u_char      *m;
 -    size_t       psize;
 -    ngx_pool_t  *p, *new, *current;
-+    ngx_pool_data_t     *new;
-+    void                *m;
++    ngx_pool_data_t     *d;
++    void                *p;
  
 -    psize = (size_t) (pool->d.end - (u_char *) pool);
 -
 -    m = ngx_memalign(NGX_POOL_ALIGNMENT, psize, pool->log);
-+    m = ngx_alloc(size, pool->log);
-     if (m == NULL) {
+-    if (m == NULL) {
++    p = ngx_alloc(size, pool->log);
++    if (p == NULL) {
          return NULL;
      }
  
@@ -356,9 +439,9 @@ diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_palloc.c nginx-1.2.1-patched/
 -        if (p->d.failed++ > 4) {
 -            current = p->d.next;
 -        }
-+    new = ngx_alloc(sizeof(ngx_pool_data_t), pool->log);
-+    if (new == NULL){
-+        ngx_free(m);
++    d = ngx_alloc(sizeof(ngx_pool_data_t), pool->log);
++    if (d == NULL){
++        ngx_free(p);
 +        return NULL;
      }
  
@@ -366,10 +449,11 @@ diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_palloc.c nginx-1.2.1-patched/
 -
 -    pool->current = current ? current : new;
 -
-+    new->alloc = m;
-+    new->next = pool->d;
-+    pool->d = new;
-     return m;
+-    return m;
++    d->alloc = p;
++    d->next = pool->d;
++    pool->d = d;
++    return p;
  }
  
  
@@ -420,16 +504,35 @@ diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_palloc.c nginx-1.2.1-patched/
  }
  
  
-@@ -263,7 +159,7 @@
+@@ -256,38 +152,48 @@
+ ngx_pmemalign(ngx_pool_t *pool, size_t size, size_t alignment)
+ {
+     void              *p;
+-    ngx_pool_large_t  *large;
++    ngx_pool_data_t   *d;
+ 
+     p = ngx_memalign(alignment, size, pool->log);
+     if (p == NULL) {
          return NULL;
      }
  
 -    large = ngx_palloc(pool, sizeof(ngx_pool_large_t));
-+    large = ngx_malloc(pool, sizeof(ngx_pool_large_t));
-     if (large == NULL) {
+-    if (large == NULL) {
++    d = ngx_alloc(sizeof(ngx_pool_data_t), pool->log);
++    if (d == NULL){
          ngx_free(p);
          return NULL;
-@@ -278,16 +174,27 @@
+     }
+ 
+-    large->alloc = p;
+-    large->next = pool->large;
+-    pool->large = large;
+-
++    d->alloc = p;
++    d->next = pool->d;
++    pool->d = d;
+     return p;
+ }
  
  
  ngx_int_t
@@ -467,18 +570,19 @@ diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_palloc.c nginx-1.2.1-patched/
          }
 diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_palloc.h nginx-1.2.1-patched/src/core/ngx_palloc.h
 --- nginx-1.2.1/src/core/ngx_palloc.h	2012-02-06 04:02:59.000000000 +0800
-+++ nginx-1.2.1-patched/src/core/ngx_palloc.h	2012-06-04 19:39:32.803578356 +0800
-@@ -39,6 +39,8 @@
- 
- 
- typedef struct ngx_pool_large_s  ngx_pool_large_t;
-+typedef struct ngx_pool_data_s   ngx_pool_data_t;
-+
- 
- struct ngx_pool_large_s {
-     ngx_pool_large_t     *next;
-@@ -46,16 +48,14 @@
++++ nginx-1.2.1-patched/src/core/ngx_palloc.h	2012-06-21 10:35:47.463405863 +0800
+@@ -38,28 +38,21 @@
  };
+ 
+ 
+-typedef struct ngx_pool_large_s  ngx_pool_large_t;
+-
+-struct ngx_pool_large_s {
+-    ngx_pool_large_t     *next;
+-    void                 *alloc;
+-};
++typedef struct ngx_pool_data_s   ngx_pool_large_t;
++typedef struct ngx_pool_data_s   ngx_pool_data_t;
  
  
 -typedef struct {
@@ -499,3 +603,7 @@ diff -urx '*~' -x '*.swp' nginx-1.2.1/src/core/ngx_palloc.h nginx-1.2.1-patched/
      size_t                max;
      ngx_pool_t           *current;
      ngx_chain_t          *chain;
+-    ngx_pool_large_t     *large;
+     ngx_pool_cleanup_t   *cleanup;
+     ngx_log_t            *log;
+ };
