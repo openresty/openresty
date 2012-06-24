@@ -85,6 +85,9 @@ patch -p1 < $root/patches/nginx-$main_ver-poll_del_event_at_exit.patch
 
 #patch -p1 < $root/patches/nginx-$main_ver-gzip_ok_invalid_read_fix.patch || exit 1
 
+echo applying location_if_inherits_proxy.patch ...
+patch -p1 < $root/patches/nginx-$main_ver-location_if_inherits_proxy.patch
+
 rm -f *.patch || exit 1
 
 cd .. || exit 1
