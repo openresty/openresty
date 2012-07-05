@@ -1,0 +1,23 @@
+--- lua-5.1.5/Makefile	2008-08-12 08:40:48.000000000 +0800
++++ lua-5.1.5-patched/Makefile	2011-03-09 20:56:47.603422483 +0800
+@@ -22,14 +22,14 @@
+ 
+ # How to install. If your install program does not support "-p", then you
+ # may have to run ranlib on the installed liblua.a (do "make ranlib").
+-INSTALL= install -p
+-INSTALL_EXEC= $(INSTALL) -m 0755
+-INSTALL_DATA= $(INSTALL) -m 0644
++#INSTALL= install -p
++#INSTALL_EXEC= $(INSTALL) -m 0755
++#INSTALL_DATA= $(INSTALL) -m 0644
+ #
+ # If you don't have install you can use cp instead.
+-# INSTALL= cp -p
+-# INSTALL_EXEC= $(INSTALL)
+-# INSTALL_DATA= $(INSTALL)
++INSTALL= cp -p
++INSTALL_EXEC= $(INSTALL)
++INSTALL_DATA= $(INSTALL)
+ 
+ # Utilities.
+ MKDIR= mkdir -p

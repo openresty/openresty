@@ -1,0 +1,14 @@
+--- lua-5.1.5/src/luaconf.h	2008-02-11 08:25:08.000000000 -0800
++++ lua-5.1.5-patched/src/luaconf.h	2012-07-04 18:36:05.700067698 -0700
+@@ -757,6 +757,11 @@
+ ** without modifying the main part of the file.
+ */
+ 
++#undef LUA_COMPAT_VARARG
++#undef LUA_COMPAT_MOD
++#undef LUA_COMPAT_LSTR
++#undef LUA_COMPAT_GFIND
++#undef LUA_COMPAT_OPENLIB
+ 
+ 
+ #endif
