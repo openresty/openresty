@@ -143,7 +143,7 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.5.6
+ver=0.5.7rc1
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -303,7 +303,7 @@ mv agentzh-lua-resty-redis-* lua-resty-redis-$ver || exit 1
 
 #################################
 
-ver=0.07
+ver=0.08
 $root/util/get-tarball "http://github.com/agentzh/lua-resty-mysql/tarball/v$ver" -O "lua-resty-mysql-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-mysql-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-mysql-* lua-resty-mysql-$ver || exit 1
