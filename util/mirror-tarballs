@@ -312,7 +312,7 @@ mv agentzh-lua-resty-memcached-* lua-resty-memcached-$ver || exit 1
 
 #################################
 
-ver=0.10
+ver=0.11
 $root/util/get-tarball "http://github.com/agentzh/lua-resty-redis/tarball/v$ver" -O "lua-resty-redis-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-redis-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-redis-* lua-resty-redis-$ver || exit 1
