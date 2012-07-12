@@ -19,6 +19,8 @@ if [ ! -d $work ]; then
     mkdir $work || exit 1
 fi
 
+#################################
+
 ver="$main_ver"
 $root/util/get-tarball "http://nginx.org/download/nginx-$ver.tar.gz" -O nginx-$ver.tar.gz || exit 1
 tar -xzf nginx-$ver.tar.gz || exit 1
@@ -99,35 +101,49 @@ sed $"s/NGINX_VERSION \".unknown/NGINX_VERSION \".$minor_ver/" \
     || exit 1
 rm -rf no-pool-nginx-$ver
 
+#################################
+
 ver=0.40
 $root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-echo-nginx-module-* echo-nginx-module-$ver || exit 1
+
+#################################
 
 ver=0.03rc9
 $root/util/get-tarball "http://github.com/agentzh/xss-nginx-module/tarball/v$ver" -O xss-nginx-module-$ver.tar.gz || exit 1
 tar -xzf xss-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-xss-nginx-module-* xss-nginx-module-$ver || exit 1
 
+#################################
+
 ver=0.2.17
 $root/util/get-tarball "http://github.com/simpl/ngx_devel_kit/tarball/v$ver" -O ngx_devel_kit-$ver.tar.gz
 tar -xzf ngx_devel_kit-$ver.tar.gz || exit 1
 mv simpl-ngx_devel_kit-* ngx_devel_kit-$ver || exit 1
+
+#################################
 
 ver=0.22rc8
 $root/util/get-tarball "http://github.com/agentzh/set-misc-nginx-module/tarball/v$ver" -O set-misc-nginx-module-$ver.tar.gz || exit 1
 tar -xzf set-misc-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-set-misc-nginx-module-* set-misc-nginx-module-$ver || exit 1
 
+#################################
+
 ver=0.12rc10
 $root/util/get-tarball "http://github.com/agentzh/rds-json-nginx-module/tarball/v$ver" -O rds-json-nginx-module-$ver.tar.gz || exit 1
 tar -xzf rds-json-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-json-nginx-module-* rds-json-nginx-module-$ver || exit 1
 
+#################################
+
 ver=0.05rc2
 $root/util/get-tarball "http://github.com/agentzh/rds-csv-nginx-module/tarball/v$ver" -O rds-csv-nginx-module-$ver.tar.gz || exit 1
 tar -xzf rds-csv-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
+
+#################################
 
 ver=0.17
 $root/util/get-tarball "http://github.com/agentzh/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
