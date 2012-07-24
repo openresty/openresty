@@ -1,0 +1,449 @@
+diff --git a/auto/install b/auto/install
+index c2c0ade..722976c 100644
+--- a/auto/install
++++ b/auto/install
+@@ -16,6 +16,20 @@ END
+ fi
+ 
+ 
++case ".$NGX_STAP_NGX_PATH" in
++    ./*)
++    ;;
++
++    .)
++        NGX_STAP_NGX_PATH=$NGX_PREFIX/sbin/stap-nginx
++    ;;
++
++    *)
++        NGX_STAP_NGX_PATH=$NGX_PREFIX/$NGX_STAP_NGX_PATH
++    ;;
++esac
++
++
+ case ".$NGX_SBIN_PATH" in
+     ./*)
+     ;;
+@@ -53,6 +67,16 @@ case ".$NGX_PID_PATH" in
+ esac
+ 
+ 
++case ".$NGX_TAPSET_PATH" in
++    ./* | .)
++    ;;
++
++    *)
++        NGX_TAPSET_PATH=$NGX_PREFIX/$NGX_TAPSET_PATH
++    ;;
++esac
++
++
+ case ".$NGX_ERROR_LOG_PATH" in
+     ./* | .)
+     ;;
+@@ -151,6 +175,21 @@ install:	$NGX_OBJS${ngx_dirsep}nginx${ngx_binext} \
+ 		|| cp -R $NGX_HTML '\$(DESTDIR)$NGX_PREFIX'
+ END
+ 
++if [ $NGX_DTRACE = YES ]; then
++
++    cat << END                                                >> $NGX_MAKEFILE
++
++	test -d '\$(DESTDIR)`dirname "$NGX_TAPSET_PATH"`' || \
++		mkdir -p '\$(DESTDIR)`dirname "$NGX_TAPSET_PATH"`'
++	cp $NGX_OBJS/nginx.stp '\$(DESTDIR)$NGX_TAPSET_PATH'
++
++	test -d '\$(DESTDIR)`dirname "$NGX_STAP_NGX_PATH"`' || \
++		mkdir -p '\$(DESTDIR)`dirname "$NGX_STAP_NGX_PATH"`'
++	cp $NGX_OBJS/stap-nginx '\$(DESTDIR)$NGX_STAP_NGX_PATH'
++	chmod 0755 '\$(DESTDIR)$NGX_STAP_NGX_PATH'
++END
++
++fi
+ 
+ if test -n "$NGX_ERROR_LOG_PATH"; then
+     cat << END                                                >> $NGX_MAKEFILE
+@@ -162,6 +201,18 @@ END
+ fi
+ 
+ 
++if [ $NGX_DTRACE = YES ]; then
++    cat << END                                                >> $NGX_MAKEFILE
++
++$NGX_OBJS${ngx_dirsep}nginx.stp: src/dtrace/nginx.stp
++	sed -e "s|NGX_SBIN_PATH|$NGX_SBIN_PATH|g" src/dtrace/nginx.stp > $NGX_OBJS${ngx_dirsep}nginx.stp
++
++$NGX_OBJS${ngx_dirsep}stap-nginx: src/dtrace/stap-nginx
++	sed -e "s|NGX_STAP_NGX_PATH|$NGX_STAP_NGX_PATH|g" $ngx_long_cont -e "s|NGX_SBIN_DIR|`dirname $NGX_SBIN_PATH`|g" $ngx_long_cont src/dtrace/stap-nginx > $NGX_OBJS${ngx_dirsep}stap-nginx
++END
++fi
++
++
+ # create Makefile
+ 
+ cat << END >> Makefile
+diff --git a/auto/make b/auto/make
+index e7f5490..72288e8 100644
+--- a/auto/make
++++ b/auto/make
+@@ -26,6 +26,9 @@ LINK =	$LINK
+ 
+ END
+ 
++if [ $NGX_DTRACE = YES ]; then
++    echo DTRACE = $DTRACE                   >> $NGX_MAKEFILE
++fi
+ 
+ if test -n "$NGX_PERL_CFLAGS"; then
+     echo NGX_PERL_CFLAGS = $NGX_PERL_CFLAGS                   >> $NGX_MAKEFILE
+@@ -177,6 +180,26 @@ ngx_objs=`echo $ngx_all_objs $ngx_modules_obj \
+     | sed -e "s/  *\([^ ][^ ]*\)/$ngx_long_regex_cont\1/g" \
+           -e "s/\//$ngx_regex_dirsep/g"`
+ 
++if [ $NGX_DTRACE = YES ]; then
++    ngx_dtrace_obj=$NGX_OBJS${ngx_dirsep}ngx_dtrace_provider.$ngx_objext
++    ngx_dtrace_h=$NGX_OBJS${ngx_dirsep}ngx_dtrace_provider.h
++    ngx_dtrace_d=$NGX_DTRACE_D
++
++cat << END                                                    >> $NGX_MAKEFILE
++
++all: $NGX_OBJS${ngx_dirsep}nginx${ngx_binext}
++
++$ngx_dtrace_h: $ngx_dtrace_d
++	\$(DTRACE) -xnolibs -h -o $ngx_dtrace_h -s $ngx_dtrace_d
++
++$ngx_dtrace_obj: $ngx_dtrace_d $ngx_deps$ngx_spacer
++	\$(DTRACE) -xnolibs -G -o $ngx_dtrace_obj -s $ngx_dtrace_d $ngx_objs
++END
++
++    ngx_deps="$ngx_deps$ngx_long_cont$ngx_dtrace_obj$ngx_long_cont$NGX_OBJS${ngx_dirsep}nginx.stp$ngx_long_cont$NGX_OBJS${ngx_dirsep}stap-nginx"
++    ngx_objs="$ngx_objs$ngx_long_cont$ngx_dtrace_obj"
++fi
++
+ if test -n "$NGX_LD_OPT$CORE_LIBS"; then
+     ngx_libs=`echo $NGX_LD_OPT $CORE_LIBS \
+         | sed -e "s/\//$ngx_regex_dirsep/g" -e "s/^/$ngx_long_regex_cont/"`
+diff --git a/auto/options b/auto/options
+index 393be40..e063dba 100644
+--- a/auto/options
++++ b/auto/options
+@@ -12,6 +12,8 @@ NGX_CONF_PATH=
+ NGX_ERROR_LOG_PATH=
+ NGX_PID_PATH=
+ NGX_LOCK_PATH=
++NGX_TAPSET_PATH=
++NGX_STAP_NGX_PATH=
+ NGX_USER=
+ NGX_GROUP=
+ 
+@@ -20,6 +22,8 @@ CPP=
+ NGX_OBJS=objs
+ 
+ NGX_DEBUG=NO
++NGX_DTRACE=NO
++DTRACE=dtrace
+ NGX_CC_OPT=
+ NGX_LD_OPT=
+ CPU=NO
+@@ -169,6 +173,8 @@ do
+         --error-log-path=*)              NGX_ERROR_LOG_PATH="$value";;
+         --pid-path=*)                    NGX_PID_PATH="$value"      ;;
+         --lock-path=*)                   NGX_LOCK_PATH="$value"     ;;
++        --tapset-path=*)                 NGX_TAPSET_PATH="$value"   ;;
++        --stap-nginx-path=*)             NGX_STAP_NGX_PATH="$value" ;;
+         --user=*)                        NGX_USER="$value"          ;;
+         --group=*)                       NGX_GROUP="$value"         ;;
+ 
+@@ -272,7 +278,8 @@ use the \"--without-http_limit_conn_module\" option instead"
+         --with-ld-opt=*)                 NGX_LD_OPT="$value"        ;;
+         --with-cpu-opt=*)                CPU="$value"               ;;
+         --with-debug)                    NGX_DEBUG=YES              ;;
+-
++        --with-dtrace=*)                 DTRACE="$value"            ;;
++        --with-dtrace-probes)            NGX_DTRACE=YES             ;;
+         --without-pcre)                  USE_PCRE=DISABLED          ;;
+         --with-pcre)                     USE_PCRE=YES               ;;
+         --with-pcre=*)                   PCRE="$value"              ;;
+@@ -326,6 +333,8 @@ cat << END
+   --error-log-path=PATH              set error log pathname
+   --pid-path=PATH                    set nginx.pid pathname
+   --lock-path=PATH                   set nginx.lock pathname
++  --tapset-path=PATH                 set nginx.stp systemtap tapset pathname
++  --stap-nginx-path=PATH             set stap-nginx pathname
+ 
+   --user=USER                        set non-privileged user for
+                                      worker processes
+@@ -448,6 +457,8 @@ cat << END
+   --with-openssl-opt=OPTIONS         set additional build options for OpenSSL
+ 
+   --with-debug                       enable debug logging
++  --with-dtrace-probes               enable dtrace USDT probes
++  --with-dtrace=PATH                 set dtrace utility pathname
+ 
+ END
+ 
+@@ -477,6 +488,7 @@ NGX_CONF_PATH=${NGX_CONF_PATH:-conf/nginx.conf}
+ NGX_CONF_PREFIX=`dirname $NGX_CONF_PATH`
+ NGX_PID_PATH=${NGX_PID_PATH:-logs/nginx.pid}
+ NGX_LOCK_PATH=${NGX_LOCK_PATH:-logs/nginx.lock}
++NGX_TAPSET_PATH=${NGX_TAPSET_PATH:-tapset/nginx.stp}
+ 
+ if [ ".$NGX_ERROR_LOG_PATH" = ".stderr" ]; then
+     NGX_ERROR_LOG_PATH=
+diff --git a/auto/sources b/auto/sources
+index 374ad66..70eed77 100644
+--- a/auto/sources
++++ b/auto/sources
+@@ -39,6 +39,11 @@ CORE_DEPS="src/core/nginx.h \
+            src/core/ngx_crypt.h"
+ 
+ 
++if [ $NGX_DTRACE = YES ]; then
++    CORE_DEPS="$CORE_DEPS objs/ngx_dtrace_provider.h"
++fi
++
++
+ CORE_SRCS="src/core/nginx.c \
+            src/core/ngx_log.c \
+            src/core/ngx_palloc.c \
+@@ -291,7 +296,8 @@ HTTP_DEPS="src/http/ngx_http.h \
+            src/http/ngx_http_script.h \
+            src/http/ngx_http_upstream.h \
+            src/http/ngx_http_upstream_round_robin.h \
+-           src/http/ngx_http_busy_lock.h"
++           src/http/ngx_http_busy_lock.h \
++           src/http/ngx_http_probe.h"
+ 
+ HTTP_SRCS="src/http/ngx_http.c \
+            src/http/ngx_http_core_module.c \
+@@ -524,3 +530,6 @@ NGX_GOOGLE_PERFTOOLS_MODULE=ngx_google_perftools_module
+ NGX_GOOGLE_PERFTOOLS_SRCS=src/misc/ngx_google_perftools_module.c
+ 
+ NGX_CPP_TEST_SRCS=src/misc/ngx_cpp_test_module.cpp
++
++NGX_DTRACE_D=src/dtrace/nginx_provider.d
++
+diff --git a/configure b/configure
+index 45ea154..332c011 100755
+--- a/configure
++++ b/configure
+@@ -20,6 +20,9 @@ if [ $NGX_DEBUG = YES ]; then
+     have=NGX_DEBUG . auto/have
+ fi
+ 
++if [ $NGX_DTRACE = YES ]; then
++    have=NGX_DTRACE . auto/have
++fi
+ 
+ if test -z "$NGX_PLATFORM"; then
+     echo "checking for OS"
+diff --git a/src/dtrace/nginx.stp b/src/dtrace/nginx.stp
+new file mode 100644
+index 0000000..a00dc40
+--- /dev/null
++++ b/src/dtrace/nginx.stp
+@@ -0,0 +1,22 @@
++function ngx_http_req_uri(r)
++{
++    len = @cast(r, "ngx_http_request_s", "NGX_SBIN_PATH")->uri->len
++
++    if (len == 0) {
++        return ""
++    }
++
++    return user_string_n(@cast(r, "ngx_http_request_s", "NGX_SBIN_PATH")->uri->data, len)
++}
++
++function ngx_http_req_args(r)
++{
++    len = @cast(r, "ngx_http_request_s", "NGX_SBIN_PATH")->args->len
++
++    if (len == 0) {
++        return ""
++    }
++
++    return user_string_n(@cast(r, "ngx_http_request_s", "NGX_SBIN_PATH")->args->data, len)
++}
++
+diff --git a/src/dtrace/nginx_provider.d b/src/dtrace/nginx_provider.d
+new file mode 100644
+index 0000000..1f47aef
+--- /dev/null
++++ b/src/dtrace/nginx_provider.d
+@@ -0,0 +1,24 @@
++typedef struct { int dummy; } ngx_http_request_t;
++typedef struct { int dummy; } ngx_str_t;
++typedef int64_t ngx_int_t;
++
++
++provider nginx {
++    /* probes for subrequests */
++    probe http__subrequest__cycle(ngx_http_request_t *pr, ngx_str_t *uri, ngx_str_t *args);
++    probe http__subrequest__start(ngx_http_request_t *r);
++    probe http__subrequest__finalize_writing(ngx_http_request_t *r);
++    probe http__subrequest__finalize_nonactive(ngx_http_request_t *r);
++    probe http__subrequest__wake__parent(ngx_http_request_t *r);
++    probe http__subrequest__done(ngx_http_request_t *r);
++    probe http__subrequest__post__start(ngx_http_request_t *r, ngx_int_t rc);
++    probe http__subrequest__post__done(ngx_http_request_t *r, ngx_int_t rc);
++};
++
++
++#pragma D attributes Evolving/Evolving/Common      provider nginx provider
++#pragma D attributes Private/Private/Unknown       provider nginx module
++#pragma D attributes Private/Private/Unknown       provider nginx function
++#pragma D attributes Private/Private/Common        provider nginx name
++#pragma D attributes Evolving/Evolving/Common      provider nginx args
++
+diff --git a/src/dtrace/stap-nginx b/src/dtrace/stap-nginx
+new file mode 100644
+index 0000000..d53ef66
+--- /dev/null
++++ b/src/dtrace/stap-nginx
+@@ -0,0 +1,5 @@
++#!/bin/sh
++
++export PATH=NGX_SBIN_DIR:$PATH
++exec stap -I "NGX_STAP_NGX_PATH" "$@"
++
+diff --git a/src/http/ngx_http_core_module.c b/src/http/ngx_http_core_module.c
+index 31832ce..9c5ebf3 100644
+--- a/src/http/ngx_http_core_module.c
++++ b/src/http/ngx_http_core_module.c
+@@ -8,6 +8,7 @@
+ #include <ngx_config.h>
+ #include <ngx_core.h>
+ #include <ngx_http.h>
++#include <ngx_http_probe.h>
+ 
+ 
+ typedef struct {
+@@ -2377,6 +2378,8 @@ ngx_http_subrequest(ngx_http_request_t *r,
+     r->main->subrequests--;
+ 
+     if (r->main->subrequests == 0) {
++        ngx_http_probe_subrequest_cycle(r, &uri, &args);
++
+         ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
+                       "subrequests cycle while processing \"%V\"", uri);
+         r->main->subrequests = 1;
+@@ -2489,6 +2492,8 @@ ngx_http_subrequest(ngx_http_request_t *r,
+ 
+     *psr = sr;
+ 
++    ngx_http_probe_subrequest_start(sr);
++
+     return ngx_http_post_request(sr, NULL);
+ }
+ 
+diff --git a/src/http/ngx_http_probe.h b/src/http/ngx_http_probe.h
+new file mode 100644
+index 0000000..1538560
+--- /dev/null
++++ b/src/http/ngx_http_probe.h
+@@ -0,0 +1,49 @@
++#ifndef _NGX_HTTP_PROBE_H_INCLUDED_
++#define _NGX_HTTP_PROBE_H_INCLUDED_
++
++#if (NGX_DTRACE)
++
++#include <ngx_dtrace_provider.h>
++
++#define ngx_http_probe_subrequest_cycle(pr, uri, args)                       \
++    NGINX_HTTP_SUBREQUEST_CYCLE(pr, uri, args)
++
++#define ngx_http_probe_subrequest_start(r)                                   \
++    NGINX_HTTP_SUBREQUEST_START(r)
++
++#define ngx_http_probe_subrequest_finalize_writing(r)                        \
++    NGINX_HTTP_SUBREQUEST_FINALIZE_WRITING(r)
++
++#define ngx_http_probe_subrequest_finalize_nonactive(r)                      \
++    NGINX_HTTP_SUBREQUEST_FINALIZE_NONACTIVE(r)
++
++#define ngx_http_probe_subrequest_finalize_nonactive(r)                      \
++    NGINX_HTTP_SUBREQUEST_FINALIZE_NONACTIVE(r)
++
++#define ngx_http_probe_subrequest_wake_parent(r)                             \
++    NGINX_HTTP_SUBREQUEST_WAKE_PARENT(r)
++
++#define ngx_http_probe_subrequest_done(r)                                    \
++    NGINX_HTTP_SUBREQUEST_DONE(r)
++
++#define ngx_http_probe_subrequest_post_start(r, rc)                          \
++    NGINX_HTTP_SUBREQUEST_POST_START(r, rc)
++
++#define ngx_http_probe_subrequest_post_done(r, rc)                               \
++    NGINX_HTTP_SUBREQUEST_POST_DONE(r, rc)
++
++#else /* !(NGX_DTRACE) */
++
++#define ngx_http_probe_subrequest_cycle(pr, uri, args)
++#define ngx_http_probe_subrequest_start(r)
++#define ngx_http_probe_subrequest_finalize_writing(r)
++#define ngx_http_probe_subrequest_finalize_nonactive(r)
++#define ngx_http_probe_subrequest_wake_parent(r)
++#define ngx_http_probe_subrequest_done(r)
++#define ngx_http_probe_subrequest_post_start(r, rc)
++#define ngx_http_probe_subrequest_post_done(r, rc)
++
++#endif /* NGX_DTRACE */
++
++
++#endif /* _NGX_HTTP_PROBE_H_INCLUDED_ */
+diff --git a/src/http/ngx_http_request.c b/src/http/ngx_http_request.c
+index b187713..383dc2c 100644
+--- a/src/http/ngx_http_request.c
++++ b/src/http/ngx_http_request.c
+@@ -8,6 +8,7 @@
+ #include <ngx_config.h>
+ #include <ngx_core.h>
+ #include <ngx_http.h>
++#include <ngx_http_probe.h>
+ 
+ 
+ static void ngx_http_init_request(ngx_event_t *ev);
+@@ -1959,7 +1960,11 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+     }
+ 
+     if (r != r->main && r->post_subrequest) {
++        ngx_http_probe_subrequest_post_start(r, rc);
++
+         rc = r->post_subrequest->handler(r, r->post_subrequest->data, rc);
++
++        ngx_http_probe_subrequest_post_done(r, rc);
+     }
+ 
+     if (rc == NGX_ERROR
+@@ -2009,6 +2014,8 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+ 
+         if (r->buffered || r->postponed) {
+ 
++            ngx_http_probe_subrequest_finalize_writing(r);
++
+             if (ngx_http_set_write_handler(r) != NGX_OK) {
+                 ngx_http_terminate_request(r, 0);
+             }
+@@ -2045,10 +2052,14 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+                 pr->postponed = pr->postponed->next;
+             }
+ 
++            ngx_http_probe_subrequest_done(r);
++
+             c->data = pr;
+ 
+         } else {
+ 
++            ngx_http_probe_subrequest_finalize_nonactive(r);
++
+             ngx_log_debug2(NGX_LOG_DEBUG_HTTP, c->log, 0,
+                            "http finalize non-active request: \"%V?%V\"",
+                            &r->uri, &r->args);
+@@ -2060,6 +2071,8 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+             }
+         }
+ 
++        ngx_http_probe_subrequest_wake_parent(r);
++
+         if (ngx_http_post_request(pr, NULL) != NGX_OK) {
+             r->main->count++;
+             ngx_http_terminate_request(r, 0);
