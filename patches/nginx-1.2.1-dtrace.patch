@@ -1,5 +1,51 @@
+diff --git a/README b/README
+index 2f68e14..4f2c4a7 100644
+--- a/README
++++ b/README
+@@ -1,3 +1,40 @@
++This is an Nginx fork that adds dtrace USDT probes.
+ 
+-Documentation is available at http://nginx.org
++This is still under development and not usable yet.
++
++Installation:
++
++    ./configure --with-dtrace-probes \
++        --with-dtrace=/usr/sbin/dtrace \
++        ...
++    make
++    make install
++
++Usage on Linux (with systemtap):
++
++    # make the stap-nginx script visiable in your PATH
++    export PATH=/usr/local/nginx/sbin:$PATH
++
++    # list all the static probes available in your nginx
++    stap-nginx -L 'process("nginx").mark("*")'
++
++    # run the test.stp file
++    stap-nginx test.stp
++
++Sample test.stp file:
++
++    probe begin
++    {
++        print("Tracing.  Hit CTRL-C to stop.\n")
++    }
++
++    probe process("nginx").mark("http-subrequest-start")
++    {
++        printf("uri: %s?%s\n", ngx_http_req_uri($arg1),
++            ngx_http_req_args($arg1))
++    }
++
++For now, only tested on Solaris 11 Express and Fedora Linux 17.
++
++The original Nginx documentation is available at http://nginx.org
+ 
 diff --git a/auto/install b/auto/install
-index c2c0ade..722976c 100644
+index c2c0ade..bdc0eee 100644
 --- a/auto/install
 +++ b/auto/install
 @@ -16,6 +16,20 @@ END
@@ -73,7 +119,7 @@ index c2c0ade..722976c 100644
 +	sed -e "s|NGX_SBIN_PATH|$NGX_SBIN_PATH|g" src/dtrace/nginx.stp > $NGX_OBJS${ngx_dirsep}nginx.stp
 +
 +$NGX_OBJS${ngx_dirsep}stap-nginx: src/dtrace/stap-nginx
-+	sed -e "s|NGX_STAP_NGX_PATH|$NGX_STAP_NGX_PATH|g" $ngx_long_cont -e "s|NGX_SBIN_DIR|`dirname $NGX_SBIN_PATH`|g" $ngx_long_cont src/dtrace/stap-nginx > $NGX_OBJS${ngx_dirsep}stap-nginx
++	sed -e "s|NGX_TAPSET_DIR|`dirname $NGX_TAPSET_PATH`|g" $ngx_long_cont -e "s|NGX_SBIN_DIR|`dirname $NGX_SBIN_PATH`|g" $ngx_long_cont src/dtrace/stap-nginx > $NGX_OBJS${ngx_dirsep}stap-nginx
 +END
 +fi
 +
@@ -296,14 +342,14 @@ index 0000000..1f47aef
 +
 diff --git a/src/dtrace/stap-nginx b/src/dtrace/stap-nginx
 new file mode 100644
-index 0000000..d53ef66
+index 0000000..37f9367
 --- /dev/null
 +++ b/src/dtrace/stap-nginx
 @@ -0,0 +1,5 @@
 +#!/bin/sh
 +
 +export PATH=NGX_SBIN_DIR:$PATH
-+exec stap -I "NGX_STAP_NGX_PATH" "$@"
++exec stap -I "NGX_TAPSET_DIR" "$@"
 +
 diff --git a/src/http/ngx_http_core_module.c b/src/http/ngx_http_core_module.c
 index 31832ce..9c5ebf3 100644
