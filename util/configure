@@ -906,16 +906,18 @@ _EOC_
 
 Options directly inherited from nginx
 
-  --sbin-path=PATH                   set path to the nginx binary file
-  --conf-path=PATH                   set path to the nginx.conf file
-  --error-log-path=PATH              set path to the error log
-  --pid-path=PATH                    set path to nginx.pid file
-  --lock-path=PATH                   set path to nginx.lock file
+  --sbin-path=PATH                   set nginx binary pathname
+  --conf-path=PATH                   set nginx.conf pathname
+  --error-log-path=PATH              set error log pathname
+  --pid-path=PATH                    set nginx.pid pathname
+  --lock-path=PATH                   set nginx.lock pathname
+  --tapset-prefix=PATH               set systemtap tapset directory prefix
+  --stap-nginx-path=PATH             set stap-nginx pathname
 
-  --user=USER                        set non-privilege user
-                                     for the worker processes
-  --group=GROUP                      set non-privilege group
-                                     for the worker processes
+  --user=USER                        set non-privileged user for
+                                     worker processes
+  --group=GROUP                      set non-privileged group for
+                                     worker processes
 
   --builddir=DIR                     set the build directory
 
@@ -1007,6 +1009,7 @@ Options directly inherited from nginx
   --with-pcre                        force PCRE library usage
   --with-pcre=DIR                    set path to PCRE library sources
   --with-pcre-opt=OPTIONS            set additional options for PCRE building
+  --with-pcre-jit                    build PCRE with JIT compilation support
 
   --with-md5=DIR                     set path to md5 library sources
   --with-md5-opt=OPTIONS             set additional options for md5 building
