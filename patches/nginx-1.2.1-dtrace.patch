@@ -45,7 +45,7 @@ index 2f68e14..4f2c4a7 100644
 +The original Nginx documentation is available at http://nginx.org
  
 diff --git a/auto/install b/auto/install
-index c2c0ade..01cea03 100644
+index c2c0ade..8e43d11 100644
 --- a/auto/install
 +++ b/auto/install
 @@ -16,6 +16,20 @@ END
@@ -123,7 +123,7 @@ index c2c0ade..01cea03 100644
  
  if test -n "$NGX_ERROR_LOG_PATH"; then
      cat << END                                                >> $NGX_MAKEFILE
-@@ -162,6 +216,17 @@ END
+@@ -162,6 +216,18 @@ END
  fi
  
  
@@ -133,6 +133,7 @@ index c2c0ade..01cea03 100644
 +$NGX_OBJS${ngx_dirsep}stap-nginx: src/dtrace/stap-nginx
 +	sed -e "s|NGX_TAPSET_PREFIX|$NGX_TAPSET_PREFIX|g" $ngx_long_cont \
 +            -e "s|NGX_SBIN_DIR|`dirname $NGX_SBIN_PATH`|g" $ngx_long_cont \
++            -e "s|NGX_SBIN_PATH|$NGX_SBIN_PATH|g" $ngx_long_cont \
 +            src/dtrace/stap-nginx > $NGX_OBJS${ngx_dirsep}stap-nginx
 +END
 +fi
@@ -329,10 +330,10 @@ index 45ea154..332c011 100755
      echo "checking for OS"
 diff --git a/src/dtrace/nginx.stp b/src/dtrace/nginx.stp
 new file mode 100644
-index 0000000..64903e8
+index 0000000..fccea2b
 --- /dev/null
 +++ b/src/dtrace/nginx.stp
-@@ -0,0 +1,150 @@
+@@ -0,0 +1,152 @@
 +/* tapset for nginx */
 +
 +/* retrieve the request uri string from the ngx_http_request_t pointer */
@@ -464,7 +465,9 @@ index 0000000..64903e8
 +        return ""
 +    }
 +
-+    return user_string(@cast(tf, "ngx_temp_file_t", "NGX_SBIN_PATH")->file->name)
++    len = @cast(tf, "ngx_temp_file_t", "NGX_SBIN_PATH")->file->name->len
++
++    return user_string_n(@cast(tf, "ngx_temp_file_t", "NGX_SBIN_PATH")->file->name->data, len)
 +}
 +
 +
@@ -523,7 +526,7 @@ index 0000000..6fcc994
 +
 diff --git a/src/dtrace/stap-nginx b/src/dtrace/stap-nginx
 new file mode 100755
-index 0000000..e5d4070
+index 0000000..5127fbe
 --- /dev/null
 +++ b/src/dtrace/stap-nginx
 @@ -0,0 +1,6 @@
@@ -531,7 +534,7 @@ index 0000000..e5d4070
 +
 +PATH="NGX_SBIN_DIR:$PATH"
 +export PATH
-+exec stap -I "NGX_TAPSET_PREFIX" "$@"
++exec stap -d "NGX_SBIN_PATH" --ldd -I "NGX_TAPSET_PREFIX" "$@"
 +
 diff --git a/src/http/ngx_http.c b/src/http/ngx_http.c
 index 3e077fb..b7edb7b 100644
