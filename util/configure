@@ -826,6 +826,8 @@ sub usage ($) {
 
   --with-debug                       enable the debugging logging and also enable -O0 -g for gcc.
                                      this not only affects nginx, but also other components.
+  --with-dtrace-probes               enable dtrace USDT probes
+  --with-dtrace=PATH                 set dtrace utility pathname
 
   --with-no-pool-patch               enable the no-pool patch for debugging memory issues.
 
