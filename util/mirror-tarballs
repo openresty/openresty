@@ -148,14 +148,14 @@ mv agentzh-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.17
+ver=0.18
 $root/util/get-tarball "http://github.com/agentzh/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
 tar -xzf headers-more-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.1.2rc7
+ver=0.1.2
 $root/util/get-tarball "http://github.com/chaoslawful/drizzle-nginx-module/tarball/v$ver" -O drizzle-nginx-module-$ver.tar.gz || exit 1
 tar -xzf drizzle-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
