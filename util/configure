@@ -776,7 +776,7 @@ _EOC_
                 "\$(MAKE) install$extra_opts";
         }
 
-        for my $key (qw(memcached redis mysql string upload)) {
+        for my $key (qw(dns memcached redis mysql string upload)) {
             unless ($opts->{"no_lua_resty_$key"}) {
                 my $name = "lua-resty-$key";
                 my $dir = auto_complete $name;
@@ -891,6 +891,7 @@ _EOC_
   --without-lua_cjson                disable the lua-cjson library
   --without-lua_redis_parser         disable the lua-redis-parser library
   --without-lua_rds_parser           disable the lua-rds-parser library
+  --without-lua_resty_dns            disable the lua-resty-dns library
   --without-lua_resty_memcached      disable the lua-resty-memcached library
   --without-lua_resty_redis          disable the lua-resty-redis library
   --without-lua_resty_mysql          disable the lua-resty-mysql library
