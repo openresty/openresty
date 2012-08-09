@@ -1,0 +1,95 @@
+%%LUA%%lua/bin/luac
+%%LUA%%lua/bin/lua
+%%LUA%%lua/lib/liblua.a
+%%LUA%%lua/include/luaconf.h
+%%LUA%%lua/include/lauxlib.h
+%%LUA%%lua/include/lua.h
+%%LUA%%lua/include/lua.hpp
+%%LUA%%lua/include/lualib.h
+%%LUAJIT%%luajit/include/luajit-2.0/luaconf.h
+%%LUAJIT%%luajit/include/luajit-2.0/lua.hpp
+%%LUAJIT%%luajit/include/luajit-2.0/lualib.h
+%%LUAJIT%%luajit/include/luajit-2.0/luajit.h
+%%LUAJIT%%luajit/include/luajit-2.0/lauxlib.h
+%%LUAJIT%%luajit/include/luajit-2.0/lua.h
+%%LUAJIT%%luajit/lib/libluajit-5.1.a
+%%LUAJIT%%luajit/lib/libluajit-5.1.so.2.0.0
+%%LUAJIT%%luajit/share/luajit-2.0.0-beta10/jit/dump.lua
+%%LUAJIT%%luajit/share/luajit-2.0.0-beta10/jit/dis_mipsel.lua
+%%LUAJIT%%luajit/share/luajit-2.0.0-beta10/jit/bc.lua
+%%LUAJIT%%luajit/share/luajit-2.0.0-beta10/jit/dis_mips.lua
+%%LUAJIT%%luajit/share/luajit-2.0.0-beta10/jit/dis_x64.lua
+%%LUAJIT%%luajit/share/luajit-2.0.0-beta10/jit/v.lua
+%%LUAJIT%%luajit/share/luajit-2.0.0-beta10/jit/dis_ppc.lua
+%%LUAJIT%%luajit/share/luajit-2.0.0-beta10/jit/dis_arm.lua
+%%LUAJIT%%luajit/share/luajit-2.0.0-beta10/jit/vmdef.lua
+%%LUAJIT%%luajit/share/luajit-2.0.0-beta10/jit/dis_x86.lua
+%%LUAJIT%%luajit/share/luajit-2.0.0-beta10/jit/bcsave.lua
+%%LUAJIT%%luajit/bin/luajit-2.0.0-beta10
+nginx/html/index.html
+nginx/html/50x.html
+nginx/conf/koi-win
+nginx/conf/koi-utf
+nginx/conf/fastcgi_params
+nginx/conf/nginx.conf.default
+nginx/conf/fastcgi.conf
+nginx/conf/win-utf
+nginx/conf/fastcgi.conf.default
+nginx/conf/scgi_params
+nginx/conf/uwsgi_params
+nginx/conf/mime.types
+nginx/conf/scgi_params.default
+nginx/conf/nginx.conf
+nginx/conf/uwsgi_params.default
+nginx/conf/mime.types.default
+nginx/conf/fastcgi_params.default
+nginx/sbin/nginx
+%%LUARESTYDNS%%lualib/resty/dns/resolver.lua
+%%LUARESTYUPLOAD%%lualib/resty/upload.lua
+%%LUARESTYSTRING%%lualib/resty/sha1.lua
+%%LUARESTYSTRING%%lualib/resty/random.lua
+%%LUARESTYSTRING%%lualib/resty/md5.lua
+%%LUARESTYSTRING%%lualib/resty/aes.lua
+%%LUARESTYSTRING%%lualib/resty/sha384.lua
+%%LUARESTYMYSQL%%lualib/resty/mysql.lua
+%%LUARESTYMEM%%lualib/resty/memcached.lua
+%%LUARESTYREDIS%%lualib/resty/redis.lua
+%%LUARESTYSTRING%%lualib/resty/sha512.lua
+%%LUARESTYSTRING%%lualib/resty/sha256.lua
+%%LUARESTYSTRING%%lualib/resty/string.lua
+%%LUARESTYSTRING%%lualib/resty/sha224.lua
+%%LUARESTYSTRING%%lualib/resty/sha.lua
+%%LUARDS%%lualib/rds/parser.so
+%%LUACJSON%%lualib/cjson.so
+%%LUAREDISPARS%%lualib/redis/parser.so
+@dirrmtry nginx/sbin
+@dirrmtry nginx/logs
+@dirrmtry nginx/html
+@dirrmtry nginx/conf
+@dirrmtry nginx
+%%LUARESTYDNS%%@dirrm lualib/resty/dns
+@dirrmtry lualib/resty
+%%LUAREDISPARS%%@dirrmtry lualib/redis
+%%LUARDS%%@dirrmtry lualib/rds
+@dirrmtry lualib
+%%LUA%%@dirrm lua/share/lua/5.1
+%%LUA%%@dirrm lua/share/lua
+%%LUA%%@dirrm lua/share
+%%LUA%%@dirrm lua/lib/lua/5.1
+%%LUA%%@dirrm lua/lib/lua
+%%LUA%%@dirrm lua/lib
+%%LUA%%@dirrm lua/include
+%%LUA%%@dirrm lua/bin
+%%LUA%%@dirrm lua
+%%LUAJIT%%@dirrm luajit/share/luajit-2.0.0-beta10/jit
+%%LUAJIT%%@dirrm luajit/share/luajit-2.0.0-beta10
+%%LUAJIT%%@dirrm luajit/include/luajit-2.0
+%%LUAJIT%%@dirrm luajit/include
+%%LUAJIT%%@dirrm luajit/share/lua/5.1
+%%LUAJIT%%@dirrm luajit/share/lua
+%%LUAJIT%%@dirrm luajit/share
+%%LUAJIT%%@dirrm luajit/lib/lua/5.1
+%%LUAJIT%%@dirrm luajit/lib/lua
+%%LUAJIT%%@dirrm luajit/lib
+%%LUAJIT%%@dirrm luajit/bin
+%%LUAJIT%%@dirrm luajit

@@ -1,0 +1,47 @@
+--- bundle/lua-5.1.5/Makefile.orig	2012-08-07 14:56:49.606517458 +0400
++++ bundle/lua-5.1.5/Makefile	2012-08-07 14:57:31.325545994 +0400
+@@ -13,7 +13,6 @@
+ INSTALL_BIN= $(INSTALL_TOP)/bin
+ INSTALL_INC= $(INSTALL_TOP)/include
+ INSTALL_LIB= $(INSTALL_TOP)/lib
+-INSTALL_MAN= $(INSTALL_TOP)/man/man1
+ #
+ # You probably want to make INSTALL_LMOD and INSTALL_CMOD consistent with
+ # LUA_ROOT, LUA_LDIR, and LUA_CDIR in luaconf.h (and also with etc/lua.pc).
+@@ -44,7 +43,6 @@
+ TO_BIN= lua luac
+ TO_INC= lua.h luaconf.h lualib.h lauxlib.h ../etc/lua.hpp
+ TO_LIB= liblua.a
+-TO_MAN= lua.1 luac.1
+ 
+ # Lua version and release.
+ V= 5.1
+@@ -59,11 +57,10 @@
+ 	src/lua test/hello.lua
+ 
+ install: dummy
+-	cd src && $(MKDIR) $(INSTALL_BIN) $(INSTALL_INC) $(INSTALL_LIB) $(INSTALL_MAN) $(INSTALL_LMOD) $(INSTALL_CMOD)
++	cd src && $(MKDIR) $(INSTALL_BIN) $(INSTALL_INC) $(INSTALL_LIB) $(INSTALL_LMOD) $(INSTALL_CMOD)
+ 	cd src && $(INSTALL_EXEC) $(TO_BIN) $(INSTALL_BIN)
+ 	cd src && $(INSTALL_DATA) $(TO_INC) $(INSTALL_INC)
+ 	cd src && $(INSTALL_DATA) $(TO_LIB) $(INSTALL_LIB)
+-	cd doc && $(INSTALL_DATA) $(TO_MAN) $(INSTALL_MAN)
+ 
+ ranlib:
+ 	cd src && cd $(INSTALL_LIB) && $(RANLIB) $(TO_LIB)
+@@ -95,7 +92,6 @@
+ 	@echo "INSTALL_BIN = $(INSTALL_BIN)"
+ 	@echo "INSTALL_INC = $(INSTALL_INC)"
+ 	@echo "INSTALL_LIB = $(INSTALL_LIB)"
+-	@echo "INSTALL_MAN = $(INSTALL_MAN)"
+ 	@echo "INSTALL_LMOD = $(INSTALL_LMOD)"
+ 	@echo "INSTALL_CMOD = $(INSTALL_CMOD)"
+ 	@echo "INSTALL_EXEC = $(INSTALL_EXEC)"
+@@ -111,7 +107,6 @@
+ 	@echo "TO_BIN = $(TO_BIN)"
+ 	@echo "TO_INC = $(TO_INC)"
+ 	@echo "TO_LIB = $(TO_LIB)"
+-	@echo "TO_MAN = $(TO_MAN)"
+ 
+ # echo config parameters as Lua code
+ # uncomment the last sed expression if you want nil instead of empty strings
