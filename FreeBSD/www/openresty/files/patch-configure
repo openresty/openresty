@@ -1,0 +1,12 @@
+--- configure.orig	2012-08-08 11:10:58.575960219 +0400
++++ configure	2012-08-08 11:11:38.950486311 +0400
+@@ -157,6 +157,9 @@
+     } elsif ($opt eq '--without-lua_redis_parser') {
+         $resty_opts{no_lua_redis_parser} = 1;
+ 
++    } elsif ($opt eq '--without-lua_resty_dns') {
++        $resty_opts{no_lua_resty_dns} = 1;
++
+     } elsif ($opt eq '--without-lua_resty_memcached') {
+         $resty_opts{no_lua_resty_memcached} = 1;
+ 

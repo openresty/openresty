@@ -1,0 +1,36 @@
+--- bundle/LuaJIT-2.0.0-beta10/Makefile.orig	2012-05-09 20:00:00.000000000 +0400
++++ bundle/LuaJIT-2.0.0-beta10/Makefile	2012-08-07 23:26:28.853477336 +0400
+@@ -38,8 +38,6 @@
+ INSTALL_JITLIB= $(INSTALL_SHARE)/luajit-$(VERSION)/jit
+ INSTALL_LMOD= $(INSTALL_SHARE)/lua/$(ABIVER)
+ INSTALL_CMOD= $(INSTALL_LIB)/lua/$(ABIVER)
+-INSTALL_MAN= $(INSTALL_SHARE)/man/man1
+-INSTALL_PKGCONFIG= $(INSTALL_LIB)/pkgconfig
+ 
+ INSTALL_TNAME= luajit-$(VERSION)
+ INSTALL_TSYMNAME= luajit
+@@ -59,7 +57,7 @@
+ INSTALL_TSYM= $(INSTALL_BIN)/$(INSTALL_TSYMNAME)
+ INSTALL_PC= $(INSTALL_PKGCONFIG)/$(INSTALL_PCNAME)
+ 
+-INSTALL_DIRS= $(INSTALL_BIN) $(INSTALL_LIB) $(INSTALL_INC) $(INSTALL_MAN) \
++INSTALL_DIRS= $(INSTALL_BIN) $(INSTALL_LIB) $(INSTALL_INC) \
+   $(INSTALL_PKGCONFIG) $(INSTALL_JITLIB) $(INSTALL_LMOD) $(INSTALL_CMOD)
+ 
+ RM= rm -f
+@@ -73,7 +71,6 @@
+ FILE_T= luajit
+ FILE_A= libluajit.a
+ FILE_SO= libluajit.so
+-FILE_MAN= luajit.1
+ FILE_PC= luajit.pc
+ FILES_INC= lua.h lualib.h lauxlib.h luaconf.h lua.hpp luajit.h
+ FILES_JITLIB= bc.lua v.lua dump.lua dis_x86.lua dis_x64.lua dis_arm.lua \
+@@ -108,7 +105,6 @@
+ 	  $(LDCONFIG) $(INSTALL_LIB) && \
+ 	  $(SYMLINK) $(INSTALL_SONAME) $(INSTALL_SHORT1) && \
+ 	  $(SYMLINK) $(INSTALL_SONAME) $(INSTALL_SHORT2) || :
+-	cd etc && $(INSTALL_F) $(FILE_MAN) $(INSTALL_MAN)
+ 	cd etc && $(SED_PC) $(FILE_PC) > $(FILE_PC).tmp && \
+ 	  $(INSTALL_F) $(FILE_PC).tmp $(INSTALL_PC) && \
+ 	  $(RM) $(FILE_PC).tmp

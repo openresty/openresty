@@ -1,0 +1,6 @@
+ngx_openresty is a full-fledged web application server by bundling
+the standard nginx core, lots of 3rd-party nginx modules, as well
+as most of their external dependencies.
+
+
+WWW:	http://openresty.org
