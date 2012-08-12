@@ -106,7 +106,7 @@ rm -rf no-pool-nginx-$ver
 
 #################################
 
-ver=0.40
+ver=0.41
 $root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-echo-nginx-module-* echo-nginx-module-$ver || exit 1
@@ -162,7 +162,7 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.5.12
+ver=0.5.13
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -308,7 +308,7 @@ mv agentzh-lua-rds-parser-* lua-rds-parser-$ver || exit 1
 
 #################################
 
-ver=0.04
+ver=0.05
 $root/util/get-tarball "http://github.com/agentzh/lua-resty-dns/tarball/v$ver" -O "lua-resty-dns-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-dns-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-dns-* lua-resty-dns-$ver || exit 1
