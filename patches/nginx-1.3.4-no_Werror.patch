@@ -1,0 +1,24 @@
+diff -ur nginx-1.3.4/auto/cc/gcc nginx-1.3.4-patched/auto/cc/gcc
+--- nginx-1.3.4/auto/cc/gcc	2011-06-27 19:53:00.205737804 +0800
++++ nginx-1.3.4-patched/auto/cc/gcc	2011-06-27 19:53:13.837741087 +0800
+@@ -169,7 +169,7 @@
+ 
+ 
+ # stop on warning
+-CFLAGS="$CFLAGS -Werror"
++#CFLAGS="$CFLAGS -Werror"
+ 
+ # debug
+ CFLAGS="$CFLAGS -g"
+diff -ur nginx-1.3.4/auto/cc/icc nginx-1.3.4-patched/auto/cc/icc
+--- nginx-1.3.4/auto/cc/icc	2011-06-27 19:52:56.370157068 +0800
++++ nginx-1.3.4-patched/auto/cc/icc	2011-06-27 19:53:19.508916811 +0800
+@@ -139,7 +139,7 @@
+ esac
+ 
+ # stop on warning
+-CFLAGS="$CFLAGS -Werror"
++#CFLAGS="$CFLAGS -Werror"
+ 
+ # debug
+ CFLAGS="$CFLAGS -g"
