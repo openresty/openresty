@@ -260,6 +260,19 @@ index 393be40..05609c6 100644
  
  if [ ".$NGX_ERROR_LOG_PATH" = ".stderr" ]; then
      NGX_ERROR_LOG_PATH=
+diff --git a/auto/os/freebsd b/auto/os/freebsd
+index 6aa823f..ee15166 100644
+--- a/auto/os/freebsd
++++ b/auto/os/freebsd
+@@ -142,3 +142,8 @@ if [ $version -ge 701000 ]; then
+     echo " + cpuset_setaffinity() found"
+     have=NGX_HAVE_CPUSET_SETAFFINITY . auto/have
+ fi
++
++if [ $NGX_DTRACE = YES ]; then
++    NGX_LD_OPT="$NGX_LD_OPT -lelf"
++fi
++
 diff --git a/auto/sources b/auto/sources
 index 374ad66..72bb1b0 100644
 --- a/auto/sources
