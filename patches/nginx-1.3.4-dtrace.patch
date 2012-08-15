@@ -45,7 +45,7 @@ index 2f68e14..4f2c4a7 100644
 +The original Nginx documentation is available at http://nginx.org
  
 diff --git a/auto/install b/auto/install
-index c2c0ade..8e43d11 100644
+index c2c0ade..fe2a2dd 100644
 --- a/auto/install
 +++ b/auto/install
 @@ -16,6 +16,20 @@ END
@@ -90,7 +90,7 @@ index c2c0ade..8e43d11 100644
  		|| cp -R $NGX_HTML '\$(DESTDIR)$NGX_PREFIX'
  END
  
-+if [ $NGX_DTRACE = YES ]; then
++if [ $NGX_DTRACE = YES -a $DTRACE_FROM_SYSTEMTAP = YES ]; then
 +
 +    ngx_tapset_srcs="$NGX_TAPSET_SRCS"
 +
@@ -143,7 +143,7 @@ index c2c0ade..8e43d11 100644
  
  cat << END >> Makefile
 diff --git a/auto/make b/auto/make
-index e7f5490..ed2c098 100644
+index e7f5490..e1cb37e 100644
 --- a/auto/make
 +++ b/auto/make
 @@ -26,6 +26,9 @@ LINK =	$LINK
@@ -156,7 +156,7 @@ index e7f5490..ed2c098 100644
  
  if test -n "$NGX_PERL_CFLAGS"; then
      echo NGX_PERL_CFLAGS = $NGX_PERL_CFLAGS                   >> $NGX_MAKEFILE
-@@ -177,6 +180,36 @@ ngx_objs=`echo $ngx_all_objs $ngx_modules_obj \
+@@ -177,6 +180,44 @@ ngx_objs=`echo $ngx_all_objs $ngx_modules_obj \
      | sed -e "s/  *\([^ ][^ ]*\)/$ngx_long_regex_cont\1/g" \
            -e "s/\//$ngx_regex_dirsep/g"`
  
@@ -181,20 +181,28 @@ index e7f5490..ed2c098 100644
 +
 +$ngx_dtrace_h: $ngx_dtrace_d
 +	\$(DTRACE) -xnolibs -h -o $ngx_dtrace_h -s $ngx_dtrace_d
++END
 +
++    if [ $DTRACE_PROBE_OBJ = YES ]; then
++        cat << END                                            >> $NGX_MAKEFILE
 +$ngx_dtrace_obj: $ngx_dtrace_d $ngx_deps$ngx_spacer
 +	\$(DTRACE) -xnolibs -G -o $ngx_dtrace_obj -s $ngx_dtrace_d $ngx_objs
 +END
 +
-+    ngx_deps="$ngx_deps$ngx_long_cont$ngx_dtrace_obj$ngx_long_cont$NGX_OBJS${ngx_dirsep}stap-nginx"
-+    ngx_objs="$ngx_objs$ngx_long_cont$ngx_dtrace_obj"
++        ngx_deps="$ngx_deps$ngx_long_cont$ngx_dtrace_obj"
++        ngx_objs="$ngx_objs$ngx_long_cont$ngx_dtrace_obj"
++
++        if [ "$DTRACE_FROM_SYSTEMTAP" = YES ]; then
++            ngx_deps="$ngx_deps$ngx_long_cont$NGX_OBJS${ngx_dirsep}stap-nginx"
++        fi
++    fi
 +fi
 +
  if test -n "$NGX_LD_OPT$CORE_LIBS"; then
      ngx_libs=`echo $NGX_LD_OPT $CORE_LIBS \
          | sed -e "s/\//$ngx_regex_dirsep/g" -e "s/^/$ngx_long_regex_cont/"`
 diff --git a/auto/options b/auto/options
-index 393be40..05609c6 100644
+index 393be40..9b7494f 100644
 --- a/auto/options
 +++ b/auto/options
 @@ -12,6 +12,8 @@ NGX_CONF_PATH=
@@ -206,16 +214,20 @@ index 393be40..05609c6 100644
  NGX_USER=
  NGX_GROUP=
  
-@@ -20,6 +22,8 @@ CPP=
+@@ -20,6 +22,12 @@ CPP=
  NGX_OBJS=objs
  
  NGX_DEBUG=NO
 +NGX_DTRACE=NO
 +DTRACE=dtrace
++
++DTRACE_PROBE_OBJ=YES
++DTRACE_FROM_SYSTEMTAP=NO
++
  NGX_CC_OPT=
  NGX_LD_OPT=
  CPU=NO
-@@ -169,6 +173,8 @@ do
+@@ -169,6 +177,8 @@ do
          --error-log-path=*)              NGX_ERROR_LOG_PATH="$value";;
          --pid-path=*)                    NGX_PID_PATH="$value"      ;;
          --lock-path=*)                   NGX_LOCK_PATH="$value"     ;;
@@ -224,7 +236,7 @@ index 393be40..05609c6 100644
          --user=*)                        NGX_USER="$value"          ;;
          --group=*)                       NGX_GROUP="$value"         ;;
  
-@@ -272,7 +278,8 @@ use the \"--without-http_limit_conn_module\" option instead"
+@@ -272,7 +282,8 @@ use the \"--without-http_limit_conn_module\" option instead"
          --with-ld-opt=*)                 NGX_LD_OPT="$value"        ;;
          --with-cpu-opt=*)                CPU="$value"               ;;
          --with-debug)                    NGX_DEBUG=YES              ;;
@@ -234,7 +246,7 @@ index 393be40..05609c6 100644
          --without-pcre)                  USE_PCRE=DISABLED          ;;
          --with-pcre)                     USE_PCRE=YES               ;;
          --with-pcre=*)                   PCRE="$value"              ;;
-@@ -326,6 +333,8 @@ cat << END
+@@ -326,6 +337,8 @@ cat << END
    --error-log-path=PATH              set error log pathname
    --pid-path=PATH                    set nginx.pid pathname
    --lock-path=PATH                   set nginx.lock pathname
@@ -243,7 +255,7 @@ index 393be40..05609c6 100644
  
    --user=USER                        set non-privileged user for
                                       worker processes
-@@ -448,6 +457,8 @@ cat << END
+@@ -448,6 +461,8 @@ cat << END
    --with-openssl-opt=OPTIONS         set additional build options for OpenSSL
  
    --with-debug                       enable debug logging
@@ -252,7 +264,7 @@ index 393be40..05609c6 100644
  
  END
  
-@@ -477,6 +488,7 @@ NGX_CONF_PATH=${NGX_CONF_PATH:-conf/nginx.conf}
+@@ -477,6 +492,7 @@ NGX_CONF_PATH=${NGX_CONF_PATH:-conf/nginx.conf}
  NGX_CONF_PREFIX=`dirname $NGX_CONF_PATH`
  NGX_PID_PATH=${NGX_PID_PATH:-logs/nginx.pid}
  NGX_LOCK_PATH=${NGX_LOCK_PATH:-logs/nginx.lock}
@@ -260,6 +272,40 @@ index 393be40..05609c6 100644
  
  if [ ".$NGX_ERROR_LOG_PATH" = ".stderr" ]; then
      NGX_ERROR_LOG_PATH=
+diff --git a/auto/os/darwin b/auto/os/darwin
+index 590e036..af33cf3 100644
+--- a/auto/os/darwin
++++ b/auto/os/darwin
+@@ -114,3 +114,6 @@ ngx_feature_libs=
+ ngx_feature_test="int32_t  lock, n;
+                   n = OSAtomicCompareAndSwap32Barrier(0, 1, lock)"
+ . auto/feature
++
++DTRACE_PROBE_OBJ=NO
++
+diff --git a/auto/os/freebsd b/auto/os/freebsd
+index 6aa823f..ee15166 100644
+--- a/auto/os/freebsd
++++ b/auto/os/freebsd
+@@ -142,3 +142,8 @@ if [ $version -ge 701000 ]; then
+     echo " + cpuset_setaffinity() found"
+     have=NGX_HAVE_CPUSET_SETAFFINITY . auto/have
+ fi
++
++if [ $NGX_DTRACE = YES ]; then
++    NGX_LD_OPT="$NGX_LD_OPT -lelf"
++fi
++
+diff --git a/auto/os/linux b/auto/os/linux
+index c506d3d..cbbfbf1 100644
+--- a/auto/os/linux
++++ b/auto/os/linux
+@@ -151,3 +151,5 @@ ngx_include="sys/vfs.h";     . auto/include
+ 
+ 
+ CC_AUX_FLAGS="$cc_aux_flags -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64"
++
++DTRACE_FROM_SYSTEMTAP=YES
 diff --git a/auto/sources b/auto/sources
 index 374ad66..72bb1b0 100644
 --- a/auto/sources
@@ -296,19 +342,24 @@ index 374ad66..72bb1b0 100644
 +NGX_TAPSET_SRCS=src/dtrace/nginx.stp
 +
 diff --git a/auto/summary b/auto/summary
-index dcebec9..06c4aa9 100644
+index dcebec9..3cb269e 100644
 --- a/auto/summary
 +++ b/auto/summary
-@@ -92,6 +92,14 @@ else
+@@ -92,6 +92,19 @@ else
      echo "  nginx logs errors to stderr"
  fi
  
 +if [ $NGX_DTRACE = YES ]; then
 +    cat << END
 +  nginx dtrace static probes enabled
++END
++
++    if [ $DTRACE_FROM_SYSTEMTAP = YES ]; then
++        cat << END
 +  nginx systemtap tapset prefix: "$NGX_TAPSET_PREFIX"
 +  nginx systemtap wrapper script: "$NGX_STAP_NGX_PATH"
 +END
++    fi
 +fi
 +
  cat << END
