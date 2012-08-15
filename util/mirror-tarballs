@@ -73,7 +73,7 @@ patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
 #echo applying filter_finalize_hang.patch ...
 #patch -p1 < $root/patches/nginx-$main_ver-filter_finalize_hang.patch || exit 1
 
-answer=`$root/util/ver-ge "$main_ver" 1.3.4`
+answer=`$root/util/ver-ge "$main_ver" 1.2.3`
 if [ "$answer" = "N" ]; then
     echo applying add_core_vars_polluting_globals.patch ...
     patch -p1 < $root/patches/nginx-$main_ver-add_core_vars_polluting_globals.patch || exit 1
