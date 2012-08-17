@@ -610,7 +610,7 @@ index 3e077fb..b7edb7b 100644
                  return NGX_CONF_ERROR;
              }
 diff --git a/src/http/ngx_http_core_module.c b/src/http/ngx_http_core_module.c
-index c5db18f..f23ba51 100644
+index c5db18f..ffc7049 100644
 --- a/src/http/ngx_http_core_module.c
 +++ b/src/http/ngx_http_core_module.c
 @@ -8,6 +8,7 @@
@@ -625,7 +625,7 @@ index c5db18f..f23ba51 100644
      r->main->subrequests--;
  
      if (r->main->subrequests == 0) {
-+        ngx_http_probe_subrequest_cycle(r, &uri, &args);
++        ngx_http_probe_subrequest_cycle(r, uri, args);
 +
          ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
                        "subrequests cycle while processing \"%V\"", uri);

@@ -625,7 +625,7 @@ index c5db18f..f23ba51 100644
      r->main->subrequests--;
  
      if (r->main->subrequests == 0) {
-+        ngx_http_probe_subrequest_cycle(r, &uri, &args);
++        ngx_http_probe_subrequest_cycle(r, uri, args);
 +
          ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
                        "subrequests cycle while processing \"%V\"", uri);

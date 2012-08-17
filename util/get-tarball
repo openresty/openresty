@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #root=$(readlink -f -- "$(dirname -- "$0")/..")
 root=`perl -MCwd -e'print Cwd::abs_path(shift)' $(dirname -- "$0")/..`
