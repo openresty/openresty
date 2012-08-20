@@ -307,7 +307,7 @@ index c506d3d..cbbfbf1 100644
 +
 +DTRACE_FROM_SYSTEMTAP=YES
 diff --git a/auto/sources b/auto/sources
-index 374ad66..72bb1b0 100644
+index 374ad66..b9e71ff 100644
 --- a/auto/sources
 +++ b/auto/sources
 @@ -39,6 +39,11 @@ CORE_DEPS="src/core/nginx.h \
@@ -322,7 +322,17 @@ index 374ad66..72bb1b0 100644
  CORE_SRCS="src/core/nginx.c \
             src/core/ngx_log.c \
             src/core/ngx_palloc.c \
-@@ -291,7 +296,8 @@ HTTP_DEPS="src/http/ngx_http.h \
+@@ -89,7 +94,8 @@ EVENT_DEPS="src/event/ngx_event.h \
+             src/event/ngx_event_posted.h \
+             src/event/ngx_event_busy_lock.h \
+             src/event/ngx_event_connect.h \
+-            src/event/ngx_event_pipe.h"
++            src/event/ngx_event_pipe.h \
++            src/event/ngx_event_probe.h"
+ 
+ EVENT_SRCS="src/event/ngx_event.c \
+             src/event/ngx_event_timer.c \
+@@ -291,7 +297,8 @@ HTTP_DEPS="src/http/ngx_http.h \
             src/http/ngx_http_script.h \
             src/http/ngx_http_upstream.h \
             src/http/ngx_http_upstream_round_robin.h \
@@ -332,7 +342,7 @@ index 374ad66..72bb1b0 100644
  
  HTTP_SRCS="src/http/ngx_http.c \
             src/http/ngx_http_core_module.c \
-@@ -524,3 +530,8 @@ NGX_GOOGLE_PERFTOOLS_MODULE=ngx_google_perftools_module
+@@ -524,3 +531,8 @@ NGX_GOOGLE_PERFTOOLS_MODULE=ngx_google_perftools_module
  NGX_GOOGLE_PERFTOOLS_SRCS=src/misc/ngx_google_perftools_module.c
  
  NGX_CPP_TEST_SRCS=src/misc/ngx_cpp_test_module.cpp
@@ -539,16 +549,17 @@ index 0000000..fccea2b
 +
 diff --git a/src/dtrace/nginx_provider.d b/src/dtrace/nginx_provider.d
 new file mode 100644
-index 0000000..483ac69
+index 0000000..7f93101
 --- /dev/null
 +++ b/src/dtrace/nginx_provider.d
-@@ -0,0 +1,32 @@
+@@ -0,0 +1,36 @@
 +typedef struct { int dummy; } ngx_http_request_t;
 +typedef struct { int dummy; } ngx_str_t;
 +typedef int64_t ngx_int_t;
 +typedef struct { int dummy; } ngx_module_t;
 +typedef struct { int dummy; } ngx_http_module_t;
 +typedef struct { int dummy; } ngx_table_elt_t;
++typedef struct { int dummy; } ngx_event_t;
 +
 +
 +provider nginx {
@@ -566,6 +577,9 @@ index 0000000..483ac69
 +    probe http__read__body__done(ngx_http_request_t *r);
 +    probe http__read__req__line__done(ngx_http_request_t *r);
 +    probe http__read__req__header__done(ngx_http_request_t *r, ngx_table_elt_t *h);
++    probe timer__add(ngx_event_t *ev, ngx_msec_t timer);
++    probe timer__del(ngx_event_t *ev);
++    probe timer__expire(ngx_event_t *ev);
 +};
 +
 +
@@ -577,7 +591,7 @@ index 0000000..483ac69
 +
 diff --git a/src/dtrace/stap-nginx b/src/dtrace/stap-nginx
 new file mode 100755
-index 0000000..5127fbe
+index 0000000..1bca4cf
 --- /dev/null
 +++ b/src/dtrace/stap-nginx
 @@ -0,0 +1,6 @@
@@ -585,8 +599,89 @@ index 0000000..5127fbe
 +
 +PATH="NGX_SBIN_DIR:$PATH"
 +export PATH
-+exec stap -d "NGX_SBIN_PATH" --ldd -I "NGX_TAPSET_PREFIX" "$@"
++exec stap -d "NGX_SBIN_PATH" -I "NGX_TAPSET_PREFIX" "$@"
 +
+diff --git a/src/event/ngx_event_probe.h b/src/event/ngx_event_probe.h
+new file mode 100644
+index 0000000..b7b2749
+--- /dev/null
++++ b/src/event/ngx_event_probe.h
+@@ -0,0 +1,32 @@
++#ifndef _NGX_EVENT_PROBE_H_INCLUDED_
++#define _NGX_EVENT_PROBE_H_INCLUDED_
++
++
++#include <ngx_config.h>
++#include <ngx_core.h>
++#include <ngx_event.h>
++
++
++#if (NGX_DTRACE)
++
++#include <ngx_dtrace_provider.h>
++
++#define ngx_event_probe_timer_add(ev, timer)                                 \
++    NGINX_TIMER_ADD(ev, timer)
++
++#define ngx_event_probe_timer_del(ev)                                        \
++    NGINX_TIMER_DEL(ev)
++
++#define ngx_event_probe_timer_expire(ev)                                     \
++    NGINX_TIMER_EXPIRE(ev)
++
++#else /* !(NGX_DTRACE) */
++
++#define ngx_event_probe_timer_add(ev, timer)
++#define ngx_event_probe_timer_del(ev)
++#define ngx_event_probe_timer_expire(ev)
++
++#endif
++
++
++#endif /* _NGX_EVENT_PROBE_H_INCLUDED_ */
+diff --git a/src/event/ngx_event_timer.c b/src/event/ngx_event_timer.c
+index 177ac1c..531cccc 100644
+--- a/src/event/ngx_event_timer.c
++++ b/src/event/ngx_event_timer.c
+@@ -144,6 +144,8 @@ ngx_event_expire_timers(void)
+             }
+ #endif
+ 
++            ngx_event_probe_timer_expire(ev);
++
+             ev->timedout = 1;
+ 
+             ev->handler(ev);
+diff --git a/src/event/ngx_event_timer.h b/src/event/ngx_event_timer.h
+index ec9b316..6095d8c 100644
+--- a/src/event/ngx_event_timer.h
++++ b/src/event/ngx_event_timer.h
+@@ -12,6 +12,7 @@
+ #include <ngx_config.h>
+ #include <ngx_core.h>
+ #include <ngx_event.h>
++#include <ngx_event_probe.h>
+ 
+ 
+ #define NGX_TIMER_INFINITE  (ngx_msec_t) -1
+@@ -35,6 +36,8 @@ extern ngx_thread_volatile ngx_rbtree_t  ngx_event_timer_rbtree;
+ static ngx_inline void
+ ngx_event_del_timer(ngx_event_t *ev)
+ {
++    ngx_event_probe_timer_del(ev);
++
+     ngx_log_debug2(NGX_LOG_DEBUG_EVENT, ev->log, 0,
+                    "event timer del: %d: %M",
+                     ngx_event_ident(ev->data), ev->timer.key);
+@@ -85,6 +88,8 @@ ngx_event_add_timer(ngx_event_t *ev, ngx_msec_t timer)
+ 
+     ev->timer.key = key;
+ 
++    ngx_event_probe_timer_add(ev, timer);
++
+     ngx_log_debug3(NGX_LOG_DEBUG_EVENT, ev->log, 0,
+                    "event timer add: %d: %M:%M",
+                     ngx_event_ident(ev->data), timer, ev->timer.key);
 diff --git a/src/http/ngx_http.c b/src/http/ngx_http.c
 index 3e077fb..b7edb7b 100644
 --- a/src/http/ngx_http.c
