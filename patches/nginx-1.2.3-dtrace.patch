@@ -307,7 +307,7 @@ index c506d3d..cbbfbf1 100644
 +
 +DTRACE_FROM_SYSTEMTAP=YES
 diff --git a/auto/sources b/auto/sources
-index 374ad66..b9e71ff 100644
+index 374ad66..3c76cac 100644
 --- a/auto/sources
 +++ b/auto/sources
 @@ -39,6 +39,11 @@ CORE_DEPS="src/core/nginx.h \
@@ -322,7 +322,15 @@ index 374ad66..b9e71ff 100644
  CORE_SRCS="src/core/nginx.c \
             src/core/ngx_log.c \
             src/core/ngx_palloc.c \
-@@ -89,7 +94,8 @@ EVENT_DEPS="src/event/ngx_event.h \
+@@ -82,14 +87,15 @@ OPENSSL_SRCS=src/event/ngx_event_openssl.c
+ 
+ EVENT_MODULES="ngx_events_module ngx_event_core_module"
+ 
+-EVENT_INCS="src/event src/event/modules"
++EVENT_INCS="src/event src/event/modules src/http src/http/modules"
+ 
+ EVENT_DEPS="src/event/ngx_event.h \
+             src/event/ngx_event_timer.h \
              src/event/ngx_event_posted.h \
              src/event/ngx_event_busy_lock.h \
              src/event/ngx_event_connect.h \
@@ -596,17 +604,20 @@ index 0000000..3dde1be
 +
 diff --git a/src/dtrace/nginx_provider.d b/src/dtrace/nginx_provider.d
 new file mode 100644
-index 0000000..7f93101
+index 0000000..e583a52
 --- /dev/null
 +++ b/src/dtrace/nginx_provider.d
-@@ -0,0 +1,36 @@
+@@ -0,0 +1,39 @@
 +typedef struct { int dummy; } ngx_http_request_t;
 +typedef struct { int dummy; } ngx_str_t;
 +typedef int64_t ngx_int_t;
++typedef uint64_t ngx_uint_t;
++typedef ngx_uint_t ngx_msec_t;
 +typedef struct { int dummy; } ngx_module_t;
 +typedef struct { int dummy; } ngx_http_module_t;
 +typedef struct { int dummy; } ngx_table_elt_t;
 +typedef struct { int dummy; } ngx_event_t;
++typedef char unsigned u_char;
 +
 +
 +provider nginx {
@@ -650,10 +661,10 @@ index 0000000..1bca4cf
 +
 diff --git a/src/event/ngx_event_probe.h b/src/event/ngx_event_probe.h
 new file mode 100644
-index 0000000..b7b2749
+index 0000000..5aa0397
 --- /dev/null
 +++ b/src/event/ngx_event_probe.h
-@@ -0,0 +1,32 @@
+@@ -0,0 +1,33 @@
 +#ifndef _NGX_EVENT_PROBE_H_INCLUDED_
 +#define _NGX_EVENT_PROBE_H_INCLUDED_
 +
@@ -665,6 +676,7 @@ index 0000000..b7b2749
 +
 +#if (NGX_DTRACE)
 +
++#include <ngx_http.h>
 +#include <ngx_dtrace_provider.h>
 +
 +#define ngx_event_probe_timer_add(ev, timer)                                 \
