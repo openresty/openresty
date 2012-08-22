@@ -391,10 +391,10 @@ index 45ea154..332c011 100755
      echo "checking for OS"
 diff --git a/src/dtrace/nginx.stp b/src/dtrace/nginx.stp
 new file mode 100644
-index 0000000..fccea2b
+index 0000000..3dde1be
 --- /dev/null
 +++ b/src/dtrace/nginx.stp
-@@ -0,0 +1,152 @@
+@@ -0,0 +1,199 @@
 +/* tapset for nginx */
 +
 +/* retrieve the request uri string from the ngx_http_request_t pointer */
@@ -445,6 +445,12 @@ index 0000000..fccea2b
 +function ngx_chain_buf(cl)
 +{
 +    return @cast(cl, "ngx_chain_t", "NGX_SBIN_PATH")->buf
++}
++
++
++function ngx_chain_next(cl)
++{
++    return @cast(cl, "ngx_chain_t", "NGX_SBIN_PATH")->next
 +}
 +
 +
@@ -502,6 +508,32 @@ index 0000000..fccea2b
 +}
 +
 +
++function ngx_chain_writer_ctx_out(ctx)
++{
++    return @cast(c, "ngx_chain_writer_ctx_t", "NGX_SBIN_PATH")->out
++}
++
++
++function ngx_chain_dump:string (input)
++{
++    if (input == 0) {
++        return "NULL"
++    }
++
++    out = ""
++    cl = input
++    while (cl) {
++        buf = ngx_chain_buf(cl)
++        out .= sprintf("[%s]", text_str(ngx_buf_data(buf)))
++        cl = ngx_chain_next(cl)
++        if (cl) {
++            out .= sprintf(" ")
++        }
++    }
++    return out
++}
++
++
 +function ngx_pool_cleanup_file_name(c)
 +{
 +    return user_string(@cast(c, "ngx_pool_cleanup_file_t", "NGX_SBIN_PATH")->name)
@@ -545,6 +577,21 @@ index 0000000..fccea2b
 +    len = @cast(e, "ngx_table_elt_t", "NGX_SBIN_PATH")->value->len
 +
 +    return user_string_n(@cast(e, "ngx_table_elt_t", "NGX_SBIN_PATH")->value->data, len)
++}
++
++
++function ngx_iovec_dump:string (iov, iovcnt) {
++    out = ""
++    for (i = 0; i < iovcnt; i++) {
++        out .= sprintf("\"%s\"(%p)", text_str(user_string_n(
++                @cast(iov, "struct iovec")[i]->iov_base,
++                @cast(iov, "struct iovec")[i]->iov_len)
++            ), @cast(iov, "struct iovec")[i]->iov_base)
++        if (i != iovcnt - 1) {
++            out .= " "
++        }
++    }
++    return out
 +}
 +
 diff --git a/src/dtrace/nginx_provider.d b/src/dtrace/nginx_provider.d
