@@ -1,6 +1,6 @@
-diff '--exclude=*~' -ur nginx-1.2.3/src/http/ngx_http_core_module.c nginx-1.2.3-patched/src/http/ngx_http_core_module.c
---- nginx-1.2.3/src/http/ngx_http_core_module.c	2012-06-04 04:58:12.000000000 -0700
-+++ nginx-1.2.3-patched/src/http/ngx_http_core_module.c	2012-07-21 12:09:17.468576485 -0700
+diff -ur nginx-1.2.3/src/http/ngx_http_core_module.c nginx-1.2.3-patched/src/http/ngx_http_core_module.c
+--- nginx-1.2.3/src/http/ngx_http_core_module.c	2012-08-06 10:31:32.000000000 -0700
++++ nginx-1.2.3-patched/src/http/ngx_http_core_module.c	2012-08-30 11:37:42.388213974 -0700
 @@ -2420,6 +2420,8 @@
  
      sr->request_body = r->request_body;
@@ -10,9 +10,9 @@ diff '--exclude=*~' -ur nginx-1.2.3/src/http/ngx_http_core_module.c nginx-1.2.3-
      sr->method = NGX_HTTP_GET;
      sr->http_version = r->http_version;
  
-diff '--exclude=*~' -ur nginx-1.2.3/src/http/ngx_http_request_body.c nginx-1.2.3-patched/src/http/ngx_http_request_body.c
+diff -ur nginx-1.2.3/src/http/ngx_http_request_body.c nginx-1.2.3-patched/src/http/ngx_http_request_body.c
 --- nginx-1.2.3/src/http/ngx_http_request_body.c	2012-04-12 12:35:41.000000000 -0700
-+++ nginx-1.2.3-patched/src/http/ngx_http_request_body.c	2012-07-21 12:08:30.655376967 -0700
++++ nginx-1.2.3-patched/src/http/ngx_http_request_body.c	2012-08-30 11:37:42.388213974 -0700
 @@ -39,7 +39,7 @@
  
      r->main->count++;
@@ -89,10 +89,9 @@ diff '--exclude=*~' -ur nginx-1.2.3/src/http/ngx_http_request_body.c nginx-1.2.3
      }
  }
  
-Only in nginx-1.2.3-patched/src/http: ngx_http_request_body.c.orig
-diff '--exclude=*~' -ur nginx-1.2.3/src/http/ngx_http_request.c nginx-1.2.3-patched/src/http/ngx_http_request.c
---- nginx-1.2.3/src/http/ngx_http_request.c	2012-06-05 06:52:37.000000000 -0700
-+++ nginx-1.2.3-patched/src/http/ngx_http_request.c	2012-07-21 12:08:30.656376973 -0700
+diff -ur nginx-1.2.3/src/http/ngx_http_request.c nginx-1.2.3-patched/src/http/ngx_http_request.c
+--- nginx-1.2.3/src/http/ngx_http_request.c	2012-08-06 10:36:30.000000000 -0700
++++ nginx-1.2.3-patched/src/http/ngx_http_request.c	2012-08-30 11:37:42.395213999 -0700
 @@ -287,6 +287,8 @@
  
          r->pipeline = hc->pipeline;
@@ -111,11 +110,20 @@ diff '--exclude=*~' -ur nginx-1.2.3/src/http/ngx_http_request.c nginx-1.2.3-patc
          hc->request = r;
      }
  
-Only in nginx-1.2.3-patched/src/http: ngx_http_request.c.orig
-diff '--exclude=*~' -ur nginx-1.2.3/src/http/ngx_http_request.h nginx-1.2.3-patched/src/http/ngx_http_request.h
---- nginx-1.2.3/src/http/ngx_http_request.h	2012-02-28 06:54:23.000000000 -0800
-+++ nginx-1.2.3-patched/src/http/ngx_http_request.h	2012-07-21 12:08:30.657376978 -0700
-@@ -368,6 +368,9 @@
+diff -ur nginx-1.2.3/src/http/ngx_http_request.h nginx-1.2.3-patched/src/http/ngx_http_request.h
+--- nginx-1.2.3/src/http/ngx_http_request.h	2012-07-02 10:41:52.000000000 -0700
++++ nginx-1.2.3-patched/src/http/ngx_http_request.h	2012-08-30 11:39:37.085644830 -0700
+@@ -9,6 +9,9 @@
+ #define _NGX_HTTP_REQUEST_H_INCLUDED_
+ 
+ 
++#define HAVE_ALLOW_REQUEST_BODY_UPDATING_PATCH
++
++
+ #define NGX_HTTP_MAX_URI_CHANGES           10
+ #define NGX_HTTP_MAX_SUBREQUESTS           200
+ 
+@@ -375,6 +378,9 @@
      ngx_pool_t                       *pool;
      ngx_buf_t                        *header_in;
  
