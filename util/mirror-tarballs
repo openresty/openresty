@@ -93,6 +93,9 @@ fi
 echo applying location_if_inherits_proxy.patch ...
 patch -p1 < $root/patches/nginx-$main_ver-location_if_inherits_proxy.patch
 
+echo applying nonbuffered-upstream-truncation.patch ...
+patch -p1 < $root/patches/nginx-$main_ver-nonbuffered-upstream-truncation.patch
+
 echo applying dtrace.patch ...
 patch -p1 < $root/patches/nginx-$main_ver-dtrace.patch
 

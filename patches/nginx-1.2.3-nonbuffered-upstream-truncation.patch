@@ -1,0 +1,28 @@
+--- nginx-1.2.3/src/http/ngx_http_upstream.c	2012-09-05 14:39:33.234197951 -0700
++++ nginx-1.2.3-patched/src/http/ngx_http_upstream.c	2012-09-05 14:39:24.504183525 -0700
+@@ -2384,6 +2384,7 @@
+     c->log->action = "reading upstream";
+ 
+     if (c->read->timedout) {
++        r->headers_out.status = NGX_HTTP_GATEWAY_TIME_OUT;
+         ngx_connection_error(c, NGX_ETIMEDOUT, "upstream timed out");
+         ngx_http_upstream_finalize_request(r, u, 0);
+         return;
+@@ -2431,10 +2432,13 @@
+ 
+             if (u->busy_bufs == NULL) {
+ 
+-                if (u->length == 0
+-                    || upstream->read->eof
+-                    || upstream->read->error)
+-                {
++                if (u->length == 0) {
++                    ngx_http_upstream_finalize_request(r, u, 0);
++                    return;
++                }
++
++                if (upstream->read->eof || upstream->read->error) {
++                    r->headers_out.status = NGX_HTTP_BAD_GATEWAY;
+                     ngx_http_upstream_finalize_request(r, u, 0);
+                     return;
+                 }
