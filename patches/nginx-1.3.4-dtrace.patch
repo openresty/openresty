@@ -307,22 +307,25 @@ index c506d3d..cbbfbf1 100644
 +
 +DTRACE_FROM_SYSTEMTAP=YES
 diff --git a/auto/sources b/auto/sources
-index 374ad66..3c76cac 100644
+index 374ad66..82dbc88 100644
 --- a/auto/sources
 +++ b/auto/sources
-@@ -39,6 +39,11 @@ CORE_DEPS="src/core/nginx.h \
-            src/core/ngx_crypt.h"
- 
- 
+@@ -36,7 +36,13 @@ CORE_DEPS="src/core/nginx.h \
+            src/core/ngx_conf_file.h \
+            src/core/ngx_resolver.h \
+            src/core/ngx_open_file_cache.h \
+-           src/core/ngx_crypt.h"
++           src/core/ngx_crypt.h \
++           src/core/ngx_core_probe.h"
++
++
 +if [ $NGX_DTRACE = YES ]; then
 +    CORE_DEPS="$CORE_DEPS objs/ngx_dtrace_provider.h"
 +fi
-+
-+
+ 
+ 
  CORE_SRCS="src/core/nginx.c \
-            src/core/ngx_log.c \
-            src/core/ngx_palloc.c \
-@@ -82,14 +87,15 @@ OPENSSL_SRCS=src/event/ngx_event_openssl.c
+@@ -82,14 +88,15 @@ OPENSSL_SRCS=src/event/ngx_event_openssl.c
  
  EVENT_MODULES="ngx_events_module ngx_event_core_module"
  
@@ -340,7 +343,7 @@ index 374ad66..3c76cac 100644
  
  EVENT_SRCS="src/event/ngx_event.c \
              src/event/ngx_event_timer.c \
-@@ -291,7 +297,8 @@ HTTP_DEPS="src/http/ngx_http.h \
+@@ -291,7 +298,8 @@ HTTP_DEPS="src/http/ngx_http.h \
             src/http/ngx_http_script.h \
             src/http/ngx_http_upstream.h \
             src/http/ngx_http_upstream_round_robin.h \
@@ -350,7 +353,7 @@ index 374ad66..3c76cac 100644
  
  HTTP_SRCS="src/http/ngx_http.c \
             src/http/ngx_http_core_module.c \
-@@ -524,3 +531,8 @@ NGX_GOOGLE_PERFTOOLS_MODULE=ngx_google_perftools_module
+@@ -524,3 +532,8 @@ NGX_GOOGLE_PERFTOOLS_MODULE=ngx_google_perftools_module
  NGX_GOOGLE_PERFTOOLS_SRCS=src/misc/ngx_google_perftools_module.c
  
  NGX_CPP_TEST_SRCS=src/misc/ngx_cpp_test_module.cpp
@@ -397,6 +400,58 @@ index 45ea154..332c011 100755
  
  if test -z "$NGX_PLATFORM"; then
      echo "checking for OS"
+diff --git a/src/core/ngx_core_probe.h b/src/core/ngx_core_probe.h
+new file mode 100644
+index 0000000..91bf91e
+--- /dev/null
++++ b/src/core/ngx_core_probe.h
+@@ -0,0 +1,25 @@
++#ifndef _NGX_CORE_PROBE_H_INCLUDED_
++#define _NGX_CORE_PROBE_H_INCLUDED_
++
++
++#include <ngx_config.h>
++#include <ngx_core.h>
++#include <ngx_event.h>
++
++
++#if (NGX_DTRACE)
++
++#include <ngx_http.h>
++#include <ngx_dtrace_provider.h>
++
++#define ngx_core_probe_create_pool_done(pool, size)                             \
++    NGINX_CREATE_POOL_DONE(pool, size)
++
++#else /* !(NGX_DTRACE) */
++
++#define ngx_core_probe_create_pool_done(pool, size)
++
++#endif
++
++
++#endif /* _NGX_CORE_PROBE_H_INCLUDED_ */
+diff --git a/src/core/ngx_palloc.c b/src/core/ngx_palloc.c
+index efbc244..8d81aab 100644
+--- a/src/core/ngx_palloc.c
++++ b/src/core/ngx_palloc.c
+@@ -7,6 +7,7 @@
+ 
+ #include <ngx_config.h>
+ #include <ngx_core.h>
++#include <ngx_core_probe.h>
+ 
+ 
+ static void *ngx_palloc_block(ngx_pool_t *pool, size_t size);
+@@ -37,6 +38,8 @@ ngx_create_pool(size_t size, ngx_log_t *log)
+     p->cleanup = NULL;
+     p->log = log;
+ 
++    ngx_core_probe_create_pool_done(p, size);
++
+     return p;
+ }
+ 
 diff --git a/src/dtrace/nginx.stp b/src/dtrace/nginx.stp
 new file mode 100644
 index 0000000..3dde1be
@@ -604,10 +659,10 @@ index 0000000..3dde1be
 +
 diff --git a/src/dtrace/nginx_provider.d b/src/dtrace/nginx_provider.d
 new file mode 100644
-index 0000000..e583a52
+index 0000000..147ca12
 --- /dev/null
 +++ b/src/dtrace/nginx_provider.d
-@@ -0,0 +1,39 @@
+@@ -0,0 +1,41 @@
 +typedef struct { int dummy; } ngx_http_request_t;
 +typedef struct { int dummy; } ngx_str_t;
 +typedef int64_t ngx_int_t;
@@ -617,6 +672,7 @@ index 0000000..e583a52
 +typedef struct { int dummy; } ngx_http_module_t;
 +typedef struct { int dummy; } ngx_table_elt_t;
 +typedef struct { int dummy; } ngx_event_t;
++typedef struct { int dummy; } ngx_pool_t;
 +typedef char unsigned u_char;
 +
 +
@@ -638,6 +694,7 @@ index 0000000..e583a52
 +    probe timer__add(ngx_event_t *ev, ngx_msec_t timer);
 +    probe timer__del(ngx_event_t *ev);
 +    probe timer__expire(ngx_event_t *ev);
++    probe create__pool__done(ngx_pool_t *pool, size_t size);
 +};
 +
 +
