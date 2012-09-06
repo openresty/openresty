@@ -1,14 +1,15 @@
---- nginx-1.2.3/src/http/ngx_http_upstream.c	2012-09-05 14:39:33.234197951 -0700
-+++ nginx-1.2.3-patched/src/http/ngx_http_upstream.c	2012-09-05 14:39:24.504183525 -0700
-@@ -2384,6 +2384,7 @@
-     c->log->action = "reading upstream";
+--- nginx-1.2.3/src/http/ngx_http_upstream.c	2012-08-06 10:34:08.000000000 -0700
++++ nginx-1.2.3-patched/src/http/ngx_http_upstream.c	2012-09-05 20:57:44.832566031 -0700
+@@ -2383,7 +2383,7 @@
  
      if (c->read->timedout) {
-+        r->headers_out.status = NGX_HTTP_GATEWAY_TIME_OUT;
          ngx_connection_error(c, NGX_ETIMEDOUT, "upstream timed out");
-         ngx_http_upstream_finalize_request(r, u, 0);
+-        ngx_http_upstream_finalize_request(r, u, 0);
++        ngx_http_upstream_finalize_request(r, u, NGX_HTTP_GATEWAY_TIME_OUT);
          return;
-@@ -2431,10 +2432,13 @@
+     }
+ 
+@@ -2429,14 +2429,16 @@
  
              if (u->busy_bufs == NULL) {
  
@@ -17,12 +18,29 @@
 -                    || upstream->read->error)
 -                {
 +                if (u->length == 0) {
-+                    ngx_http_upstream_finalize_request(r, u, 0);
-+                    return;
-+                }
-+
-+                if (upstream->read->eof || upstream->read->error) {
-+                    r->headers_out.status = NGX_HTTP_BAD_GATEWAY;
                      ngx_http_upstream_finalize_request(r, u, 0);
                      return;
                  }
+ 
++                if (upstream->read->eof || upstream->read->error) {
++                    ngx_http_upstream_finalize_request(r, u, NGX_HTTP_BAD_GATEWAY);
++                    return;
++                }
++
+                 b->pos = b->start;
+                 b->last = b->start;
+             }
+@@ -3073,6 +3075,13 @@
+         && rc != NGX_HTTP_REQUEST_TIME_OUT
+         && (rc == NGX_ERROR || rc >= NGX_HTTP_SPECIAL_RESPONSE))
+     {
++        if (rc == NGX_ERROR) {
++            r->headers_out.status = NGX_HTTP_INTERNAL_SERVER_ERROR;
++
++        } else {
++            r->headers_out.status = rc;
++        }
++
+         rc = 0;
+     }
+ 
