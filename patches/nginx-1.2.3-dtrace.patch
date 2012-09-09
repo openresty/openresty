@@ -454,10 +454,10 @@ index efbc244..8d81aab 100644
  
 diff --git a/src/dtrace/nginx.stp b/src/dtrace/nginx.stp
 new file mode 100644
-index 0000000..3dde1be
+index 0000000..6420250
 --- /dev/null
 +++ b/src/dtrace/nginx.stp
-@@ -0,0 +1,199 @@
+@@ -0,0 +1,236 @@
 +/* tapset for nginx */
 +
 +/* retrieve the request uri string from the ngx_http_request_t pointer */
@@ -555,6 +555,24 @@ index 0000000..3dde1be
 +}
 +
 +
++function ngx_buf_last_buf(b)
++{
++    return @cast(b, "ngx_buf_t", "/home/agentzh/git/lua-nginx-module/work/nginx/sbin/nginx")->last_buf
++}
++
++
++function ngx_buf_sync(b)
++{
++    return @cast(b, "ngx_buf_t", "/home/agentzh/git/lua-nginx-module/work/nginx/sbin/nginx")->sync
++}
++
++
++function ngx_buf_flush(b)
++{
++    return @cast(b, "ngx_buf_t", "/home/agentzh/git/lua-nginx-module/work/nginx/sbin/nginx")->flush
++}
++
++
 +function ngx_buf_size(b)
 +{
 +    if (ngx_buf_in_memory(b)) {
@@ -587,7 +605,26 @@ index 0000000..3dde1be
 +    cl = input
 +    while (cl) {
 +        buf = ngx_chain_buf(cl)
-+        out .= sprintf("[%s]", text_str(ngx_buf_data(buf)))
++
++        if (ngx_buf_in_memory(buf)) {
++            out .= sprintf("[%s]", text_str(ngx_buf_data(buf)))
++
++        } else {
++            out .= "\"\""
++        }
++
++        if (ngx_buf_last_buf(buf)) {
++            out .= "<eof>"
++        }
++
++        if (ngx_buf_sync(buf)) {
++            out .= "<sync>"
++        }
++
++        if (ngx_buf_flush(buf)) {
++            out .= "<flush>"
++        }
++
 +        cl = ngx_chain_next(cl)
 +        if (cl) {
 +            out .= sprintf(" ")
