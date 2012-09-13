@@ -82,7 +82,7 @@ if [ "$answer" = "N" ]; then
     patch -p1 < $root/patches/nginx-$main_ver-resolver_debug_log_overflow.patch || exit 1
 
     echo applying poll_del_event_at_exit.patch ...
-    patch -p1 < $root/patches/nginx-$main_ver-poll_del_event_at_exit.patch
+    patch -p1 < $root/patches/nginx-$main_ver-poll_del_event_at_exit.patch || exit 1
 fi
 
 #echo "INFO: applying null-character-fixes patch"
@@ -91,13 +91,13 @@ fi
 #patch -p1 < $root/patches/nginx-$main_ver-gzip_ok_invalid_read_fix.patch || exit 1
 
 echo applying location_if_inherits_proxy.patch ...
-patch -p1 < $root/patches/nginx-$main_ver-location_if_inherits_proxy.patch
+patch -p1 < $root/patches/nginx-$main_ver-location_if_inherits_proxy.patch || exit 1
 
 echo applying nonbuffered-upstream-truncation.patch ...
-patch -p1 < $root/patches/nginx-$main_ver-nonbuffered-upstream-truncation.patch
+patch -p1 < $root/patches/nginx-$main_ver-nonbuffered-upstream-truncation.patch || exit 1
 
 echo applying dtrace.patch ...
-patch -p1 < $root/patches/nginx-$main_ver-dtrace.patch
+patch -p1 < $root/patches/nginx-$main_ver-dtrace.patch || exit 1
 
 rm -f *.patch || exit 1
 
