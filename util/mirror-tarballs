@@ -96,6 +96,9 @@ patch -p1 < $root/patches/nginx-$main_ver-location_if_inherits_proxy.patch || ex
 echo applying nonbuffered-upstream-truncation.patch ...
 patch -p1 < $root/patches/nginx-$main_ver-nonbuffered-upstream-truncation.patch || exit 1
 
+echo applying channel-uninit-params.patch ...
+patch -p1 < $root/patches/nginx-$main_ver-channel-uninit-params.patch || exit 1
+
 echo applying dtrace.patch ...
 patch -p1 < $root/patches/nginx-$main_ver-dtrace.patch || exit 1
 
