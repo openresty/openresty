@@ -303,7 +303,7 @@ cd ..
 
 #################################
 
-ver=0.09
+ver=0.10
 $root/util/get-tarball "http://github.com/agentzh/lua-redis-parser/tarball/v$ver" -O "lua-redis-parser-$ver.tar.gz" || exit 1
 tar -xzf lua-redis-parser-$ver.tar.gz || exit 1
 mv agentzh-lua-redis-parser-* lua-redis-parser-$ver || exit 1
