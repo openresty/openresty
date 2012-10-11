@@ -1,0 +1,15 @@
+--- nginx-1.3.7/src/http/modules/ngx_http_proxy_module.c	2012-04-23 18:40:01.000000000 +0800
++++ nginx-1.3.7-patched/src/http/modules/ngx_http_proxy_module.c	2012-06-24 12:48:57.289834450 +0800
+@@ -3023,8 +3023,10 @@
+ 
+     if (conf->upstream.upstream || conf->proxy_lengths) {
+         clcf = ngx_http_conf_get_module_loc_conf(cf, ngx_http_core_module);
+-        if (clcf->handler == NULL && clcf->lmt_excpt) {
+-            clcf->handler = ngx_http_proxy_handler;
++        if (clcf->handler == NULL) {
++            if (clcf->lmt_excpt) {
++                clcf->handler = ngx_http_proxy_handler;
++            }
+             conf->location = prev->location;
+         }
+     }
