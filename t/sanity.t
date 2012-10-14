@@ -34,9 +34,9 @@ __DATA__
   --without-http_form_input_module   disable ngx_http_form_input_module
   --without-http_encrypted_session_module
                                      disable ngx_http_encrypted_session_module
+  --without-http_srcache_module      disable ngx_http_srcache_module
   --without-http_lua_module          disable ngx_http_lua_module
   --without-http_headers_more_module disable ngx_http_headers_more_module
-  --without-http_srcache_module      disable ngx_http_srcache_module
   --without-http_array_var_module    disable ngx_http_array_var_module
   --without-http_memc_module         disable ngx_http_memc_module
   --without-http_redis2_module       disable ngx_http_redis2_module
@@ -224,9 +224,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -291,9 +291,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -367,9 +367,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -434,9 +434,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -500,9 +500,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -566,8 +566,8 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -625,8 +625,8 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -675,9 +675,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -743,9 +743,9 @@ clean:
   --without-http_form_input_module   disable ngx_http_form_input_module
   --without-http_encrypted_session_module
                                      disable ngx_http_encrypted_session_module
+  --without-http_srcache_module      disable ngx_http_srcache_module
   --without-http_lua_module          disable ngx_http_lua_module
   --without-http_headers_more_module disable ngx_http_headers_more_module
-  --without-http_srcache_module      disable ngx_http_srcache_module
   --without-http_array_var_module    disable ngx_http_array_var_module
   --without-http_memc_module         disable ngx_http_memc_module
   --without-http_redis2_module       disable ngx_http_redis2_module
@@ -933,9 +933,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -999,9 +999,9 @@ cd nginx-1.2.4
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
   --add-module=../drizzle-nginx-module-0.1.4 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1065,9 +1065,9 @@ cd nginx-1.2.4
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
   --add-module=../drizzle-nginx-module-0.1.4 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1144,9 +1144,9 @@ cd nginx-1.2.4
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
   --add-module=../drizzle-nginx-module-0.1.4 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1210,9 +1210,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1277,9 +1277,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1345,9 +1345,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1425,9 +1425,9 @@ cd nginx-1.2.4
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
   --add-module=../ngx_postgres-1.0rc2 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1492,9 +1492,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1580,9 +1580,9 @@ cd nginx-1.2.4
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
   --add-module=../ngx_postgres-1.0rc2 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1657,9 +1657,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1722,9 +1722,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1788,9 +1788,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1854,9 +1854,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1919,9 +1919,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -1987,9 +1987,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2052,9 +2052,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2115,9 +2115,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2176,9 +2176,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2235,9 +2235,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2306,9 +2306,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2370,9 +2370,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2435,9 +2435,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2501,9 +2501,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2566,9 +2566,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2631,9 +2631,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2695,9 +2695,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2759,9 +2759,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
@@ -2827,9 +2827,9 @@ cd nginx-1.2.4
   --add-module=../set-misc-nginx-module-0.22rc8 \
   --add-module=../form-input-nginx-module-0.07rc5 \
   --add-module=../encrypted-session-nginx-module-0.02 \
-  --add-module=../ngx_lua-0.7.0 \
-  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../srcache-nginx-module-0.16 \
+  --add-module=../ngx_lua-0.7.1 \
+  --add-module=../headers-more-nginx-module-0.18 \
   --add-module=../array-var-nginx-module-0.03rc1 \
   --add-module=../memc-nginx-module-0.13rc3 \
   --add-module=../redis2-nginx-module-0.09 \
