@@ -3,7 +3,11 @@
 #root=$(readlink -f -- "$(dirname -- "$0")/..")
 root=`perl -MCwd -e'print Cwd::abs_path(shift)' $(dirname -- "$0")/..`
 
+info_txt=`perl -e 'print "\033[33m[INFO]\033[0m"'`
+
+echo -n "ngx_openresty "
 . ./util/ver
+echo
 
 name=ngx_openresty-$version
 work=$root/work
@@ -28,20 +32,26 @@ cd nginx-$ver || exit 1
 
 # patch the patch
 
-echo "INFO: applying the upstream-pipelining patch"
+echo "$info_txt applying the upstream-pipelining patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-upstream_pipelining.patch || exit 1
+echo
 
+echo "$info_txt applying the server_header patch for nginx"
 cp $root/patches/nginx-$main_ver-server_header.patch server_header.patch || exit 1
 sed $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" server_header.patch \
     > server_header.patch.tmp && mv -f server_header.patch.tmp server_header.patch || exit 1
-
 patch -p2 < server_header.patch || exit 1
+echo
 
 #patch -p1 < $root/patches/nginx-$main_ver-redirect_memcpy_overlap.patch || exit 1
 
+echo "$info_txt applying the no_error_pages patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-no_error_pages.patch || exit 1
+echo
 
+echo "$info_txt applying the no_Werror patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-no_Werror.patch || exit 1
+echo
 
 #patch -p1 < $root/patches/nginx-$main_ver-epoll_check_stale_wev.patch || exit 1
 
@@ -61,14 +71,13 @@ patch -p1 < $root/patches/nginx-$main_ver-no_Werror.patch || exit 1
 #echo "applying the named_location_clear_mods_ctx patch"
 #patch -p1 < $root/patches/nginx-$main_ver-named_location_clear_mods_ctx.patch || exit 1
 
-echo "applying the allow_request_body_updating patch"
+echo "$info_txt applying the allow_request_body_updating patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || exit 1
+echo
 
-echo "applying the log_escape_non_ascii patch"
+echo "$info_txt applying the log_escape_non_ascii patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
-
-echo "applying the upstream_test_connect_kqueue patch"
-patch -p1 < $root/patches/nginx-$main_ver-upstream_test_connect_kqueue.patch || exit 1
+echo
 
 #echo applying reset_wev_handler_in_named_locations.patch ...
 #patch -p1 < $root/patches/nginx-$main_ver-reset_wev_handler_in_named_locations.patch || exit 1
@@ -78,14 +87,17 @@ patch -p1 < $root/patches/nginx-$main_ver-upstream_test_connect_kqueue.patch || 
 
 answer=`$root/util/ver-ge "$main_ver" 1.2.3`
 if [ "$answer" = "N" ]; then
-    echo applying add_core_vars_polluting_globals.patch ...
+    echo "$info_txt applying the add_core_vars_polluting_globals patch for nginx"
     patch -p1 < $root/patches/nginx-$main_ver-add_core_vars_polluting_globals.patch || exit 1
+    echo
 
-    echo applying resolver_debug_log_overflow.patch ...
+    echo "$info_txt applying the resolver_debug_log_overflow patch for nginx"
     patch -p1 < $root/patches/nginx-$main_ver-resolver_debug_log_overflow.patch || exit 1
+    echo
 
-    echo applying poll_del_event_at_exit.patch ...
+    echo "$info_txt applying the poll_del_event_at_exit patch for nginx"
     patch -p1 < $root/patches/nginx-$main_ver-poll_del_event_at_exit.patch || exit 1
+    echo
 fi
 
 #echo "INFO: applying null-character-fixes patch"
@@ -93,17 +105,25 @@ fi
 
 #patch -p1 < $root/patches/nginx-$main_ver-gzip_ok_invalid_read_fix.patch || exit 1
 
-echo applying location_if_inherits_proxy.patch ...
+echo "$info_txt applying the location_if_inherits_proxy patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-location_if_inherits_proxy.patch || exit 1
+echo
 
-echo applying nonbuffered-upstream-truncation.patch ...
+echo "$info_txt applying the nonbuffered-upstream-truncation patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-nonbuffered-upstream-truncation.patch || exit 1
+echo
 
-echo applying channel-uninit-params.patch ...
+echo "$info_txt applying the channel-uninit-params patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-channel-uninit-params.patch || exit 1
+echo
 
-echo applying dtrace.patch ...
+echo "$info_txt applying the dtrace patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-dtrace.patch || exit 1
+echo
+
+echo "$info_txt applying the upstream_test_connect_kqueue patch for nginx"
+patch -p1 < $root/patches/nginx-$main_ver-upstream_test_connect_kqueue.patch || exit 1
+echo
 
 rm -f *.patch || exit 1
 
@@ -278,8 +298,13 @@ tar -xzf lua-$ver.tar.gz || exit 1
 
 #rm "patch-lua-$ver-4" || exit 1
 
+echo "$info_txt applying the makefile_install_fix patch for lua 5.1"
 patch -p0 < $root/patches/lua-$ver-makefile_install_fix.patch || exit 1
+echo
+
+echo "$info_txt applying the disable_lua50_compat patch for lua 5.1"
 patch -p0 < $root/patches/lua-$ver-disable_lua50_compat.patch || exit 1
+echo
 
 #################################
 
