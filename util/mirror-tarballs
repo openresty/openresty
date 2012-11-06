@@ -67,6 +67,9 @@ patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || e
 echo "applying the log_escape_non_ascii patch"
 patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
 
+echo "applying the upstream_test_connect_kqueue patch"
+patch -p1 < $root/patches/nginx-$main_ver-upstream_test_connect_kqueue.patch || exit 1
+
 #echo applying reset_wev_handler_in_named_locations.patch ...
 #patch -p1 < $root/patches/nginx-$main_ver-reset_wev_handler_in_named_locations.patch || exit 1
 
