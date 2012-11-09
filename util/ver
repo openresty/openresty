@@ -2,7 +2,7 @@
 
 #main_ver=1.3.7
 main_ver=1.2.4
-minor_ver=7rc3
+minor_ver=7rc4
 version=$main_ver.$minor_ver
 echo $version
 
