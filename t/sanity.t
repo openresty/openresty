@@ -2,7 +2,7 @@
 
 use t::Config;
 
-plan tests => 175;
+plan tests => 179;
 
 #no_diff();
 
