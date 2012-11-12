@@ -243,6 +243,11 @@ for my $opt (@ARGV) {
         my $path = File::Spec->rel2abs($1);
         push @ngx_opts, "--with-openssl=$path";
 
+    } elsif ($opt =~ /^--with-pcre=(.*)/) {
+
+        my $path = File::Spec->rel2abs($1);
+        push @ngx_opts, "--with-pcre=$path";
+
     } elsif ($opt =~ /^--\w.*/) {
         push @ngx_opts, $opt;
 
