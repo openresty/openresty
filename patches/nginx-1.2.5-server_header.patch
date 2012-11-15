@@ -1,0 +1,26 @@
+diff -ur lz-nginx-1.2.5/nginx-1.2.5/src/core/nginx.h lz-nginx-1.2.5-patched/nginx-1.2.5/src/core/nginx.h
+--- lz-nginx-1.2.5/nginx-1.2.5/src/core/nginx.h	2010-02-12 17:31:01.000000000 +0800
++++ lz-nginx-1.2.5-patched/nginx-1.2.5/src/core/nginx.h	2010-03-30 10:52:13.240702627 +0800
+@@ -10,7 +10,7 @@
+ 
+ #define nginx_version         1002005
+ #define NGINX_VERSION      "1.2.5"
+-#define NGINX_VER          "nginx/" NGINX_VERSION
++#define NGINX_VER          "ngx_openresty/" NGINX_VERSION ".unknown"
+ 
+ #define NGINX_VAR          "NGINX"
+ #define NGX_OLDPID_EXT     ".oldbin"
+Only in lz-nginx-1.2.5-patched/nginx-1.2.5/src/core: nginx.h.orig
+Only in lz-nginx-1.2.5-patched/nginx-1.2.5/src/core: nginx.h.rej
+diff -ur lz-nginx-1.2.5/nginx-1.2.5/src/http/ngx_http_header_filter_module.c lz-nginx-1.2.5-patched/nginx-1.2.5/src/http/ngx_http_header_filter_module.c
+--- lz-nginx-1.2.5/nginx-1.2.5/src/http/ngx_http_header_filter_module.c	2010-03-03 23:14:04.000000000 +0800
++++ lz-nginx-1.2.5-patched/nginx-1.2.5/src/http/ngx_http_header_filter_module.c	2010-03-30 10:52:53.670909405 +0800
+@@ -45,7 +45,7 @@
+ };
+ 
+ 
+-static char ngx_http_server_string[] = "Server: nginx" CRLF;
++static char ngx_http_server_string[] = "Server: ngx_openresty" CRLF;
+ static char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
+ 
+ 
