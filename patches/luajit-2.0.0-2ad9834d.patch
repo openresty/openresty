@@ -1,0 +1,202 @@
+diff --git a/doc/ext_ffi_semantics.html b/doc/ext_ffi_semantics.html
+index bf9f9be..30aa964 100644
+--- a/doc/ext_ffi_semantics.html
++++ b/doc/ext_ffi_semantics.html
+@@ -517,17 +517,17 @@ A VLA is only initialized with the element(s) given in the table.
+ Depending on the use case, you may need to explicitly add a
+ <tt>NULL</tt> or <tt>0</tt> terminator to a VLA.</li>
+ 
+-<li>If the table has a non-empty hash part, a
+-<tt>struct</tt>/<tt>union</tt> is initialized by looking up each field
+-name (as a string key) in the table. Each non-<tt>nil</tt> value is
+-used to initialize the corresponding field.</li>
+-
+-<li>Otherwise a <tt>struct</tt>/<tt>union</tt> is initialized in the
++<li>A <tt>struct</tt>/<tt>union</tt> can be initialized in the
+ order of the declaration of its fields. Each field is initialized with
+-the consecutive table elements, starting at either index <tt>[0]</tt>
++consecutive table elements, starting at either index <tt>[0]</tt>
+ or <tt>[1]</tt>. This process stops at the first <tt>nil</tt> table
+ element.</li>
+ 
++<li>Otherwise, if neither index <tt>[0]</tt> nor <tt>[1]</tt> is present,
++a <tt>struct</tt>/<tt>union</tt> is initialized by looking up each field
++name (as a string key) in the table. Each non-<tt>nil</tt> value is
++used to initialize the corresponding field.</li>
++
+ <li>Uninitialized fields of a <tt>struct</tt> are filled with zero
+ bytes, except for the trailing VLA of a VLS.</li>
+ 
+diff --git a/doc/running.html b/doc/running.html
+index 7870a5d..97c5c03 100644
+--- a/doc/running.html
++++ b/doc/running.html
+@@ -250,6 +250,8 @@ are enabled:
+ <tr class="even">
+ <td class="flag_name">abc</td><td class="flag_level">&nbsp;</td><td class="flag_level">&nbsp;</td><td class="flag_level">&bull;</td><td class="flag_desc">Array Bounds Check Elimination</td></tr>
+ <tr class="odd">
++<td class="flag_name">sink</td><td class="flag_level">&nbsp;</td><td class="flag_level">&nbsp;</td><td class="flag_level">&bull;</td><td class="flag_desc">Allocation/Store Sinking</td></tr>
++<tr class="even">
+ <td class="flag_name">fuse</td><td class="flag_level">&nbsp;</td><td class="flag_level">&nbsp;</td><td class="flag_level">&bull;</td><td class="flag_desc">Fusion of operands into instructions</td></tr>
+ </table>
+ <p>
+diff --git a/src/lj_arch.h b/src/lj_arch.h
+index 25c2cff..220f3df 100644
+--- a/src/lj_arch.h
++++ b/src/lj_arch.h
+@@ -300,7 +300,11 @@
+ 
+ /* Check target-specific constraints. */
+ #ifndef _BUILDVM_H
+-#if LJ_TARGET_ARM
++#if LJ_TARGET_X64
++#if __USING_SJLJ_EXCEPTIONS__
++#error "Need a C compiler with native exception handling on x64"
++#endif
++#elif LJ_TARGET_ARM
+ #if defined(__ARMEB__)
+ #error "No support for big-endian ARM"
+ #endif
+diff --git a/src/lj_asm_x86.h b/src/lj_asm_x86.h
+index 6d7dd5a..241da5a 100644
+--- a/src/lj_asm_x86.h
++++ b/src/lj_asm_x86.h
+@@ -367,6 +367,18 @@ static Reg asm_fuseload(ASMState *as, IRRef ref, RegSet allow)
+   return ra_allocref(as, ref, allow);
+ }
+ 
++#if LJ_64
++/* Don't fuse a 32 bit load into a 64 bit operation. */
++static Reg asm_fuseloadm(ASMState *as, IRRef ref, RegSet allow, int is64)
++{
++  if (is64 && !irt_is64(IR(ref)->t))
++    return ra_alloc1(as, ref, allow);
++  return asm_fuseload(as, ref, allow);
++}
++#else
++#define asm_fuseloadm(as, ref, allow, is64)  asm_fuseload(as, (ref), (allow))
++#endif
++
+ /* -- Calls --------------------------------------------------------------- */
+ 
+ /* Count the required number of stack slots for a call. */
+@@ -696,7 +708,7 @@ static void asm_conv(ASMState *as, IRIns *ir)
+     } else {  /* Integer to FP conversion. */
+       Reg left = (LJ_64 && (st == IRT_U32 || st == IRT_U64)) ?
+ 		 ra_alloc1(as, lref, RSET_GPR) :
+-		 asm_fuseload(as, lref, RSET_GPR);
++		 asm_fuseloadm(as, lref, RSET_GPR, st64);
+       if (LJ_64 && st == IRT_U64) {
+ 	MCLabel l_end = emit_label(as);
+ 	const void *k = lj_ir_k64_find(as->J, U64x(43f00000,00000000));
+@@ -1829,7 +1841,7 @@ static void asm_intarith(ASMState *as, IRIns *ir, x86Arith xa)
+     if (asm_swapops(as, ir)) {
+       IRRef tmp = lref; lref = rref; rref = tmp;
+     }
+-    right = asm_fuseload(as, rref, rset_clear(allow, dest));
++    right = asm_fuseloadm(as, rref, rset_clear(allow, dest), irt_is64(ir->t));
+   }
+   if (irt_isguard(ir->t))  /* For IR_ADDOV etc. */
+     asm_guardcc(as, CC_O);
+@@ -1842,7 +1854,7 @@ static void asm_intarith(ASMState *as, IRIns *ir, x86Arith xa)
+     emit_mrm(as, XO_IMUL, REX_64IR(ir, dest), right);
+   } else {  /* IMUL r, r, k. */
+     /* NYI: use lea/shl/add/sub (FOLD only does 2^k) depending on CPU. */
+-    Reg left = asm_fuseload(as, lref, RSET_GPR);
++    Reg left = asm_fuseloadm(as, lref, RSET_GPR, irt_is64(ir->t));
+     x86Op xo;
+     if (checki8(k)) { emit_i8(as, k); xo = XO_IMULi8;
+     } else { emit_i32(as, k); xo = XO_IMULi; }
+@@ -2072,7 +2084,7 @@ static void asm_comp(ASMState *as, IRIns *ir, uint32_t cc)
+     Reg r64 = REX_64IR(ir, 0);
+     int32_t imm = 0;
+     lua_assert(irt_is64(ir->t) || irt_isint(ir->t) ||
+-	       irt_isu32(ir->t) || irt_isaddr(ir->t));
++	       irt_isu32(ir->t) || irt_isaddr(ir->t) || irt_isu8(ir->t));
+     /* Swap constants (only for ABC) and fusable loads to the right. */
+     if (irref_isk(lref) || (!irref_isk(rref) && opisfusableload(leftop))) {
+       if ((cc & 0xc) == 0xc) cc ^= 0x53;  /* L <-> G, LE <-> GE */
+@@ -2109,7 +2121,7 @@ static void asm_comp(ASMState *as, IRIns *ir, uint32_t cc)
+ 	  }
+ 	}
+ 	as->curins--;  /* Skip to BAND to avoid failing in noconflict(). */
+-	right = asm_fuseload(as, irl->op1, allow);
++	right = asm_fuseloadm(as, irl->op1, allow, r64);
+ 	as->curins++;  /* Undo the above. */
+       test_nofuse:
+ 	asm_guardcc(as, cc);
+@@ -2146,7 +2158,7 @@ static void asm_comp(ASMState *as, IRIns *ir, uint32_t cc)
+ 	    return;
+ 	  }  /* Otherwise handle register case as usual. */
+ 	} else {
+-	  left = asm_fuseload(as, lref, RSET_GPR);
++	  left = asm_fuseloadm(as, lref, RSET_GPR, r64);
+ 	}
+ 	asm_guardcc(as, cc);
+ 	if (usetest && left != RID_MRM) {
+@@ -2160,7 +2172,7 @@ static void asm_comp(ASMState *as, IRIns *ir, uint32_t cc)
+       }
+     } else {
+       Reg left = ra_alloc1(as, lref, RSET_GPR);
+-      Reg right = asm_fuseload(as, rref, rset_exclude(RSET_GPR, left));
++      Reg right = asm_fuseloadm(as, rref, rset_exclude(RSET_GPR, left), r64);
+       asm_guardcc(as, cc);
+       emit_mrm(as, XO_CMP, r64 + left, right);
+     }
+diff --git a/src/lj_cconv.c b/src/lj_cconv.c
+index b81b4e9..7b32e35 100644
+--- a/src/lj_cconv.c
++++ b/src/lj_cconv.c
+@@ -493,17 +493,19 @@ static void cconv_substruct_tab(CTState *cts, CType *d, uint8_t *dp,
+     id = df->sib;
+     if (ctype_isfield(df->info) || ctype_isbitfield(df->info)) {
+       TValue *tv;
+-      int32_t i = *ip;
++      int32_t i = *ip, iz = i;
+       if (!gcref(df->name)) continue;  /* Ignore unnamed fields. */
+       if (i >= 0) {
+       retry:
+ 	tv = (TValue *)lj_tab_getint(t, i);
+ 	if (!tv || tvisnil(tv)) {
+ 	  if (i == 0) { i = 1; goto retry; }  /* 1-based tables. */
++	  if (iz == 0) { *ip = i = -1; goto tryname; }  /* Init named fields. */
+ 	  break;  /* Stop at first nil. */
+ 	}
+ 	*ip = i + 1;
+       } else {
++      tryname:
+ 	tv = (TValue *)lj_tab_getstr(t, gco2str(gcref(df->name)));
+ 	if (!tv || tvisnil(tv)) continue;
+       }
+@@ -524,7 +526,6 @@ static void cconv_struct_tab(CTState *cts, CType *d,
+ {
+   int32_t i = 0;
+   memset(dp, 0, d->size);  /* Much simpler to clear the struct first. */
+-  if (t->hmask) i = -1; else if (t->asize == 0) return;  /* Fast exit. */
+   cconv_substruct_tab(cts, d, dp, t, &i, flags);
+ }
+ 
+diff --git a/src/lj_err.c b/src/lj_err.c
+index 60d8fe1..fd3545e 100644
+--- a/src/lj_err.c
++++ b/src/lj_err.c
+@@ -485,7 +485,6 @@ LJ_NOINLINE void lj_err_mem(lua_State *L)
+ {
+   if (L->status == LUA_ERRERR+1)  /* Don't touch the stack during lua_open. */
+     lj_vm_unwind_c(L->cframe, LUA_ERRMEM);
+-  L->top = L->base;
+   setstrV(L, L->top++, lj_err_str(L, LJ_ERR_ERRMEM));
+   lj_err_throw(L, LUA_ERRMEM);
+ }
+diff --git a/src/lj_parse.c b/src/lj_parse.c
+index 2fecaef..92ebc04 100644
+--- a/src/lj_parse.c
++++ b/src/lj_parse.c
+@@ -1825,6 +1825,7 @@ static void expr_table(LexState *ls, ExpDesc *e)
+ 	}
+       }
+     }
++    lj_gc_check(fs->L);
+   }
+ }
+ 
