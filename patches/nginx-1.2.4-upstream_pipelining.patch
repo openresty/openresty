@@ -1,7 +1,15 @@
-diff -ur nginx-1.2.4/src/http/ngx_http_upstream.c nginx-1.2.4-patched/src/http/ngx_http_upstream.c
---- nginx-1.2.4/src/http/ngx_http_upstream.c	2011-12-14 02:34:34.000000000 +0800
-+++ nginx-1.2.4-patched/src/http/ngx_http_upstream.c	2012-03-21 21:20:17.333111806 +0800
-@@ -1385,6 +1385,8 @@
+diff -rudp nginx-1.2.4/src/http/ngx_http_upstream.c nginx-1.2.4-patched/src/http/ngx_http_upstream.c
+--- nginx-1.2.4/src/http/ngx_http_upstream.c	2012-08-06 10:34:08.000000000 -0700
++++ nginx-1.2.4-patched/src/http/ngx_http_upstream.c	2012-12-05 14:46:41.741173058 -0800
+@@ -1216,6 +1216,7 @@ ngx_http_upstream_connect(ngx_http_reque
+     }
+ 
+     u->request_sent = 0;
++    u->request_all_sent = 0;
+ 
+     if (rc == NGX_AGAIN) {
+         ngx_add_timer(c->write, u->conf->connect_timeout);
+@@ -1418,6 +1419,8 @@ ngx_http_upstream_send_request(ngx_http_
  
      /* rc == NGX_OK */
  
@@ -10,7 +18,7 @@ diff -ur nginx-1.2.4/src/http/ngx_http_upstream.c nginx-1.2.4-patched/src/http/n
      if (c->tcp_nopush == NGX_TCP_NOPUSH_SET) {
          if (ngx_tcp_push(c->fd) == NGX_ERROR) {
              ngx_log_error(NGX_LOG_CRIT, c->log, ngx_socket_errno,
-@@ -1451,7 +1453,7 @@
+@@ -1484,7 +1487,7 @@ ngx_http_upstream_send_request_handler(n
  
  #endif
  
@@ -19,11 +27,11 @@ diff -ur nginx-1.2.4/src/http/ngx_http_upstream.c nginx-1.2.4-patched/src/http/n
          u->write_event_handler = ngx_http_upstream_dummy_handler;
  
          (void) ngx_handle_write_event(c->write, 0);
-diff -ur nginx-1.2.4/src/http/ngx_http_upstream.h nginx-1.2.4-patched/src/http/ngx_http_upstream.h
---- nginx-1.2.4/src/http/ngx_http_upstream.h	2011-11-01 22:18:10.000000000 +0800
-+++ nginx-1.2.4-patched/src/http/ngx_http_upstream.h	2012-03-21 21:18:21.041237173 +0800
-@@ -313,6 +313,7 @@
-     unsigned                         buffering:1;
+diff -rudp nginx-1.2.4/src/http/ngx_http_upstream.h nginx-1.2.4-patched/src/http/ngx_http_upstream.h
+--- nginx-1.2.4/src/http/ngx_http_upstream.h	2012-02-13 03:01:58.000000000 -0800
++++ nginx-1.2.4-patched/src/http/ngx_http_upstream.h	2012-12-05 14:41:09.763514741 -0800
+@@ -324,6 +324,7 @@ struct ngx_http_upstream_s {
+     unsigned                         keepalive:1;
  
      unsigned                         request_sent:1;
 +    unsigned                         request_all_sent:1;
