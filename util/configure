@@ -238,15 +238,10 @@ for my $opt (@ARGV) {
         my $mod_path = File::Spec->rel2abs($1);
         push @ngx_opts, "--add-module=$mod_path";
 
-    } elsif ($opt =~ /^--with-openssl=(.*)/) {
+    } elsif ($opt =~ /^--with-(openssl|pcre|zlib|libatomic|md5|sha1)=(.*)/) {
 
-        my $path = File::Spec->rel2abs($1);
-        push @ngx_opts, "--with-openssl=$path";
-
-    } elsif ($opt =~ /^--with-pcre=(.*)/) {
-
-        my $path = File::Spec->rel2abs($1);
-        push @ngx_opts, "--with-pcre=$path";
+        my $path = File::Spec->rel2abs($2);
+        push @ngx_opts, "--with-$1=$path";
 
     } elsif ($opt =~ /^--\w.*/) {
         push @ngx_opts, $opt;
