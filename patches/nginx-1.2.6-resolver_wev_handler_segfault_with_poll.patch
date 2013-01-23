@@ -1,0 +1,29 @@
+--- nginx-1.2.6/src/core/ngx_resolver.c	2012-11-12 10:47:07.000000000 -0800
++++ nginx-1.2.6-patched/src/core/ngx_resolver.c	2013-01-22 14:52:42.716434183 -0800
+@@ -91,6 +91,7 @@ static void *ngx_resolver_dup(ngx_resolv
+ static in_addr_t *ngx_resolver_rotate(ngx_resolver_t *r, in_addr_t *src,
+     ngx_uint_t n);
+ static u_char *ngx_resolver_log_error(ngx_log_t *log, u_char *buf, size_t len);
++static void ngx_resolver_empty_handler(ngx_event_t *ev);
+ 
+ 
+ ngx_resolver_t *
+@@ -2258,6 +2259,8 @@ ngx_udp_connect(ngx_udp_connection_t *uc
+     rev->log = &uc->log;
+     wev->log = &uc->log;
+ 
++    wev->handler = ngx_resolver_empty_handler;
++
+     uc->connection = c;
+ 
+     c->number = ngx_atomic_fetch_add(ngx_connection_counter, 1);
+@@ -2311,3 +2314,9 @@ ngx_udp_connect(ngx_udp_connection_t *uc
+ 
+     return NGX_OK;
+ }
++
++
++static void
++ngx_resolver_empty_handler(ngx_event_t *ev)
++{
++}
