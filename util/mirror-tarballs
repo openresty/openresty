@@ -71,9 +71,9 @@ echo
 #echo "applying the named_location_clear_mods_ctx patch"
 #patch -p1 < $root/patches/nginx-$main_ver-named_location_clear_mods_ctx.patch || exit 1
 
-echo "$info_txt applying the allow_request_body_updating patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || exit 1
-echo
+#echo "$info_txt applying the allow_request_body_updating patch for nginx"
+#patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || exit 1
+#echo
 
 echo "$info_txt applying the log_escape_non_ascii patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1

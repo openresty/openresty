@@ -202,7 +202,7 @@ index 05b7454..aa813b1 100644
      ngx_libs=`echo $NGX_LD_OPT $CORE_LIBS \
          | sed -e "s/\//$ngx_regex_dirsep/g" -e "s/^/$ngx_long_regex_cont/"`
 diff --git a/auto/options b/auto/options
-index 6c3a4db..8d18c01 100644
+index a75bead..c006e5e 100644
 --- a/auto/options
 +++ b/auto/options
 @@ -12,6 +12,8 @@ NGX_CONF_PATH=
@@ -227,7 +227,7 @@ index 6c3a4db..8d18c01 100644
  NGX_CC_OPT=
  NGX_LD_OPT=
  CPU=NO
-@@ -170,6 +178,8 @@ do
+@@ -171,6 +179,8 @@ do
          --error-log-path=*)              NGX_ERROR_LOG_PATH="$value";;
          --pid-path=*)                    NGX_PID_PATH="$value"      ;;
          --lock-path=*)                   NGX_LOCK_PATH="$value"     ;;
@@ -236,7 +236,7 @@ index 6c3a4db..8d18c01 100644
          --user=*)                        NGX_USER="$value"          ;;
          --group=*)                       NGX_GROUP="$value"         ;;
  
-@@ -275,7 +285,8 @@ use the \"--without-http_limit_conn_module\" option instead"
+@@ -277,7 +287,8 @@ use the \"--without-http_limit_conn_module\" option instead"
          --with-ld-opt=*)                 NGX_LD_OPT="$value"        ;;
          --with-cpu-opt=*)                CPU="$value"               ;;
          --with-debug)                    NGX_DEBUG=YES              ;;
@@ -246,7 +246,7 @@ index 6c3a4db..8d18c01 100644
          --without-pcre)                  USE_PCRE=DISABLED          ;;
          --with-pcre)                     USE_PCRE=YES               ;;
          --with-pcre=*)                   PCRE="$value"              ;;
-@@ -329,6 +340,8 @@ cat << END
+@@ -331,6 +342,8 @@ cat << END
    --error-log-path=PATH              set error log pathname
    --pid-path=PATH                    set nginx.pid pathname
    --lock-path=PATH                   set nginx.lock pathname
@@ -255,7 +255,7 @@ index 6c3a4db..8d18c01 100644
  
    --user=USER                        set non-privileged user for
                                       worker processes
-@@ -455,6 +468,8 @@ cat << END
+@@ -458,6 +471,8 @@ cat << END
    --with-openssl-opt=OPTIONS         set additional build options for OpenSSL
  
    --with-debug                       enable debug logging
@@ -264,7 +264,7 @@ index 6c3a4db..8d18c01 100644
  
  END
  
-@@ -484,6 +499,7 @@ NGX_CONF_PATH=${NGX_CONF_PATH:-conf/nginx.conf}
+@@ -487,6 +502,7 @@ NGX_CONF_PATH=${NGX_CONF_PATH:-conf/nginx.conf}
  NGX_CONF_PREFIX=`dirname $NGX_CONF_PATH`
  NGX_PID_PATH=${NGX_PID_PATH:-logs/nginx.pid}
  NGX_LOCK_PATH=${NGX_LOCK_PATH:-logs/nginx.lock}
@@ -307,7 +307,7 @@ index c506d3d..cbbfbf1 100644
 +
 +DTRACE_FROM_SYSTEMTAP=YES
 diff --git a/auto/sources b/auto/sources
-index 522d722..5e48797 100644
+index cc19f8d..dfa0f63 100644
 --- a/auto/sources
 +++ b/auto/sources
 @@ -36,7 +36,13 @@ CORE_DEPS="src/core/nginx.h \
@@ -325,7 +325,7 @@ index 522d722..5e48797 100644
  
  
  CORE_SRCS="src/core/nginx.c \
-@@ -82,14 +88,15 @@ OPENSSL_SRCS=src/event/ngx_event_openssl.c
+@@ -83,14 +89,15 @@ OPENSSL_SRCS="src/event/ngx_event_openssl.c \
  
  EVENT_MODULES="ngx_events_module ngx_event_core_module"
  
@@ -343,7 +343,7 @@ index 522d722..5e48797 100644
  
  EVENT_SRCS="src/event/ngx_event.c \
              src/event/ngx_event_timer.c \
-@@ -291,7 +298,8 @@ HTTP_DEPS="src/http/ngx_http.h \
+@@ -292,7 +299,8 @@ HTTP_DEPS="src/http/ngx_http.h \
             src/http/ngx_http_script.h \
             src/http/ngx_http_upstream.h \
             src/http/ngx_http_upstream_round_robin.h \
@@ -353,7 +353,7 @@ index 522d722..5e48797 100644
  
  HTTP_SRCS="src/http/ngx_http.c \
             src/http/ngx_http_core_module.c \
-@@ -529,3 +537,8 @@ NGX_GOOGLE_PERFTOOLS_MODULE=ngx_google_perftools_module
+@@ -534,3 +542,8 @@ NGX_GOOGLE_PERFTOOLS_MODULE=ngx_google_perftools_module
  NGX_GOOGLE_PERFTOOLS_SRCS=src/misc/ngx_google_perftools_module.c
  
  NGX_CPP_TEST_SRCS=src/misc/ngx_cpp_test_module.cpp
@@ -900,7 +900,7 @@ index f1f8a48..91bdd64 100644
                  return NGX_CONF_ERROR;
              }
 diff --git a/src/http/ngx_http_core_module.c b/src/http/ngx_http_core_module.c
-index e02a251..6371fbc 100644
+index 96aa3de..71416fe 100644
 --- a/src/http/ngx_http_core_module.c
 +++ b/src/http/ngx_http_core_module.c
 @@ -8,6 +8,7 @@
@@ -911,7 +911,7 @@ index e02a251..6371fbc 100644
  
  
  typedef struct {
-@@ -2377,6 +2378,8 @@ ngx_http_subrequest(ngx_http_request_t *r,
+@@ -2432,6 +2433,8 @@ ngx_http_subrequest(ngx_http_request_t *r,
      r->main->subrequests--;
  
      if (r->main->subrequests == 0) {
@@ -920,7 +920,7 @@ index e02a251..6371fbc 100644
          ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
                        "subrequests cycle while processing \"%V\"", uri);
          r->main->subrequests = 1;
-@@ -2489,6 +2492,8 @@ ngx_http_subrequest(ngx_http_request_t *r,
+@@ -2544,6 +2547,8 @@ ngx_http_subrequest(ngx_http_request_t *r,
  
      *psr = sr;
  
@@ -1011,7 +1011,7 @@ index 0000000..d7d2d45
 +
 +#endif /* _NGX_HTTP_PROBE_H_INCLUDED_ */
 diff --git a/src/http/ngx_http_request.c b/src/http/ngx_http_request.c
-index ee00fd3..441b5cc 100644
+index e94e7fc..7d12b0d 100644
 --- a/src/http/ngx_http_request.c
 +++ b/src/http/ngx_http_request.c
 @@ -8,6 +8,7 @@
@@ -1022,7 +1022,7 @@ index ee00fd3..441b5cc 100644
  
  
  static void ngx_http_init_request(ngx_event_t *ev);
-@@ -861,6 +862,8 @@ ngx_http_process_request_line(ngx_event_t *rev)
+@@ -869,6 +870,8 @@ ngx_http_process_request_line(ngx_event_t *rev)
              }
  #endif
  
@@ -1031,7 +1031,7 @@ index ee00fd3..441b5cc 100644
              ngx_log_debug1(NGX_LOG_DEBUG_HTTP, c->log, 0,
                             "http request line: \"%V\"", &r->request_line);
  
-@@ -1108,6 +1111,8 @@ ngx_http_process_request_headers(ngx_event_t *rev)
+@@ -1116,6 +1119,8 @@ ngx_http_process_request_headers(ngx_event_t *rev)
                  return;
              }
  
@@ -1040,7 +1040,7 @@ index ee00fd3..441b5cc 100644
              ngx_log_debug2(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
                             "http header: \"%V: %V\"",
                             &h->key, &h->value);
-@@ -1958,7 +1963,11 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+@@ -1969,7 +1974,11 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
      }
  
      if (r != r->main && r->post_subrequest) {
@@ -1052,7 +1052,7 @@ index ee00fd3..441b5cc 100644
      }
  
      if (rc == NGX_ERROR
-@@ -2008,6 +2017,8 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+@@ -2019,6 +2028,8 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
  
          if (r->buffered || r->postponed) {
  
@@ -1061,7 +1061,7 @@ index ee00fd3..441b5cc 100644
              if (ngx_http_set_write_handler(r) != NGX_OK) {
                  ngx_http_terminate_request(r, 0);
              }
-@@ -2044,10 +2055,14 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+@@ -2055,10 +2066,14 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
                  pr->postponed = pr->postponed->next;
              }
  
@@ -1076,7 +1076,7 @@ index ee00fd3..441b5cc 100644
              ngx_log_debug2(NGX_LOG_DEBUG_HTTP, c->log, 0,
                             "http finalize non-active request: \"%V?%V\"",
                             &r->uri, &r->args);
-@@ -2059,6 +2074,8 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+@@ -2070,6 +2085,8 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
              }
          }
  
@@ -1086,7 +1086,7 @@ index ee00fd3..441b5cc 100644
              r->main->count++;
              ngx_http_terminate_request(r, 0);
 diff --git a/src/http/ngx_http_request_body.c b/src/http/ngx_http_request_body.c
-index 3c69d05..89858d0 100644
+index 749e4ae..076cd74 100644
 --- a/src/http/ngx_http_request_body.c
 +++ b/src/http/ngx_http_request_body.c
 @@ -8,6 +8,7 @@
@@ -1097,7 +1097,7 @@ index 3c69d05..89858d0 100644
  
  
  static void ngx_http_read_client_request_body_handler(ngx_http_request_t *r);
-@@ -40,11 +41,15 @@ ngx_http_read_client_request_body(ngx_http_request_t *r,
+@@ -42,11 +43,15 @@ ngx_http_read_client_request_body(ngx_http_request_t *r,
      r->main->count++;
  
      if (r->request_body || r->discard_body) {
@@ -1113,45 +1113,7 @@ index 3c69d05..89858d0 100644
          rc = NGX_HTTP_INTERNAL_SERVER_ERROR;
          goto done;
      }
-@@ -58,6 +63,7 @@ ngx_http_read_client_request_body(ngx_http_request_t *r,
-     r->request_body = rb;
- 
-     if (r->headers_in.content_length_n < 0) {
-+        ngx_http_probe_read_body_abort(r, "no content length");
-         post_handler(r);
-         return NGX_OK;
-     }
-@@ -68,11 +74,14 @@ ngx_http_read_client_request_body(ngx_http_request_t *r,
- 
-         if (r->request_body_in_file_only) {
-             if (ngx_http_write_request_body(r, NULL) != NGX_OK) {
-+                ngx_http_probe_read_body_abort(r, "create temp file failed");
-                 rc = NGX_HTTP_INTERNAL_SERVER_ERROR;
-                 goto done;
-             }
-         }
- 
-+        ngx_http_probe_read_body_done(r);
-+
-         post_handler(r);
- 
-         return NGX_OK;
-@@ -130,11 +139,14 @@ ngx_http_read_client_request_body(ngx_http_request_t *r,
- 
-             if (r->request_body_in_file_only) {
-                 if (ngx_http_write_request_body(r, rb->bufs) != NGX_OK) {
-+                    ngx_http_probe_read_body_abort(r, "write temp file failed");
-                     rc = NGX_HTTP_INTERNAL_SERVER_ERROR;
-                     goto done;
-                 }
-             }
- 
-+            ngx_http_probe_read_body_done(r);
-+
-             post_handler(r);
- 
-             return NGX_OK;
-@@ -239,6 +251,7 @@ ngx_http_read_client_request_body_handler(ngx_http_request_t *r)
+@@ -187,6 +192,7 @@ ngx_http_read_client_request_body_handler(ngx_http_request_t *r)
      ngx_int_t  rc;
  
      if (r->connection->read->timedout) {
@@ -1159,15 +1121,7 @@ index 3c69d05..89858d0 100644
          r->connection->timedout = 1;
          ngx_http_finalize_request(r, NGX_HTTP_REQUEST_TIME_OUT);
          return;
-@@ -273,6 +286,7 @@ ngx_http_do_read_client_request_body(ngx_http_request_t *r)
-             if (rb->buf->last == rb->buf->end) {
- 
-                 if (ngx_http_write_request_body(r, rb->to_write) != NGX_OK) {
-+                    ngx_http_probe_read_body_abort(r, "write temp file failed");
-                     return NGX_HTTP_INTERNAL_SERVER_ERROR;
-                 }
- 
-@@ -296,6 +310,9 @@ ngx_http_do_read_client_request_body(ngx_http_request_t *r)
+@@ -273,6 +279,9 @@ ngx_http_do_read_client_request_body(ngx_http_request_t *r)
              }
  
              if (n == 0) {
@@ -1177,15 +1131,7 @@ index 3c69d05..89858d0 100644
                  ngx_log_error(NGX_LOG_INFO, c->log, 0,
                                "client prematurely closed connection");
              }
-@@ -346,6 +363,7 @@ ngx_http_do_read_client_request_body(ngx_http_request_t *r)
-         /* save the last part */
- 
-         if (ngx_http_write_request_body(r, rb->to_write) != NGX_OK) {
-+            ngx_http_probe_read_body_abort(r, "write temp file failed");
-             return NGX_HTTP_INTERNAL_SERVER_ERROR;
-         }
- 
-@@ -375,6 +393,8 @@ ngx_http_do_read_client_request_body(ngx_http_request_t *r)
+@@ -356,6 +365,8 @@ ngx_http_do_read_client_request_body(ngx_http_request_t *r)
  
      r->read_event_handler = ngx_http_block_reading;
  

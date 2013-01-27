@@ -1,0 +1,31 @@
+--- nginx-1.3.11/src/event/modules/ngx_poll_module.c	2012-01-18 07:07:43.000000000 -0800
++++ nginx-1.3.11-patched/src/event/modules/ngx_poll_module.c	2013-01-23 12:34:13.990781456 -0800
+@@ -367,11 +367,18 @@ ngx_poll_process_events(ngx_cycle_t *cyc
+              */
+ 
+             revents |= POLLIN|POLLOUT;
++            if (c->read->active) {
++                revents |= POLLIN;
++            }
++
++            if (c->write->active) {
++                revents |= POLLOUT;
++            }
+         }
+ 
+         found = 0;
+ 
+-        if (revents & POLLIN) {
++        if ((revents & POLLIN) && c->read->active) {
+             found = 1;
+ 
+             ev = c->read;
+@@ -388,7 +395,7 @@ ngx_poll_process_events(ngx_cycle_t *cyc
+             ngx_locked_post_event(ev, queue);
+         }
+ 
+-        if (revents & POLLOUT) {
++        if ((revents & POLLOUT) && c->write->active) {
+             found = 1;
+             ev = c->write;
+ 

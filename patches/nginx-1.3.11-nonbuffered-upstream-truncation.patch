@@ -1,0 +1,63 @@
+--- nginx-1.3.11/src/http/ngx_http_upstream.c	2012-08-06 10:34:08.000000000 -0700
++++ nginx-1.3.11-patched/src/http/ngx_http_upstream.c	2012-09-09 21:58:04.727761891 -0700
+@@ -2383,7 +2383,7 @@
+ 
+     if (c->read->timedout) {
+         ngx_connection_error(c, NGX_ETIMEDOUT, "upstream timed out");
+-        ngx_http_upstream_finalize_request(r, u, 0);
++        ngx_http_upstream_finalize_request(r, u, NGX_HTTP_GATEWAY_TIME_OUT);
+         return;
+     }
+ 
+@@ -2430,13 +2430,17 @@
+             if (u->busy_bufs == NULL) {
+ 
+                 if (u->length == 0
+-                    || upstream->read->eof
+-                    || upstream->read->error)
++                    || (upstream->read->eof && u->headers_in.content_length_n == -1))
+                 {
+                     ngx_http_upstream_finalize_request(r, u, 0);
+                     return;
+                 }
+ 
++                if (upstream->read->eof || upstream->read->error) {
++                    ngx_http_upstream_finalize_request(r, u, NGX_HTTP_BAD_GATEWAY);
++                    return;
++                }
++
+                 b->pos = b->start;
+                 b->last = b->start;
+             }
+@@ -2710,7 +2714,16 @@
+ #if 0
+             ngx_http_busy_unlock(u->conf->busy_lock, &u->busy_lock);
+ #endif
+-            ngx_http_upstream_finalize_request(r, u, 0);
++
++            if (p->upstream_done
++                || (p->upstream_eof && u->headers_in.content_length_n == -1))
++            {
++                ngx_http_upstream_finalize_request(r, u, 0);
++
++            } else {
++                ngx_http_upstream_finalize_request(r, u, NGX_HTTP_BAD_GATEWAY);
++            }
++
+             return;
+         }
+     }
+@@ -3073,6 +3086,13 @@
+         && rc != NGX_HTTP_REQUEST_TIME_OUT
+         && (rc == NGX_ERROR || rc >= NGX_HTTP_SPECIAL_RESPONSE))
+     {
++        if (rc == NGX_ERROR) {
++            r->headers_out.status = NGX_HTTP_INTERNAL_SERVER_ERROR;
++
++        } else {
++            r->headers_out.status = rc;
++        }
++
+         rc = 0;
+     }
+ 
