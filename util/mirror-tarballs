@@ -233,7 +233,7 @@ mv agentzh-srcache-nginx-module-* srcache-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.07rc5
+ver=0.07
 $root/util/get-tarball "http://github.com/calio/form-input-nginx-module/tarball/v$ver" -O form-input-nginx-module-$ver.tar.gz || exit 1
 tar -xzf form-input-nginx-module-$ver.tar.gz || exit 1
 mv calio-form-input-nginx-module-* form-input-nginx-module-$ver || exit 1
