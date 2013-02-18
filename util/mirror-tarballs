@@ -132,9 +132,12 @@ echo "$info_txt applying the slab_alloc_no_memory_as_info patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-slab_alloc_no_memory_as_info.patch || exit 1
 echo
 
-echo "$info_txt applying the resolver_wev_handler_segfault_with_poll patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-resolver_wev_handler_segfault_with_poll.patch || exit 1
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.2.7`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying the resolver_wev_handler_segfault_with_poll patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-resolver_wev_handler_segfault_with_poll.patch || exit 1
+    echo
+fi
 
 rm -f *.patch || exit 1
 
