@@ -152,7 +152,7 @@ rm -rf no-pool-nginx-$ver
 
 #################################
 
-ver=0.42
+ver=0.43
 $root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-echo-nginx-module-* echo-nginx-module-$ver || exit 1
@@ -208,7 +208,7 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.7.16
+ver=0.7.17
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -326,10 +326,12 @@ ver=2.0.1
 $root/util/get-tarball "http://luajit.org/download/LuaJIT-$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 
-#echo "$info_txt applying luajit-2.0.0-2ad9834d.patch for luajit 2.0.0"
-#cd LuaJIT-$ver || exit 1;
-#patch -p1 < $root/patches/luajit-2.0.0-2ad9834d.patch || exit 1
-#cd .. || exit 1
+echo "$info_txt applying luajit-$ver hotfix #1 patch for luajit $ver"
+$root/util/get-tarball http://luajit.org/download/v2.0.1_hotfix1.patch -O hotfix.patch
+cd LuaJIT-$ver || exit 1;
+patch -p1 < ../hotfix.patch || exit 1
+rm ../hotfix.patch
+cd .. || exit 1
 
 #$root/util/get-tarball http://luajit.org/download/beta11_hotfix1.patch -O beta11_hotfix1.patch
 #patch -p1 < beta11_hotfix1.patch || exit 1
