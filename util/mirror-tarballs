@@ -281,6 +281,11 @@ $root/util/get-tarball "http://people.freebsd.org/~osa/ngx_http_redis-$ver.tar.g
 tar -xzf redis-nginx-module-$ver.tar.gz || exit 1
 mv ngx_http_redis-* redis-nginx-module-$ver || exit 1
 
+cd redis-nginx-module-$ver
+echo "applying ngx_http_redis-$ver-variables_in_redis_pass.patch"
+patch -p1 < $root/patches/ngx_http_redis-$ver-variables_in_redis_pass.patch || exit 1
+cd ..
+
 #################################
 
 ver=1.0rc2
