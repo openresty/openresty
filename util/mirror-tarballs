@@ -156,7 +156,7 @@ rm -rf no-pool-nginx-$ver
 
 #################################
 
-ver=0.43
+ver=0.44
 $root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-echo-nginx-module-* echo-nginx-module-$ver || exit 1
@@ -212,7 +212,7 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.7.18rc2
+ver=0.7.18
 $root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -302,7 +302,7 @@ mv FRiCKLE-ngx_coolkit-* ngx_coolkit-$ver || exit 1
 
 #################################
 
-ver=0.09
+ver=0.10
 $root/util/get-tarball "http://github.com/agentzh/redis2-nginx-module/tarball/v$ver" -O redis2-nginx-module-$ver.tar.gz || exit 1
 tar -xzf redis2-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
@@ -402,7 +402,7 @@ mv agentzh-lua-resty-mysql-* lua-resty-mysql-$ver || exit 1
 
 #################################
 
-ver=0.07
+ver=0.08
 $root/util/get-tarball "http://github.com/agentzh/lua-resty-upload/tarball/v$ver" -O "lua-resty-upload-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-upload-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-upload-* lua-resty-upload-$ver || exit 1
