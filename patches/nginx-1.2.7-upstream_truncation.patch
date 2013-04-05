@@ -1,5 +1,5 @@
 --- nginx-1.2.7/src/http/ngx_http_upstream.c	2013-02-11 06:39:49.000000000 -0800
-+++ nginx-1.2.7-patched/src/http/ngx_http_upstream.c	2013-04-04 18:18:09.749357094 -0700
++++ nginx-1.2.7-patched/src/http/ngx_http_upstream.c	2013-04-05 12:24:34.108742922 -0700
 @@ -2399,7 +2399,7 @@ ngx_http_upstream_process_non_buffered_u
  
      if (c->read->timedout) {
@@ -9,21 +9,7 @@
          return;
      }
  
-@@ -2415,11 +2415,13 @@ ngx_http_upstream_process_non_buffered_r
-     ssize_t                    n;
-     ngx_buf_t                 *b;
-     ngx_int_t                  rc;
-+    ngx_event_pipe_t          *p;
-     ngx_connection_t          *downstream, *upstream;
-     ngx_http_upstream_t       *u;
-     ngx_http_core_loc_conf_t  *clcf;
- 
-     u = r->upstream;
-+    p = u->pipe;
-     downstream = r->connection;
-     upstream = u->peer.connection;
- 
-@@ -2446,13 +2448,19 @@ ngx_http_upstream_process_non_buffered_r
+@@ -2446,13 +2446,20 @@ ngx_http_upstream_process_non_buffered_r
              if (u->busy_bufs == NULL) {
  
                  if (u->length == 0
@@ -31,7 +17,8 @@
 -                    || upstream->read->error)
 +                    || (upstream->read->eof
 +                        && u->length == -1
-+                        && p->length == -1))
++                        && u->pipe
++                        && u->pipe->length == -1))
                  {
                      ngx_http_upstream_finalize_request(r, u, 0);
                      return;
@@ -45,7 +32,7 @@
                  b->pos = b->start;
                  b->last = b->start;
              }
-@@ -2720,7 +2728,9 @@ ngx_http_upstream_process_request(ngx_ht
+@@ -2720,7 +2727,9 @@ ngx_http_upstream_process_request(ngx_ht
  
  #endif
  
@@ -56,7 +43,7 @@
              ngx_log_debug1(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
                             "http upstream exit: %p", p->out);
  #if 0
-@@ -2729,6 +2739,14 @@ ngx_http_upstream_process_request(ngx_ht
+@@ -2729,6 +2738,14 @@ ngx_http_upstream_process_request(ngx_ht
              ngx_http_upstream_finalize_request(r, u, 0);
              return;
          }
@@ -71,7 +58,7 @@
      }
  
      if (p->downstream_error) {
-@@ -3087,7 +3105,8 @@ ngx_http_upstream_finalize_request(ngx_h
+@@ -3087,7 +3104,8 @@ ngx_http_upstream_finalize_request(ngx_h
  
      if (u->header_sent
          && rc != NGX_HTTP_REQUEST_TIME_OUT

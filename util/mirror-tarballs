@@ -109,8 +109,8 @@ echo "$info_txt applying the location_if_inherits_proxy patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-location_if_inherits_proxy.patch || exit 1
 echo
 
-echo "$info_txt applying the upstream-truncation patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-upstream-truncation.patch || exit 1
+echo "$info_txt applying the upstream_truncation patch for nginx"
+patch -p1 < $root/patches/nginx-$main_ver-upstream_truncation.patch || exit 1
 echo
 
 echo "$info_txt applying the channel-uninit-params patch for nginx"
