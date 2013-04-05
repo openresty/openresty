@@ -454,10 +454,10 @@ index efbc244..8d81aab 100644
  
 diff --git a/src/dtrace/nginx.stp b/src/dtrace/nginx.stp
 new file mode 100644
-index 0000000..8a5a54a
+index 0000000..4c228bd
 --- /dev/null
 +++ b/src/dtrace/nginx.stp
-@@ -0,0 +1,278 @@
+@@ -0,0 +1,288 @@
 +/* tapset for nginx */
 +
 +
@@ -598,6 +598,12 @@ index 0000000..8a5a54a
 +}
 +
 +
++function ngx_buf_last_in_chain(b)
++{
++    return @cast(b, "ngx_buf_t", "/home/agentzh/git/lua-nginx-module/work/nginx/sbin/nginx")->last_in_chain
++}
++
++
 +function ngx_buf_sync(b)
 +{
 +    return @cast(b, "ngx_buf_t", "/home/agentzh/git/lua-nginx-module/work/nginx/sbin/nginx")->sync
@@ -651,7 +657,11 @@ index 0000000..8a5a54a
 +        }
 +
 +        if (ngx_buf_last_buf(buf)) {
-+            out .= "<eof>"
++            out .= "<last_buf>"
++        }
++
++        if (ngx_buf_last_in_chain(buf)) {
++            out .= "<last_in_chain>"
 +        }
 +
 +        if (ngx_buf_sync(buf)) {
