@@ -1,3 +1,80 @@
+diff --exclude '*~' --exclude '*.swp' -urp nginx-1.2.7/src/http/modules/ngx_http_scgi_module.c nginx-1.2.7-patched/src/http/modules/ngx_http_scgi_module.c
+--- nginx-1.2.7/src/http/modules/ngx_http_scgi_module.c	2013-02-09 19:08:42.000000000 -0800
++++ nginx-1.2.7-patched/src/http/modules/ngx_http_scgi_module.c	2013-04-07 12:09:55.900492634 -0700
+@@ -39,6 +39,7 @@ static ngx_int_t ngx_http_scgi_process_s
+ static ngx_int_t ngx_http_scgi_process_header(ngx_http_request_t *r);
+ static void ngx_http_scgi_abort_request(ngx_http_request_t *r);
+ static void ngx_http_scgi_finalize_request(ngx_http_request_t *r, ngx_int_t rc);
++static ngx_int_t ngx_http_scgi_input_filter_init(void *data);
+ 
+ static void *ngx_http_scgi_create_loc_conf(ngx_conf_t *cf);
+ static char *ngx_http_scgi_merge_loc_conf(ngx_conf_t *cf, void *parent,
+@@ -446,6 +447,8 @@ ngx_http_scgi_handler(ngx_http_request_t
+     u->pipe->input_filter = ngx_event_pipe_copy_input_filter;
+     u->pipe->input_ctx = r;
+ 
++    u->input_filter_init = ngx_http_scgi_input_filter_init;
++
+     rc = ngx_http_read_client_request_body(r, ngx_http_upstream_init);
+ 
+     if (rc >= NGX_HTTP_SPECIAL_RESPONSE) {
+@@ -1046,6 +1049,17 @@ ngx_http_scgi_finalize_request(ngx_http_
+ }
+ 
+ 
++static ngx_int_t
++ngx_http_scgi_input_filter_init(void *data)
++{
++    ngx_http_request_t    *r = data;
++
++    r->upstream->length = -1;
++
++    return NGX_OK;
++}
++
++
+ static void *
+ ngx_http_scgi_create_loc_conf(ngx_conf_t *cf)
+ {
+diff --exclude '*~' --exclude '*.swp' -urp nginx-1.2.7/src/http/modules/ngx_http_uwsgi_module.c nginx-1.2.7-patched/src/http/modules/ngx_http_uwsgi_module.c
+--- nginx-1.2.7/src/http/modules/ngx_http_uwsgi_module.c	2013-02-09 19:08:42.000000000 -0800
++++ nginx-1.2.7-patched/src/http/modules/ngx_http_uwsgi_module.c	2013-04-07 11:58:24.546915778 -0700
+@@ -46,6 +46,7 @@ static ngx_int_t ngx_http_uwsgi_process_
+ static void ngx_http_uwsgi_abort_request(ngx_http_request_t *r);
+ static void ngx_http_uwsgi_finalize_request(ngx_http_request_t *r,
+     ngx_int_t rc);
++static ngx_int_t ngx_http_uwsgi_input_filter_init(void *data);
+ 
+ static void *ngx_http_uwsgi_create_loc_conf(ngx_conf_t *cf);
+ static char *ngx_http_uwsgi_merge_loc_conf(ngx_conf_t *cf, void *parent,
+@@ -479,6 +480,8 @@ ngx_http_uwsgi_handler(ngx_http_request_
+     u->pipe->input_filter = ngx_event_pipe_copy_input_filter;
+     u->pipe->input_ctx = r;
+ 
++    u->input_filter_init = ngx_http_uwsgi_input_filter_init;
++
+     rc = ngx_http_read_client_request_body(r, ngx_http_upstream_init);
+ 
+     if (rc >= NGX_HTTP_SPECIAL_RESPONSE) {
+@@ -1086,6 +1089,17 @@ ngx_http_uwsgi_finalize_request(ngx_http
+ }
+ 
+ 
++static ngx_int_t
++ngx_http_uwsgi_input_filter_init(void *data)
++{
++    ngx_http_request_t    *r = data;
++
++    r->upstream->length = -1;
++
++    return NGX_OK;
++}
++
++
+ static void *
+ ngx_http_uwsgi_create_loc_conf(ngx_conf_t *cf)
+ {
+diff --exclude '*~' --exclude '*.swp' -urp nginx-1.2.7/src/http/ngx_http_upstream.c nginx-1.2.7-patched/src/http/ngx_http_upstream.c
 --- nginx-1.2.7/src/http/ngx_http_upstream.c	2013-02-11 06:39:49.000000000 -0800
 +++ nginx-1.2.7-patched/src/http/ngx_http_upstream.c	2013-04-06 17:16:54.444520038 -0700
 @@ -2399,7 +2399,7 @@ ngx_http_upstream_process_non_buffered_u
