@@ -1485,7 +1485,7 @@ cd ..
 cd nginx-1.2.7
 ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../ngx_devel_kit-0.2.18 \
-  --add-module=../iconv-nginx-module-0.10rc7 \
+  --add-module=../iconv-nginx-module-0.10 \
   --add-module=../echo-nginx-module-0.45 \
   --add-module=../xss-nginx-module-0.03rc9 \
   --add-module=../ngx_coolkit-0.2rc1 \
