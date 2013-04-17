@@ -29,12 +29,13 @@ if ($^O eq 'freebsd' || $^O eq 'solaris') {
     $make = 'make';
 }
 
+my $cfg_opts = "--with-http_iconv_module";
 my $prefix;
 
 warn "=== Normal Build ===\n";
 $prefix = "/usr/local/openresty";
 unless ($opts{f}) {
-    sh "./configure --with-luajit -j$jobs > /dev/null";
+    sh "./configure --with-luajit $cfg_opts -j$jobs > /dev/null";
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
@@ -48,7 +49,7 @@ sh "sudo $prefix/nginx/sbin/nginx -sstop";
 warn "\n=== Debug Build ===\n";
 $prefix = "/usr/local/openresty-debug";
 unless ($opts{f}) {
-    sh "./configure --with-debug --prefix=$prefix --with-luajit -j$jobs > /dev/null";
+    sh "./configure --with-debug $cfg_opts --prefix=$prefix --with-luajit -j$jobs > /dev/null";
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
@@ -63,7 +64,7 @@ sh "sudo $prefix/nginx/sbin/nginx -sstop";
 warn "\n=== DTrace Build ===\n";
 $prefix = "/usr/local/openresty-dtrace";
 unless ($opts{f}) {
-    sh "./configure --with-dtrace-probes --prefix=$prefix --with-luajit -j$jobs > /dev/null";
+    sh "./configure $cfg_opts --with-dtrace-probes --prefix=$prefix --with-luajit -j$jobs > /dev/null";
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
