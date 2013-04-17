@@ -9,7 +9,7 @@ use Cwd qw/cwd/;
 sub sh ($);
 
 my %opts;
-getopts("f:", \%opts) or die "Usage: $0 [-f] <cores>\n";
+getopts("lf:", \%opts) or die "Usage: $0 [-f] <cores>\n";
 
 my $jobs = shift || 4;
 
@@ -20,7 +20,7 @@ if ($cwd !~ /ngx_openresty-(\d+(?:\.\d+)+)$/) {
 
 my $ver = $1;
 
-my ($make);
+my ($make, $lua);
 
 if ($^O eq 'freebsd' || $^O eq 'solaris') {
     $make = 'gmake';
@@ -30,26 +30,35 @@ if ($^O eq 'freebsd' || $^O eq 'solaris') {
 }
 
 my $cfg_opts = "--with-http_iconv_module";
+
+if ($opts{l}) {
+    $lua = 'Lua';
+
+} else {
+    $lua = 'LuaJIT';
+    $cfg_opts .= " --with-luajit";
+}
+
 my $prefix;
 
 warn "=== Normal Build ===\n";
 $prefix = "/usr/local/openresty";
 unless ($opts{f}) {
-    sh "./configure --with-luajit $cfg_opts -j$jobs > /dev/null";
+    sh "./configure $cfg_opts -j$jobs > /dev/null";
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 system "sudo killall nginx > /dev/null 2>&1";
 sh "sudo $prefix/nginx/sbin/nginx";
-sh "curl -si localhost/lua|grep LuaJIT";
+sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Debug Build ===\n";
 $prefix = "/usr/local/openresty-debug";
 unless ($opts{f}) {
-    sh "./configure --with-debug $cfg_opts --prefix=$prefix --with-luajit -j$jobs > /dev/null";
+    sh "./configure --with-debug $cfg_opts --prefix=$prefix -j$jobs > /dev/null";
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
@@ -57,14 +66,14 @@ sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-debug'";
 system "sudo killall nginx > /dev/null 2>&1";
 sh "sudo $prefix/nginx/sbin/nginx";
-sh "curl -si localhost/lua|grep LuaJIT";
+sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== DTrace Build ===\n";
 $prefix = "/usr/local/openresty-dtrace";
 unless ($opts{f}) {
-    sh "./configure $cfg_opts --with-dtrace-probes --prefix=$prefix --with-luajit -j$jobs > /dev/null";
+    sh "./configure $cfg_opts --with-dtrace-probes --prefix=$prefix -j$jobs > /dev/null";
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
@@ -72,7 +81,7 @@ sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-dtrace-probes'";
 system "sudo killall nginx > /dev/null 2>&1";
 sh "sudo $prefix/nginx/sbin/nginx";
-sh "curl -si localhost/lua|grep LuaJIT";
+sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
 if ($^O eq 'linux') {
     sh "stap -L 'process(\"$prefix/nginx/sbin/nginx\").mark(\"*\")'|grep http__lua__coroutine__done";
