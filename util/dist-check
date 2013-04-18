@@ -86,7 +86,7 @@ sh "curl -si localhost/lua|grep $ver";
 if ($^O eq 'linux') {
     sh "stap -L 'process(\"$prefix/nginx/sbin/nginx\").mark(\"*\")'|grep http__lua__coroutine__done";
 
-} elsif ($^O eq 'freebsd' || $^O eq 'macosx' || $^O eq 'solaris') {
+} elsif ($^O eq 'freebsd' || $^O eq 'darwin' || $^O eq 'solaris') {
     sh "sudo dtrace -l|grep http-lua-coroutine-done";
 }
 
