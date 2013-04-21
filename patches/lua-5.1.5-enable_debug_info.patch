@@ -1,0 +1,11 @@
+--- lua-5.1.5/src/Makefile	2012-02-13 12:41:22.000000000 -0800
++++ lua-5.1.5-patched/src/Makefile	2013-04-20 22:56:42.921286886 -0700
+@@ -8,7 +8,7 @@
+ PLAT= none
+ 
+ CC= gcc
+-CFLAGS= -O2 -Wall $(MYCFLAGS)
++CFLAGS= -g -O2 -Wall $(MYCFLAGS)
+ AR= ar rcu
+ RANLIB= ranlib
+ RM= rm -f

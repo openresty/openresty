@@ -324,12 +324,16 @@ tar -xzf lua-$ver.tar.gz || exit 1
 
 #rm "patch-lua-$ver-4" || exit 1
 
-echo "$info_txt applying the makefile_install_fix patch for lua 5.1"
+echo "$info_txt applying the makefile_install_fix patch for lua $ver"
 patch -p0 < $root/patches/lua-$ver-makefile_install_fix.patch || exit 1
 echo
 
-echo "$info_txt applying the disable_lua50_compat patch for lua 5.1"
+echo "$info_txt applying the disable_lua50_compat patch for lua $ver"
 patch -p0 < $root/patches/lua-$ver-disable_lua50_compat.patch || exit 1
+echo
+
+echo "$info_txt applying the enable_debug_info patch for lua $ver"
+patch -p0 < $root/patches/lua-$ver-enable_debug_info.patch || exit 1
 echo
 
 #################################

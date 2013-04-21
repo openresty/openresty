@@ -512,12 +512,12 @@ _END_
 
         cd $luajit_src;
 
-        my $extra_opts = ' TARGET_STRIP=@:';
+        my $extra_opts = ' TARGET_STRIP=@: CCDEBUG=-g';
 
         if ($opts->{debug}) {
             $luajit_xcflags .= " -DLUA_USE_APICHECK -DLUA_USE_ASSERT";
             $luajit_xcflags =~ s/^ +//;
-            $extra_opts .= qq{ CCDEBUG=-g Q= XCFLAGS='$luajit_xcflags'};
+            $extra_opts .= qq{ Q= XCFLAGS='$luajit_xcflags'};
 
         } else {
             if ($luajit_xcflags) {
