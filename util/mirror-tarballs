@@ -139,9 +139,12 @@ if [ "$answer" = "N" ]; then
     echo
 fi
 
-echo "$info_txt applying the run_posted_requests_in_resolver patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-run_posted_requests_in_resolver.patch || exit 1
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.2.8`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying the run_posted_requests_in_resolver patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-run_posted_requests_in_resolver.patch || exit 1
+    echo
+fi
 
 rm -f *.patch || exit 1
 

@@ -1,0 +1,42 @@
+diff -urp nginx-1.2.8/src/os/unix/ngx_channel.c nginx-1.2.8-patched/src/os/unix/ngx_channel.c
+--- nginx-1.2.8/src/os/unix/ngx_channel.c	2012-01-18 07:07:43.000000000 -0800
++++ nginx-1.2.8-patched/src/os/unix/ngx_channel.c	2012-09-17 11:33:09.215394217 -0700
+@@ -31,6 +31,8 @@ ngx_write_channel(ngx_socket_t s, ngx_ch
+         msg.msg_controllen = 0;
+ 
+     } else {
++        ngx_memzero(&cmsg, sizeof(cmsg));
++
+         msg.msg_control = (caddr_t) &cmsg;
+         msg.msg_controllen = sizeof(cmsg);
+ 
+diff -urp nginx-1.2.8/src/os/unix/ngx_process_cycle.c nginx-1.2.8-patched/src/os/unix/ngx_process_cycle.c
+--- nginx-1.2.8/src/os/unix/ngx_process_cycle.c	2012-07-02 09:23:14.000000000 -0700
++++ nginx-1.2.8-patched/src/os/unix/ngx_process_cycle.c	2012-09-17 11:33:09.214394215 -0700
+@@ -356,6 +356,8 @@ ngx_start_worker_processes(ngx_cycle_t *
+ 
+     ngx_log_error(NGX_LOG_NOTICE, cycle->log, 0, "start worker processes");
+ 
++    ngx_memzero(&ch, sizeof(ngx_channel_t));
++
+     ch.command = NGX_CMD_OPEN_CHANNEL;
+ 
+     for (i = 0; i < n; i++) {
+@@ -463,6 +465,8 @@ ngx_signal_worker_processes(ngx_cycle_t
+     ngx_err_t      err;
+     ngx_channel_t  ch;
+ 
++    ngx_memzero(&ch, sizeof(ngx_channel_t));
++
+ #if (NGX_BROKEN_SCM_RIGHTS)
+ 
+     ch.command = 0;
+@@ -564,6 +568,8 @@ ngx_reap_children(ngx_cycle_t *cycle)
+     ngx_channel_t     ch;
+     ngx_core_conf_t  *ccf;
+ 
++    ngx_memzero(&ch, sizeof(ngx_channel_t));
++
+     ch.command = NGX_CMD_CLOSE_CHANNEL;
+     ch.fd = -1;
+ 
