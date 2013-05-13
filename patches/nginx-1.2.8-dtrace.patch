@@ -1,13 +1,11 @@
 diff --git a/README b/README
-index 2f68e14..4f2c4a7 100644
+index 2f68e14..262822a 100644
 --- a/README
 +++ b/README
-@@ -1,3 +1,40 @@
+@@ -1,3 +1,38 @@
 +This is an Nginx fork that adds dtrace USDT probes.
  
 -Documentation is available at http://nginx.org
-+This is still under development and not usable yet.
-+
 +Installation:
 +
 +    ./configure --with-dtrace-probes \
@@ -454,10 +452,10 @@ index efbc244..8d81aab 100644
  
 diff --git a/src/dtrace/nginx.stp b/src/dtrace/nginx.stp
 new file mode 100644
-index 0000000..4c228bd
+index 0000000..e824daf
 --- /dev/null
 +++ b/src/dtrace/nginx.stp
-@@ -0,0 +1,288 @@
+@@ -0,0 +1,299 @@
 +/* tapset for nginx */
 +
 +
@@ -592,6 +590,12 @@ index 0000000..4c228bd
 +}
 +
 +
++function ngx_buf_in_file(b)
++{
++    return @cast(b, "ngx_buf_t", "NGX_SBIN_PATH")->in_file
++}
++
++
 +function ngx_buf_last_buf(b)
 +{
 +    return @cast(b, "ngx_buf_t", "/home/agentzh/git/lua-nginx-module/work/nginx/sbin/nginx")->last_buf
@@ -654,6 +658,11 @@ index 0000000..4c228bd
 +
 +        } else {
 +            out .= "\"\""
++        }
++
++        if (ngx_buf_in_file(buf)) {
++            out .= sprintf("<in_file:%d-%d>", ngx_buf_file_pos(buf),
++                           ngx_buf_file_last(buf))
 +        }
 +
 +        if (ngx_buf_last_buf(buf)) {
