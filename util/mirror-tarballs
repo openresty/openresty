@@ -143,6 +143,10 @@ echo "$info_txt applying the run_posted_requests_in_resolver patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-run_posted_requests_in_resolver.patch || exit 1
 echo
 
+echo "$info_txt applying patches/nginx-$main_ver-cve-2013-2070.patch for nginx"
+patch -p0 < $root/patches/nginx-$main_ver-cve-2013-2070.patch || exit 1
+echo
+
 rm -f *.patch || exit 1
 
 cd .. || exit 1
