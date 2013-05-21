@@ -150,6 +150,10 @@ echo "$info_txt applying patches/nginx-$main_ver-cve-2013-2070.patch for nginx"
 patch -p0 < $root/patches/nginx-$main_ver-cve-2013-2070.patch || exit 1
 echo
 
+echo "$info_txt applying patches/nginx-$main_ver-invalid_referer_hash.patch for nginx"
+patch -p1 < $root/patches/nginx-$main_ver-invalid_referer_hash.patch || exit 1
+echo
+
 rm -f *.patch || exit 1
 
 cd .. || exit 1
