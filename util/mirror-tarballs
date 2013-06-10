@@ -146,9 +146,12 @@ if [ "$answer" = "N" ]; then
     echo
 fi
 
-echo "$info_txt applying patches/nginx-$main_ver-cve-2013-2070.patch for nginx"
-patch -p0 < $root/patches/nginx-$main_ver-cve-2013-2070.patch || exit 1
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.4.1`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying patches/nginx-$main_ver-cve-2013-2070.patch for nginx"
+    patch -p0 < $root/patches/nginx-$main_ver-cve-2013-2070.patch || exit 1
+    echo
+fi
 
 echo "$info_txt applying patches/nginx-$main_ver-invalid_referer_hash.patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-invalid_referer_hash.patch || exit 1
