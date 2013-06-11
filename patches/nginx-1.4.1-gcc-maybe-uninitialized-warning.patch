@@ -1,0 +1,11 @@
+--- nginx-1.4.1/src/http/ngx_http_request.c	2013-05-06 03:26:50.000000000 -0700
++++ nginx-1.4.1-patched/src/http/ngx_http_request.c	2013-06-11 12:59:48.008321688 -0700
+@@ -1951,7 +1951,7 @@
+     ngx_int_t                  rc;
+     ngx_http_connection_t     *hc;
+     ngx_http_core_loc_conf_t  *clcf;
+-    ngx_http_core_srv_conf_t  *cscf;
++    ngx_http_core_srv_conf_t  *cscf = NULL;
+ 
+     hc = r->http_connection;
+ 
