@@ -41,7 +41,23 @@ if ($opts{l}) {
 
 my $prefix;
 
-warn "=== Normal Build ===\n";
+warn "=== No Pool Build ===\n";
+$prefix = "/usr/local/openresty-nopool";
+unless ($opts{f}) {
+    sh "./configure --with-no-pool-patch $cfg_opts --prefix=$prefix -j$jobs > /dev/null";
+}
+sh "$make -j$jobs > /dev/null";
+sh "sudo $make install > /dev/null";
+sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
+#sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-no-pool-patch'";
+system "sudo killall nginx > /dev/null 2>&1";
+sh "sudo $prefix/nginx/sbin/nginx";
+sh "curl -si localhost/lua|grep $lua";
+sh "curl -si localhost/lua|grep $ver";
+sh "curl -si localhost/lua|grep 'no pool'";
+sh "sudo $prefix/nginx/sbin/nginx -sstop";
+
+warn "\n=== Normal Build ===\n";
 $prefix = "/usr/local/openresty";
 unless ($opts{f}) {
     sh "./configure $cfg_opts -j$jobs > /dev/null";
