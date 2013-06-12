@@ -157,9 +157,12 @@ echo "$info_txt applying patches/nginx-$main_ver-invalid_referer_hash.patch for 
 patch -p1 < $root/patches/nginx-$main_ver-invalid_referer_hash.patch || exit 1
 echo
 
-echo "$info_txt applying patches/nginx-$main_ver-gcc-maybe-uninitialized-warning.patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-gcc-maybe-uninitialized-warning.patch
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.4.1`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying patches/nginx-$main_ver-gcc-maybe-uninitialized-warning.patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-gcc-maybe-uninitialized-warning.patch
+    echo
+fi
 
 rm -f *.patch || exit 1
 
