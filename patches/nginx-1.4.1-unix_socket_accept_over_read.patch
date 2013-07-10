@@ -1,0 +1,11 @@
+--- nginx-1.4.1/src/event/ngx_event_accept.c	2013-05-06 03:26:50.000000000 -0700
++++ nginx-1.4.1-patched/src/event/ngx_event_accept.c	2013-07-09 17:41:42.688468839 -0700
+@@ -268,7 +268,7 @@ ngx_event_accept(ngx_event_t *ev)
+         wev->own_lock = &c->lock;
+ #endif
+ 
+-        if (ls->addr_ntop) {
++        if (ls->addr_ntop && socklen > sizeof(c->sockaddr->sa_family)) {
+             c->addr_text.data = ngx_pnalloc(c->pool, ls->addr_text_max_len);
+             if (c->addr_text.data == NULL) {
+                 ngx_close_accepted_connection(c);
