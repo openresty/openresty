@@ -128,7 +128,7 @@ for my $opt (@ARGV) {
 
     if ($opt =~ /^--with-cc=(.+)/) {
         $cc = $1;
-        push @ngx_opts, $opt;
+        push @ngx_opts, "'$opt'";
         next;
     }
 
@@ -536,7 +536,7 @@ _END_
         }
 
         if (defined $cc) {
-            $extra_opts .= " CC=$cc";
+            $extra_opts .= " CC='$cc'";
         }
 
         if (defined $cores) {
@@ -590,7 +590,7 @@ _END_
 
         my $extra_opts = '';
         if (defined $cc) {
-            $extra_opts .= " CC=$cc";
+            $extra_opts .= " CC='$cc'";
         }
 
         if (defined $cores) {
@@ -670,7 +670,7 @@ _EOC_
             }
 
             if (defined $cc) {
-                $extra_opts .= " CC=$cc";
+                $extra_opts .= " CC='$cc'";
             } else {
                 $extra_opts .= " CC=gcc";
             }
@@ -717,7 +717,7 @@ _EOC_
             }
 
             if (defined $cc) {
-                $extra_opts .= " CC=$cc";
+                $extra_opts .= " CC='$cc'";
             } else {
                 $extra_opts .= " CC=gcc";
             }
@@ -764,7 +764,7 @@ _EOC_
             }
 
             if (defined $cc) {
-                $extra_opts .= " CC=$cc";
+                $extra_opts .= " CC='$cc'";
             } else {
                 $extra_opts .= " CC=gcc";
             }
