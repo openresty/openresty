@@ -1,8 +1,7 @@
 ngx_openresty is a full-fledged web application server by bundling the standard nginx core,
 lots of 3rd-party nginx modules, as well as most of their external dependencies.
 
-This bundle is maintained by us, agentzh and chaoslawful, and sponsored by
-Taobao.com, Alibaba Group.
+This bundle is maintained Yichun Zhang (agentzh).
 
 Because most of the nginx modules are developed by the bundle maintainers, it can ensure
 that all these modules are played well together.
@@ -47,14 +46,8 @@ COPYRIGHT & LICENSE
 
 The bundle itself is licensed under the 2-clause BSD license.
 
-    Copyright (c) 2011, Taobao Inc., Alibaba Group (
-    http://www.taobao.com ).
-
-    Copyright (c) 2011, Yichun "agentzh" Zhang (章亦春)
+    Copyright (c) 2011-2013, Yichun "agentzh" Zhang (章亦春)
     <agentzh@gmail.com>.
-
-    Copyright (c) 2011, Xiaozhe "chaoslawful" Wang (王晓哲)
-    <chaoslawful@gmail.com>.
 
     This module is licensed under the terms of the BSD license.
 
