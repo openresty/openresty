@@ -1,0 +1,41 @@
+--- nginx-1.4.2/src/event/ngx_event_accept.c	2013-05-06 03:26:50.000000000 -0700
++++ nginx-1.4.2-patched/src/event/ngx_event_accept.c	2013-07-10 13:05:02.001249099 -0700
+@@ -269,17 +269,28 @@ ngx_event_accept(ngx_event_t *ev)
+ #endif
+ 
+         if (ls->addr_ntop) {
+-            c->addr_text.data = ngx_pnalloc(c->pool, ls->addr_text_max_len);
+-            if (c->addr_text.data == NULL) {
+-                ngx_close_accepted_connection(c);
+-                return;
+-            }
++            if (socklen > sizeof(c->sockaddr->sa_family)) {
++                c->addr_text.data = ngx_pnalloc(c->pool, ls->addr_text_max_len);
++                if (c->addr_text.data == NULL) {
++                    ngx_close_accepted_connection(c);
++                    return;
++                }
++
++                c->addr_text.len = ngx_sock_ntop(c->sockaddr, c->addr_text.data,
++                                                 ls->addr_text_max_len, 0);
++                if (c->addr_text.len == 0) {
++                    ngx_close_accepted_connection(c);
++                    return;
++                }
++
++            } else {
++                /*
++                 * Linux accept/accept4 syscalls, for example, do not return
++                 * address data upon unix domain sockets
++                 */
+ 
+-            c->addr_text.len = ngx_sock_ntop(c->sockaddr, c->addr_text.data,
+-                                             ls->addr_text_max_len, 0);
+-            if (c->addr_text.len == 0) {
+-                ngx_close_accepted_connection(c);
+-                return;
++                c->addr_text.data = NULL;
++                c->addr_text.len = 0;
+             }
+         }
+ 
