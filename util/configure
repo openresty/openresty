@@ -22,6 +22,10 @@ my $OS = $^O;
 
 my $ngx_dir;
 
+if (-f 'Makefile') {
+    unlink 'Makefile' or die "ERROR: failed to remove existing Makefile: $!\n";
+}
+
 for my $opt (@ARGV) {
     if ($opt =~ /^--platform=(.*)/) {
         $OS = $1;
@@ -304,7 +308,7 @@ sub shell ($@) {
 
     unless ($dry_run) {
         system($cmd) == 0 or
-            die "failed to run command: ", trim($cmd), "\n";
+            die "ERROR: failed to run command: ", trim($cmd), "\n";
     }
 }
 
