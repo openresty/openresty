@@ -179,6 +179,9 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--without-lua_resty_websocket') {
         $resty_opts{no_lua_resty_websocket} = 1;
 
+    } elsif ($opt eq '--without-lua_resty_lock') {
+        $resty_opts{no_lua_resty_lock} = 1;
+
     } elsif ($opt eq '--without-lua_rds_parser') {
         $resty_opts{no_lua_rds_parser} = 1;
 
@@ -783,7 +786,9 @@ _EOC_
                 "\$(MAKE) install$extra_opts";
         }
 
-        for my $key (qw(dns memcached redis mysql string upload websocket)) {
+        for my $key (qw(dns memcached redis mysql string upload websocket
+                        lock))
+        {
             unless ($opts->{"no_lua_resty_$key"}) {
                 my $name = "lua-resty-$key";
                 my $dir = auto_complete $name;
@@ -905,6 +910,7 @@ _EOC_
   --without-lua_resty_upload         disable the lua-resty-upload library
   --without-lua_resty_string         disable the lua-resty-string library
   --without-lua_resty_websocket      disable the lua-resty-websocket library
+  --without-lua_resty_lock           disable the lua-resty-lock library
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
   --with-lua51=PATH                  specify the external installation of Lua 5.1 by PATH
