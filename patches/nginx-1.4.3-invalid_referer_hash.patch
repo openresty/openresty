@@ -1,0 +1,12 @@
+--- nginx-1.4.3/src/http/modules/ngx_http_referer_module.c	2013-05-06 03:27:10.000000000 -0700
++++ nginx-1.4.3-patched/src/http/modules/ngx_http_referer_module.c	2013-05-21 16:04:49.340286168 -0700
+@@ -396,8 +396,7 @@ ngx_http_valid_referers(ngx_conf_t *cf,
+ 
+     ngx_str_set(&name, "invalid_referer");
+ 
+-    var = ngx_http_add_variable(cf, &name,
+-                                NGX_HTTP_VAR_CHANGEABLE|NGX_HTTP_VAR_NOHASH);
++    var = ngx_http_add_variable(cf, &name, NGX_HTTP_VAR_CHANGEABLE);
+     if (var == NULL) {
+         return NGX_CONF_ERROR;
+     }
