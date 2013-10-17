@@ -1,0 +1,11 @@
+--- a/src/core/ngx_slab.c       Tue Oct 08 16:07:14 2013 +0400
++++ b/src/core/ngx_slab.c       Mon Oct 14 10:01:59 2013 +0100
+@@ -657,7 +657,7 @@ ngx_slab_alloc_pages(ngx_slab_pool_t *po
+         }
+     }
+
+-    ngx_slab_error(pool, NGX_LOG_CRIT, "ngx_slab_alloc() failed: no memory");
++    ngx_slab_error(pool, NGX_LOG_INFO, "ngx_slab_alloc() failed: no memory");
+
+     return NULL;
+ }

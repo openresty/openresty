@@ -1,0 +1,13 @@
+--- a/src/http/modules/ngx_http_referer_module.c        Tue Oct 08 16:07:14 2013 +0400
++++ b/src/http/modules/ngx_http_referer_module.c        Mon Oct 14 10:04:13 2013 +0100
+@@ -396,8 +396,7 @@ ngx_http_valid_referers(ngx_conf_t *cf,
+
+     ngx_str_set(&name, "invalid_referer");
+
+-    var = ngx_http_add_variable(cf, &name,
+-                                NGX_HTTP_VAR_CHANGEABLE|NGX_HTTP_VAR_NOHASH);
++    var = ngx_http_add_variable(cf, &name,NGX_HTTP_VAR_CHANGEABLE);
+     if (var == NULL) {
+         return NGX_CONF_ERROR;
+     }
+
