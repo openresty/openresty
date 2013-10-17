@@ -21,8 +21,8 @@ The homepage for this project is http://openresty.org.
 For Users
 ---------
 
-    Visit http://openresty.org/#Download to download the latest bundle tarball, and
-    follow the installation instructions in the page http://openresty.org/#Installation.
+Visit http://openresty.org/#Download to download the latest bundle tarball, and
+follow the installation instructions in the page http://openresty.org/#Installation.
 
 For Bundle Maintainers
 ----------------------
@@ -42,11 +42,11 @@ Mailing List
 
 You're very welcome to join the English OpenResty mailing list hosted on Google Groups:
 
-        https://groups.google.com/group/openresty-en
+    https://groups.google.com/group/openresty-en
 
-    The Chinese mailing list is here:
+The Chinese mailing list is here:
 
-        https://groups.google.com/group/openresty
+    https://groups.google.com/group/openresty
 
 Report Bugs
 ===========
