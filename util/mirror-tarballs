@@ -194,105 +194,105 @@ rm -rf no-pool-nginx-$ver
 #################################
 
 ver=0.48
-$root/util/get-tarball "http://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/agentzh/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-echo-nginx-module-* echo-nginx-module-$ver || exit 1
 
 #################################
 
 ver=0.03rc9
-$root/util/get-tarball "http://github.com/agentzh/xss-nginx-module/tarball/v$ver" -O xss-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/agentzh/xss-nginx-module/tarball/v$ver" -O xss-nginx-module-$ver.tar.gz || exit 1
 tar -xzf xss-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-xss-nginx-module-* xss-nginx-module-$ver || exit 1
 
 #################################
 
 ver=0.2.19
-$root/util/get-tarball "http://github.com/simpl/ngx_devel_kit/tarball/v$ver" -O ngx_devel_kit-$ver.tar.gz
+$root/util/get-tarball "https://github.com/simpl/ngx_devel_kit/tarball/v$ver" -O ngx_devel_kit-$ver.tar.gz
 tar -xzf ngx_devel_kit-$ver.tar.gz || exit 1
 mv simpl-ngx_devel_kit-* ngx_devel_kit-$ver || exit 1
 
 #################################
 
 ver=0.22
-$root/util/get-tarball "http://github.com/agentzh/set-misc-nginx-module/tarball/v$ver" -O set-misc-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/agentzh/set-misc-nginx-module/tarball/v$ver" -O set-misc-nginx-module-$ver.tar.gz || exit 1
 tar -xzf set-misc-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-set-misc-nginx-module-* set-misc-nginx-module-$ver || exit 1
 
 #################################
 
 ver=0.12rc10
-$root/util/get-tarball "http://github.com/agentzh/rds-json-nginx-module/tarball/v$ver" -O rds-json-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/agentzh/rds-json-nginx-module/tarball/v$ver" -O rds-json-nginx-module-$ver.tar.gz || exit 1
 tar -xzf rds-json-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-json-nginx-module-* rds-json-nginx-module-$ver || exit 1
 
 #################################
 
 ver=0.05rc2
-$root/util/get-tarball "http://github.com/agentzh/rds-csv-nginx-module/tarball/v$ver" -O rds-csv-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/agentzh/rds-csv-nginx-module/tarball/v$ver" -O rds-csv-nginx-module-$ver.tar.gz || exit 1
 tar -xzf rds-csv-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
 
 #################################
 
 ver=0.22
-$root/util/get-tarball "http://github.com/agentzh/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/agentzh/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
 tar -xzf headers-more-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
 
 #################################
 
 ver=0.1.6
-$root/util/get-tarball "http://github.com/chaoslawful/drizzle-nginx-module/tarball/v$ver" -O drizzle-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/chaoslawful/drizzle-nginx-module/tarball/v$ver" -O drizzle-nginx-module-$ver.tar.gz || exit 1
 tar -xzf drizzle-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
 ver=0.9.0
-$root/util/get-tarball "http://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
 
 #################################
 
 ver=0.03rc1
-$root/util/get-tarball "http://github.com/agentzh/array-var-nginx-module/tarball/v$ver" -O array-var-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/agentzh/array-var-nginx-module/tarball/v$ver" -O array-var-nginx-module-$ver.tar.gz || exit 1
 tar -xzf array-var-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-array-var-nginx-module-* array-var-nginx-module-$ver || exit 1
 
 #################################
 
 ver=0.13
-$root/util/get-tarball "http://github.com/agentzh/memc-nginx-module/tarball/v$ver" -O memc-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/agentzh/memc-nginx-module/tarball/v$ver" -O memc-nginx-module-$ver.tar.gz || exit 1
 tar -xzf memc-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-memc-nginx-module-* memc-nginx-module-$ver || exit 1
 
 #################################
 
 ver=0.22
-$root/util/get-tarball "http://github.com/agentzh/srcache-nginx-module/tarball/v$ver" -O srcache-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/agentzh/srcache-nginx-module/tarball/v$ver" -O srcache-nginx-module-$ver.tar.gz || exit 1
 tar -xzf srcache-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-srcache-nginx-module-* srcache-nginx-module-$ver || exit 1
 
 #################################
 
 ver=0.07
-$root/util/get-tarball "http://github.com/calio/form-input-nginx-module/tarball/v$ver" -O form-input-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/calio/form-input-nginx-module/tarball/v$ver" -O form-input-nginx-module-$ver.tar.gz || exit 1
 tar -xzf form-input-nginx-module-$ver.tar.gz || exit 1
 mv calio-form-input-nginx-module-* form-input-nginx-module-$ver || exit 1
 
 #################################
 
 ver=0.10
-$root/util/get-tarball "http://github.com/calio/iconv-nginx-module/tarball/v$ver" -O iconv-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/calio/iconv-nginx-module/tarball/v$ver" -O iconv-nginx-module-$ver.tar.gz || exit 1
 tar -xzf iconv-nginx-module-$ver.tar.gz || exit 1
 mv calio-iconv-nginx-module-* iconv-nginx-module-$ver || exit 1
 
 #################################
 
 ver=0.03
-$root/util/get-tarball "http://github.com/agentzh/encrypted-session-nginx-module/tarball/v$ver" -O encrypted-session-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/agentzh/encrypted-session-nginx-module/tarball/v$ver" -O encrypted-session-nginx-module-$ver.tar.gz || exit 1
 tar -xzf encrypted-session-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-encrypted-session-nginx-module-* encrypted-session-nginx-module-$ver || exit 1
 
@@ -340,7 +340,7 @@ mv FRiCKLE-ngx_coolkit-* ngx_coolkit-$ver || exit 1
 #################################
 
 ver=0.10
-$root/util/get-tarball "http://github.com/agentzh/redis2-nginx-module/tarball/v$ver" -O redis2-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://github.com/agentzh/redis2-nginx-module/tarball/v$ver" -O redis2-nginx-module-$ver.tar.gz || exit 1
 tar -xzf redis2-nginx-module-$ver.tar.gz || exit 1
 mv agentzh-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
 
@@ -402,70 +402,70 @@ cd ..
 #################################
 
 ver=0.10
-$root/util/get-tarball "http://github.com/agentzh/lua-redis-parser/tarball/v$ver" -O "lua-redis-parser-$ver.tar.gz" || exit 1
+$root/util/get-tarball "https://github.com/agentzh/lua-redis-parser/tarball/v$ver" -O "lua-redis-parser-$ver.tar.gz" || exit 1
 tar -xzf lua-redis-parser-$ver.tar.gz || exit 1
 mv agentzh-lua-redis-parser-* lua-redis-parser-$ver || exit 1
 
 #################################
 
 ver=0.05
-$root/util/get-tarball "http://github.com/agentzh/lua-rds-parser/tarball/v$ver" -O "lua-rds-parser-$ver.tar.gz" || exit 1
+$root/util/get-tarball "https://github.com/agentzh/lua-rds-parser/tarball/v$ver" -O "lua-rds-parser-$ver.tar.gz" || exit 1
 tar -xzf lua-rds-parser-$ver.tar.gz || exit 1
 mv agentzh-lua-rds-parser-* lua-rds-parser-$ver || exit 1
 
 #################################
 
 ver=0.10
-$root/util/get-tarball "http://github.com/agentzh/lua-resty-dns/tarball/v$ver" -O "lua-resty-dns-$ver.tar.gz" || exit 1
+$root/util/get-tarball "https://github.com/agentzh/lua-resty-dns/tarball/v$ver" -O "lua-resty-dns-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-dns-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-dns-* lua-resty-dns-$ver || exit 1
 
 #################################
 
 ver=0.12
-$root/util/get-tarball "http://github.com/agentzh/lua-resty-memcached/tarball/v$ver" -O "lua-resty-memcached-$ver.tar.gz" || exit 1
+$root/util/get-tarball "https://github.com/agentzh/lua-resty-memcached/tarball/v$ver" -O "lua-resty-memcached-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-memcached-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-memcached-* lua-resty-memcached-$ver || exit 1
 
 #################################
 
 ver=0.16
-$root/util/get-tarball "http://github.com/agentzh/lua-resty-redis/tarball/v$ver" -O "lua-resty-redis-$ver.tar.gz" || exit 1
+$root/util/get-tarball "https://github.com/agentzh/lua-resty-redis/tarball/v$ver" -O "lua-resty-redis-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-redis-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-redis-* lua-resty-redis-$ver || exit 1
 
 #################################
 
 ver=0.13
-$root/util/get-tarball "http://github.com/agentzh/lua-resty-mysql/tarball/v$ver" -O "lua-resty-mysql-$ver.tar.gz" || exit 1
+$root/util/get-tarball "https://github.com/agentzh/lua-resty-mysql/tarball/v$ver" -O "lua-resty-mysql-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-mysql-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-mysql-* lua-resty-mysql-$ver || exit 1
 
 #################################
 
 ver=0.08
-$root/util/get-tarball "http://github.com/agentzh/lua-resty-upload/tarball/v$ver" -O "lua-resty-upload-$ver.tar.gz" || exit 1
+$root/util/get-tarball "https://github.com/agentzh/lua-resty-upload/tarball/v$ver" -O "lua-resty-upload-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-upload-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-upload-* lua-resty-upload-$ver || exit 1
 
 #################################
 
 ver=0.08
-$root/util/get-tarball "http://github.com/agentzh/lua-resty-string/tarball/v$ver" -O "lua-resty-string-$ver.tar.gz" || exit 1
+$root/util/get-tarball "https://github.com/agentzh/lua-resty-string/tarball/v$ver" -O "lua-resty-string-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-string-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-string-* lua-resty-string-$ver || exit 1
 
 #################################
 
 ver=0.01
-$root/util/get-tarball "http://github.com/agentzh/lua-resty-websocket/tarball/v$ver" -O "lua-resty-websocket-$ver.tar.gz" || exit 1
+$root/util/get-tarball "https://github.com/agentzh/lua-resty-websocket/tarball/v$ver" -O "lua-resty-websocket-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-websocket-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-websocket-* lua-resty-websocket-$ver || exit 1
 
 #################################
 
 ver=0.01
-$root/util/get-tarball "http://github.com/agentzh/lua-resty-lock/tarball/v$ver" -O "lua-resty-lock-$ver.tar.gz" || exit 1
+$root/util/get-tarball "https://github.com/agentzh/lua-resty-lock/tarball/v$ver" -O "lua-resty-lock-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-lock-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-lock-* lua-resty-lock-$ver || exit 1
 
