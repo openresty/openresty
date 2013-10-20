@@ -1,0 +1,42 @@
+
+# HG changeset patch
+# User Maxim Dounin <mdounin@mdounin.ru>
+# Date 1374749732 -14400
+# Node ID 84155a389bcc249138e18546134cfbff1931013b
+# Parent  355779f81491a78f3fe79e4a1eb5036c3882b441
+Gzip: clearing of c->buffered if all data are flushed.
+
+This allows to finalize unfinished responses while still sending as
+much data as available.
+
+diff -r 355779f81491 -r 84155a389bcc src/http/modules/ngx_http_gzip_filter_module.c
+--- a/src/http/modules/ngx_http_gzip_filter_module.c	Thu Jul 25 14:55:09 2013 +0400
++++ b/src/http/modules/ngx_http_gzip_filter_module.c	Thu Jul 25 14:55:32 2013 +0400
+@@ -368,6 +368,8 @@
+         if (ngx_chain_add_copy(r->pool, &ctx->in, in) != NGX_OK) {
+             goto failed;
+         }
++
++        r->connection->buffered |= NGX_HTTP_GZIP_BUFFERED;
+     }
+ 
+     if (ctx->nomem) {
+@@ -620,8 +622,6 @@
+         return NGX_ERROR;
+     }
+ 
+-    r->connection->buffered |= NGX_HTTP_GZIP_BUFFERED;
+-
+     ctx->last_out = &ctx->out;
+     ctx->crc32 = crc32(0L, Z_NULL, 0);
+     ctx->flush = Z_NO_FLUSH;
+@@ -854,6 +854,8 @@
+         *ctx->last_out = cl;
+         ctx->last_out = &cl->next;
+ 
++        r->connection->buffered &= ~NGX_HTTP_GZIP_BUFFERED;
++
+         return NGX_OK;
+     }
+ 
+
