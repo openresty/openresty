@@ -187,6 +187,10 @@ if [ "$answer" = "N" ]; then
     echo
 fi
 
+echo "$info_txt applying the gzip_flush_bug patch for lua $ver"
+patch -p1 < $root/patches/nginx-$ver-gzip_flush_bug.patch || exit 1
+echo
+
 rm -f *.patch || exit 1
 
 cd .. || exit 1

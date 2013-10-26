@@ -1,0 +1,19 @@
+--- nginx-1.4.3/src/http/modules/ngx_http_gzip_filter_module.c	2013-10-08 05:07:14.000000000 -0700
++++ nginx-1.4.3-patched/src/http/modules/ngx_http_gzip_filter_module.c	2013-10-25 17:00:00.712697908 -0700
+@@ -433,7 +433,15 @@ ngx_http_gzip_body_filter(ngx_http_reque
+         if (ctx->out == NULL) {
+             ngx_http_gzip_filter_free_copy_buf(r, ctx);
+ 
+-            return ctx->busy ? NGX_AGAIN : NGX_OK;
++            if (ctx->busy) {
++                if (in == NULL) {
++                    return ngx_http_next_body_filter(r, NULL);
++                }
++
++                return NGX_AGAIN;
++            }
++
++            return NGX_OK;
+         }
+ 
+         if (!ctx->gzheader) {
