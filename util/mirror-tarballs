@@ -195,6 +195,10 @@ echo "$info_txt applying the cache_lock_hang_in_subreq patch for nginx $ver"
 patch -p1 < $root/patches/nginx-$ver-cache_lock_hang_in_subreq.patch || exit 1
 echo
 
+echo "$info_txt applying the proxy_host_port_vars patch for nginx $ver"
+patch -p1 < $root/patches/nginx-$ver-proxy_host_port_vars.patch || exit 1
+echo
+
 rm -f *.patch || exit 1
 
 cd .. || exit 1
