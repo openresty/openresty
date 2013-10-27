@@ -1,6 +1,6 @@
 --- nginx-1.4.3/src/http/modules/ngx_http_gzip_filter_module.c	2013-10-08 05:07:14.000000000 -0700
-+++ nginx-1.4.3-patched/src/http/modules/ngx_http_gzip_filter_module.c	2013-10-26 17:14:22.132109569 -0700
-@@ -370,11 +370,12 @@ ngx_http_gzip_body_filter(ngx_http_reque
++++ nginx-1.4.3-patched/src/http/modules/ngx_http_gzip_filter_module.c	2013-10-27 14:53:49.723406912 -0700
+@@ -370,7 +370,7 @@ ngx_http_gzip_body_filter(ngx_http_reque
          }
      }
  
@@ -9,20 +9,3 @@
  
          /* flush busy buffers */
  
--        if (ngx_http_next_body_filter(r, NULL) == NGX_ERROR) {
-+        rc = ngx_http_next_body_filter(r, NULL);
-+        if (rc == NGX_ERROR) {
-             goto failed;
-         }
- 
-@@ -383,6 +384,10 @@ ngx_http_gzip_body_filter(ngx_http_reque
-         ngx_chain_update_chains(r->pool, &ctx->free, &ctx->busy, &cl,
-                                 (ngx_buf_tag_t) &ngx_http_gzip_filter_module);
-         ctx->nomem = 0;
-+
-+        if (in == NULL) {
-+            return rc;
-+        }
-     }
- 
-     for ( ;; ) {
