@@ -173,9 +173,9 @@ if [ "$answer" = "Y" ]; then
     echo
 fi
 
-answer=`$root/util/ver-ge "$main_ver" 1.4.1`
+answer=`$root/util/ver-ge "$main_ver" 1.4.2`
 if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying patches/nginx-$main_ver-gcc-maybe-uninitialized-warning.patch for nginx"
+    echo "$info_txt applying patches/nginx-$main_ver-able-to-return-407-status.patch for nginx"
     patch -p1 < $root/patches/nginx-$main_ver-able-to-return-407-status.patch
     echo
 fi
