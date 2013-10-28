@@ -1,0 +1,11 @@
+--- nginx-1.4.3/src/http/ngx_http_header_filter_module.c	2013-10-24 18:24:40.000000000 +0200
++++ nginx-1.4.3-patched/src/http/ngx_http_header_filter_module.c.orig	2013-10-24 18:24:02.000000000 +0200
+@@ -85,7 +85,7 @@
+     ngx_string("404 Not Found"),
+     ngx_string("405 Not Allowed"),
+     ngx_string("406 Not Acceptable"),
+-    ngx_null_string,  /* "407 Proxy Authentication Required" */
++    ngx_string("407 Proxy Authentication Required"),
+     ngx_string("408 Request Time-out"),
+     ngx_string("409 Conflict"),
+     ngx_string("410 Gone"),

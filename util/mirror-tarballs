@@ -173,6 +173,13 @@ if [ "$answer" = "Y" ]; then
     echo
 fi
 
+answer=`$root/util/ver-ge "$main_ver" 1.4.1`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying patches/nginx-$main_ver-gcc-maybe-uninitialized-warning.patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-able-to-return-407-status.patch
+    echo
+fi
+
 answer=`$root/util/ver-ge "$main_ver" 1.5.3`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the unix_socket_accept_over_read patch for nginx $ver"
@@ -502,4 +509,3 @@ cd $root
 
 tar cf $name.tar $name
 gzip -f --best $name.tar
-
