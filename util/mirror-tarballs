@@ -476,7 +476,7 @@ mv agentzh-lua-resty-string-* lua-resty-string-$ver || exit 1
 
 #################################
 
-ver=0.01
+ver=0.02
 $root/util/get-tarball "https://github.com/agentzh/lua-resty-websocket/tarball/v$ver" -O "lua-resty-websocket-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-websocket-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-websocket-* lua-resty-websocket-$ver || exit 1
