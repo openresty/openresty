@@ -1,7 +1,28 @@
---- nginx-1.4.3/src/http/modules/ngx_http_gzip_filter_module.c	2013-10-08 05:07:14.000000000 -0700
-+++ nginx-1.4.3-patched/src/http/modules/ngx_http_gzip_filter_module.c	2013-10-27 14:53:49.723406912 -0700
-@@ -370,7 +370,7 @@ ngx_http_gzip_body_filter(ngx_http_reque
+# HG changeset patch
+# User Yichun Zhang <agentzh@gmail.com>
+# Date 1382997696 25200
+# Branch gzip-flush
+# Node ID 8985d6cc9a4334e954909c130e6204c6fc673d7e
+# Parent  e6a1623f87bc96d5ec62b6d77356aa47dbc60756
+Flush pending data when incoming chain is NULL in gzip and gunzip modules
+
+diff -r e6a1623f87bc -r 8985d6cc9a43 src/http/modules/ngx_http_gunzip_filter_module.c
+--- a/src/http/modules/ngx_http_gunzip_filter_module.c	Mon Oct 21 18:20:32 2013 +0800
++++ b/src/http/modules/ngx_http_gunzip_filter_module.c	Mon Oct 28 15:01:36 2013 -0700
+@@ -199,7 +199,7 @@
          }
+     }
+ 
+-    if (ctx->nomem) {
++    if (ctx->nomem || in == NULL) {
+ 
+         /* flush busy buffers */
+ 
+diff -r e6a1623f87bc -r 8985d6cc9a43 src/http/modules/ngx_http_gzip_filter_module.c
+--- a/src/http/modules/ngx_http_gzip_filter_module.c	Mon Oct 21 18:20:32 2013 +0800
++++ b/src/http/modules/ngx_http_gzip_filter_module.c	Mon Oct 28 15:01:36 2013 -0700
+@@ -372,7 +372,7 @@
+         r->connection->buffered |= NGX_HTTP_GZIP_BUFFERED;
      }
  
 -    if (ctx->nomem) {
