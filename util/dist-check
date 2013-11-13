@@ -39,6 +39,10 @@ if ($opts{l}) {
     $cfg_opts .= " --with-luajit";
 }
 
+if ($^O eq 'solaris') {
+    $cfg_opts .= " --with-cc=gcc";
+}
+
 my $prefix;
 
 warn "=== No Pool Build ===\n";
