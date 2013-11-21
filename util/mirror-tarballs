@@ -203,6 +203,13 @@ echo "$info_txt applying the cache_manager_exit patch for nginx $ver"
 patch -p1 < $root/patches/nginx-$ver-cache_manager_exit.patch || exit 1
 echo
 
+answer=`$root/util/ver-ge "$main_ver" 1.4.4`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying the CVE-2013-4547 patch for nginx $ver"
+    patch -p0 < $root/patches/patch.2013.space.txt || exit 1
+    echo
+fi
+
 rm -f *.patch || exit 1
 
 cd .. || exit 1
