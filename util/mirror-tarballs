@@ -343,7 +343,7 @@ mv ngx_http_auth_request_module-* auth-request-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.3.6
+ver=0.3.7
 $root/util/get-tarball "http://people.freebsd.org/~osa/ngx_http_redis-$ver.tar.gz" -O redis-nginx-module-$ver.tar.gz || exit 1
 tar -xzf redis-nginx-module-$ver.tar.gz || exit 1
 mv ngx_http_redis-* redis-nginx-module-$ver || exit 1
