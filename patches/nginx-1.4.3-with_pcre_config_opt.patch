@@ -1,0 +1,33 @@
+diff -uNr nginx-1.4.3/auto/lib/pcre/conf nginx-1.4.3-patched/auto/lib/pcre/conf
+--- nginx-1.4.3/auto/lib/pcre/conf	2013-10-08 20:07:14.000000000 +0800
++++ nginx-1.4.3-patched/auto/lib/pcre/conf	2013-12-06 15:42:20.519318184 +0800
+@@ -86,6 +86,10 @@
+         PCRE_CONF_OPT="$PCRE_CONF_OPT --enable-jit"
+     fi
+ 
++    if [ $PCRE_CONFIG_OPT ]; then
++        PCRE_CONF_OPT="$PCRE_CONF_OPT $PCRE_CONFIG_OPT"
++    fi
++
+ else
+ 
+     if [ "$NGX_PLATFORM" != win32 ]; then
+diff -uNr nginx-1.4.3/auto/options nginx-1.4.3-patched/auto/options
+--- nginx-1.4.3/auto/options	2013-11-21 13:00:24.000000000 +0800
++++ nginx-1.4.3-patched/auto/options	2013-12-06 15:44:54.772326422 +0800
+@@ -296,6 +296,7 @@
+         --with-pcre=*)                   PCRE="$value"              ;;
+         --with-pcre-opt=*)               PCRE_OPT="$value"          ;;
+         --with-pcre-jit)                 PCRE_JIT=YES               ;;
++        --with-pcre-config-opt=*)        PCRE_CONFIG_OPT="$value"   ;;
+ 
+         --with-openssl=*)                OPENSSL="$value"           ;;
+         --with-openssl-opt=*)            OPENSSL_OPT="$value"       ;;
+@@ -452,6 +453,7 @@
+   --with-pcre=DIR                    set path to PCRE library sources
+   --with-pcre-opt=OPTIONS            set additional build options for PCRE
+   --with-pcre-jit                    build PCRE with JIT compilation support
++  --with-pcre-config-opt=OPTIONS     set additional config options for PCRE
+ 
+   --with-md5=DIR                     set path to md5 library sources
+   --with-md5-opt=OPTIONS             set additional build options for md5
