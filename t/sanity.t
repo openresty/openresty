@@ -176,7 +176,8 @@ Options directly inherited from nginx
   --without-pcre                     disable PCRE library usage
   --with-pcre                        force PCRE library usage
   --with-pcre=DIR                    set path to PCRE library sources
-  --with-pcre-opt=OPTIONS            set additional options for PCRE building
+  --with-pcre-opt=OPTIONS            set additional make options for PCRE
+  --with-pcre-conf-opt=OPTIONS       set additional configure options for PCRE
   --with-pcre-jit                    build PCRE with JIT compilation support
 
   --with-md5=DIR                     set path to md5 library sources
@@ -900,7 +901,8 @@ Options directly inherited from nginx
   --without-pcre                     disable PCRE library usage
   --with-pcre                        force PCRE library usage
   --with-pcre=DIR                    set path to PCRE library sources
-  --with-pcre-opt=OPTIONS            set additional options for PCRE building
+  --with-pcre-opt=OPTIONS            set additional make options for PCRE
+  --with-pcre-conf-opt=OPTIONS       set additional configure options for PCRE
   --with-pcre-jit                    build PCRE with JIT compilation support
 
   --with-md5=DIR                     set path to md5 library sources
