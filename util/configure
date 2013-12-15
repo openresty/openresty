@@ -507,7 +507,7 @@ _END_
     if ($opts->{luajit_path}) {
         my $luajit_prefix = $opts->{luajit_path};
         env LUAJIT_LIB => "$luajit_prefix/lib";
-        env LUAJIT_INC => "$luajit_prefix/include/luajit-2.0";
+        env LUAJIT_INC => "$luajit_prefix/include/luajit-2.1";
 
         push @ngx_rpaths, "$luajit_prefix/lib";
 
@@ -567,7 +567,7 @@ _END_
             . "\$(MAKE) install$extra_opts PREFIX=$luajit_prefix DESTDIR=\$(DESTDIR)";
 
         env LUAJIT_LIB => "$luajit_root$luajit_prefix/lib";
-        env LUAJIT_INC => "$luajit_root$luajit_prefix/include/luajit-2.0";
+        env LUAJIT_INC => "$luajit_root$luajit_prefix/include/luajit-2.1";
 
         push @ngx_rpaths, "$luajit_prefix/lib";
 
@@ -847,7 +847,7 @@ sub usage ($) {
   --with-no-pool-patch               enable the no-pool patch for debugging memory issues.
 
   -jN                                pass -jN option to make while building the bundled
-                                     Lua 5.1 interpreter or LuaJIT 2.0.
+                                     Lua 5.1 interpreter or LuaJIT 2.1.
 
 _EOC_
 
@@ -918,9 +918,9 @@ _EOC_
 
   --without-lua51                    disable the bundled Lua 5.1 interpreter
   --with-lua51=PATH                  specify the external installation of Lua 5.1 by PATH
-  --with-luajit                      enable and build LuaJIT 2.0
-  --with-luajit=PATH                 use the external LuaJIT 2.0 installation specified by PATH
-  --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.0
+  --with-luajit                      enable and build LuaJIT 2.1
+  --with-luajit=PATH                 use the external LuaJIT 2.1 installation specified by PATH
+  --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.1
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
   --with-libpq=DIR                   specify the libpq (or postgresql) installation prefix
   --with-pg_config=PATH              specify the path of the pg_config utility
