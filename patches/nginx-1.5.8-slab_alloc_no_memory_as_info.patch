@@ -1,0 +1,11 @@
+--- nginx-1.5.8/src/core/ngx_slab.c	2012-09-24 11:34:04.000000000 -0700
++++ nginx-1.5.8-patched/src/core/ngx_slab.c	2012-12-05 20:47:07.296694952 -0800
+@@ -657,7 +657,7 @@ ngx_slab_alloc_pages(ngx_slab_pool_t *po
+         }
+     }
+ 
+-    ngx_slab_error(pool, NGX_LOG_CRIT, "ngx_slab_alloc() failed: no memory");
++    ngx_slab_error(pool, NGX_LOG_INFO, "ngx_slab_alloc() failed: no memory");
+ 
+     return NULL;
+ }
