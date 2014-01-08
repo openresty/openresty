@@ -1,0 +1,21 @@
+# HG changeset patch
+# User Yichun Zhang <agentzh@gmail.com>
+# Date 1389209699 28800
+# Node ID 3d10680c0399cb8d2e3b601412df0495ffaab4a5
+# Parent  c0d6eae5a1c5d16cf6a9d6a3a73656972f838eab
+Resolver: added support for domain names with a trailing dot.
+
+diff -r c0d6eae5a1c5 -r 3d10680c0399 src/core/ngx_resolver.c
+--- a/src/core/ngx_resolver.c	Fri Dec 13 20:49:52 2013 +0400
++++ b/src/core/ngx_resolver.c	Wed Jan 08 11:34:59 2014 -0800
+@@ -467,6 +467,10 @@
+     ngx_resolver_ctx_t   *next;
+     ngx_resolver_node_t  *rn;
+ 
++    if (ctx->name.len > 0 && ctx->name.data[ctx->name.len - 1] == '.') {
++        ctx->name.len--;
++    }
++
+     ngx_strlow(ctx->name.data, ctx->name.data, ctx->name.len);
+ 
+     hash = ngx_crc32_short(ctx->name.data, ctx->name.len);

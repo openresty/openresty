@@ -221,6 +221,10 @@ echo "$info_txt applying the pcre_conf_opt patch for nginx $ver"
 patch -p1 < $root/patches/nginx-$ver-pcre_conf_opt.patch || exit 1
 echo
 
+echo "$info_txt applying the resolve-names-with-a-trailing-dot patch for nginx $ver"
+patch -p1 < $root/patches/nginx-$ver-resolve-names-with-a-trailing-dot.patch || exit 1
+echo
+
 rm -f *.patch || exit 1
 
 cd .. || exit 1
