@@ -920,9 +920,10 @@ _EOC_
   --without-lua_resty_lock           disable the lua-resty-lock library
   --without-lua_resty_core           disable the lua-resty-core library
 
-  --without-lua51                    disable the bundled Lua 5.1 interpreter
+  --with-lua51                       enable and build the bundled standard Lua 5.1 interpreter
+  --without-lua51                    disable the bundled standard Lua 5.1 interpreter
   --with-lua51=PATH                  specify the external installation of Lua 5.1 by PATH
-  --with-luajit                      enable and build LuaJIT 2.1
+  --with-luajit                      enable and build the bundled LuaJIT 2.1 (the default)
   --with-luajit=PATH                 use the external LuaJIT 2.1 installation specified by PATH
   --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.1
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
