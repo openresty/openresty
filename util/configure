@@ -150,7 +150,10 @@ for my $opt (@ARGV) {
         $prefix = $1;
 
     } elsif ($opt eq '--without-lua51') {
-        $resty_opts{no_lua} = 1;
+        undef $resty_opts{lua};
+
+    } elsif ($opt eq '--with-lua51') {
+        $resty_opts{lua} = 1;
 
     } elsif ($opt =~ /^--with-lua51=(.*)/) {
         $resty_opts{lua_path} = $1;
@@ -394,11 +397,12 @@ _END_
         }
     }
 
-    if (! $opts->{luajit} && ! $opts->{luajit_path}
-        && ! $opts->{no_http_lua} && ! $opts->{no_lua}
-        && ! $opts->{lua_path})
+    if (!$opts->{lua}
+        && !$opts->{lua_path}
+        && !$opts->{no_http_lua}
+        && !$opts->{luajit_path})
     {
-        $opts->{lua} = 1;
+        $opts->{luajit} = 1;
     }
 
     if ($opts->{luajit} && $opts->{luajit_path}) {

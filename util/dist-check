@@ -33,10 +33,11 @@ my $cfg_opts = "--with-http_iconv_module";
 
 if ($opts{l}) {
     $lua = 'Lua';
+    $cfg_opts .= " --with-lua51";
 
 } else {
     $lua = 'LuaJIT';
-    $cfg_opts .= " --with-luajit";
+    #$cfg_opts .= " --with-luajit";
 }
 
 if ($^O eq 'solaris') {
