@@ -40,7 +40,7 @@ echo "$info_txt applying the server_header patch for nginx"
 cp $root/patches/nginx-$main_ver-server_header.patch server_header.patch || exit 1
 sed $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" server_header.patch \
     > server_header.patch.tmp && mv -f server_header.patch.tmp server_header.patch || exit 1
-patch -p2 < server_header.patch || exit 1
+patch -p1 < server_header.patch || exit 1
 echo
 
 #patch -p1 < $root/patches/nginx-$main_ver-redirect_memcpy_overlap.patch || exit 1
@@ -221,9 +221,12 @@ echo "$info_txt applying the pcre_conf_opt patch for nginx $ver"
 patch -p1 < $root/patches/nginx-$ver-pcre_conf_opt.patch || exit 1
 echo
 
-echo "$info_txt applying the resolve-names-with-a-trailing-dot patch for nginx $ver"
-patch -p1 < $root/patches/nginx-$ver-resolve-names-with-a-trailing-dot.patch || exit 1
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.5.9`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying the resolve-names-with-a-trailing-dot patch for nginx $ver"
+    patch -p1 < $root/patches/nginx-$ver-resolve-names-with-a-trailing-dot.patch || exit 1
+    echo
+fi
 
 echo "$info_txt applying the setting_args_invalidates_uri patch for nginx $ver"
 patch -p1 < $root/patches/nginx-$ver-setting_args_invalidates_uri.patch || exit 1
