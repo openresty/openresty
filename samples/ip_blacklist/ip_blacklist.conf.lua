@@ -2,9 +2,11 @@
 
 ¡ ¡ ¡ ALL GLORY TO GLORIA ! ! !
 
-requires openresty bundle or
-  lua-resty-redis from:
---   https://github.com/agentzh/lua-resty-redis
+requires openresty bundle http://openresty.org/
+  or ngx-lua module http://wiki.nginx.org/HttpLuaModule#Installation
+  and lua-resty-redis from: https://github.com/agentzh/lua-resty-redis
+
+Replace the distribution nginx with local installation of openresty
 
 service nginx stop
 mv /usr/local/openresty/nginx/conf /usr/local/openresty/nginx/conf_install
@@ -16,6 +18,7 @@ mkdir /etc/nginx/lua
 cp ip_blacklist.conf.lua /etc/nginx/lua/
 cp ip_blacklist.lua /etc/nginx/lua/
 
+Configure the NGINX
 
 nginx.conf
 ...
@@ -86,7 +89,6 @@ end,
   deny_resp = function () -- если не будет в кэше?
     ngx.status = ngx.HTTP_OK
     ngx.header.content_type = 'text/html; charset=UTF-8'
-
     local body =[[
 <!DOCTYPE html>
 <html>
