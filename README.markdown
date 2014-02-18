@@ -68,7 +68,7 @@ Report Bugs
 
 You're very welcome to report issues on GitHub:
 
-    https://github.com/agentzh/ngx_openresty/issues
+https://github.com/agentzh/ngx_openresty/issues
 
 [Back to TOC](#table-of-contents)
 
