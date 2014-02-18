@@ -40,7 +40,7 @@ For Bundle Maintainers
 
 The bundle's source is at the following git repository:
 
-    https://github.com/agentzh/ngx_openresty
+https://github.com/agentzh/ngx_openresty
 
 To reproduce the bundle tarball, just do
 
@@ -55,11 +55,11 @@ Mailing List
 
 You're very welcome to join the English OpenResty mailing list hosted on Google Groups:
 
-    https://groups.google.com/group/openresty-en
+https://groups.google.com/group/openresty-en
 
 The Chinese mailing list is here:
 
-    https://groups.google.com/group/openresty
+https://groups.google.com/group/openresty
 
 [Back to TOC](#table-of-contents)
 
