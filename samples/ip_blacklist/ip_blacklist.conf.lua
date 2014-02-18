@@ -8,7 +8,7 @@ requires openresty bundle http://openresty.org/
 
 Replace the distribution nginx with local installation of openresty
 
-service nginx stop
+# service nginx stop
 mv /usr/local/openresty/nginx/conf /usr/local/openresty/nginx/conf_install
 ln -s /etc/nginx /usr/local/openresty/nginx/conf
 mv /usr/sbin/nginx /usr/sbin/nginx-back
@@ -18,9 +18,11 @@ mkdir /etc/nginx/lua
 cp ip_blacklist.conf.lua /etc/nginx/lua/
 cp ip_blacklist.lua /etc/nginx/lua/
 
-Configure the NGINX
+Configure the NGINX - add two lines only:
+1) on http section init_by_lua_file
+2) on location section access_by_lua_file
 
-nginx.conf
+nginx.conf example
 ...
 http {
   ...
@@ -37,9 +39,6 @@ http {
     ...
   }
 }
-
---~ package.path = '/usr/local/openresty/lualib/?.lua;/usr/local/openresty/lualib/?/init.lua;' .. package.path -- .. ';'
---~ package.cpath = '/usr/local/openresty/lualib/?.so;' .. package.cpath --??
 --]]
 
 ip_blacklist = {-- global config
