@@ -83,40 +83,7 @@ Only call this method in the place you would have called the close method instea
       ngx.log(ngx.ERR, string.format("ip_blacklist: failed to set  set_keepalive: [%s]", err))
 --~       return
   end
-end,
--------------------------------------------------------------------------------------------------------------------
---[[
-  deny_resp = function () -- если не будет в кэше?
-    ngx.status = ngx.HTTP_OK
-    ngx.header.content_type = 'text/html; charset=UTF-8'
-    local body =[[
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset=utf-8>
-    <title>(Это title)</title>
-  </head>
-  <body>
-    <header>
-      <hgroup>
-         <h1>Заголовок "h1" из hgroup</h1>
-      </hgroup>
-    </header>
-    <nav>
-      <menu>
-        <li><a href="link1.html">Первая ссылка из блока "nav"</a></li>
-      </menu>
-    </nav>
-  </body>
-</html>
-]]
-    ngx.header.content_length = string.len(body)
-    ngx.say(body)
-    -- to cause quit the whole request rather than the current phase handler
-    ip_blacklist.redis_end(ip_blacklist.redis)
-    return ngx.exit(ngx.HTTP_OK)
 end
---]]
 -- end configuration
 }
 
