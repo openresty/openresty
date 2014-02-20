@@ -4,7 +4,7 @@ Used the Redis storage only.
 Monitoring blacklist on redis-cli: lrange ip_blacklist 0 -1
 
 Requires
-========
+=======
 
 Requires openresty bundle http://openresty.org/ (tested on openresty/1.5.8.1)
   or ngx-lua module http://wiki.nginx.org/HttpLuaModule#Installation
@@ -12,19 +12,20 @@ Requires openresty bundle http://openresty.org/ (tested on openresty/1.5.8.1)
 
 
 Configure
-=========
+========
 
-Change settings on ip_blacklist_conf.lua (see options description in file):
+Change settings on ip_blacklist_conf.lua (see options desciption in file):
 
 Redis: socket (or host, port), timeout, pool keepalive
 Mode: <whatever for full mode>|count|forbidden|nocapture
-Time range: seconds
+Time range: seconds of timeline division
 Limit of requests on time range
-Time lock: seconds for lock (prolong also if continue)
-Debug:1|0|nil for INFO messages
+Time lock: seconds for lock when IPs exceeded limit (prolong also if continue)
+Debug: <bool> for log INFO messages into nginx.log
+Log lock: <bool> persistent log list when locking IPs
 
 Replace the system distribution nginx with local installation of openresty
-==========================================================================
+====================================================
 
 Install latest openresty on default location usr/local/openresty.
 
@@ -42,7 +43,7 @@ cp ip_blacklist_conf.lua /etc/nginx/lua/
 cp ip_blacklist.lua /etc/nginx/lua/
 
 Configure NGINX
-===============
+================
 
 Add one line to http section:
 lua_package_path "/etc/nginx/lua/?.lua;;";
