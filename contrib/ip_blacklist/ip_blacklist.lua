@@ -34,7 +34,7 @@ if redis_exists(redis, key_lock) then -- is IP locked?
       ngx.exit(ngx.OK)
     end
 
-    log_info(string.format("page for locked request from redis:hmget [%s]", key_doc))
+    log_info(string.format("locked request content from redis:[hmget '%s']", key_doc))
   --~     for key,value in pairs(hash) do print(key,value) end
     ngx.status = hash[1] --"status"
     ngx.header.content_type = hash[2] -- "content_type"
@@ -43,7 +43,7 @@ if redis_exists(redis, key_lock) then -- is IP locked?
     redis_end(redis)
     ngx.exit(hash[1]) --"status"
   else
-    log_info(string.format("not found page for locked request from redis:hmget [%s]", key_doc))
+    log_info(string.format("locked request content not found redis:[]hmget '%s']", key_doc))
     redis_end(redis)
     ngx.exit(ngx.HTTP_FORBIDDEN)
   end
@@ -62,10 +62,12 @@ else -- counter
   end
 
   log_info(string.format("locked request for key_count=[%s] count=[%s] ", key_count, count))
--- redis-cli lrange _M 0 -1
-  local _, err = redis:rpush(_M.prefix, key_count)
-  if err then log_err(string.format("[redis:rpush] failed for key=[%s] and value[%s]: %s", _M.prefix, key_count, err)) end
-  log_info(string.format("[redis:rpush] on lock-list=[%s] for key_count=[%s] ", _M.prefix, key_count))
+-- redis-cli lrange <_M.prefix> 0 -1
+  if _M.log_lock then
+    local _, err = redis:rpush(_M.prefix, key_count)
+    if err then log_err(string.format("[redis:rpush] failed for key=[%s] and value[%s]: %s", _M.prefix, key_count, err)) end
+    log_info(string.format("logging the lock for key_count=[%s] ", key_count))
+  end
 
   if _M.mode == 'count' then
     log_info(string.format("mode count exit for key_count=[%s] count=[%s] ", key_count, count))
@@ -87,13 +89,13 @@ end
 
 
 if redis_exists(redis, key_doc) then -- doc in Redis already 
-  log_info(string.format("content already exists in [redis:hgetall] key_doc=[%s]", key_doc))
+  log_info(string.format("content already exists in [redis:hgetall '%s']", key_doc))
   redis_end(redis)
   ngx.exit(ngx.OK)
 end
 
 --[[
-Store content for next locked requests
+Prepare store content for next locked requests
 The problem:
 location.capture and chunked content from Apache
 --]]
@@ -130,24 +132,7 @@ local _, err = redis:hmset(
 if err then
   log_err(string.format("[redis:hmset] failed for key=[%s]: %s", key_doc, err))
 else 
-  log_info(string.format("content [%s] stored in [redis:hmset] for next locked requests", key_doc))
+  log_info(string.format("content [%s%s] stored in redis:[hmset '%s'] for next locked requests", ngx.var.host, ngx.var.uri, key_doc))
 end
 redis_end(redis)
 ngx.exit(ngx.OK)
-
---[[
-!!! Отдача кэша в следующем заходе ! ! !
-
-ngx.status = cap.status -- ngx.HTTP_OK -- 
-ngx.header.content_type = cap.header['Content-Type'];
-ngx.header.content_length = string.len(body);
---~ cap.header -- holds all the response headers of the subrequest and it is a normal Lua table.
-ngx.say(body)
---~ _M.log("Deny: body", cap.body)
---~ return ngx.exit(ngx.HTTP_OK)
-redis_end(redis)
-ngx.exit(cap.status)
---]]
-
-
-
