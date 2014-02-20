@@ -14,7 +14,7 @@ Requires openresty bundle http://openresty.org/ (tested on openresty/1.5.8.1)
 Configure
 =========
 
-Change settings on ip_blacklist_conf.lua (see options desciption in file):
+Change settings on ip_blacklist_conf.lua (see options description in file):
 
 Redis: socket (or host, port), timeout, pool keepalive
 Mode: <whatever for full mode>|count|forbidden|nocapture
