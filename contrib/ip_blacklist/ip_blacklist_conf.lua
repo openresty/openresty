@@ -6,7 +6,6 @@
 --]]
 
 
-
 local _M = {
   version='0.13',
   redis_sock = 'unix:/tmp/redis.sock', -- redis.conf: unixsocketperm 777!!!
@@ -36,7 +35,8 @@ local _M = {
     'nocapture' - disable self save content, i.e. monitoring + content from the Redis only. If content not found in Redis then 403
     Note: chunked content when ngx.location.capture() bad?
 --]]
-  ["debug"]=1,-- false disable ngx.INFO log to nginx.log (errors always enabled as ngx.ERR level)
+  log_lock = true,
+  ["debug"]=true,-- false disable ngx.INFO log to nginx.log (errors always enabled as ngx.ERR level)
   redis = require "resty.redis"
 }
 --------------------------------- END CONFIG -----------------------------------------------------------------
@@ -57,7 +57,7 @@ _M.redis_connect = function ()
     _M.log_err(string.format("could not connect to redis host=[%s:%s] sock=[%s] : %s", _M.redis_host, _M.redis_port, _M.redis_sock, err))
     ngx.exit(ngx.OK)
   end
-  _M.log_info("success connect to redis")
+--~   _M.log_info("success connect to redis")
   return redis
 end
 ----------------------------------------------------------------------------------------------------------------------------
@@ -145,37 +145,3 @@ end
 ---------------------------------------------------------------------------------------------------------------------
 
 return _M
-
-
---~ package.path = '/usr/local/openresty/lualib/?.lua;/usr/local/openresty/lualib/?/init.lua;' .. package.path -- .. ';'
---~ package.cpath = '/usr/local/openresty/lualib/?.so;' .. package.cpath --??
---[[
-    ngx.status = ngx.HTTP_OK
-    ngx.header.content_type = 'text/html; charset=UTF-8'
-    local body =
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset=utf-8>
-    <title>(Это title)</title>
-  </head>
-  <body>
-    <header>
-      <hgroup>
-         <h1>Заголовок "h1" из hgroup</h1>
-      </hgroup>
-    </header>
-    <nav>
-      <menu>
-        <li><a href="link1.html">Первая ссылка из блока "nav"</a></li>
-      </menu>
-    </nav>
-  </body>
-</html>
-
-    ngx.header.content_length = string.len(body)
-    ngx.say(body)
-    return ngx.exit(ngx.HTTP_OK)
-end
---]]
-
