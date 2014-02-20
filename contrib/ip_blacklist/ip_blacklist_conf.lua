@@ -24,8 +24,8 @@ local _M = {
       3. Saved content: <prefix>:content:<host>:<uri>
       4. Log of locking: <prefix>
   --]]
-  time_range = 3, -- seconds of time line разбивает временную линию на отрезки секунд и использует для ключа
-  req_limit = 20, -- max amount of requests on time_range столько раз может обратиться IP в текущем временном отрезке
+  time_range = 3, -- seconds of timeline sewgments разбивает временную линию на отрезки секунд и использует для ключа
+  req_limit = 20, -- max count of requests on time_range столько раз может обратиться IP в текущем временном отрезке
   time_lock = 60, -- seconds for locking IP. If IP still make request then prolong lock time (expire Redis key) секунд держать в ловушке, если продолжает дергаться - пролонгировать expire этого ключа
   mode=nil,
 --[[
@@ -35,7 +35,7 @@ local _M = {
     'nocapture' - disable self save content, i.e. monitoring + content from the Redis only. If content not found in Redis then 403
     Note: chunked content when ngx.location.capture() bad?
 --]]
-  log_lock = true,
+  log_lock = true, -- (false not) push locked IPs in persistent list <prefix> when count of requests exceeded limit (see by redis-cli: lrange <prefix> 0 -1)
   ["debug"]=true,-- false disable ngx.INFO log to nginx.log (errors always enabled as ngx.ERR level)
   redis = require "resty.redis"
 }
