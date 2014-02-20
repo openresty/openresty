@@ -1,5 +1,3 @@
-¡ ¡ ¡ ALL GLORY TO GLORIA ! ! !
-===========================
 
 Ip_blacklist - counter and locker for IPs by limiting requests per time range.
 Locked IPs will get saved and may be fake content from Redis :) (or 403)
