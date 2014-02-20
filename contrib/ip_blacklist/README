@@ -1,0 +1,72 @@
+Ip_blacklist - counter and locker for IPs by limiting requests per time range.
+Locked IPs will get saved and may be fake content from Redis :) (or 403)
+Used the Redis storage only.
+Monitoring blacklist on redis-cli: lrange ip_blacklist 0 -1
+
+Requires
+========
+
+Requires openresty bundle http://openresty.org/ (tested on openresty/1.5.8.1)
+  or ngx-lua module http://wiki.nginx.org/HttpLuaModule#Installation
+  and lua-resty-redis from: https://github.com/agentzh/lua-resty-redis
+
+
+Configure
+=========
+
+Change settings on ip_blacklist_conf.lua (see options desciption in file):
+
+Redis: socket (or host, port), timeout, pool keepalive
+Mode: <whatever for full mode>|count|forbidden|nocapture
+Time range: seconds
+Limit of requests on time range
+Time lock: seconds for lock (prolong also if continue)
+Debug:1|0|nil for INFO messages
+
+Replace the system distribution nginx with local installation of openresty
+==========================================================================
+
+Install latest openresty on default location usr/local/openresty.
+
+# service nginx stop
+# or
+# /etc/init.d/nginx stop
+
+mv /usr/local/openresty/nginx/conf /usr/local/openresty/nginx/conf_install
+ln -s /etc/nginx /usr/local/openresty/nginx/conf
+mv /usr/sbin/nginx /usr/sbin/nginx-back
+ln -s /usr/local/openresty/nginx/sbin/nginx /usr/sbin/nginx
+
+mkdir /etc/nginx/lua
+cp ip_blacklist_conf.lua /etc/nginx/lua/
+cp ip_blacklist.lua /etc/nginx/lua/
+
+Configure NGINX
+===============
+
+Add one line to http section:
+lua_package_path "/etc/nginx/lua/?.lua;;";
+
+Add one line per need location section:
+access_by_lua_file '/etc/nginx/lua/ip_blacklist.lua';
+
+...
+http {
+  ...
+  # you do not need the following line if you are using the ngx_openresty bundle:
+  #lua_package_path "/path/to/lua-resty-redis/lib/?.lua;;";
+  lua_package_path "/etc/nginx/lua/?.lua;;";
+  ...
+  server {
+    ...
+    location <...> {
+      access_by_lua_file '/etc/nginx/lua/ip_blacklist.lua';
+      proxy_pass | uwsgi_pass | ...
+      ...
+    }
+  ...
+  }
+}
+
+# service nginx start
+# /etc/init.d/nginx start
