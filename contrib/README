@@ -1,11 +1,10 @@
-
 Ip_blacklist - counter and locker for IPs by limiting requests per time range.
 Locked IPs will get saved and may be fake content from Redis :) (or 403)
 Used the Redis storage only.
 Monitoring blacklist on redis-cli: lrange ip_blacklist 0 -1
 
 Requires
-=======
+========
 
 Requires openresty bundle http://openresty.org/ (tested on openresty/1.5.8.1)
   or ngx-lua module http://wiki.nginx.org/HttpLuaModule#Installation
@@ -13,7 +12,7 @@ Requires openresty bundle http://openresty.org/ (tested on openresty/1.5.8.1)
 
 
 Configure
-========
+=========
 
 Change settings on ip_blacklist_conf.lua (see options desciption in file):
 
@@ -25,7 +24,7 @@ Time lock: seconds for lock (prolong also if continue)
 Debug:1|0|nil for INFO messages
 
 Replace the system distribution nginx with local installation of openresty
-====================================================
+==========================================================================
 
 Install latest openresty on default location usr/local/openresty.
 
@@ -43,7 +42,7 @@ cp ip_blacklist_conf.lua /etc/nginx/lua/
 cp ip_blacklist.lua /etc/nginx/lua/
 
 Configure NGINX
-================
+===============
 
 Add one line to http section:
 lua_package_path "/etc/nginx/lua/?.lua;;";
