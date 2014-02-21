@@ -51,7 +51,7 @@ if ($OS =~ /solaris|sunos/i) {
 } elsif ($OS eq 'freebsd') {
     $platform = $OS;
 
-} elsif ($OS =~ /^(?:openbsd|netbsd)$/) {
+} elsif ($OS =~ /^(?:openbsd|netbsd|dragonfly)$/) {
     $platform = 'bsd';
 
 } else {
