@@ -60,6 +60,7 @@ sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
 sh "curl -si localhost/lua|grep 'no pool'";
+sh "curl -si localhost/cjson|grep 'json.safe: '";
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Normal Build ===\n";
@@ -74,6 +75,7 @@ system "sudo killall nginx > /dev/null 2>&1";
 sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
+sh "curl -si localhost/cjson|grep 'json.safe: '";
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Debug Build ===\n";
@@ -89,6 +91,7 @@ system "sudo killall nginx > /dev/null 2>&1";
 sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
+sh "curl -si localhost/cjson|grep 'json.safe: '";
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== DTrace Build ===\n";
@@ -104,6 +107,7 @@ system "sudo killall nginx > /dev/null 2>&1";
 sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
+sh "curl -si localhost/cjson|grep 'json.safe: '";
 if ($^O eq 'linux') {
     sh "stap -L 'process(\"$prefix/nginx/sbin/nginx\").mark(\"*\")'|grep http__lua__coroutine__done";
 
