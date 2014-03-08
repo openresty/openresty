@@ -1,0 +1,15 @@
+--- nginx-1.5.11/src/http/modules/ngx_http_proxy_module.c	2013-10-08 05:07:14.000000000 -0700
++++ nginx-1.5.11-patched/src/http/modules/ngx_http_proxy_module.c	2013-10-27 15:29:41.619378592 -0700
+@@ -602,10 +602,10 @@ static ngx_keyval_t  ngx_http_proxy_cach
+ static ngx_http_variable_t  ngx_http_proxy_vars[] = {
+ 
+     { ngx_string("proxy_host"), NULL, ngx_http_proxy_host_variable, 0,
+-      NGX_HTTP_VAR_CHANGEABLE|NGX_HTTP_VAR_NOCACHEABLE|NGX_HTTP_VAR_NOHASH, 0 },
++      NGX_HTTP_VAR_CHANGEABLE|NGX_HTTP_VAR_NOCACHEABLE, 0 },
+ 
+     { ngx_string("proxy_port"), NULL, ngx_http_proxy_port_variable, 0,
+-      NGX_HTTP_VAR_CHANGEABLE|NGX_HTTP_VAR_NOCACHEABLE|NGX_HTTP_VAR_NOHASH, 0 },
++      NGX_HTTP_VAR_CHANGEABLE|NGX_HTTP_VAR_NOCACHEABLE, 0 },
+ 
+     { ngx_string("proxy_add_x_forwarded_for"), NULL,
+       ngx_http_proxy_add_x_forwarded_for_variable, 0, NGX_HTTP_VAR_NOHASH, 0 },
