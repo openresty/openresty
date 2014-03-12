@@ -301,10 +301,17 @@ mv chaoslawful-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.9.4
+ver=0.9.5
 $root/util/get-tarball "https://github.com/chaoslawful/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv chaoslawful-lua-nginx-module-* ngx_lua-$ver || exit 1
+
+#################################
+
+ver=0.01
+$root/util/get-tarball "https://github.com/agentzh/lua-upstream-nginx-module/tarball/v$ver" -O lua-upstream-nginx-module-$ver.tar.gz || exit 1
+tar -xzf lua-upstream-nginx-module-$ver.tar.gz || exit 1
+mv agentzh-lua-upstream-nginx-module-* ngx_lua_upstream-$ver || exit 1
 
 #################################
 
@@ -424,7 +431,7 @@ echo
 
 #################################
 
-ver=2.1-20140129
+ver=2.1-20140305
 $root/util/get-tarball "https://github.com/agentzh/luajit2/archive/v$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 mv luajit2-* LuaJIT-$ver || exit 1
@@ -445,8 +452,8 @@ mv luajit2-* LuaJIT-$ver || exit 1
 
 #################################
 
-ver=1.0.3
-$root/util/get-tarball "http://www.kyne.com.au/~mark/software/old/lua-cjson-$ver.tar.gz" -O "lua-cjson-$ver.tar.gz" || exit 1
+ver=2.1.0.1
+$root/util/get-tarball "https://github.com/agentzh/lua-cjson/archive/$ver.tar.gz" -O "lua-cjson-$ver.tar.gz" || exit 1
 tar -xzf lua-cjson-$ver.tar.gz || exit 1
 cd lua-cjson-$ver || exit 1
 #patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
@@ -482,7 +489,7 @@ mv agentzh-lua-resty-memcached-* lua-resty-memcached-$ver || exit 1
 
 #################################
 
-ver=0.18
+ver=0.19
 $root/util/get-tarball "https://github.com/agentzh/lua-resty-redis/tarball/v$ver" -O "lua-resty-redis-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-redis-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-redis-* lua-resty-redis-$ver || exit 1
@@ -524,10 +531,17 @@ mv agentzh-lua-resty-lock-* lua-resty-lock-$ver || exit 1
 
 #################################
 
-ver=0.0.3
+ver=0.0.4
 $root/util/get-tarball "https://github.com/agentzh/lua-resty-core/tarball/v$ver" -O "lua-resty-core-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-core-$ver.tar.gz || exit 1
 mv agentzh-lua-resty-core-* lua-resty-core-$ver || exit 1
+
+#################################
+
+ver=0.01
+$root/util/get-tarball "https://github.com/agentzh/lua-resty-upstream-healthcheck/tarball/v$ver" -O "lua-resty-upstream-healthcheck-$ver.tar.gz" || exit 1
+tar -xzf lua-resty-upstream-healthcheck-$ver.tar.gz || exit 1
+mv agentzh-lua-resty-upstream-healthcheck-* lua-resty-upstream-healthcheck-$ver || exit 1
 
 #################################
 
