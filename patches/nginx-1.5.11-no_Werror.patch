@@ -1,7 +1,19 @@
-diff -ur nginx-1.5.11/auto/cc/gcc nginx-1.5.11-patched/auto/cc/gcc
---- nginx-1.5.11/auto/cc/gcc	2011-06-27 19:53:00.205737804 +0800
-+++ nginx-1.5.11-patched/auto/cc/gcc	2011-06-27 19:53:13.837741087 +0800
-@@ -169,7 +169,7 @@
+diff -urp nginx-1.5.11/auto/cc/clang nginx-1.5.11-patched/auto/cc/clang
+--- nginx-1.5.11/auto/cc/clang	2014-03-04 03:39:24.000000000 -0800
++++ nginx-1.5.11-patched/auto/cc/clang	2014-03-13 20:54:26.241413360 -0700
+@@ -89,7 +89,7 @@ CFLAGS="$CFLAGS -Wconditional-uninitiali
+ CFLAGS="$CFLAGS -Wno-unused-parameter"
+ 
+ # stop on warning
+-CFLAGS="$CFLAGS -Werror"
++#CFLAGS="$CFLAGS -Werror"
+ 
+ # debug
+ CFLAGS="$CFLAGS -g"
+diff -urp nginx-1.5.11/auto/cc/gcc nginx-1.5.11-patched/auto/cc/gcc
+--- nginx-1.5.11/auto/cc/gcc	2014-03-04 03:39:24.000000000 -0800
++++ nginx-1.5.11-patched/auto/cc/gcc	2014-03-13 20:54:13.301355329 -0700
+@@ -168,7 +168,7 @@ esac
  
  
  # stop on warning
@@ -10,10 +22,10 @@ diff -ur nginx-1.5.11/auto/cc/gcc nginx-1.5.11-patched/auto/cc/gcc
  
  # debug
  CFLAGS="$CFLAGS -g"
-diff -ur nginx-1.5.11/auto/cc/icc nginx-1.5.11-patched/auto/cc/icc
---- nginx-1.5.11/auto/cc/icc	2011-06-27 19:52:56.370157068 +0800
-+++ nginx-1.5.11-patched/auto/cc/icc	2011-06-27 19:53:19.508916811 +0800
-@@ -139,7 +139,7 @@
+diff -urp nginx-1.5.11/auto/cc/icc nginx-1.5.11-patched/auto/cc/icc
+--- nginx-1.5.11/auto/cc/icc	2014-03-04 03:39:24.000000000 -0800
++++ nginx-1.5.11-patched/auto/cc/icc	2014-03-13 20:54:13.301355329 -0700
+@@ -115,7 +115,7 @@ case "$NGX_ICC_VER" in
  esac
  
  # stop on warning
