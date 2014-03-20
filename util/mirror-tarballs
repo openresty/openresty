@@ -32,6 +32,10 @@ cd nginx-$ver || exit 1
 
 # patch the patch
 
+echo "$info_txt applying the patch for nginx security advisory (CVE-2014-0133)"
+patch -p0 < $root/patches/patch.2014.spdy2.txt || exit 1
+echo
+
 echo "$info_txt applying the upstream-pipelining patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-upstream_pipelining.patch || exit 1
 echo
