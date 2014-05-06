@@ -1,6 +1,6 @@
-diff -r 7586e7b2dbe9 src/core/ngx_slab.c
---- a/src/core/ngx_slab.c	Tue Feb 18 17:30:40 2014 +0400
-+++ b/src/core/ngx_slab.c	Tue May 06 14:00:13 2014 -0700
+diff -r 48c97d83ab7f src/core/ngx_slab.c
+--- a/src/core/ngx_slab.c	Tue Apr 29 22:22:38 2014 +0200
++++ b/src/core/ngx_slab.c	Tue May 06 16:22:20 2014 -0700
 @@ -118,6 +118,7 @@
      pool->pages->slab = pages;
      pool->pages->next = &pool->free;
@@ -9,7 +9,7 @@ diff -r 7586e7b2dbe9 src/core/ngx_slab.c
  
      pool->start = (u_char *)
                    ngx_align_ptr((uintptr_t) p + pages * sizeof(ngx_slab_page_t),
-@@ -628,6 +629,7 @@
+@@ -629,6 +630,7 @@
                  page[pages].slab = page->slab - pages;
                  page[pages].next = page->next;
                  page[pages].prev = page->prev;
@@ -17,7 +17,7 @@ diff -r 7586e7b2dbe9 src/core/ngx_slab.c
  
                  p = (ngx_slab_page_t *) page->prev;
                  p->next = &page[pages];
-@@ -651,6 +653,7 @@
+@@ -652,6 +654,7 @@
                  p->slab = NGX_SLAB_PAGE_BUSY;
                  p->next = NULL;
                  p->prev = NGX_SLAB_PAGE;
@@ -25,7 +25,7 @@ diff -r 7586e7b2dbe9 src/core/ngx_slab.c
                  p++;
              }
  
-@@ -668,7 +671,7 @@
+@@ -672,7 +675,7 @@
  ngx_slab_free_pages(ngx_slab_pool_t *pool, ngx_slab_page_t *page,
      ngx_uint_t pages)
  {
@@ -34,11 +34,11 @@ diff -r 7586e7b2dbe9 src/core/ngx_slab.c
  
      page->slab = pages--;
  
-@@ -682,6 +685,53 @@
+@@ -686,6 +689,51 @@
          page->next->prev = page->prev;
      }
  
-+    /* try to merge the following free block (if any) */
++    /* merge the next adjacent free block if it is free */
 +
 +    p = &page[page->slab];
 +    if ((u_char *) p < pool->start
@@ -48,7 +48,7 @@ diff -r 7586e7b2dbe9 src/core/ngx_slab.c
 +    {
 +        page->slab += p->slab;
 +
-+        /* remove the following block from the free list */
++        /* remove the next adjacent block from the free list */
 +
 +        prev = (ngx_slab_page_t *) p->prev;
 +        prev->next = p->next;
@@ -56,15 +56,14 @@ diff -r 7586e7b2dbe9 src/core/ngx_slab.c
 +
 +        ngx_memzero(p, sizeof(ngx_slab_page_t));
 +
-+        /* adjust prev_slab in the new following block accordingly */
-+
++        /* adjust the "prev_slab" field in the next next adjacent block */
 +        if ((u_char *) (p + p->slab) < pool->start) {
 +            p[p->slab].prev_slab = page->slab;
 +        }
 +    }
 +
 +    if (page->prev_slab) {
-+        /* try to merge the preceding free block (if any) */
++        /* merge the previous adjacent block if it is free */
 +
 +        p = page - page->prev_slab;
 +        if (!(p->slab & NGX_SLAB_PAGE_START)
@@ -74,8 +73,7 @@ diff -r 7586e7b2dbe9 src/core/ngx_slab.c
 +            p->slab += page->slab;
 +            ngx_memzero(page, sizeof(ngx_slab_page_t));
 +
-+            /* adjust prev_slab in the following block accordingly */
-+
++            /* adjust the "prev_slab" field in the next adjacent block */
 +            if ((u_char *) (p + p->slab) < pool->start) {
 +                p[p->slab].prev_slab = p->slab;
 +            }
@@ -88,14 +86,15 @@ diff -r 7586e7b2dbe9 src/core/ngx_slab.c
      page->prev = (uintptr_t) &pool->free;
      page->next = pool->free.next;
  
-diff -r 7586e7b2dbe9 src/core/ngx_slab.h
---- a/src/core/ngx_slab.h	Tue Feb 18 17:30:40 2014 +0400
-+++ b/src/core/ngx_slab.h	Tue May 06 14:00:13 2014 -0700
-@@ -19,6 +19,7 @@
+diff -r 48c97d83ab7f src/core/ngx_slab.h
+--- a/src/core/ngx_slab.h	Tue Apr 29 22:22:38 2014 +0200
++++ b/src/core/ngx_slab.h	Tue May 06 16:22:20 2014 -0700
+@@ -19,6 +19,8 @@
      uintptr_t         slab;
      ngx_slab_page_t  *next;
      uintptr_t         prev;
 +    uintptr_t         prev_slab;
++                         /* number of pages for the previous adjacent block */
  };
  
  
