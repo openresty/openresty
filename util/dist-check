@@ -9,7 +9,7 @@ use Cwd qw/cwd/;
 sub sh ($);
 
 my %opts;
-getopts("lf:", \%opts) or die "Usage: $0 [-f] <cores>\n";
+getopts("lf:", \%opts) or die "Usage: $0 [-f] [-l] <cores>\n";
 
 my $jobs = shift || 4;
 
@@ -81,7 +81,11 @@ sh "sudo $prefix/nginx/sbin/nginx -sstop";
 warn "\n=== Debug Build ===\n";
 $prefix = "/usr/local/openresty-debug";
 unless ($opts{f}) {
-    sh "./configure --with-debug $cfg_opts --prefix=$prefix -j$jobs > /dev/null";
+    my $more_cfg_opts = '';
+    if ($lua eq 'LuaJIT') {
+        $more_cfg_opts .= " --with-luajit-xcflags='-DLUA_USE_TRACE_LOGS'"
+    }
+    sh "./configure --with-debug $cfg_opts $more_cfg_opts --prefix=$prefix -j$jobs > /dev/null";
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
