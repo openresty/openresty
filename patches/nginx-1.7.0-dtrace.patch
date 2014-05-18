@@ -141,7 +141,7 @@ index 254f9bc..0252fef 100644
  
  cat << END >> Makefile
 diff --git a/auto/make b/auto/make
-index 05b7454..aa813b1 100644
+index 05b7454..ecbbb58 100644
 --- a/auto/make
 +++ b/auto/make
 @@ -26,6 +26,9 @@ LINK =	$LINK
@@ -178,13 +178,13 @@ index 05b7454..aa813b1 100644
 +	cat $ngx_dtrace_providers > $ngx_dtrace_d
 +
 +$ngx_dtrace_h: $ngx_dtrace_d
-+	\$(DTRACE) -xnolibs -h -o $ngx_dtrace_h -s $ngx_dtrace_d
++	\$(DTRACE) -h -o $ngx_dtrace_h -s $ngx_dtrace_d
 +END
 +
 +    if [ $DTRACE_PROBE_OBJ = YES ]; then
 +        cat << END                                            >> $NGX_MAKEFILE
 +$ngx_dtrace_obj: $ngx_dtrace_d $ngx_deps$ngx_spacer
-+	\$(DTRACE) -xnolibs -G -o $ngx_dtrace_obj -s $ngx_dtrace_d $ngx_objs
++	\$(DTRACE) -G -o $ngx_dtrace_obj -s $ngx_dtrace_d $ngx_objs
 +END
 +
 +        ngx_deps="$ngx_deps$ngx_long_cont$ngx_dtrace_obj"
