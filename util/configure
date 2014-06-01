@@ -186,6 +186,9 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--without-lua_resty_lock') {
         $resty_opts{no_lua_resty_lock} = 1;
 
+    } elsif ($opt eq '--without-lua_resty_lrucache') {
+        $resty_opts{no_lua_resty_lrucache} = 1;
+
     } elsif ($opt eq '--without-lua_resty_core') {
         $resty_opts{no_lua_resty_core} = 1;
 
@@ -801,7 +804,7 @@ _EOC_
         }
 
         for my $key (qw(dns memcached redis mysql string upload websocket
-                        lock core upstream_healthcheck))
+                        lock lrucache core upstream_healthcheck))
         {
             unless ($opts->{"no_lua_resty_$key"}) {
                 (my $key2 = $key) =~ s/_/-/g;
@@ -928,6 +931,7 @@ _EOC_
   --without-lua_resty_string         disable the lua-resty-string library
   --without-lua_resty_websocket      disable the lua-resty-websocket library
   --without-lua_resty_lock           disable the lua-resty-lock library
+  --without-lua_resty_lrucache       disable the lua-resty-lrucache library
   --without-lua_resty_core           disable the lua-resty-core library
 
   --with-lua51                       enable and build the bundled standard Lua 5.1 interpreter
