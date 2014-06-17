@@ -238,13 +238,19 @@ if [ "$answer" = "N" ]; then
     echo
 fi
 
-echo "$info_txt applying the setting_args_invalidates_uri patch for nginx $ver"
-patch -p1 < $root/patches/nginx-$ver-setting_args_invalidates_uri.patch || exit 1
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.7.1`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying the setting_args_invalidates_uri patch for nginx $ver"
+    patch -p1 < $root/patches/nginx-$ver-setting_args_invalidates_uri.patch || exit 1
+    echo
+fi
 
-echo "$info_txt applying the slab_defrag patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-slab_defrag.patch || exit 1
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.7.2`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying the slab_defrag patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-slab_defrag.patch || exit 1
+    echo
+fi
 
 rm -f *.patch || exit 1
 
