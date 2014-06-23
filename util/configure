@@ -562,6 +562,9 @@ _END_
 
         if (defined $cc) {
             $extra_opts .= " CC='$cc'";
+
+        } else {
+            $extra_opts .= " CC=cc";
         }
 
         if (defined $cores) {
@@ -699,7 +702,7 @@ _EOC_
             if (defined $cc) {
                 $extra_opts .= " CC='$cc'";
             } else {
-                $extra_opts .= " CC=gcc";
+                $extra_opts .= " CC=cc";
             }
 
             push @make_cmds, "cd $root_dir/build/$dir && ".
@@ -746,7 +749,7 @@ _EOC_
             if (defined $cc) {
                 $extra_opts .= " CC='$cc'";
             } else {
-                $extra_opts .= " CC=gcc";
+                $extra_opts .= " CC=cc";
             }
 
             push @make_cmds, "cd $root_dir/build/$dir && ".
@@ -793,7 +796,7 @@ _EOC_
             if (defined $cc) {
                 $extra_opts .= " CC='$cc'";
             } else {
-                $extra_opts .= " CC=gcc";
+                $extra_opts .= " CC=cc";
             }
 
             push @make_cmds, "cd $root_dir/build/$dir && ".
@@ -854,7 +857,7 @@ sub usage ($) {
 
   --prefix=PATH                      set the installation prefix
 
-  --with-debug                       enable the debugging logging and also enable -O0 -g for gcc.
+  --with-debug                       enable the debugging logging and also enable -O0 -g for the C compiler.
                                      this not only affects nginx, but also other components.
   --with-dtrace-probes               enable dtrace USDT probes
   --with-dtrace=PATH                 set dtrace utility pathname
