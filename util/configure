@@ -445,7 +445,7 @@ _END_
     my $opts_line = '';
 
     if ($opts->{debug}) {
-        #unshift @ngx_cc_opts, '-O0';
+        unshift @ngx_cc_opts, '-DNGX_LUA_USE_ASSERT', '-DNGX_LUA_ABORT_AT_PANIC';
         $opts_line .= " \\\n  --with-debug";
 
     } else {

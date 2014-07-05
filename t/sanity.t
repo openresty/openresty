@@ -297,6 +297,7 @@ cd ..
 cd nginx-1.7.2
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
+  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1417,6 +1418,7 @@ cd ..
 cd nginx-1.7.2
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
+  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1489,6 +1491,7 @@ cd ..
 cd nginx-1.7.2
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
+  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2388,6 +2391,7 @@ cd ..
 cd nginx-1.7.2
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
+  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3292,6 +3296,7 @@ cd ..
 cd nginx-1.7.2
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
+  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
