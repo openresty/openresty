@@ -171,6 +171,9 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--without-lua_resty_redis') {
         $resty_opts{no_lua_resty_redis} = 1;
 
+    } elsif ($opt eq '--without-lua_resty_dns') {
+        $resty_opts{no_lua_resty_dns} = 1;
+
     } elsif ($opt eq '--without-lua_resty_mysql') {
         $resty_opts{no_lua_resty_mysql} = 1;
 
