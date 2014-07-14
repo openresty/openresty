@@ -1,0 +1,22 @@
+--- nginx-1.7.3/src/http/ngx_http_file_cache.c	2013-10-08 05:07:14.000000000 -0700
++++ nginx-1.7.3-patched/src/http/ngx_http_file_cache.c	2013-10-26 14:47:56.184041728 -0700
+@@ -432,6 +432,7 @@ ngx_http_file_cache_lock_wait_handler(ng
+     ngx_uint_t                 wait;
+     ngx_msec_t                 timer;
+     ngx_http_cache_t          *c;
++    ngx_connection_t          *conn;
+     ngx_http_request_t        *r;
+     ngx_http_file_cache_t     *cache;
+ 
+@@ -471,7 +472,10 @@ wakeup:
+ 
+     c->waiting = 0;
+     r->main->blocked--;
+-    r->connection->write->handler(r->connection->write);
++
++    conn = r->connection;
++    r->write_event_handler(r);
++    ngx_http_run_posted_requests(conn);
+ }
+ 
+ 
