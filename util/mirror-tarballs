@@ -220,6 +220,10 @@ echo "$info_txt applying the proxy_ssl_handshake_timer patch for nginx $ver"
 patch -p1 < $root/patches/nginx-$ver-proxy_ssl_handshake_timer.patch || exit 1
 echo
 
+echo "$info_txt applying the geoip_init_var_fields patch for nginx $ver"
+patch -p1 < $root/patches/nginx-$ver-geoip_init_var_fields.patch || exit 1
+echo
+
 answer=`$root/util/ver-ge "$main_ver" 1.4.4`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the CVE-2013-4547 patch for nginx $ver"

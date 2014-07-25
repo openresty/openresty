@@ -1,0 +1,36 @@
+# HG changeset patch
+# User Yichun Zhang <agentzh@gmail.com>
+# Date 1406324609 25200
+#      Fri Jul 25 14:43:29 2014 -0700
+# Node ID c038cc33739bbfab2ed50819191298471f22d233
+# Parent  93614769dd4b6df8844c3c43c6a0b3f83bfa6746
+GeoIP: not all variable fields were initialized.
+
+The ngx_http_geoip_city_float_variable and
+ngx_http_geoip_city_int_variable functions did not always initialize
+all variable fields like "not_found", which could lead to empty values
+for those corresponding nginx variales randomly.
+
+diff -r 93614769dd4b -r c038cc33739b src/http/modules/ngx_http_geoip_module.c
+--- a/src/http/modules/ngx_http_geoip_module.c	Sun May 11 21:56:07 2014 -0700
++++ b/src/http/modules/ngx_http_geoip_module.c	Fri Jul 25 14:43:29 2014 -0700
+@@ -553,6 +553,9 @@ ngx_http_geoip_city_float_variable(ngx_h
+     val = *(float *) ((char *) gr + data);
+ 
+     v->len = ngx_sprintf(v->data, "%.4f", val) - v->data;
++    v->valid = 1;
++    v->no_cacheable = 0;
++    v->not_found = 0;
+ 
+     GeoIPRecord_delete(gr);
+ 
+@@ -582,6 +585,9 @@ ngx_http_geoip_city_int_variable(ngx_htt
+     val = *(int *) ((char *) gr + data);
+ 
+     v->len = ngx_sprintf(v->data, "%d", val) - v->data;
++    v->valid = 1;
++    v->no_cacheable = 0;
++    v->not_found = 0;
+ 
+     GeoIPRecord_delete(gr);
+ 
