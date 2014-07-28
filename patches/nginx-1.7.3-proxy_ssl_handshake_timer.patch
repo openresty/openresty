@@ -1,23 +1,36 @@
-# HG changeset patch
-# User Yichun Zhang <agentzh@gmail.com>
-# Date 1406068295 25200
-#      Tue Jul 22 15:31:35 2014 -0700
-# Node ID 1db962fc3522ce61313b684ca8251a6462992d40
-# Parent  93614769dd4b6df8844c3c43c6a0b3f83bfa6746
-Proxy: added timeout protection to SSL handshake.
+details:   http://hg.nginx.org/nginx/rev/9bf58a3da25b
+branches:
+changeset: 5774:9bf58a3da25b
+user:      Maxim Dounin <mdounin@mdounin.ru>
+date:      Mon Jul 28 18:30:14 2014 +0400
+description:
+Upstream: SSL handshake timeouts.
 
-Previously, proxy relied on the write event timer created when connect()
-could not complete immediately to protect SSL handshake timeouts. But when
-connect() can complete in a single run, there is no timer protection at all.
+Timeout may not be set on an upstream connection when we call
+ngx_ssl_handshake() in ngx_http_upstream_ssl_init_connection(),
+so make sure to arm it if it's not set.
 
-diff -r 93614769dd4b -r 1db962fc3522 src/http/ngx_http_upstream.c
---- a/src/http/ngx_http_upstream.c	Sun May 11 21:56:07 2014 -0700
-+++ b/src/http/ngx_http_upstream.c	Tue Jul 22 15:31:35 2014 -0700
-@@ -1387,6 +1387,7 @@ ngx_http_upstream_ssl_init_connection(ng
+Based on a patch by Yichun Zhang.
+
+diffstat:
+
+ src/http/ngx_http_upstream.c |  5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+diffs (15 lines):
+
+diff --git a/src/http/ngx_http_upstream.c b/src/http/ngx_http_upstream.c
+--- a/src/http/ngx_http_upstream.c
++++ b/src/http/ngx_http_upstream.c
+@@ -1393,6 +1393,11 @@ ngx_http_upstream_ssl_init_connection(ng
      rc = ngx_ssl_handshake(c);
- 
+
      if (rc == NGX_AGAIN) {
-+        ngx_add_timer(c->write, u->conf->connect_timeout);
++
++        if (!c->write->timer_set) {
++            ngx_add_timer(c->write, u->conf->connect_timeout);
++        }
++
          c->ssl->handler = ngx_http_upstream_ssl_handshake;
          return;
      }
