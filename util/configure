@@ -123,6 +123,10 @@ my $luajit_xcflags = '';
 
 my (@ngx_opts, @ngx_cc_opts, @ngx_ld_opts);
 
+# use -O2 to compile everything by default (which can be overridden
+# by the user's own --with-cc-opt=OPTS option):
+push @ngx_cc_opts, "-O2";
+
 for my $opt (@ARGV) {
     next unless defined $opt;
 

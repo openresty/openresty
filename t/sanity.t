@@ -225,6 +225,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -296,7 +297,7 @@ cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
-  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC' \
+  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -378,6 +379,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -449,6 +451,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -520,7 +523,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O3' \
+  --with-cc-opt='-O2 -O3' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -592,6 +595,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -663,6 +667,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -727,6 +732,7 @@ cp -rp bundle/ build
 cd build
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -777,6 +783,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/opt/blah/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1048,6 +1055,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1118,6 +1126,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1189,6 +1198,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1273,6 +1283,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1345,6 +1356,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1416,7 +1428,7 @@ cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
-  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC' \
+  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1489,7 +1501,7 @@ cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
-  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC' \
+  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1574,6 +1586,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1646,6 +1659,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../iconv-nginx-module-0.10 \
   --add-module=../echo-nginx-module-0.54 \
@@ -1739,6 +1753,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1822,6 +1837,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1892,6 +1908,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1963,6 +1980,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2034,6 +2052,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2105,6 +2124,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2176,6 +2196,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2246,6 +2267,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2317,6 +2339,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2389,7 +2412,7 @@ cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
-  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC' \
+  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2460,6 +2483,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2528,6 +2552,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2594,6 +2619,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2658,6 +2684,7 @@ export LUAJIT_LIB='/tmp/luajit/lib'
 export LUAJIT_INC='/tmp/luajit/include/luajit-2.1'
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2734,6 +2761,7 @@ export LUA_LIB='/tmp/lua/lib'
 export LUA_INC='/tmp/lua/include'
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2803,6 +2831,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2873,6 +2902,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2944,6 +2974,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3014,6 +3045,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3084,6 +3116,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3153,6 +3186,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3222,6 +3256,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3294,7 +3329,7 @@ cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
-  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC' \
+  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3366,6 +3401,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3436,6 +3472,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3506,6 +3543,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3576,6 +3614,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3646,6 +3685,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3716,6 +3756,7 @@ export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
 cd ..
 cd nginx-1.7.3
 ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.54 \
   --add-module=../xss-nginx-module-0.04 \
