@@ -411,7 +411,7 @@ cd ..
 
 #################################
 
-ver=1.0rc3
+ver=1.0rc4
 $root/util/get-tarball "https://github.com/FRiCKLE/ngx_postgres/tarball/$ver" -O ngx_postgres-$ver.tar.gz || exit 1
 tar -xzf ngx_postgres-$ver.tar.gz || exit 1
 mv FRiCKLE-ngx_postgres-* ngx_postgres-$ver || exit 1
