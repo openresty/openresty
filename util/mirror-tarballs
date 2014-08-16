@@ -502,7 +502,7 @@ mv openresty-lua-rds-parser-* lua-rds-parser-$ver || exit 1
 
 #################################
 
-ver=0.12
+ver=0.13
 $root/util/get-tarball "https://github.com/openresty/lua-resty-dns/tarball/v$ver" -O "lua-resty-dns-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-dns-$ver.tar.gz || exit 1
 mv openresty-lua-resty-dns-* lua-resty-dns-$ver || exit 1
