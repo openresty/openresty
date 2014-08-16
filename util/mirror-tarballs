@@ -370,7 +370,7 @@ mv openresty-srcache-nginx-module-* srcache-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.09
+ver=0.10
 $root/util/get-tarball "https://github.com/calio/form-input-nginx-module/tarball/v$ver" -O form-input-nginx-module-$ver.tar.gz || exit 1
 tar -xzf form-input-nginx-module-$ver.tar.gz || exit 1
 mv calio-form-input-nginx-module-* form-input-nginx-module-$ver || exit 1
