@@ -572,7 +572,7 @@ mv openresty-lua-resty-core-* lua-resty-core-$ver || exit 1
 
 #################################
 
-ver=0.02
+ver=0.03
 $root/util/get-tarball "https://github.com/openresty/lua-resty-upstream-healthcheck/tarball/v$ver" -O "lua-resty-upstream-healthcheck-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-upstream-healthcheck-$ver.tar.gz || exit 1
 mv openresty-lua-resty-upstream-healthcheck-* lua-resty-upstream-healthcheck-$ver || exit 1
