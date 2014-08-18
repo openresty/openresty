@@ -42,6 +42,21 @@ if (!-d $target_dir) {
     shell("mkdir -p $target_dir");
 }
 
+if (-f $dst) {
+    shell("rm $dst");
+
+} else {
+    for my $f (@src) {
+        if (-f $f) {
+            (my $name = $f) =~ s{.*/}{}g;
+            my $target = "$target_dir/$name";
+            if (-f $target) {
+                shell("rm $target");
+            }
+        }
+    }
+}
+
 shell("cp @src $dst");
 
 if (-f $dst) {
@@ -76,6 +91,7 @@ sub usage {
 
 sub shell {
     my $cmd = shift;
+    #warn $cmd;
     system($cmd) == 0 or
         die "failed to run command $cmd\n";
 }
