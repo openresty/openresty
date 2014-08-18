@@ -298,7 +298,7 @@ if (@ngx_ld_opts) {
     $ld_opts = " \\\n  --with-ld-opt='@ngx_ld_opts'";
 }
 
-my $cmd = "./configure --prefix=$ngx_prefix"
+my $cmd = "sh ./configure --prefix=$ngx_prefix"
     . $resty_opts
     . $ld_opts
     . (@ngx_opts ? " \\\n  @ngx_opts" : "");
