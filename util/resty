@@ -79,6 +79,13 @@ open my $out, ">$conf_file"
 print $out <<_EOC_;
 daemon off;
 master_process off;
+worker_processes 1;
+
+env LD_LIBRARY_PATH;
+env LD_PRELOAD;
+env PATH;
+env LUA_PATH;
+env LUA_CPATH;
 
 error_log /dev/stderr warn;
 #error_log /dev/stderr debug;
