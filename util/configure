@@ -312,6 +312,8 @@ push @make_cmds, "cd $root_dir/build/$ngx_dir && "
 push @make_install_cmds, "cd $root_dir/build/$ngx_dir && "
     . "\$(MAKE) install DESTDIR=\$(DESTDIR)";
 
+push @make_install_cmds, "cd $root_dir/build && ./install resty \$(DESTDIR)/$prefix/bin/";
+
 cd '../..'; # to the root
 #die "pwd: " .. `pwd`;
 
@@ -468,8 +470,8 @@ _END_
             die "failed to remove directory build/.\n";
     }
 
-    if (-f 'build') {
-        die "file \"build\" already exists. please remove it first.\n";
+    if (-e 'build') {
+        die "file or directory \"build\" already exists. please remove it first.\n";
     }
     shell "cp -rp bundle/ build";
 

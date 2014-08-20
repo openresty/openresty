@@ -1,0 +1,206 @@
+#!/usr/bin/env perl
+
+# Copyright (C) Yichun Zhang (agentzh)
+
+# TODO: port this script into the nginx core for greater flexibility
+# and better performance.
+
+use strict;
+use warnings;
+
+use File::Spec ();
+use FindBin ();
+use Getopt::Std qw( getopts );
+use File::Temp qw( tempdir );
+use POSIX qw( WNOHANG );
+
+my %opts;
+getopts("he:c:", \%opts)
+    or usage(1);
+
+if ($opts{h}) {
+    usage(0);
+}
+
+my $luafile;
+if (!defined $opts{e}) {
+    $luafile = shift
+        or die qq{No Lua input file nor -e "" option specified.\n};
+}
+
+if (@ARGV) {
+    die "unknown arguments: @ARGV\n";
+}
+
+my $conns = $opts{c} || 64;
+
+my $nginx_path = File::Spec->catfile($FindBin::Bin, "..", "nginx", "sbin", "nginx");
+#warn $nginx_path;
+if (!-f $nginx_path) {
+    $nginx_path = "nginx";  # find in PATH
+}
+
+my $prefix_dir = tempdir(CLEANUP => 1);
+#warn "prefix dir: $prefix_dir\n";
+
+my $logs_dir = File::Spec->catfile($prefix_dir, "logs");
+mkdir $logs_dir or die "failed to mkdir $logs_dir: $!";
+
+my $conf_dir = File::Spec->catfile($prefix_dir, "conf");
+mkdir $conf_dir or die "failed to mkdir $conf_dir: $!";
+
+my $chunk_name;
+if (defined $opts{e}) {
+    $luafile = File::Spec->catfile($conf_dir, "a.lua");
+    open my $out, ">$luafile"
+        or die "Cannot open $luafile for writing: $!\n";
+    print $out $opts{e};
+    close $out;
+    $chunk_name = "=(command line -e)";
+
+} else {
+    $chunk_name = "\@$luafile";
+}
+
+my $loader = <<_EOC_;
+            local gen
+            do
+                local fname = "$luafile"
+                local f = assert(io.open(fname, "r"))
+                local chunk = f:read("*a")
+                gen = assert(loadstring(chunk, "$chunk_name"))
+            end
+_EOC_
+
+my $conf_file = File::Spec->catfile($conf_dir, "nginx.conf");
+open my $out, ">$conf_file"
+    or die "Cannot open $conf_file for writing: $!\n";
+
+print $out <<_EOC_;
+daemon off;
+master_process off;
+
+error_log /dev/stderr warn;
+#error_log /dev/stderr debug;
+
+events {
+    worker_connections $conns;
+}
+
+http {
+    access_log off;
+    lua_socket_log_errors off;
+
+    init_by_lua '
+        local stdout = io.stdout
+        print = function (...) stdout:write(...) end
+        ngx.print = print
+        ngx.say = function (...) print(...) print("\\\\n") end
+    ';
+
+    init_worker_by_lua '
+        local exit = os.exit
+        local stderr = io.stderr
+
+        local function handle_err(err)
+            if err then
+                err = string.gsub(err, "^init_worker_by_lua:%d+: ", "")
+                stderr:write(err)
+            end
+            return exit(1)
+        end
+
+        local ok, err = pcall(function ()
+$loader
+            -- print("calling timer.at...")
+            local ok, err = ngx.timer.at(0, function ()
+                -- io.stderr:write("timer firing")
+                local ok, err = pcall(gen)
+                if not ok then
+                    return handle_err(err)
+                end
+                local rc = err
+                if rc and type(rc) ~= "number" then
+                    return handle_err("bad return value of type " .. type(rc))
+                end
+                return exit(rc)
+            end)
+            if not ok then
+                return handle_err(err)
+            end
+            -- print("timer created")
+        end)
+
+        if not ok then
+            return handle_err(err)
+        end
+    ';
+}
+_EOC_
+
+close $out;
+
+my $cmd = "$nginx_path -p $prefix_dir/";
+
+my $child_pid;
+
+sub reaper {
+    $SIG{CHLD} = \&reaper;
+    if ($child_pid) {
+        my ($pid, $status);
+        do {
+            $pid = waitpid(-1, WNOHANG);
+            if ($child_pid == $pid) {
+                $status = $?;
+                undef $child_pid;
+                last;
+            }
+        } while $pid > 0;
+        exit($status || 0);
+    }
+}
+
+$SIG{CHLD}=\&reaper;
+
+sub sigint {
+    $SIG{INT} = \&sigint;
+    if ($child_pid) {
+        kill INT => $child_pid;
+    }
+}
+$SIG{INT} = \&sigint;
+
+my $pid = fork();
+
+if (!defined $pid) {
+    die "fork() failed: $!\n";
+}
+
+if ($pid == 0) {  # child process
+    #warn "exec $cmd...";
+    exec $cmd;
+
+} else {
+    $child_pid = $pid;
+    waitpid($child_pid, 0);
+    exit($? || 0);
+}
+
+sub usage {
+    my $rc = shift;
+    my $msg = <<_EOC_;
+$0 [-h] [-c num] [-e prog] [lua-file]
+
+Options:
+    -c num      set maximal connection count (default: 64).
+    -e prog     run the inlined Lua code in "prog".
+    -h          print this help.
+_EOC_
+    if ($rc == 0) {
+        print $msg;
+        exit(0);
+    }
+
+    warn $msg;
+    exit($rc);
+}
