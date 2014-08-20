@@ -200,7 +200,7 @@ if ($pid == 0) {  # child process
 sub usage {
     my $rc = shift;
     my $msg = <<_EOC_;
-$0 [-h] [-c num] [-e prog] [-V] [lua-file]
+resty [-h] [-c num] [-e prog] [-V] [lua-file]
 
 Options:
     -c num      set maximal connection count (default: 64).
