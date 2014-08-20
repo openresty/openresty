@@ -15,11 +15,21 @@ use File::Temp qw( tempdir );
 use POSIX qw( WNOHANG );
 
 my %opts;
-getopts("he:c:", \%opts)
+getopts("he:c:V", \%opts)
     or usage(1);
 
 if ($opts{h}) {
     usage(0);
+}
+
+my $nginx_path = File::Spec->catfile($FindBin::Bin, "..", "nginx", "sbin", "nginx");
+#warn $nginx_path;
+if (!-f $nginx_path) {
+    $nginx_path = "nginx";  # find in PATH
+}
+
+if ($opts{V}) {
+    exec "$nginx_path -V";
 }
 
 my $luafile;
@@ -33,12 +43,6 @@ if (@ARGV) {
 }
 
 my $conns = $opts{c} || 64;
-
-my $nginx_path = File::Spec->catfile($FindBin::Bin, "..", "nginx", "sbin", "nginx");
-#warn $nginx_path;
-if (!-f $nginx_path) {
-    $nginx_path = "nginx";  # find in PATH
-}
 
 my $prefix_dir = tempdir(CLEANUP => 1);
 #warn "prefix dir: $prefix_dir\n";
@@ -196,12 +200,13 @@ if ($pid == 0) {  # child process
 sub usage {
     my $rc = shift;
     my $msg = <<_EOC_;
-$0 [-h] [-c num] [-e prog] [lua-file]
+$0 [-h] [-c num] [-e prog] [-V] [lua-file]
 
 Options:
     -c num      set maximal connection count (default: 64).
     -e prog     run the inlined Lua code in "prog".
     -h          print this help.
+    -V          print the underlying nginx version and configurations.
 _EOC_
     if ($rc == 0) {
         print $msg;
