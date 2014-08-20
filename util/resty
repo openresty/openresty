@@ -207,6 +207,9 @@ Options:
     -e prog     run the inlined Lua code in "prog".
     -h          print this help.
     -V          print the underlying nginx version and configurations.
+
+For bug reporting instructions, please see:
+<http://openresty.org/#Community>
 _EOC_
     if ($rc == 0) {
         print $msg;
