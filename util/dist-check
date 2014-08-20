@@ -14,7 +14,7 @@ getopts("lf:", \%opts) or die "Usage: $0 [-f] [-l] <cores>\n";
 my $jobs = shift || 4;
 
 my $cwd = cwd();
-if ($cwd !~ /ngx_openresty-(\d+(?:\.\d+)+(?:rc\d+)?)$/) {
+if ($cwd !~ /ngx_openresty-(\d+(?:\.\d+)+(?:rc\d+(?:\.\d+)?)?)$/) {
     die "Bad current working directory: $cwd\n";
 }
 
