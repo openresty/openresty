@@ -44,6 +44,28 @@ if (@ARGV) {
 
 my $conns = $opts{c} || 64;
 
+my @nameservers;
+
+# try to read the nameservers used by the system resolver:
+if (open my $in, "/etc/resolv.conf") {
+    while (<$in>) {
+        if (/^\s*nameserver\s+(\d+(?:\.\d+){3})(?:\s+|$)/) {
+            push @nameservers, $1;
+            if (@nameservers > 10) {
+                last;
+            }
+        }
+    }
+    close $in;
+}
+
+if (!@nameservers) {
+    # default to Google's open DNS servers
+    push @nameservers, "8.8.8.8", "8.8.4.4";
+}
+
+warn "@nameservers\n";
+
 my $prefix_dir = tempdir(CLEANUP => 1);
 #warn "prefix dir: $prefix_dir\n";
 
@@ -101,6 +123,7 @@ events {
 http {
     access_log off;
     lua_socket_log_errors off;
+    resolver @nameservers;
 
     init_by_lua '
         local stdout = io.stdout
