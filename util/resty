@@ -127,7 +127,49 @@ http {
 
     init_by_lua '
         local stdout = io.stdout
-        print = function (...) return stdout:write(...) end
+        local ngx_null = ngx.null
+        local maxn = table.maxn
+        local unpack = unpack
+        local concat = table.concat
+
+        local expand_table
+        function expand_table(src, inplace)
+            local n = maxn(src)
+            local dst = inplace and src or {}
+            for i = 1, n do
+                local arg = src[i]
+                local typ = type(arg)
+                if arg == nil then
+                    dst[i] = "nil"
+
+                elseif typ == "boolean" then
+                    if arg then
+                        dst[i] = "true"
+                    else
+                        dst[i] = "false"
+                    end
+
+                elseif arg == ngx_null then
+                    dst[i] = "null"
+
+                elseif typ == "table" then
+                    dst[i] = expand_table(arg, false)
+
+                elseif typ ~= "string" then
+                    dst[i] = tostring(arg)
+
+                else
+                    dst[i] = arg
+                end
+            end
+            return concat(dst)
+        end
+
+        print = function (...)
+            local args = {...}
+
+            return stdout:write(expand_table(args, true))
+        end
         ngx.print = print
         ngx.say = function (...) local ok, err = print(...) if ok then return print("\\\\n") end return ok, err end
         ngx.flush = function (...) return stdout:flush() end
