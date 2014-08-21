@@ -76,7 +76,7 @@ if (!@nameservers) {
     push @nameservers, "8.8.8.8", "8.8.4.4";
 }
 
-warn "@nameservers\n";
+#warn "@nameservers\n";
 
 my $prefix_dir = tempdir(CLEANUP => 1);
 #warn "prefix dir: $prefix_dir\n";
@@ -187,6 +187,7 @@ $lua_package_path_config
         ngx.flush = function (...) return stdout:flush() end
         -- we cannot close stdout here due to a bug in Lua:
         ngx.eof = function (...) return true end
+        ngx.exit = os.exit
     ';
 
     init_worker_by_lua '
@@ -196,12 +197,19 @@ $lua_package_path_config
         local function handle_err(err)
             if err then
                 err = string.gsub(err, "^init_worker_by_lua:%d+: ", "")
-                stderr:write(err)
+                stderr:write(err, "\\\\n")
             end
             return exit(1)
         end
 
         local ok, err = pcall(function ()
+            if not ngx.config
+               or not ngx.config.ngx_lua_version
+               or ngx.config.ngx_lua_version < 9011
+            then
+                error("at least ngx_lua 0.9.12 is required")
+            end
+
 $loader
             -- print("calling timer.at...")
             local ok, err = ngx.timer.at(0, function ()
@@ -256,7 +264,11 @@ if ($pid == 0) {  # child process
 } else {
     $child_pid = $pid;
     waitpid($child_pid, 0);
-    exit($? || 0);
+    my $rc = 0;
+    if (defined $?) {
+        $rc = ($? >> 8);
+    }
+    exit($rc);
 }
 
 sub usage {
