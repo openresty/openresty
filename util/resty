@@ -127,9 +127,12 @@ http {
 
     init_by_lua '
         local stdout = io.stdout
-        print = function (...) stdout:write(...) end
+        print = function (...) return stdout:write(...) end
         ngx.print = print
-        ngx.say = function (...) print(...) print("\\\\n") end
+        ngx.say = function (...) local ok, err = print(...) if ok then return print("\\\\n") end return ok, err end
+        ngx.flush = function (...) return stdout:flush() end
+        -- we cannot close stdout here due to a bug in Lua:
+        ngx.eof = function (...) return true end
     ';
 
     init_worker_by_lua '
