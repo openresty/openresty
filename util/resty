@@ -155,24 +155,6 @@ my $cmd = "$nginx_path -p $prefix_dir/";
 
 my $child_pid;
 
-sub reaper {
-    $SIG{CHLD} = \&reaper;
-    if ($child_pid) {
-        my ($pid, $status);
-        do {
-            $pid = waitpid(-1, WNOHANG);
-            if ($child_pid == $pid) {
-                $status = $?;
-                undef $child_pid;
-                last;
-            }
-        } while $pid > 0;
-        exit($status || 0);
-    }
-}
-
-$SIG{CHLD}=\&reaper;
-
 sub sigint {
     $SIG{INT} = \&sigint;
     if ($child_pid) {
