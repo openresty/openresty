@@ -15,7 +15,7 @@ use File::Temp qw( tempdir );
 use POSIX qw( WNOHANG );
 
 my %opts;
-getopts("he:c:V", \%opts)
+getopts("he:c:VI:", \%opts)
     or usage(1);
 
 if ($opts{h}) {
@@ -30,6 +30,18 @@ if (!-f $nginx_path) {
 
 if ($opts{V}) {
     exec "$nginx_path -V";
+}
+
+my $lua_package_path_config = '';
+if ($opts{I}) {
+    my $dir = $opts{I};
+    if (!-d $dir) {
+        die "Search directory $dir is not found.\n";
+    }
+    $lua_package_path_config = <<_EOC_;
+    lua_package_path "$dir/?.lua;;";
+    lua_package_cpath "$dir/?.so;;";
+_EOC_
 }
 
 my $luafile;
@@ -124,7 +136,7 @@ http {
     access_log off;
     lua_socket_log_errors off;
     resolver @nameservers;
-
+$lua_package_path_config
     init_by_lua '
         local stdout = io.stdout
         local ngx_null = ngx.null
@@ -250,12 +262,13 @@ if ($pid == 0) {  # child process
 sub usage {
     my $rc = shift;
     my $msg = <<_EOC_;
-resty [-h] [-c num] [-e prog] [-V] [lua-file]
+resty [-I dir] [-h] [-c num] [-e prog] [-V] [lua-file]
 
 Options:
     -c num      set maximal connection count (default: 64).
     -e prog     run the inlined Lua code in "prog".
     -h          print this help.
+    -I dir      Add dir to the search paths for Lua libraries.
     -V          print the underlying nginx version and configurations.
 
 For bug reporting instructions, please see:
