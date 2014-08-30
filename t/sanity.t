@@ -382,7 +382,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -400,7 +400,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -455,7 +455,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -473,7 +473,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -528,7 +528,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2 -O3' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2 -O3' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -546,7 +546,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -601,7 +601,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -619,7 +619,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -llua' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib -llua' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -674,7 +674,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -691,7 +691,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1444,7 +1444,7 @@ cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
-  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC -O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1462,7 +1462,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1518,7 +1518,7 @@ cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
-  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC -O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1536,7 +1536,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   '--with-cc=cl' --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1930,7 +1930,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -1948,7 +1948,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2003,7 +2003,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2021,7 +2021,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2076,7 +2076,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2094,7 +2094,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2149,7 +2149,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2167,7 +2167,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2294,7 +2294,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2312,7 +2312,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2367,7 +2367,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2385,7 +2385,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2717,7 +2717,7 @@ export LUAJIT_LIB='/tmp/luajit/lib'
 export LUAJIT_INC='/tmp/luajit/include/luajit-2.1'
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I/tmp/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2735,7 +2735,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/tmp/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/tmp/luajit/lib -L/tmp/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2938,7 +2938,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -2956,7 +2956,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -3297,7 +3297,7 @@ export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/i
 cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3315,7 +3315,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -3371,7 +3371,7 @@ cd ..
 cd nginx-1.7.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
-  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC -O2' \
+  --with-cc-opt='-I$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 -DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC -O2' \
   --add-module=../ngx_devel_kit-0.2.19 \
   --add-module=../echo-nginx-module-0.55 \
   --add-module=../xss-nginx-module-0.04 \
@@ -3389,7 +3389,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.13 \
   --add-module=../rds-csv-nginx-module-0.05 \
-  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -L$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:

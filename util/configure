@@ -461,10 +461,6 @@ _END_
         #unshift @ngx_cc_opts, '-O2';
     }
 
-    if (@ngx_cc_opts) {
-        $opts_line .= " \\\n  --with-cc-opt='@ngx_cc_opts'";
-    }
-
     if (-d 'build') {
         system("rm -rf build") == 0 or
             die "failed to remove directory build/.\n";
@@ -527,8 +523,15 @@ _END_
 
     if ($opts->{luajit_path}) {
         my $luajit_prefix = $opts->{luajit_path};
-        env LUAJIT_LIB => "$luajit_prefix/lib";
-        env LUAJIT_INC => "$luajit_prefix/include/luajit-2.1";
+
+        my $lib = "$luajit_prefix/lib";
+        my $inc = "$luajit_prefix/include/luajit-2.1";
+
+        env LUAJIT_LIB => $lib;
+        env LUAJIT_INC => $inc;
+
+        unshift @ngx_ld_opts, "-L$lib";
+        unshift @ngx_cc_opts, "-I$inc";
 
         push @ngx_rpaths, "$luajit_prefix/lib";
 
@@ -590,8 +593,14 @@ _END_
         push @make_install_cmds, "cd $root_dir/build/$luajit_src && "
             . "\$(MAKE) install$extra_opts PREFIX=$luajit_prefix DESTDIR=\$(DESTDIR)";
 
-        env LUAJIT_LIB => "$luajit_root$luajit_prefix/lib";
-        env LUAJIT_INC => "$luajit_root$luajit_prefix/include/luajit-2.1";
+        my $lib = "$luajit_root$luajit_prefix/lib";
+        my $inc = "$luajit_root$luajit_prefix/include/luajit-2.1";
+
+        env LUAJIT_LIB => $lib;
+        env LUAJIT_INC => $inc;
+
+        unshift @ngx_ld_opts, "-L$lib";
+        unshift @ngx_cc_opts, "-I$inc";
 
         push @ngx_rpaths, "$luajit_prefix/lib";
 
@@ -838,6 +847,10 @@ _EOC_
     # prepare nginx configure line
 
     $ngx_dir = auto_complete "nginx";
+
+    if (@ngx_cc_opts) {
+        $opts_line .= " \\\n  --with-cc-opt='@ngx_cc_opts'";
+    }
 
     cd $ngx_dir;
 
