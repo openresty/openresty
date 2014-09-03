@@ -300,7 +300,7 @@ mv simpl-ngx_devel_kit-* ngx_devel_kit-$ver || exit 1
 
 #################################
 
-ver=0.25
+ver=0.26
 $root/util/get-tarball "https://github.com/openresty/set-misc-nginx-module/tarball/v$ver" -O set-misc-nginx-module-$ver.tar.gz || exit 1
 tar -xzf set-misc-nginx-module-$ver.tar.gz || exit 1
 mv openresty-set-misc-nginx-module-* set-misc-nginx-module-$ver || exit 1
