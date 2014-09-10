@@ -111,6 +111,12 @@ my $loader = <<_EOC_;
             end
 _EOC_
 
+my $env_list = '';
+for my $var (sort keys %ENV) {
+    #warn $var;
+    $env_list .= "env $var;\n";
+}
+
 my $conf_file = File::Spec->catfile($conf_dir, "nginx.conf");
 open my $out, ">$conf_file"
     or die "Cannot open $conf_file for writing: $!\n";
@@ -120,11 +126,7 @@ daemon off;
 master_process off;
 worker_processes 1;
 
-env LD_LIBRARY_PATH;
-env LD_PRELOAD;
-env PATH;
-env LUA_PATH;
-env LUA_CPATH;
+$env_list
 
 error_log /dev/stderr warn;
 #error_log /dev/stderr debug;
