@@ -177,13 +177,16 @@ $lua_package_path_config
             return concat(dst)
         end
 
-        print = function (...)
-            local args = {...}
+        local newline = "\\\\n"
 
+        local function write_to_output(...)
+            local args = {...}
             return stdout:write(expand_table(args, true))
         end
-        ngx.print = print
-        ngx.say = function (...) local ok, err = print(...) if ok then return print("\\\\n") end return ok, err end
+
+        ngx.print = write_to_output
+        ngx.say = function (...) local ok, err = write_to_output(...) if ok then return write_to_output(newline) end return ok, err end
+        print = ngx.say
         ngx.flush = function (...) return stdout:flush() end
         -- we cannot close stdout here due to a bug in Lua:
         ngx.eof = function (...) return true end
@@ -259,7 +262,7 @@ if (!defined $pid) {
 
 if ($pid == 0) {  # child process
     #warn "exec $cmd...";
-    exec $cmd;
+    exec($cmd) or die("could not run $cmd");
 
 } else {
     $child_pid = $pid;
