@@ -178,13 +178,22 @@ $lua_package_path_config
             return concat(dst)
         end
 
-        print = function (...)
+        local function output(...)
             local args = {...}
 
             return stdout:write(expand_table(args, true))
         end
-        ngx.print = print
-        ngx.say = function (...) local ok, err = print(...) if ok then return print("\\\\n") end return ok, err end
+
+        ngx.print = output
+        ngx.say = function (...)
+                local ok, err = output(...)
+                if ok then
+                    return output("\\\\n")
+                end
+                return ok, err
+            end
+        print = ngx.say
+
         ngx.flush = function (...) return stdout:flush() end
         -- we cannot close stdout here due to a bug in Lua:
         ngx.eof = function (...) return true end
