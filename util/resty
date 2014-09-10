@@ -29,7 +29,8 @@ if (!-f $nginx_path) {
 }
 
 if ($opts{V}) {
-    exec "$nginx_path -V";
+    my $cmd = "$nginx_path -V";
+    exec $cmd or die "Failed to run command \"$cmd\": $!\n";
 }
 
 my $lua_package_path_config = '';
@@ -259,7 +260,7 @@ if (!defined $pid) {
 
 if ($pid == 0) {  # child process
     #warn "exec $cmd...";
-    exec $cmd;
+    exec $cmd or die "Failed to run command \"$cmd\": $!\n";
 
 } else {
     $child_pid = $pid;
