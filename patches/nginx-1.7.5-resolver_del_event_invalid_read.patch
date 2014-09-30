@@ -1,0 +1,55 @@
+Common subdirectories: nginx-1.7.5/src/event/modules and nginx-1.7.5-patched/src/event/modules
+diff '--exclude=*~' '--exclude=*.swp' -up nginx-1.7.5/src/event/ngx_event.h nginx-1.7.5-patched/src/event/ngx_event.h
+--- nginx-1.7.5/src/event/ngx_event.h	2014-09-16 05:19:04.000000000 -0700
++++ nginx-1.7.5-patched/src/event/ngx_event.h	2014-09-30 15:40:03.867342287 -0700
+@@ -526,7 +526,7 @@ ngx_int_t ngx_send_lowat(ngx_connection_
+ 
+ 
+ /* used in ngx_log_debugX() */
+-#define ngx_event_ident(p)  ((ngx_connection_t *) (p))->fd
++#define ngx_event_ident(p)  (p)
+ 
+ 
+ #include <ngx_event_timer.h>
+diff '--exclude=*~' '--exclude=*.swp' -up nginx-1.7.5/src/event/ngx_event_timer.c nginx-1.7.5-patched/src/event/ngx_event_timer.c
+--- nginx-1.7.5/src/event/ngx_event_timer.c	2014-09-16 05:19:04.000000000 -0700
++++ nginx-1.7.5-patched/src/event/ngx_event_timer.c	2014-09-30 15:40:48.595548813 -0700
+@@ -99,7 +99,7 @@ ngx_event_expire_timers(void)
+             ev = (ngx_event_t *) ((char *) node - offsetof(ngx_event_t, timer));
+ 
+             ngx_log_debug2(NGX_LOG_DEBUG_EVENT, ev->log, 0,
+-                           "event timer del: %d: %M",
++                           "event timer del: %p: %M",
+                            ngx_event_ident(ev->data), ev->timer.key);
+ 
+             ngx_rbtree_delete(&ngx_event_timer_rbtree, &ev->timer);
+diff '--exclude=*~' '--exclude=*.swp' -up nginx-1.7.5/src/event/ngx_event_timer.h nginx-1.7.5-patched/src/event/ngx_event_timer.h
+--- nginx-1.7.5/src/event/ngx_event_timer.h	2014-09-16 05:19:04.000000000 -0700
++++ nginx-1.7.5-patched/src/event/ngx_event_timer.h	2014-09-30 15:40:23.762434150 -0700
+@@ -36,7 +36,7 @@ static ngx_inline void
+ ngx_event_del_timer(ngx_event_t *ev)
+ {
+     ngx_log_debug2(NGX_LOG_DEBUG_EVENT, ev->log, 0,
+-                   "event timer del: %d: %M",
++                   "event timer del: %p: %M",
+                     ngx_event_ident(ev->data), ev->timer.key);
+ 
+     ngx_mutex_lock(ngx_event_timer_mutex);
+@@ -75,7 +75,7 @@ ngx_event_add_timer(ngx_event_t *ev, ngx
+ 
+         if (ngx_abs(diff) < NGX_TIMER_LAZY_DELAY) {
+             ngx_log_debug3(NGX_LOG_DEBUG_EVENT, ev->log, 0,
+-                           "event timer: %d, old: %M, new: %M",
++                           "event timer: %p, old: %M, new: %M",
+                             ngx_event_ident(ev->data), ev->timer.key, key);
+             return;
+         }
+@@ -86,7 +86,7 @@ ngx_event_add_timer(ngx_event_t *ev, ngx
+     ev->timer.key = key;
+ 
+     ngx_log_debug3(NGX_LOG_DEBUG_EVENT, ev->log, 0,
+-                   "event timer add: %d: %M:%M",
++                   "event timer add: %p: %M:%M",
+                     ngx_event_ident(ev->data), timer, ev->timer.key);
+ 
+     ngx_mutex_lock(ngx_event_timer_mutex);
