@@ -877,7 +877,7 @@ sub usage ($) {
     my $msg = <<'_EOC_';
   --help                             this message
 
-  --prefix=PATH                      set the installation prefix
+  --prefix=PATH                      set the installation prefix (default to /usr/local/openresty).
 
   --with-debug                       enable the debugging logging and also enable -O0 -g for the C compiler.
                                      this not only affects nginx, but also other components.
