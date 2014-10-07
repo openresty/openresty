@@ -270,6 +270,10 @@ echo "$info_txt applying the resolver_del_event_invalid_read patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-resolver_del_event_invalid_read.patch || exit 1
 echo
 
+echo "$info_txt applying the hash_overflow patch for nginx"
+patch -p1 < $root/patches/nginx-$main_ver-hash_overflow.patch || exit 1
+echo
+
 rm -f *.patch || exit 1
 
 cd .. || exit 1
@@ -339,7 +343,7 @@ mv openresty-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.9.12
+ver=0.9.13rc1
 $root/util/get-tarball "https://github.com/openresty/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv openresty-lua-nginx-module-* ngx_lua-$ver || exit 1
