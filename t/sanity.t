@@ -15,7 +15,7 @@ __DATA__
 --- out
   --help                             this message
 
-  --prefix=PATH                      set the installation prefix
+  --prefix=PATH                      set the installation prefix (default to /usr/local/openresty).
 
   --with-debug                       enable the debugging logging and also enable -O0 -g for the C compiler.
                                      this not only affects nginx, but also other components.
@@ -69,9 +69,9 @@ __DATA__
 
   --with-lua51                       enable and build the bundled standard Lua 5.1 interpreter
   --without-lua51                    disable the bundled standard Lua 5.1 interpreter
-  --with-lua51=PATH                  specify the external installation of Lua 5.1 by PATH
+  --with-lua51=DIR                   specify the external installation of Lua 5.1 by DIR
   --with-luajit                      enable and build the bundled LuaJIT 2.1 (the default)
-  --with-luajit=PATH                 use the external LuaJIT 2.1 installation specified by PATH
+  --with-luajit=DIR                  use the external LuaJIT 2.1 installation specified by DIR
   --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.1
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
   --with-libpq=DIR                   specify the libpq (or postgresql) installation prefix
@@ -855,7 +855,7 @@ clean:
 --- out
   --help                             this message
 
-  --prefix=PATH                      set the installation prefix
+  --prefix=PATH                      set the installation prefix (default to /usr/local/openresty).
 
   --with-debug                       enable the debugging logging and also enable -O0 -g for the C compiler.
                                      this not only affects nginx, but also other components.
@@ -909,9 +909,9 @@ clean:
 
   --with-lua51                       enable and build the bundled standard Lua 5.1 interpreter
   --without-lua51                    disable the bundled standard Lua 5.1 interpreter
-  --with-lua51=PATH                  specify the external installation of Lua 5.1 by PATH
+  --with-lua51=DIR                   specify the external installation of Lua 5.1 by DIR
   --with-luajit                      enable and build the bundled LuaJIT 2.1 (the default)
-  --with-luajit=PATH                 use the external LuaJIT 2.1 installation specified by PATH
+  --with-luajit=DIR                  use the external LuaJIT 2.1 installation specified by DIR
   --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.1
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
   --with-libpq=DIR                   specify the libpq (or postgresql) installation prefix
@@ -2780,7 +2780,7 @@ clean:
 platform: linux (linux)
 
 --- err
---with-luajit and --with-luajit=PATH are mutually exclusive.
+--with-luajit and --with-luajit=DIR are mutually exclusive.
 --- exit: 2
 
 
