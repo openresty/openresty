@@ -251,7 +251,7 @@ _EOC_
 
 close $out;
 
-my $cmd = "$nginx_path -p $prefix_dir/";
+my $cmd = "$nginx_path -p $prefix_dir/ -c $conf_file";
 
 my $child_pid;
 
