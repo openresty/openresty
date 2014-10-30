@@ -270,9 +270,12 @@ echo "$info_txt applying the resolver_del_event_invalid_read patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-resolver_del_event_invalid_read.patch || exit 1
 echo
 
-echo "$info_txt applying the hash_overflow patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-hash_overflow.patch || exit 1
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.7.7`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying the hash_overflow patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-hash_overflow.patch || exit 1
+    echo
+fi
 
 rm -f *.patch || exit 1
 
