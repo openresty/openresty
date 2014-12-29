@@ -312,8 +312,6 @@ push @make_cmds, "cd $root_dir/build/$ngx_dir && "
 push @make_install_cmds, "cd $root_dir/build/$ngx_dir && "
     . "\$(MAKE) install DESTDIR=\$(DESTDIR)";
 
-push @make_install_cmds, "cd $root_dir/build && ./install resty \$(DESTDIR)/$prefix/bin/";
-
 cd '../..'; # to the root
 #die "pwd: " .. `pwd`;
 
@@ -843,6 +841,12 @@ _EOC_
             }
         }
     }
+
+    # configure resty-cli:
+
+    my $resty_cli_dir = auto_complete 'resty-cli';
+    push @make_install_cmds, "cd $root_dir/build/$resty_cli_dir && "
+         . "$root_dir/build/install resty \$(DESTDIR)/$prefix/bin/";
 
     # prepare nginx configure line
 
