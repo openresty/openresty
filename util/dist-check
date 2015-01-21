@@ -61,6 +61,7 @@ sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
 sh "curl -si localhost/lua|grep 'no pool'";
 sh "curl -si localhost/cjson|grep 'json.safe: '";
+sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Normal Build ===\n";
@@ -76,6 +77,7 @@ sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
 sh "curl -si localhost/cjson|grep 'json.safe: '";
+sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Debug Build ===\n";
@@ -96,6 +98,7 @@ sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
 sh "curl -si localhost/cjson|grep 'json.safe: '";
+sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== DTrace Build ===\n";
@@ -118,6 +121,7 @@ if ($^O eq 'linux') {
 } elsif ($^O eq 'freebsd' || $^O eq 'darwin' || $^O eq 'solaris') {
     sh "sudo dtrace -l|grep http-lua-coroutine-done";
 }
+sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
