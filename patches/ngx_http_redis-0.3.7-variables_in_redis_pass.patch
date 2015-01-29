@@ -1,5 +1,5 @@
---- ngx_http_redis-0.3.7/ngx_http_redis_module.c	2013-03-21 17:51:09.224660165 -0700
-+++ ngx_http_redis-0.3.7-patched/ngx_http_redis_module.c	2013-03-21 17:50:51.928599875 -0700
+--- ngx_http_redis-0.3.7/ngx_http_redis_module.c	2013-11-28 20:41:16.000000000 -0800
++++ ngx_http_redis-0.3.7-patched2/ngx_http_redis_module.c	2015-01-29 12:35:38.610133438 -0800
 @@ -18,6 +18,8 @@ typedef struct {
      ngx_int_t                  index;
      ngx_int_t                  db;
@@ -76,7 +76,7 @@
      u->output.tag = (ngx_buf_tag_t) &ngx_http_redis_module;
  #endif
  
-@@ -835,24 +870,15 @@ ngx_http_redis_pass(ngx_conf_t *cf, ngx_
+@@ -845,24 +880,15 @@ ngx_http_redis_pass(ngx_conf_t *cf, ngx_
  
      ngx_str_t                 *value;
      ngx_url_t                  u;
@@ -104,7 +104,7 @@
      clcf = ngx_http_conf_get_module_loc_conf(cf, ngx_http_core_module);
  
      clcf->handler = ngx_http_redis_handler;
-@@ -869,6 +895,41 @@ ngx_http_redis_pass(ngx_conf_t *cf, ngx_
+@@ -879,6 +905,41 @@ ngx_http_redis_pass(ngx_conf_t *cf, ngx_
  
      rlcf->db = ngx_http_get_variable_index(cf, &ngx_http_redis_db);
  
@@ -146,7 +146,7 @@
      return NGX_CONF_OK;
  }
  
-@@ -906,3 +967,41 @@ ngx_http_redis_add_variables(ngx_conf_t
+@@ -916,3 +977,41 @@ ngx_http_redis_add_variables(ngx_conf_t
  
      return NGX_OK;
  }
