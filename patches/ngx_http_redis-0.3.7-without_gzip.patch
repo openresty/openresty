@@ -1,0 +1,12 @@
+--- ngx_http_redis-0.3.7/ngx_http_redis_module.c	2013-11-28 20:41:16.000000000 -0800
++++ ngx_http_redis-0.3.7-patched/ngx_http_redis_module.c	2015-01-29 12:26:58.195973401 -0800
+@@ -527,7 +527,9 @@ found:
+             ngx_str_set(&h->key, "Content-Encoding");
+             ngx_str_set(&h->value, "gzip");
+             h->lowcase_key = (u_char*) "content-encoding";
++#if (NGX_HTTP_GZIP)
+             u->headers_in.content_encoding = h;
++#endif
+         }
+ 
+         /* try to find end of string */
