@@ -141,6 +141,10 @@ Options directly inherited from nginx
   --without-http_browser_module      disable ngx_http_browser_module
   --without-http_upstream_ip_hash_module
                                      disable ngx_http_upstream_ip_hash_module
+  --without-http_upstream_least_conn_module
+                                     disable ngx_http_upstream_least_conn_module
+  --without-http_upstream_keepalive_module
+                                     disable ngx_http_upstream_keepalive_module
 
   --with-http_perl_module            enable ngx_http_perl_module
   --with-perl_modules_path=PATH      set path to the perl modules
@@ -981,6 +985,10 @@ Options directly inherited from nginx
   --without-http_browser_module      disable ngx_http_browser_module
   --without-http_upstream_ip_hash_module
                                      disable ngx_http_upstream_ip_hash_module
+  --without-http_upstream_least_conn_module
+                                     disable ngx_http_upstream_least_conn_module
+  --without-http_upstream_keepalive_module
+                                     disable ngx_http_upstream_keepalive_module
 
   --with-http_perl_module            enable ngx_http_perl_module
   --with-perl_modules_path=PATH      set path to the perl modules
