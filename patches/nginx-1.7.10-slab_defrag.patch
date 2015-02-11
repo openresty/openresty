@@ -1,0 +1,138 @@
+diff --git a/src/core/ngx_slab.c b/src/core/ngx_slab.c
+index c3a27f7..1bde432 100644
+--- a/src/core/ngx_slab.c
++++ b/src/core/ngx_slab.c
+@@ -6,6 +6,7 @@
+ 
+ #include <ngx_config.h>
+ #include <ngx_core.h>
++#include <assert.h>
+ 
+ 
+ #define NGX_SLAB_PAGE_MASK   3
+@@ -111,6 +112,7 @@ ngx_slab_init(ngx_slab_pool_t *pool)
+     ngx_memzero(p, pages * sizeof(ngx_slab_page_t));
+ 
+     pool->pages = (ngx_slab_page_t *) p;
++    pool->npages = pages;
+ 
+     pool->free.prev = 0;
+     pool->free.next = (ngx_slab_page_t *) p;
+@@ -118,6 +120,7 @@ ngx_slab_init(ngx_slab_pool_t *pool)
+     pool->pages->slab = pages;
+     pool->pages->next = &pool->free;
+     pool->pages->prev = (uintptr_t) &pool->free;
++    pool->pages->prev_slab = 0;
+ 
+     pool->start = (u_char *)
+                   ngx_align_ptr((uintptr_t) p + pages * sizeof(ngx_slab_page_t),
+@@ -625,9 +628,16 @@ ngx_slab_alloc_pages(ngx_slab_pool_t *pool, ngx_uint_t pages)
+         if (page->slab >= pages) {
+ 
+             if (page->slab > pages) {
++                /* adjust the next adjacent block's "prev_slab" field */
++                p = &page[page->slab];
++                if (p < pool->pages + pool->npages) {
++                    p->prev_slab = page->slab - pages;
++                }
++
+                 page[pages].slab = page->slab - pages;
+                 page[pages].next = page->next;
+                 page[pages].prev = page->prev;
++                page[pages].prev_slab = pages;
+ 
+                 p = (ngx_slab_page_t *) page->prev;
+                 p->next = &page[pages];
+@@ -651,6 +661,7 @@ ngx_slab_alloc_pages(ngx_slab_pool_t *pool, ngx_uint_t pages)
+                 p->slab = NGX_SLAB_PAGE_BUSY;
+                 p->next = NULL;
+                 p->prev = NGX_SLAB_PAGE;
++                p->prev_slab = 0;
+                 p++;
+             }
+ 
+@@ -668,7 +679,7 @@ static void
+ ngx_slab_free_pages(ngx_slab_pool_t *pool, ngx_slab_page_t *page,
+     ngx_uint_t pages)
+ {
+-    ngx_slab_page_t  *prev;
++    ngx_slab_page_t  *prev, *p;
+ 
+     page->slab = pages--;
+ 
+@@ -682,6 +693,53 @@ ngx_slab_free_pages(ngx_slab_pool_t *pool, ngx_slab_page_t *page,
+         page->next->prev = page->prev;
+     }
+ 
++    /* merge the next adjacent free block if it is free */
++
++    p = &page[page->slab];
++    if (p < pool->pages + pool->npages
++        && !(p->slab & NGX_SLAB_PAGE_START)
++        && p->next != NULL
++        && (p->prev & NGX_SLAB_PAGE_MASK) == NGX_SLAB_PAGE)
++    {
++        page->slab += p->slab;
++
++        /* remove the next adjacent block from the free list */
++
++        prev = (ngx_slab_page_t *) p->prev;
++        prev->next = p->next;
++        p->next->prev = p->prev;
++
++        /* adjust the "prev_slab" field in the next next adjacent block */
++        if (p + p->slab < pool->pages + pool->npages) {
++            p[p->slab].prev_slab = page->slab;
++        }
++
++        ngx_memzero(p, sizeof(ngx_slab_page_t));
++    }
++
++    if (page->prev_slab) {
++        /* merge the previous adjacent block if it is free */
++
++        p = page - page->prev_slab;
++        if (!(p->slab & NGX_SLAB_PAGE_START)
++            && p->next != NULL
++            && (p->prev & NGX_SLAB_PAGE_MASK) == NGX_SLAB_PAGE)
++        {
++            assert(p->slab == page->prev_slab);
++
++            p->slab += page->slab;
++            ngx_memzero(page, sizeof(ngx_slab_page_t));
++
++            /* adjust the "prev_slab" field in the next adjacent block */
++            if (p + p->slab < pool->pages + pool->npages) {
++                p[p->slab].prev_slab = p->slab;
++            }
++
++            /* skip adding "page" to the free list */
++            return;
++        }
++    }
++
+     page->prev = (uintptr_t) &pool->free;
+     page->next = pool->free.next;
+ 
+diff --git a/src/core/ngx_slab.h b/src/core/ngx_slab.h
+index c5e420b..287ac79 100644
+--- a/src/core/ngx_slab.h
++++ b/src/core/ngx_slab.h
+@@ -19,6 +19,8 @@ struct ngx_slab_page_s {
+     uintptr_t         slab;
+     ngx_slab_page_t  *next;
+     uintptr_t         prev;
++    uintptr_t         prev_slab;
++                         /* number of pages for the previous adjacent block */
+ };
+ 
+ 
+@@ -31,6 +33,8 @@ typedef struct {
+     ngx_slab_page_t  *pages;
+     ngx_slab_page_t   free;
+ 
++    ngx_uint_t        npages;
++
+     u_char           *start;
+     u_char           *end;
+ 

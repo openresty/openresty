@@ -112,9 +112,12 @@ fi
 
 #patch -p1 < $root/patches/nginx-$main_ver-gzip_ok_invalid_read_fix.patch || exit 1
 
-echo "$info_txt applying the location_if_inherits_proxy patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-location_if_inherits_proxy.patch || exit 1
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.7.9`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying the location_if_inherits_proxy patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-location_if_inherits_proxy.patch || exit 1
+    echo
+fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.5.3`
 if [ "$answer" = "N" ]; then
@@ -204,9 +207,12 @@ if [ "$answer" = "N" ]; then
     echo
 fi
 
-echo "$info_txt applying the cache_lock_hang_in_subreq patch for nginx $ver"
-patch -p1 < $root/patches/nginx-$ver-cache_lock_hang_in_subreq.patch || exit 1
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.7.8`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying the cache_lock_hang_in_subreq patch for nginx $ver"
+    patch -p1 < $root/patches/nginx-$ver-cache_lock_hang_in_subreq.patch || exit 1
+    echo
+fi
 
 echo "$info_txt applying the proxy_host_port_vars patch for nginx $ver"
 patch -p1 < $root/patches/nginx-$ver-proxy_host_port_vars.patch || exit 1
@@ -266,9 +272,12 @@ if [ "$answer" = "N" ]; then
     echo
 fi
 
-echo "$info_txt applying the resolver_del_event_invalid_read patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-resolver_del_event_invalid_read.patch || exit 1
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.7.8`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying the resolver_del_event_invalid_read patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-resolver_del_event_invalid_read.patch || exit 1
+    echo
+fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.7.7`
 if [ "$answer" = "N" ]; then
@@ -418,9 +427,11 @@ mv ngx_http_redis-* redis-nginx-module-$ver || exit 1
 cd redis-nginx-module-$ver
 echo "applying ngx_http_redis-$ver-variables_in_redis_pass.patch"
 patch -p1 < $root/patches/ngx_http_redis-$ver-variables_in_redis_pass.patch || exit 1
+echo
 
 echo "applying ngx_http_redis-$ver-without_gzip.patch"
 patch -p1 < $root/patches/ngx_http_redis-$ver-without_gzip.patch || exit 1
+echo
 cd ..
 
 #################################
