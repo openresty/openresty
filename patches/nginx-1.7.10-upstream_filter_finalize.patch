@@ -1,0 +1,66 @@
+# HG changeset patch
+# User Yichun Zhang <agentzh@gmail.com>
+# Date 1423789183 28800
+#      Thu Feb 12 16:59:43 2015 -0800
+# Node ID 8b3d7171f35e74c8bea3234e88d8977b4f11f815
+# Parent  f3f25ad09deee27485050a75732e5f46ab1b18b3
+Upstream: fixed $upstream_response_time for filter_finalize + error_page.
+
+ngx_http_upstream_finalize_request() is always called twice when an
+output filter module calls ngx_http_filter_finalize_request() *and*
+a custom error page is configured by the error_page directive. This
+is because
+
+1. ngx_http_filter_finalize_request() triggers
+        calling ngx_http_terminate_request
+        => calling ngx_http_upstream_cleanup
+        => calling ngx_http_upstream_finalize_request
+
+2. ngx_http_internal_redirect() returns NGX_DONE
+        ==> ngx_http_special_response_handler() returns NGX_DONE
+        ==> ngx_http_filter_finalize_request() returns NGX_ERROR
+        ==> ngx_http_send_header() returns NGX_ERROR
+        ==> ngx_http_upstream_send_response() calls
+            ngx_http_upstream_finalize_request() again in the same
+            ngx_http_upstream_send_response() call as 1).
+
+This might result in corrupted $upstream_response_time values (close
+to the absolute timestamp value) when u->state->response_sec happens
+to be non-zero.
+
+This patch ensures that the $upstream_response_time value is only
+calculated upon the first ngx_http_upstream_finalize_request()
+invocation.
+
+diff -r f3f25ad09dee -r 8b3d7171f35e src/http/ngx_http_upstream.c
+--- a/src/http/ngx_http_upstream.c	Wed Feb 11 20:18:55 2015 +0300
++++ b/src/http/ngx_http_upstream.c	Thu Feb 12 16:59:43 2015 -0800
+@@ -3738,7 +3738,7 @@ static void
+ ngx_http_upstream_finalize_request(ngx_http_request_t *r,
+     ngx_http_upstream_t *u, ngx_int_t rc)
+ {
+-    ngx_uint_t   flush;
++    ngx_uint_t   flush, cleaned;
+     ngx_time_t  *tp;
+ 
+     ngx_log_debug1(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
+@@ -3747,6 +3747,10 @@ ngx_http_upstream_finalize_request(ngx_h
+     if (u->cleanup) {
+         *u->cleanup = NULL;
+         u->cleanup = NULL;
++        cleaned = 0;
++
++    } else {
++        cleaned = 1;
+     }
+ 
+     if (u->resolved && u->resolved->ctx) {
+@@ -3754,7 +3758,7 @@ ngx_http_upstream_finalize_request(ngx_h
+         u->resolved->ctx = NULL;
+     }
+ 
+-    if (u->state && u->state->response_sec) {
++    if (!cleaned && u->state && u->state->response_sec) {
+         tp = ngx_timeofday();
+         u->state->response_sec = tp->sec - u->state->response_sec;
+         u->state->response_msec = tp->msec - u->state->response_msec;
