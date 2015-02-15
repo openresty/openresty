@@ -1,8 +1,8 @@
 # HG changeset patch
 # User Yichun Zhang <agentzh@gmail.com>
-# Date 1423789183 28800
-#      Thu Feb 12 16:59:43 2015 -0800
-# Node ID 8b3d7171f35e74c8bea3234e88d8977b4f11f815
+# Date 1424037188 28800
+#      Sun Feb 15 13:53:08 2015 -0800
+# Node ID aa15033f24da93a2c7c971d5a95ae44ce21754a6
 # Parent  f3f25ad09deee27485050a75732e5f46ab1b18b3
 Upstream: fixed $upstream_response_time for filter_finalize + error_page.
 
@@ -32,35 +32,25 @@ This patch ensures that the $upstream_response_time value is only
 calculated upon the first ngx_http_upstream_finalize_request()
 invocation.
 
-diff -r f3f25ad09dee -r 8b3d7171f35e src/http/ngx_http_upstream.c
+diff -r f3f25ad09dee -r aa15033f24da src/http/ngx_http_upstream.c
 --- a/src/http/ngx_http_upstream.c	Wed Feb 11 20:18:55 2015 +0300
-+++ b/src/http/ngx_http_upstream.c	Thu Feb 12 16:59:43 2015 -0800
-@@ -3738,7 +3738,7 @@ static void
- ngx_http_upstream_finalize_request(ngx_http_request_t *r,
-     ngx_http_upstream_t *u, ngx_int_t rc)
- {
--    ngx_uint_t   flush;
-+    ngx_uint_t   flush, cleaned;
-     ngx_time_t  *tp;
- 
++++ b/src/http/ngx_http_upstream.c	Sun Feb 15 13:53:08 2015 -0800
+@@ -3744,10 +3744,14 @@ ngx_http_upstream_finalize_request(ngx_h
      ngx_log_debug1(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
-@@ -3747,6 +3747,10 @@ ngx_http_upstream_finalize_request(ngx_h
-     if (u->cleanup) {
-         *u->cleanup = NULL;
-         u->cleanup = NULL;
-+        cleaned = 0;
+                    "finalize http upstream request: %i", rc);
+ 
+-    if (u->cleanup) {
+-        *u->cleanup = NULL;
+-        u->cleanup = NULL;
+-    }
++    if (u->cleanup == NULL) {
++        /* the request was already finalized */
++        ngx_http_finalize_request(r, NGX_DONE);
++        return;
++    }
 +
-+    } else {
-+        cleaned = 1;
-     }
++    *u->cleanup = NULL;
++    u->cleanup = NULL;
  
      if (u->resolved && u->resolved->ctx) {
-@@ -3754,7 +3758,7 @@ ngx_http_upstream_finalize_request(ngx_h
-         u->resolved->ctx = NULL;
-     }
- 
--    if (u->state && u->state->response_sec) {
-+    if (!cleaned && u->state && u->state->response_sec) {
-         tp = ngx_timeofday();
-         u->state->response_sec = tp->sec - u->state->response_sec;
-         u->state->response_msec = tp->msec - u->state->response_msec;
+         ngx_resolve_name_done(u->resolved->ctx);
