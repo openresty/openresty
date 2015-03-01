@@ -7,6 +7,7 @@ use Getopt::Std qw(getopts);
 use Cwd qw/cwd/;
 
 sub sh ($);
+sub write_config_file ($);
 
 my %opts;
 getopts("lf:", \%opts) or die "Usage: $0 [-f] [-l] <cores>\n";
@@ -44,7 +45,25 @@ if ($^O eq 'solaris') {
     $cfg_opts .= " --with-cc=gcc";
 }
 
+if ($^O eq 'darwin') {
+    $cfg_opts .= " --with-cc-opt='-I/usr/local/include'"
+               . " --with-ld-opt='-L/usr/local/lib'";
+}
+
 my $prefix;
+
+my $config = do { local $/; <DATA> };
+
+sub write_config_file ($) {
+    my $outfile = shift;
+    warn "Writing file $outfile\n";
+    open my $out, ">$outfile" or
+        die "Cannot open $outfile for writing: $!\n";
+    print $out $config;
+    close $out;
+}
+
+write_config_file "/tmp/nginx.conf";
 
 warn "=== Without Gzip ===\n";
 $prefix = "/usr/local/openresty-nogzip";
@@ -53,6 +72,7 @@ unless ($opts{f}) {
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
+sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--without-http_gzip_module'";
 system "sudo killall nginx > /dev/null 2>&1";
@@ -70,6 +90,7 @@ unless ($opts{f}) {
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
+sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 #sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-no-pool-patch'";
 system "sudo killall nginx > /dev/null 2>&1";
@@ -88,6 +109,7 @@ unless ($opts{f}) {
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
+sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 system "sudo killall nginx > /dev/null 2>&1";
 sh "sudo $prefix/nginx/sbin/nginx";
@@ -108,6 +130,7 @@ unless ($opts{f}) {
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
+sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-debug'";
 system "sudo killall nginx > /dev/null 2>&1";
@@ -125,6 +148,7 @@ unless ($opts{f}) {
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
+sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-dtrace-probes'";
 system "sudo killall nginx > /dev/null 2>&1";
@@ -145,4 +169,50 @@ sh "sudo $prefix/nginx/sbin/nginx -sstop";
 sub sh ($) {
     my $cmd = shift;
     system($cmd) == 0 or die "Command \"$cmd\" failed";
+}
+
+__DATA__
+
+user  nobody;
+worker_processes  1;
+error_log  logs/error.log;
+pid        logs/nginx.pid;
+
+events {
+    accept_mutex off;
+    worker_connections  256;
+}
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    init_by_lua '
+        if jit then
+            require "resty.core"
+        end
+    ';
+
+    server {
+        listen       *:80;
+        server_name  localhost;
+
+        location = /lua {
+            content_by_lua '
+                local upstream = require "ngx.upstream"
+                if jit then
+                    ngx.say(jit.version)
+                else
+                    ngx.say(_VERSION)
+                end
+            ';
+        }
+
+        location = /cjson {
+            content_by_lua '
+                local json = require "cjson.safe"
+                ngx.say("cjson.safe: ", json.encode{foo = 123})
+            ';
+        }
+    }
 }
