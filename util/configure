@@ -549,6 +549,17 @@ _END_
 
         my $extra_opts = ' TARGET_STRIP=@: CCDEBUG=-g';
 
+       {
+            my $comp = ($cc || 'cc');
+            my $ver = `$comp --version`;
+            if (defined $ver && $ver =~ /\(GCC\) (\d+\.\d+)/) {
+                my $v = $1;
+                if ($v < 4.5) {
+                    $luajit_xcflags .= " -std=gnu99";
+                }
+            }
+        }
+
         if ($opts->{debug}) {
             $luajit_xcflags .= " -DLUA_USE_APICHECK -DLUA_USE_ASSERT";
             $luajit_xcflags =~ s/^ +//;
