@@ -528,8 +528,8 @@ _END_
         env LUAJIT_LIB => $lib;
         env LUAJIT_INC => $inc;
 
-        unshift @ngx_ld_opts, "-L$lib";
-        unshift @ngx_cc_opts, "-I$inc";
+        #unshift @ngx_ld_opts, "-L$lib";
+        #unshift @ngx_cc_opts, "-I$inc";
 
         push @ngx_rpaths, "$luajit_prefix/lib";
 
@@ -597,8 +597,8 @@ _END_
         env LUAJIT_LIB => $lib;
         env LUAJIT_INC => $inc;
 
-        unshift @ngx_ld_opts, "-L$lib";
-        unshift @ngx_cc_opts, "-I$inc";
+        #unshift @ngx_ld_opts, "-L$lib";
+        #unshift @ngx_cc_opts, "-I$inc";
 
         push @ngx_rpaths, "$luajit_prefix/lib";
 
