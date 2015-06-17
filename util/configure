@@ -154,7 +154,25 @@ for my $opt (@ARGV) {
     if ($opt =~ /^--prefix=(.*)/) {
         $prefix = $1;
 
-    } elsif ($opt eq '--without-lua51') {
+    } elsif ($opt eq '--without-any-lua') {
+        $resty_opts{no_lua_cjson}                      = 1;
+        $resty_opts{no_lua_redis_parser}               = 1;
+        $resty_opts{no_lua_resty_memcached}            = 1;
+        $resty_opts{no_lua_resty_redis}                = 1;
+        $resty_opts{no_lua_resty_dns}                  = 1;
+        $resty_opts{no_lua_resty_mysql}                = 1;
+        $resty_opts{no_lua_resty_upload}               = 1;
+        $resty_opts{no_lua_resty_string}               = 1;
+        $resty_opts{no_lua_resty_websocket}            = 1;
+        $resty_opts{no_lua_resty_lock}                 = 1;
+        $resty_opts{no_lua_resty_lrucache}             = 1;
+        $resty_opts{no_lua_resty_core}                 = 1;
+        $resty_opts{no_lua_resty_upstream_healthcheck} = 1;
+        $resty_opts{no_lua_rds_parser}                 = 1;
+        $resty_opts{no_http_lua_module}                = 1;
+        $resty_opts{no_http_lua_upstream_module}       = 1;
+
+    } elsif ($opt eq '--with-lua51') {
         undef $resty_opts{lua};
 
     } elsif ($opt eq '--with-lua51') {
@@ -973,6 +991,8 @@ _EOC_
   --without-lua_resty_lock           disable the lua-resty-lock library
   --without-lua_resty_lrucache       disable the lua-resty-lrucache library
   --without-lua_resty_core           disable the lua-resty-core library
+
+  --without-any-lua                  disable all Lua related modules
 
   --with-lua51                       enable and build the bundled standard Lua 5.1 interpreter
   --without-lua51                    disable the bundled standard Lua 5.1 interpreter
