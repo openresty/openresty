@@ -447,7 +447,7 @@ mv FRiCKLE-ngx_postgres-* ngx_postgres-$ver || exit 1
 
 #################################
 
-ver=0.2rc2
+ver=0.2rc3
 $root/util/get-tarball "https://github.com/FRiCKLE/ngx_coolkit/tarball/$ver" -O ngx_coolkit-$ver.tar.gz || exit 1
 tar -xzf ngx_coolkit-$ver.tar.gz || exit 1
 mv FRiCKLE-ngx_coolkit-* ngx_coolkit-$ver || exit 1
