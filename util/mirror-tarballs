@@ -366,7 +366,7 @@ mv openresty-lua-nginx-module-* ngx_lua-$ver || exit 1
 
 #################################
 
-ver=0.02
+ver=0.03
 $root/util/get-tarball "https://github.com/openresty/lua-upstream-nginx-module/tarball/v$ver" -O lua-upstream-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-upstream-nginx-module-$ver.tar.gz || exit 1
 mv openresty-lua-upstream-nginx-module-* ngx_lua_upstream-$ver || exit 1
@@ -601,7 +601,7 @@ mv openresty-lua-resty-lrucache-* lua-resty-lrucache-$ver || exit 1
 
 #################################
 
-ver=0.1.0
+ver=0.1.1
 $root/util/get-tarball "https://github.com/openresty/lua-resty-core/tarball/v$ver" -O "lua-resty-core-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-core-$ver.tar.gz || exit 1
 mv openresty-lua-resty-core-* lua-resty-core-$ver || exit 1
