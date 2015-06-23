@@ -303,7 +303,7 @@ rm -rf no-pool-nginx-$ver
 
 #################################
 
-ver=0.57
+ver=0.58
 $root/util/get-tarball "https://github.com/openresty/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv openresty-echo-nginx-module-* echo-nginx-module-$ver || exit 1
