@@ -75,7 +75,7 @@ for my $t_file (@t_files) {
     close $in;
 }
 
-print join("\n", map { /^LuaJIT/ ? "* ~$_" : "* $_" } sort @dirs), "\n";
+#print join("\n", map { /^LuaJIT/ ? "* ~$_" : "* $_" } sort @dirs), "\n";
 
 sub cd ($) {
     my $dir = shift;
