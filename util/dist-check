@@ -30,7 +30,7 @@ if ($^O eq 'freebsd' || $^O eq 'solaris') {
     $make = 'make';
 }
 
-my $cfg_opts = "--with-http_iconv_module";
+my $cfg_opts = "";
 
 if ($opts{l}) {
     $lua = 'Lua';
@@ -65,16 +65,18 @@ sub write_config_file ($) {
 
 write_config_file "/tmp/nginx.conf";
 
-warn "=== Without Gzip ===\n";
+warn "=== Without Gzip/SSL/PCRE ===\n";
 $prefix = "/usr/local/openresty-nogzip";
 unless ($opts{f}) {
-    sh "./configure $cfg_opts --without-http_gzip_module --prefix=$prefix -j$jobs > /dev/null";
+    sh "./configure $cfg_opts --without-http_rewrite_module --without-http_ssl_module --without-pcre --without-http_gzip_module --prefix=$prefix -j$jobs > /dev/null";
 }
 sh "$make -j$jobs > /dev/null";
 sh "sudo $make install > /dev/null";
 sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--without-http_gzip_module'";
+sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep -v -q '\\--with-http_ssl_module'";
+sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--without-pcre'";
 system "sudo killall nginx > /dev/null 2>&1";
 sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
@@ -82,6 +84,8 @@ sh "curl -si localhost/lua|grep $ver";
 sh "curl -si localhost/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
+
+$cfg_opts .= " --with-http_iconv_module";
 
 warn "\n=== No Pool Build ===\n";
 $prefix = "/usr/local/openresty-nopool";
