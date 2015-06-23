@@ -163,6 +163,12 @@ for my $opt (@ARGV) {
     } elsif ($opt =~ /^--with-lua51=(.*)/) {
         $resty_opts{lua_path} = $1;
 
+    } elsif ($opt eq '--without-http_rewrite_module') {
+        warn "WARNING: ngx_devel_kit is automatically disabled ",
+            "because ngx_http_rewrite_module is disabled.\n";
+        $resty_opts{no_ndk} = 1;
+        push @ngx_opts, $opt;
+
     } elsif ($opt eq '--without-lua_cjson') {
         $resty_opts{no_lua_cjson} = 1;
 
@@ -402,7 +408,7 @@ Type the following commands to build and install:
 _END_
 
     if ($opts->{no_ndk}) {
-        for my $name (qw(lua set_misc iconv lz_session form_input array_var)) {
+        for my $name (qw(set_misc iconv lz_session form_input array_var encrypted_session)) {
             if (! $opts->{"no_http_$name"}) {
                 warn "WARNING: ngx_http_${name}_module is automatically disabled ",
                     "because ngx_devel_kit_module is disabled.\n";
