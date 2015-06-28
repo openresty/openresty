@@ -40,7 +40,7 @@ For Bundle Maintainers
 
 The bundle's source is at the following git repository:
 
-https://github.com/agentzh/ngx_openresty
+https://github.com/openresty/ngx_openresty
 
 To reproduce the bundle tarball, just do
 
