@@ -280,7 +280,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -353,7 +353,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -437,7 +437,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -510,7 +510,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -583,7 +583,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -656,7 +656,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -728,7 +728,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -774,7 +774,7 @@ all:
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -846,7 +846,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//opt/blah/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//opt/blah/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -1124,7 +1124,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -1197,7 +1197,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -1270,7 +1270,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -1357,7 +1357,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -1429,7 +1429,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -1503,7 +1503,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -1577,13 +1577,13 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
 	rm -rf build
 --- err
-Can't exec "cl": No such file or directory at ./configure line 554.
+Can't exec "cl": No such file or directory at ./configure line 560.
 
 
 
@@ -1666,7 +1666,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -1739,7 +1739,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -1835,7 +1835,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -1918,7 +1918,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -1991,7 +1991,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2064,7 +2064,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2137,7 +2137,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2210,7 +2210,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2282,7 +2282,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2355,7 +2355,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2428,7 +2428,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2501,7 +2501,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2571,7 +2571,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2639,7 +2639,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2709,7 +2709,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2776,7 +2776,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2854,7 +2854,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2926,7 +2926,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -2999,7 +2999,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -3071,7 +3071,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -3143,7 +3143,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -3214,7 +3214,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -3285,7 +3285,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -3358,7 +3358,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -3432,7 +3432,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -3504,7 +3504,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -3576,7 +3576,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -3648,7 +3648,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -3720,7 +3720,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -3792,7 +3792,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
@@ -3863,7 +3863,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.1 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.02 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.03 && $OPENRESTY_BUILD_DIR/install resty $(DESTDIR)//usr/local/openresty/bin/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.7.10 && $(MAKE) install DESTDIR=$(DESTDIR)
 
 clean:
