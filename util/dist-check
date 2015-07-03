@@ -87,6 +87,24 @@ sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 $cfg_opts .= " --with-http_iconv_module";
 
+warn "\n=== --with-threads ===\n";
+$prefix = "/usr/local/openresty-threads";
+unless ($opts{f}) {
+    sh "./configure $cfg_opts --with-threads --prefix=$prefix -j$jobs > /dev/null";
+}
+sh "$make -j$jobs > /dev/null";
+sh "sudo $make install > /dev/null";
+sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
+sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-threads'";
+system "sudo killall nginx > /dev/null 2>&1";
+sh "sudo $prefix/nginx/sbin/nginx";
+sh "curl -si localhost/lua|grep $lua";
+sh "curl -si localhost/lua|grep $ver";
+sh "curl -si localhost/cjson|grep 'json.safe: '";
+sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
+sh "sudo $prefix/nginx/sbin/nginx -sstop";
+
 warn "\n=== No Pool Build ===\n";
 $prefix = "/usr/local/openresty-nopool";
 unless ($opts{f}) {

@@ -1013,6 +1013,8 @@ Options directly inherited from nginx
   --with-poll_module                 enable poll module
   --without-poll_module              disable poll module
 
+  --with-threads                     enable thread pool support
+
   --with-file-aio                    enable file aio support
   --with-ipv6                        enable ipv6 support
 
