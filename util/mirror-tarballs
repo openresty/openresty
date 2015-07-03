@@ -251,9 +251,12 @@ echo "$info_txt applying the pcre_conf_opt patch for nginx $ver"
 patch -p1 < $root/patches/nginx-$ver-pcre_conf_opt.patch || exit 1
 echo
 
-echo "$info_txt applying the upstream_filter_finalize patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-upstream_filter_finalize.patch || exit 1
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.9.2`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying the upstream_filter_finalize patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-upstream_filter_finalize.patch || exit 1
+    echo
+fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.5.9`
 if [ "$answer" = "N" ]; then
