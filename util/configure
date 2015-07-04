@@ -1007,7 +1007,6 @@ Options directly inherited from nginx
 
   --builddir=DIR                     set the build directory
 
-  --with-rtsig_module                enable rtsig module
   --with-select_module               enable select module
   --without-select_module            disable select module
   --with-poll_module                 enable poll module
