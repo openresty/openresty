@@ -451,6 +451,21 @@ index ef4a647..49bb30b 100644
      return p;
  }
  
+diff --git a/src/core/ngx_thread_pool.h b/src/core/ngx_thread_pool.h
+index 5e5adf6..5999525 100644
+--- a/src/core/ngx_thread_pool.h
++++ b/src/core/ngx_thread_pool.h
+@@ -23,7 +23,10 @@ struct ngx_thread_task_s {
+ };
+ 
+ 
++#ifndef NGX_DEFINE_THREAD_POOL_T
++#define NGX_DEFINE_THREAD_POOL_T 1
+ typedef struct ngx_thread_pool_s  ngx_thread_pool_t;
++#endif
+ 
+ 
+ ngx_thread_pool_t *ngx_thread_pool_add(ngx_conf_t *cf, ngx_str_t *name);
 diff --git a/src/dtrace/nginx.stp b/src/dtrace/nginx.stp
 new file mode 100644
 index 0000000..e824daf
@@ -816,10 +831,10 @@ index 0000000..1bca4cf
 +
 diff --git a/src/event/ngx_event_probe.h b/src/event/ngx_event_probe.h
 new file mode 100644
-index 0000000..5aa0397
+index 0000000..9fa2a82
 --- /dev/null
 +++ b/src/event/ngx_event_probe.h
-@@ -0,0 +1,33 @@
+@@ -0,0 +1,40 @@
 +#ifndef _NGX_EVENT_PROBE_H_INCLUDED_
 +#define _NGX_EVENT_PROBE_H_INCLUDED_
 +
@@ -830,6 +845,13 @@ index 0000000..5aa0397
 +
 +
 +#if (NGX_DTRACE)
++
++#if (NGX_THREADS)
++#   ifndef NGX_DEFINE_THREAD_POOL_T
++#   define NGX_DEFINE_THREAD_POOL_T 1
++typedef struct ngx_thread_pool_s  ngx_thread_pool_t;
++#   endif
++#endif
 +
 +#include <ngx_http.h>
 +#include <ngx_dtrace_provider.h>
