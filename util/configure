@@ -907,17 +907,16 @@ sub usage ($) {
     my $msg = <<'_EOC_';
   --help                             this message
 
-  --prefix=PATH                      set the installation prefix (default to /usr/local/openresty).
+  --prefix=PATH                      set the installation prefix (default to /usr/local/openresty)
 
-  --with-debug                       enable the debugging logging and also enable -O0 -g for the C compiler.
-                                     this not only affects nginx, but also other components.
+  --with-debug                       enable debug logging
   --with-dtrace-probes               enable dtrace USDT probes
   --with-dtrace=PATH                 set dtrace utility pathname
 
-  --with-no-pool-patch               enable the no-pool patch for debugging memory issues.
+  --with-no-pool-patch               enable the no-pool patch for debugging memory issues
 
   -jN                                pass -jN option to make while building the bundled
-                                     Lua 5.1 interpreter or LuaJIT 2.1.
+                                     Lua 5.1 interpreter or LuaJIT 2.1
 
 _EOC_
 
