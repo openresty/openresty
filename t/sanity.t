@@ -15,17 +15,16 @@ __DATA__
 --- out
   --help                             this message
 
-  --prefix=PATH                      set the installation prefix (default to /usr/local/openresty).
+  --prefix=PATH                      set the installation prefix (default to /usr/local/openresty)
 
-  --with-debug                       enable the debugging logging and also enable -O0 -g for the C compiler.
-                                     this not only affects nginx, but also other components.
+  --with-debug                       enable debug logging
   --with-dtrace-probes               enable dtrace USDT probes
   --with-dtrace=PATH                 set dtrace utility pathname
 
-  --with-no-pool-patch               enable the no-pool patch for debugging memory issues.
+  --with-no-pool-patch               enable the no-pool patch for debugging memory issues
 
   -jN                                pass -jN option to make while building the bundled
-                                     Lua 5.1 interpreter or LuaJIT 2.1.
+                                     Lua 5.1 interpreter or LuaJIT 2.1
 
   --without-http_echo_module         disable ngx_http_echo_module
   --without-http_xss_module          disable ngx_http_xss_module
@@ -860,17 +859,16 @@ clean:
 --- out
   --help                             this message
 
-  --prefix=PATH                      set the installation prefix (default to /usr/local/openresty).
+  --prefix=PATH                      set the installation prefix (default to /usr/local/openresty)
 
-  --with-debug                       enable the debugging logging and also enable -O0 -g for the C compiler.
-                                     this not only affects nginx, but also other components.
+  --with-debug                       enable debug logging
   --with-dtrace-probes               enable dtrace USDT probes
   --with-dtrace=PATH                 set dtrace utility pathname
 
-  --with-no-pool-patch               enable the no-pool patch for debugging memory issues.
+  --with-no-pool-patch               enable the no-pool patch for debugging memory issues
 
   -jN                                pass -jN option to make while building the bundled
-                                     Lua 5.1 interpreter or LuaJIT 2.1.
+                                     Lua 5.1 interpreter or LuaJIT 2.1
 
   --without-http_echo_module         disable ngx_http_echo_module
   --without-http_xss_module          disable ngx_http_xss_module
@@ -1585,7 +1583,7 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "cl": No such file or directory at ./configure line 560.
+Can't exec "cl": No such file or directory at ./configure line 569.
 
 
 
