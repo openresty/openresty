@@ -523,6 +523,8 @@ $root/util/get-tarball "https://github.com/openresty/lua-cjson/archive/$ver.tar.
 tar -xzf lua-cjson-$ver.tar.gz || exit 1
 cd lua-cjson-$ver || exit 1
 #patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
 cd ..
 
 #################################
@@ -531,6 +533,11 @@ ver=0.10
 $root/util/get-tarball "https://github.com/openresty/lua-redis-parser/tarball/v$ver" -O "lua-redis-parser-$ver.tar.gz" || exit 1
 tar -xzf lua-redis-parser-$ver.tar.gz || exit 1
 mv openresty-lua-redis-parser-* lua-redis-parser-$ver || exit 1
+cd lua-redis-parser-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 
@@ -538,6 +545,11 @@ ver=0.05
 $root/util/get-tarball "https://github.com/openresty/lua-rds-parser/tarball/v$ver" -O "lua-rds-parser-$ver.tar.gz" || exit 1
 tar -xzf lua-rds-parser-$ver.tar.gz || exit 1
 mv openresty-lua-rds-parser-* lua-rds-parser-$ver || exit 1
+cd lua-rds-parser-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 
@@ -545,6 +557,11 @@ ver=0.14
 $root/util/get-tarball "https://github.com/openresty/lua-resty-dns/tarball/v$ver" -O "lua-resty-dns-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-dns-$ver.tar.gz || exit 1
 mv openresty-lua-resty-dns-* lua-resty-dns-$ver || exit 1
+cd lua-resty-dns-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 
@@ -552,6 +569,11 @@ ver=0.13
 $root/util/get-tarball "https://github.com/openresty/lua-resty-memcached/tarball/v$ver" -O "lua-resty-memcached-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-memcached-$ver.tar.gz || exit 1
 mv openresty-lua-resty-memcached-* lua-resty-memcached-$ver || exit 1
+cd lua-resty-memcached-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 
@@ -559,6 +581,11 @@ ver=0.21
 $root/util/get-tarball "https://github.com/openresty/lua-resty-redis/tarball/v$ver" -O "lua-resty-redis-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-redis-$ver.tar.gz || exit 1
 mv openresty-lua-resty-redis-* lua-resty-redis-$ver || exit 1
+cd lua-resty-redis-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 
@@ -566,6 +593,11 @@ ver=0.15
 $root/util/get-tarball "https://github.com/openresty/lua-resty-mysql/tarball/v$ver" -O "lua-resty-mysql-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-mysql-$ver.tar.gz || exit 1
 mv openresty-lua-resty-mysql-* lua-resty-mysql-$ver || exit 1
+cd lua-resty-mysql-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 
@@ -573,6 +605,11 @@ ver=0.09
 $root/util/get-tarball "https://github.com/openresty/lua-resty-upload/tarball/v$ver" -O "lua-resty-upload-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-upload-$ver.tar.gz || exit 1
 mv openresty-lua-resty-upload-* lua-resty-upload-$ver || exit 1
+cd lua-resty-upload-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 
@@ -580,6 +617,11 @@ ver=0.09
 $root/util/get-tarball "https://github.com/openresty/lua-resty-string/tarball/v$ver" -O "lua-resty-string-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-string-$ver.tar.gz || exit 1
 mv openresty-lua-resty-string-* lua-resty-string-$ver || exit 1
+cd lua-resty-string-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 
@@ -587,6 +629,11 @@ ver=0.05
 $root/util/get-tarball "https://github.com/openresty/lua-resty-websocket/tarball/v$ver" -O "lua-resty-websocket-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-websocket-$ver.tar.gz || exit 1
 mv openresty-lua-resty-websocket-* lua-resty-websocket-$ver || exit 1
+cd lua-resty-websocket-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 
@@ -594,6 +641,11 @@ ver=0.04
 $root/util/get-tarball "https://github.com/openresty/lua-resty-lock/tarball/v$ver" -O "lua-resty-lock-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-lock-$ver.tar.gz || exit 1
 mv openresty-lua-resty-lock-* lua-resty-lock-$ver || exit 1
+cd lua-resty-lock-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 
@@ -601,6 +653,11 @@ ver=0.04
 $root/util/get-tarball "https://github.com/openresty/lua-resty-lrucache/tarball/v$ver" -O "lua-resty-lrucache-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-lrucache-$ver.tar.gz || exit 1
 mv openresty-lua-resty-lrucache-* lua-resty-lrucache-$ver || exit 1
+cd lua-resty-lrucache-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 
@@ -608,6 +665,11 @@ ver=0.1.1
 $root/util/get-tarball "https://github.com/openresty/lua-resty-core/tarball/v$ver" -O "lua-resty-core-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-core-$ver.tar.gz || exit 1
 mv openresty-lua-resty-core-* lua-resty-core-$ver || exit 1
+cd lua-resty-core-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 
@@ -615,6 +677,11 @@ ver=0.03
 $root/util/get-tarball "https://github.com/openresty/lua-resty-upstream-healthcheck/tarball/v$ver" -O "lua-resty-upstream-healthcheck-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-upstream-healthcheck-$ver.tar.gz || exit 1
 mv openresty-lua-resty-upstream-healthcheck-* lua-resty-upstream-healthcheck-$ver || exit 1
+cd lua-resty-upstream-healthcheck-$ver || exit 1
+#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
 
 #################################
 

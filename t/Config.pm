@@ -86,6 +86,7 @@ sub run_test ($) {
         #$expected_makefile =~ s/\$OPENRESTY_BUILD_DIR\b/$BuildRoot/gs;
 
         $makefile =~ s/\Q$BuildRoot\E/\$OPENRESTY_BUILD_DIR/g;
+        $makefile =~ s/\Q$DistRoot\E/\$OPENRESTY_DIR/g;
 
         is($makefile, $expected_makefile, "$name - Makefile ok");
     }

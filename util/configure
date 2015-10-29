@@ -45,7 +45,9 @@ if ($OS =~ /solaris|sunos/i) {
     $platform = $OS;
 
 } elsif ($OS eq 'MSWin32') {
-    die "MS Windows not supported. Abort.\n";
+    die "MS Windows not supported. Abort.\n",
+        "(You need to use the MSYS toolchain, ",
+        "including MinGW gcc, MSYS perl, MSYS bash, and etc.\n";
 
 } elsif ($OS =~ /^(?:MacOS|darwin|rhapsody)$/) {
     $platform = 'macosx';
@@ -55,6 +57,9 @@ if ($OS =~ /solaris|sunos/i) {
 
 } elsif ($OS =~ /^(?:openbsd|netbsd|dragonfly)$/) {
     $platform = 'bsd';
+
+} elsif ($OS eq 'msys') {
+    $platform = 'msys';
 
 } else {
     $platform = 'posix';
@@ -155,6 +160,9 @@ for my $opt (@ARGV) {
 
     if ($opt =~ /^--prefix=(.*)/) {
         $prefix = $1;
+        if ($prefix eq '') {
+            $prefix = '.';
+        }
 
     } elsif ($opt eq '--without-lua51') {
         undef $resty_opts{lua};
@@ -389,7 +397,7 @@ sub build_resty_opts {
         }
 
     } else {
-        if (can_run("gmake")) {
+        if (!$platform ne 'msys' && can_run("gmake")) {  # msys has no gmake
             $make = 'gmake';
 
         } else {
@@ -537,8 +545,8 @@ _END_
     if ($opts->{luajit_path}) {
         my $luajit_prefix = $opts->{luajit_path};
 
-        my $lib = "$luajit_prefix/lib";
-        my $inc = "$luajit_prefix/include/luajit-2.1";
+        my $lib = File::Spec->catfile($luajit_prefix, "lib");
+        my $inc = File::Spec->catfile($luajit_prefix, "include", "luajit-2.1");
 
         env LUAJIT_LIB => $lib;
         env LUAJIT_INC => $inc;
@@ -550,7 +558,7 @@ _END_
 
     } elsif ($opts->{luajit}) {
         my $luajit_src = auto_complete 'LuaJIT';
-        my $luajit_prefix = "$prefix/luajit";
+        my $luajit_prefix = File::Spec->catfile($prefix, "luajit");
         my $luajit_root = File::Spec->rel2abs("luajit-root");
 
         if (-d $luajit_root) {
@@ -609,16 +617,18 @@ _END_
             shell "${make}$extra_opts PREFIX=$luajit_prefix", $dry_run;
         }
 
-        shell "${make} install$extra_opts PREFIX=$luajit_prefix DESTDIR=$luajit_root", $dry_run;
+        shell "${make} install$extra_opts PREFIX=$luajit_prefix DESTDIR=$luajit_root/", $dry_run;
 
         push @make_cmds, "cd $root_dir/build/$luajit_src && "
             . "\$(MAKE)$extra_opts PREFIX=$luajit_prefix";
 
-        push @make_install_cmds, "cd $root_dir/build/$luajit_src && "
+        my $abs_luajit_src = File::Spec->rel2abs(File::Spec->catfile($root_dir, "build", $luajit_src), $root_dir);
+
+        push @make_install_cmds, "cd $abs_luajit_src && "
             . "\$(MAKE) install$extra_opts PREFIX=$luajit_prefix DESTDIR=\$(DESTDIR)";
 
-        my $lib = "$luajit_root$luajit_prefix/lib";
-        my $inc = "$luajit_root$luajit_prefix/include/luajit-2.1";
+        my $lib = File::Spec->catfile($luajit_root, $luajit_prefix, "lib");
+        my $inc = File::Spec->catfile($luajit_root, $luajit_prefix, "include", "luajit-2.1");
 
         env LUAJIT_LIB => $lib;
         env LUAJIT_INC => $inc;
@@ -626,16 +636,16 @@ _END_
         #unshift @ngx_ld_opts, "-L$lib";
         #unshift @ngx_cc_opts, "-I$inc";
 
-        push @ngx_rpaths, "$luajit_prefix/lib";
+        push @ngx_rpaths, File::Spec->catfile($luajit_prefix, "lib");
 
         cd '..';
 
     } elsif ($opts->{lua_path}) {
         my $lua_prefix = $opts->{lua_path};
-        env LUA_LIB => "$lua_prefix/lib";
-        env LUA_INC => "$lua_prefix/include";
+        env LUA_LIB => File::Spec->catfile($lua_prefix, "lib");
+        env LUA_INC => File::Spec->catfile($lua_prefix, "include");
 
-        push @ngx_rpaths, "$lua_prefix/lib";
+        push @ngx_rpaths, File::Spec->catfile($lua_prefix, "lib");
 
     } elsif ($opts->{lua}) {
         # build stdandard lua
@@ -646,7 +656,7 @@ _END_
             die "No lua5 found";
         }
 
-        my $lua_prefix = "$prefix/lua";
+        my $lua_prefix = File::Spec->catfile($prefix, "lua");
         my $lua_root = File::Spec->rel2abs("lua-root");
 
         if (-d $lua_root) {
@@ -669,10 +679,11 @@ _END_
             shell "${make}$extra_opts $platform", $dry_run;
         }
 
-        shell "${make} install$extra_opts INSTALL_TOP=$lua_root$lua_prefix", $dry_run;
+        my $install_top = File::Spec->catfile($lua_root, $lua_prefix);
+        shell "${make} install$extra_opts INSTALL_TOP=$install_top/", $dry_run;
 
-        env LUA_LIB => "$lua_root$lua_prefix/lib";
-        env LUA_INC => "$lua_root$lua_prefix/include";
+        env LUA_LIB => File::Spec->catfile($lua_root, $lua_prefix, "lib");
+        env LUA_INC => File::Spec->catfile($lua_root, $lua_prefix, "include");
 
         push @make_cmds, "cd $root_dir/build/$lua_src && \$(MAKE)$extra_opts $platform";
 
@@ -687,7 +698,7 @@ _END_
     {
         # build lua modules
 
-        my $lualib_prefix = "$prefix/lualib";
+        my $lualib_prefix = File::Spec->catfile($prefix, "lualib");
 
         my $ngx_lua_dir = auto_complete 'ngx_lua';
 
@@ -872,7 +883,7 @@ _EOC_
 
     my $resty_cli_dir = auto_complete 'resty-cli';
     push @make_install_cmds, "cd $root_dir/build/$resty_cli_dir && "
-         . "$root_dir/build/install resty \$(DESTDIR)/$prefix/bin/";
+         . "$root_dir/build/install resty \$(DESTDIR)$prefix/bin/";
 
     # prepare nginx configure line
 
@@ -1153,9 +1164,14 @@ sub gen_makefile {
         print $out "export $line\n";
     }
 
+    if (File::Spec->rel2abs($prefix) ne File::Spec->canonpath($prefix)) {
+        # prefix is a relative path.
+        print $out "DESTDIR ?= $root_dir/\n\n";
+    }
+
     print $out ".PHONY: all install clean\n\n";
 
-        print $out "all:\n\t" . join("\n\t", @make_cmds) . "\n\n";
+    print $out "all:\n\t" . join("\n\t", @make_cmds) . "\n\n";
 
     print $out "install: all\n\t" . join("\n\t", @make_install_cmds) . "\n\n";
 
