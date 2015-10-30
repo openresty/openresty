@@ -26,7 +26,7 @@ fi
 #################################
 
 ver="$main_ver"
-$root/util/get-tarball "http://nginx.org/download/nginx-$ver.tar.gz" -O nginx-$ver.tar.gz || exit 1
+$root/util/get-tarball "http://openresty.org/download/nginx-$ver.tar.gz" -O nginx-$ver.tar.gz || exit 1
 tar -xzf nginx-$ver.tar.gz || exit 1
 cd nginx-$ver || exit 1
 
@@ -295,6 +295,10 @@ fi
 
 rm -f *.patch || exit 1
 
+echo "$info_txt applying the always_enable_cc_feature_tests patch to nginx"
+patch -p1 < $root/patches/nginx-$main_ver-always_enable_cc_feature_tests.patch
+echo
+
 cd .. || exit 1
 
 cp $root/patches/nginx-$main_ver-no_pool.patch ./nginx-no_pool.patch || exit 1
@@ -341,7 +345,7 @@ mv openresty-rds-json-nginx-module-* rds-json-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.06
+ver=0.07rc1
 $root/util/get-tarball "https://github.com/openresty/rds-csv-nginx-module/tarball/v$ver" -O rds-csv-nginx-module-$ver.tar.gz || exit 1
 tar -xzf rds-csv-nginx-module-$ver.tar.gz || exit 1
 mv openresty-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
@@ -362,7 +366,7 @@ mv openresty-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.9.17
+ver=0.9.18rc1
 $root/util/get-tarball "https://github.com/openresty/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv openresty-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -464,7 +468,7 @@ mv openresty-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.03
+ver=0.04rc1
 $root/util/get-tarball "https://github.com/openresty/resty-cli/tarball/v$ver" -O resty-cli-$ver.tar.gz || exit 1
 tar -xzf resty-cli-$ver.tar.gz || exit 1
 mv openresty-resty-cli-* resty-cli-$ver || exit 1
@@ -502,12 +506,12 @@ $root/util/get-tarball "https://github.com/openresty/luajit2/archive/v$ver.tar.g
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 mv luajit2-* LuaJIT-$ver || exit 1
 
-#echo "$info_txt applying luajit-$ver hotfix #1 patch for luajit $ver"
 #$root/util/get-tarball http://luajit.org/download/v2.0.1_hotfix1.patch -O hotfix.patch
-#cd LuaJIT-$ver || exit 1;
-#patch -p1 < ../hotfix.patch || exit 1
+cd LuaJIT-$ver || exit 1;
+echo "$info_txt applying the luajit-win32-default-paths patch hotfix #1 patch for luajit $ver"
+patch -p1 < $root/patches/luajit-win32-default-paths.patch || exit 1
 #rm ../hotfix.patch
-#cd .. || exit 1
+cd .. || exit 1
 
 #$root/util/get-tarball http://luajit.org/download/beta11_hotfix1.patch -O beta11_hotfix1.patch
 #patch -p1 < beta11_hotfix1.patch || exit 1
@@ -518,30 +522,30 @@ mv luajit2-* LuaJIT-$ver || exit 1
 
 #################################
 
-ver=2.1.0.2
+ver=2.1.0.3rc2
 $root/util/get-tarball "https://github.com/openresty/lua-cjson/archive/$ver.tar.gz" -O "lua-cjson-$ver.tar.gz" || exit 1
 tar -xzf lua-cjson-$ver.tar.gz || exit 1
-cd lua-cjson-$ver || exit 1
+#cd lua-cjson-$ver || exit 1
 #patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
+#sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+#mv mk Makefile || exit 1
+#cd ..
 
 #################################
 
-ver=0.10
+ver=0.11rc1
 $root/util/get-tarball "https://github.com/openresty/lua-redis-parser/tarball/v$ver" -O "lua-redis-parser-$ver.tar.gz" || exit 1
 tar -xzf lua-redis-parser-$ver.tar.gz || exit 1
 mv openresty-lua-redis-parser-* lua-redis-parser-$ver || exit 1
-cd lua-redis-parser-$ver || exit 1
+#cd lua-redis-parser-$ver || exit 1
 #patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
+#sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+#mv mk Makefile || exit 1
+#cd ..
 
 #################################
 
-ver=0.05
+ver=0.06rc2
 $root/util/get-tarball "https://github.com/openresty/lua-rds-parser/tarball/v$ver" -O "lua-rds-parser-$ver.tar.gz" || exit 1
 tar -xzf lua-rds-parser-$ver.tar.gz || exit 1
 mv openresty-lua-rds-parser-* lua-rds-parser-$ver || exit 1
@@ -661,7 +665,7 @@ cd ..
 
 #################################
 
-ver=0.1.1
+ver=0.1.2
 $root/util/get-tarball "https://github.com/openresty/lua-resty-core/tarball/v$ver" -O "lua-resty-core-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-core-$ver.tar.gz || exit 1
 mv openresty-lua-resty-core-* lua-resty-core-$ver || exit 1
@@ -688,9 +692,15 @@ cd ..
 rm *.tar.gz
 
 cd ..
-cp $root/util/configure ./
-cp $root/README.markdown ./
-cp $root/util/install bundle/
+cp $root/util/configure ./ || exit 1
+#markdown2pod -e utf8 -d GitHub $root/README.markdown|$root/util/fix-pod2markdown|pod2text > README || exit 1
+cp $root/README.markdown ./ || exit 1
+cp $root/util/install bundle/ || exit 1
+mkdir util || exit 1
+cp $root/util/package-win32.sh util/ || exit 1
+cp $root/util/build-win32.sh util/ || exit 1
+markdown2pod -e utf8 -d GitHub $root/doc/README-win32.md|$root/util/fix-pod2markdown|pod2text > README-win32.txt || exit 1
+unix2dos README-win32.txt || exit 1
 find bundle -name '*~' -delete
 
 cd $root

@@ -44,7 +44,9 @@ https://github.com/openresty/ngx_openresty
 
 To reproduce the bundle tarball, just do
 
-    make
+```bash
+make
+```
 
 at the top of the bundle source tree.
 

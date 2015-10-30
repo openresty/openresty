@@ -1,0 +1,20 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+my $indented;
+while (<>) {
+    if (/^ \S/) {
+        $indented = 1;
+        print;
+        next;
+    }
+    if ($indented) {
+        if (/^[^-\#=\s]/) {
+            print "\n";
+        }
+        undef $indented;
+    }
+    print;
+}
