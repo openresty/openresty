@@ -59,6 +59,10 @@ where the PID (5488 in this example) can be found via the aforementioned `taskli
 Again, you should use the form `-pid` and `-F` for the options if you are in an MSYS bash
 session.
 
+Similarly, you can use the `nginx -s reload` command to reload nginx configurations without
+stopping the server. And you can use `nginx -s reopen` to instruct nginx to re-open
+all the log files.
+
 You can run the `resty` script like this:
 
 ```console
