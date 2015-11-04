@@ -96,6 +96,16 @@ for production environments with very high concurrency levels.
 This Win32 build of OpenResty is mainly for developers who want to develop their applications
 in native Windows environment (though they eventually push the finished work onto a Linux or *BSD box, most of the time).
 
+TODO
+====
+
+* Add support for more than one NGINX worker processes.
+* Add support for concurrent connections more than 1024.
+* Switch to the Microsoft Visual Studio compiler toolchain for better performance and easier binary
+package redistribution.
+* Bundle StrawberryPerl to make command-line utilities like `resty` work out of the box (without
+manually installing a Perl).
+
 Details About The Building Process
 ==================================
 
@@ -132,6 +142,12 @@ make install
 
 where the dependency library source tarballs for OpenSSL, Zlib, and PCRE are downloaded
 from their official sites, respectively.
+
+We automate these commands in a dedicated shell script named [build-win32.sh](https://github.com/openresty/ngx_openresty/blob/master/util/build-win32.sh).
+
+Furthermore, we automate the packaging process of the resulting binaries and supporting files
+with this [package-win32.sh](https://github.com/openresty/ngx_openresty/blob/master/util/package-win32.sh)
+script.
 
 Usually you can just download and use the binary distribution of OpenResty without
 installing the build toolchain.
