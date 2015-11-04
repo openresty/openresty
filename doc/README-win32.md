@@ -90,7 +90,7 @@ Caveats
 
 The Win32 port of the NGINX core supports the good old `select` IO multiplexing mechanism
 only.
-The I/O Completion Ports (IOCP) feature is supported (yet). So do not use this build
+The I/O Completion Ports (IOCP) feature is *not* supported (yet). So do not use this build
 for production environments with very high concurrency levels.
 
 This Win32 build of OpenResty is mainly for developers who want to develop their applications
