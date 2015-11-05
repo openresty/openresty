@@ -6,6 +6,10 @@ README-win32 - README for the Windows 32-bit build of OpenResty
 Description
 ===========
 
+The binary distributions of OpenResty can be downloaded from the following web page:
+
+https://openresty.org/#Download
+
 To start the NGINX server of the nginx server of the Win32 binary distribution of OpenResty:
 
 ```bash
@@ -105,6 +109,9 @@ TODO
 package redistribution.
 * Bundle StrawberryPerl to make command-line utilities like `resty` work out of the box (without
 manually installing a Perl).
+* Deliver an alternative Win32 binary package built with best debuggin capabilities (like enabling
+NGINX debugging logs, disabling C compiler optimizations, and enabling all the assertions and checks).
+* Deliver binary packages for 64-bit Windows (Win64).
 
 Details About The Building Process
 ==================================
