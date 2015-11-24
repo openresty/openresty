@@ -70,3 +70,6 @@ work/
 reindex
 t/*.t_
 upload
+upload-win32
+html_out/
+TODO
