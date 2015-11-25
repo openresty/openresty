@@ -1,3 +1,4 @@
 *.t linguist-language=Text
 demo/* linguist-language=Text
 clients/* linguist-language=Text
+* linguist-language=C
