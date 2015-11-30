@@ -1,7 +1,7 @@
 Name
 ====
 
-ngx_openresty - Turning Nginx into a full-fledged Web App Server
+ngx_openresty - Turning Nginx into a Full-Fledged Scriptable Web Platform
 
 Table of Contents
 =================
