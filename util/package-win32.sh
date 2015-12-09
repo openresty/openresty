@@ -13,7 +13,7 @@ cp /c/MinGW/bin/libgcc_s_dw2-1.dll $name/ || exit 1
 cd $name || exit 1
 PATH=/c/Strawberry/perl/bin:$PATH cmd /c 'pl2bat.bat resty' || exit 1
 cp ../README-win32.txt README.txt
-unix2dos conf/* html/*.html || exit 1
+unix2dos conf/* html/*.html resty || exit 1
 cd .. || exit 1
 zip -r $name.zip $name || exit 1
 echo $name.zip
