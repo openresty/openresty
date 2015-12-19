@@ -508,7 +508,7 @@ mv luajit2-* LuaJIT-$ver || exit 1
 
 #$root/util/get-tarball http://luajit.org/download/v2.0.1_hotfix1.patch -O hotfix.patch
 cd LuaJIT-$ver || exit 1;
-echo "$info_txt applying the luajit-win32-default-paths patch hotfix #1 patch for luajit $ver"
+echo "$info_txt applying the luajit-win32-default-paths patch for luajit $ver"
 patch -p1 < $root/patches/luajit-win32-default-paths.patch || exit 1
 #rm ../hotfix.patch
 cd .. || exit 1
