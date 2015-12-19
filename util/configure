@@ -622,6 +622,17 @@ _END_
             $extra_opts .= " CC=cc";
         }
 
+        if ($platform eq 'macosx') {
+            my $v = $ENV{MACOSX_DEPLOYMENT_TARGET};
+            if (!defined $v || $v !~ /^\d+\.\d+$/) {
+                $v = `sw_vers -productVersion`;
+                if (defined $v && $v =~ /^\s*(\d+\.\d+)/) {
+                    $ENV{MACOSX_DEPLOYMENT_TARGET} = $1;
+                    #warn "MACOSX_DEPLOYMENT_TARGET = $1";
+                }
+            }
+        }
+
         if (defined $cores) {
             shell "${make} -j$cores$extra_opts PREFIX=$luajit_prefix", $dry_run;
         } else {
