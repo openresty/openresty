@@ -1,12 +1,16 @@
 #!/bin/bash
 
+PCRE=pcre-8.38
+ZLIB=zlib-1.2.8
+OPENSSL=openssl-1.0.2e
+
 rm -rf objs || exit 1
 mkdir -p objs/lib || exit 1
 cd objs/lib || exit 1
 ls ../../..
-tar -xf ../../../openssl-1.0.2d.tar.gz
-tar -xf ../../../zlib-1.2.8.tar.gz
-tar -xf ../../../pcre-8.37.tar.gz
+tar -xf ../../../$OPENSSL.tar.gz
+tar -xf ../../../$ZLIB.tar.gz
+tar -xf ../../../$PCRE.tar.gz
 cd ../..
 
     #--with-openssl-opt="no-asm" \
@@ -16,10 +20,16 @@ cd ../..
     --sbin-path=nginx.exe \
     --with-ipv6 \
     --with-pcre-jit \
+    --with-http_stub_status_module \
+    --with-http_realip_module \
+    --with-stream \
+    --with-stream_ssl_module \
+    --with-http_addition_module \
+    --with-http_sub_module \
     --with-luajit-xcflags="-DLUAJIT_NUMMODE=2 -DLUAJIT_ENABLE_LUA52COMPAT" \
-    --with-pcre=objs/lib/pcre-8.37 \
-    --with-zlib=objs/lib/zlib-1.2.8 \
-    --with-openssl=objs/lib/openssl-1.0.2d \
+    --with-pcre=objs/lib/$PCRE \
+    --with-zlib=objs/lib/$ZLIB \
+    --with-openssl=objs/lib/$OPENSSL \
     --with-select_module -j5 || exit 1
 #gmake -j5
 make || exit 1
