@@ -299,6 +299,10 @@ echo "$info_txt applying the always_enable_cc_feature_tests patch to nginx"
 patch -p1 < $root/patches/nginx-$main_ver-always_enable_cc_feature_tests.patch
 echo
 
+echo "$info_txt applying the ssl_cert_cb_yield.patch patch to nginx"
+patch -p1 < $root/patches/nginx-$main_ver-ssl_cert_cb_yield.patch
+echo
+
 cd .. || exit 1
 
 cp $root/patches/nginx-$main_ver-no_pool.patch ./nginx-no_pool.patch || exit 1
