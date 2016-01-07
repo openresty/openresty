@@ -451,21 +451,6 @@ index ef4a647..49bb30b 100644
      return p;
  }
  
-diff --git a/src/core/ngx_thread_pool.h b/src/core/ngx_thread_pool.h
-index 5e5adf6..5999525 100644
---- a/src/core/ngx_thread_pool.h
-+++ b/src/core/ngx_thread_pool.h
-@@ -23,7 +23,10 @@ struct ngx_thread_task_s {
- };
- 
- 
-+#ifndef NGX_DEFINE_THREAD_POOL_T
-+#define NGX_DEFINE_THREAD_POOL_T 1
- typedef struct ngx_thread_pool_s  ngx_thread_pool_t;
-+#endif
- 
- 
- ngx_thread_pool_t *ngx_thread_pool_add(ngx_conf_t *cf, ngx_str_t *name);
 diff --git a/src/dtrace/nginx.stp b/src/dtrace/nginx.stp
 new file mode 100644
 index 0000000..e824daf
@@ -831,10 +816,10 @@ index 0000000..1bca4cf
 +
 diff --git a/src/event/ngx_event_probe.h b/src/event/ngx_event_probe.h
 new file mode 100644
-index 0000000..9fa2a82
+index 0000000..5aa0397
 --- /dev/null
 +++ b/src/event/ngx_event_probe.h
-@@ -0,0 +1,40 @@
+@@ -0,0 +1,33 @@
 +#ifndef _NGX_EVENT_PROBE_H_INCLUDED_
 +#define _NGX_EVENT_PROBE_H_INCLUDED_
 +
@@ -845,13 +830,6 @@ index 0000000..9fa2a82
 +
 +
 +#if (NGX_DTRACE)
-+
-+#if (NGX_THREADS)
-+#   ifndef NGX_DEFINE_THREAD_POOL_T
-+#   define NGX_DEFINE_THREAD_POOL_T 1
-+typedef struct ngx_thread_pool_s  ngx_thread_pool_t;
-+#   endif
-+#endif
 +
 +#include <ngx_http.h>
 +#include <ngx_dtrace_provider.h>
@@ -876,10 +854,18 @@ index 0000000..9fa2a82
 +
 +#endif /* _NGX_EVENT_PROBE_H_INCLUDED_ */
 diff --git a/src/event/ngx_event_timer.c b/src/event/ngx_event_timer.c
-index 8f547b2..e12a51e 100644
+index 8f547b2..6e77465 100644
 --- a/src/event/ngx_event_timer.c
 +++ b/src/event/ngx_event_timer.c
-@@ -91,6 +91,8 @@ ngx_event_expire_timers(void)
+@@ -8,6 +8,7 @@
+ #include <ngx_config.h>
+ #include <ngx_core.h>
+ #include <ngx_event.h>
++#include <ngx_event_probe.h>
+ 
+ 
+ ngx_rbtree_t              ngx_event_timer_rbtree;
+@@ -91,6 +92,8 @@ ngx_event_expire_timers(void)
  
          ev->timedout = 1;
  
@@ -888,32 +874,61 @@ index 8f547b2..e12a51e 100644
          ev->handler(ev);
      }
  }
+@@ -136,3 +139,19 @@ ngx_event_cancel_timers(void)
+         ev->handler(ev);
+     }
+ }
++
++
++#if (NGX_DTRACE)
++void
++ngx_event_probe_timer_add_helper(ngx_event_t *ev, ngx_msec_t timer)
++{
++    ngx_event_probe_timer_add(ev, timer);
++}
++
++
++void
++ngx_event_probe_timer_del_helper(ngx_event_t *ev)
++{
++    ngx_event_probe_timer_del(ev);
++}
++#endif
 diff --git a/src/event/ngx_event_timer.h b/src/event/ngx_event_timer.h
-index 99f8a48..79c3fa0 100644
+index 99f8a48..8bc619a 100644
 --- a/src/event/ngx_event_timer.h
 +++ b/src/event/ngx_event_timer.h
-@@ -12,6 +12,7 @@
- #include <ngx_config.h>
- #include <ngx_core.h>
- #include <ngx_event.h>
-+#include <ngx_event_probe.h>
+@@ -25,12 +25,23 @@ void ngx_event_expire_timers(void);
+ void ngx_event_cancel_timers(void);
  
  
- #define NGX_TIMER_INFINITE  (ngx_msec_t) -1
-@@ -31,6 +32,8 @@ extern ngx_rbtree_t  ngx_event_timer_rbtree;
++#if (NGX_DTRACE)
++void ngx_event_probe_timer_add_helper(ngx_event_t *ev,
++    ngx_msec_t timer);
++void ngx_event_probe_timer_del_helper(ngx_event_t *ev);
++#endif
++
++
+ extern ngx_rbtree_t  ngx_event_timer_rbtree;
+ 
+ 
  static ngx_inline void
  ngx_event_del_timer(ngx_event_t *ev)
  {
-+    ngx_event_probe_timer_del(ev);
++#if (NGX_DTRACE)
++    ngx_event_probe_timer_del_helper(ev);
++#endif
 +
      ngx_log_debug2(NGX_LOG_DEBUG_EVENT, ev->log, 0,
                     "event timer del: %d: %M",
                      ngx_event_ident(ev->data), ev->timer.key);
-@@ -77,6 +80,8 @@ ngx_event_add_timer(ngx_event_t *ev, ngx_msec_t timer)
+@@ -77,6 +88,10 @@ ngx_event_add_timer(ngx_event_t *ev, ngx_msec_t timer)
  
      ev->timer.key = key;
  
-+    ngx_event_probe_timer_add(ev, timer);
++#if (NGX_DTRACE)
++    ngx_event_probe_timer_add_helper(ev, timer);
++#endif
 +
      ngx_log_debug3(NGX_LOG_DEBUG_EVENT, ev->log, 0,
                     "event timer add: %d: %M:%M",
