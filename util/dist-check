@@ -65,6 +65,45 @@ sub write_config_file ($) {
 
 write_config_file "/tmp/nginx.conf";
 
+warn "=== --with-stream ===\n";
+$prefix = "/usr/local/openresty-nogzip";
+sh "sudo rm -rf $prefix/lualib $prefix/luajit $prefix/bin $prefix/lua $prefix/nginx/sbin $prefix/nginx/html";
+unless ($opts{f}) {
+    sh "./configure $cfg_opts --with-stream --prefix=$prefix -j$jobs > /dev/null";
+}
+sh "$make -j$jobs > /dev/null";
+sh "sudo $make install > /dev/null";
+sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
+sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-stream'";
+system "sudo killall nginx > /dev/null 2>&1";
+sh "sudo $prefix/nginx/sbin/nginx";
+sh "curl -si localhost/lua|grep $lua";
+sh "curl -si localhost/lua|grep $ver";
+sh "curl -si localhost/cjson|grep 'json.safe: '";
+sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
+sh "sudo $prefix/nginx/sbin/nginx -sstop";
+
+warn "=== --with-stream + dtrace static probes ===\n";
+$prefix = "/usr/local/openresty-nogzip";
+sh "sudo rm -rf $prefix/lualib $prefix/luajit $prefix/bin $prefix/lua $prefix/nginx/sbin $prefix/nginx/html";
+unless ($opts{f}) {
+    sh "./configure $cfg_opts --with-dtrace-probes --with-stream --prefix=$prefix -j$jobs > /dev/null";
+}
+sh "$make -j$jobs > /dev/null";
+sh "sudo $make install > /dev/null";
+sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
+sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-stream'";
+sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-dtrace-probes'";
+system "sudo killall nginx > /dev/null 2>&1";
+sh "sudo $prefix/nginx/sbin/nginx";
+sh "curl -si localhost/lua|grep $lua";
+sh "curl -si localhost/lua|grep $ver";
+sh "curl -si localhost/cjson|grep 'json.safe: '";
+sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
+sh "sudo $prefix/nginx/sbin/nginx -sstop";
+
 warn "=== Without Gzip/SSL/PCRE ===\n";
 $prefix = "/usr/local/openresty-nogzip";
 sh "sudo rm -rf $prefix/lualib $prefix/luajit $prefix/bin $prefix/lua $prefix/nginx/sbin $prefix/nginx/html";
@@ -220,6 +259,13 @@ http {
             require "resty.core"
         end
     ';
+
+    upstream backend {
+        server 0.0.0.1;
+        balancer_by_lua_block {
+            print("balancer!")
+        }
+    }
 
     server {
         listen       *:80;
