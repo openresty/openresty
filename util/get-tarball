@@ -14,7 +14,7 @@ cachefile=$work/$outfile
 if [ -s $cachefile ]; then
     cp $work/$outfile $outfile || exit 1
 else
-    wget --no-check-certificate $1 -O $3 || exit 1
+    wget $1 -O $3 || exit 1
     if [ $? == 0 ]; then
         cp $3 $work/ || exit 1
     fi

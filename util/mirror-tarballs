@@ -26,7 +26,7 @@ fi
 #################################
 
 ver="$main_ver"
-$root/util/get-tarball "http://openresty.org/download/nginx-$ver.tar.gz" -O nginx-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://openresty.org/download/nginx-$ver.tar.gz" -O nginx-$ver.tar.gz || exit 1
 tar -xzf nginx-$ver.tar.gz || exit 1
 cd nginx-$ver || exit 1
 
@@ -435,7 +435,7 @@ mv openresty-encrypted-session-nginx-module-* encrypted-session-nginx-module-$ve
 #################################
 
 ver=0.3.7
-$root/util/get-tarball "http://people.freebsd.org/~osa/ngx_http_redis-$ver.tar.gz" -O redis-nginx-module-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://people.freebsd.org/~osa/ngx_http_redis-$ver.tar.gz" -O redis-nginx-module-$ver.tar.gz || exit 1
 tar -xzf redis-nginx-module-$ver.tar.gz || exit 1
 mv ngx_http_redis-* redis-nginx-module-$ver || exit 1
 
