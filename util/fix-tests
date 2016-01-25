@@ -8,7 +8,7 @@ sub cd ($);
 my $ver = `bash util/ver`;
 chomp $ver;
 
-cd "ngx_openresty-$ver/bundle";
+cd "openresty-$ver/bundle";
 
 opendir(my $dh, '.') or
     die "cannot opendir .: $!";
@@ -45,7 +45,7 @@ for my $t_file (@t_files) {
                 warn "\n- $orig";
                 warn "+ $_";
 
-            } elsif (s{ngx_openresty-\d+\.\d+\.\d+\.\d+(?:rc\d+)?}{ngx_openresty-$ver} && $orig ne $_) {
+            } elsif (s{openresty-\d+\.\d+\.\d+\.\d+(?:rc\d+)?}{openresty-$ver} && $orig ne $_) {
                 $changed++;
 
                 warn "\n- $orig";

@@ -23,7 +23,7 @@ sub run_tests {
     my $ver = `bash util/ver`;
     chomp $ver;
 
-    cd "ngx_openresty-$ver";
+    cd "openresty-$ver";
 
     $DistRoot = cwd();
     $BuildRoot = File::Spec->rel2abs("./build");

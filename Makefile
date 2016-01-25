@@ -7,8 +7,8 @@ test: all
 	prove -r t
 
 try-luajit: all
-	cd ngx_openresty-`./util/ver` && ./configure --with-luajit
+	cd openresty-`./util/ver` && ./configure --with-luajit
 
 try-lua: all
-	cd ngx_openresty-`./util/ver` && ./configure && $(MAKE)
+	cd openresty-`./util/ver` && ./configure && $(MAKE)
 

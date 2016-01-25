@@ -5,11 +5,11 @@ root=`perl -MCwd -e'print Cwd::abs_path(shift)' $(dirname -- "$0")/..`
 
 info_txt=`perl -e 'print "\033[33m[INFO]\033[0m"'`
 
-echo -n "ngx_openresty "
+echo -n "openresty "
 . ./util/ver
 echo
 
-name=ngx_openresty-$version
+name=openresty-$version
 work=$root/work
 
 if [ -z $debug ]; then

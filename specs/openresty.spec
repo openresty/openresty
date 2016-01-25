@@ -4,7 +4,7 @@
 
 %define         dir_name      openresty
 
-Name:		ngx_openresty
+Name:		openresty
 
 Version:	1.0.5.1
 Release:	5
@@ -14,7 +14,7 @@ Group:		Productivity/Networking/Web/Servers
 License:	BSD
 URL:		http://www.openresty.org/
 
-Source0:	ngx_openresty-%{version}rc%{release}.tar.gz
+Source0:	openresty-%{version}rc%{release}.tar.gz
 
 BuildRoot:	%{build_root}
 
@@ -23,11 +23,11 @@ BuildRequires:	gcc >= 3.0, openssl-devel, pcre-devel, readline-devel
 Requires:	openssl, pcre, readline
 
 %description
-OpenResty (aka. ngx_openresty) is a full-fledged web application server by bundling the standard Nginx core, lots of 3rd-party Nginx modules, as well as most of their external dependencie
+OpenResty is a full-fledged web application server by bundling the standard Nginx core, lots of 3rd-party Nginx modules, as well as most of their external dependencie
 
 %prep
-#%setup -q -n ngx_openresty-%{version}
-%setup -q -n ngx_openresty-%{version}rc%{release}
+#%setup -q -n openresty-%{version}
+%setup -q -n openresty-%{version}rc%{release}
 
 %build
             #--with-pg_config=opt/pg90/bin/pg_config \

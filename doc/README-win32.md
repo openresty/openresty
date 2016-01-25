@@ -150,10 +150,10 @@ make install
 where the dependency library source tarballs for OpenSSL, Zlib, and PCRE are downloaded
 from their official sites, respectively.
 
-We automate these commands in a dedicated shell script named [build-win32.sh](https://github.com/openresty/ngx_openresty/blob/master/util/build-win32.sh).
+We automate these commands in a dedicated shell script named [build-win32.sh](https://github.com/openresty/openresty/blob/master/util/build-win32.sh).
 
 Furthermore, we automate the packaging process of the resulting binaries and supporting files
-with this [package-win32.sh](https://github.com/openresty/ngx_openresty/blob/master/util/package-win32.sh)
+with this [package-win32.sh](https://github.com/openresty/openresty/blob/master/util/package-win32.sh)
 script.
 
 Usually you can just download and use the binary distribution of OpenResty without

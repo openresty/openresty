@@ -73,7 +73,7 @@
                 <a href="site-binary.tar.gz">Compiled form (.tar.gz)</a>
             </li>
             <li class="module-list-item">
-                <a target="_blank" href="http://github.com/agentzh/ngx_openresty/tree/master/demo/[% blog_owner == 'agentzh' ? "Blog" : "Blog2" %]/">
+                <a target="_blank" href="http://github.com/openresty/openresty/tree/master/demo/[% blog_owner == 'agentzh' ? "Blog" : "Blog2" %]/">
                     Source code (Git)
                 </a>
             </li>
