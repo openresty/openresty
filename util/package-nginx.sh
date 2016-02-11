@@ -31,4 +31,4 @@ cd ..
 tar czvf nginx-$ver.tar.gz nginx-$ver || exit 1
 ls -lh ./nginx-$ver.tar.gz
 #ls -lh ~/work/nginx-$ver.tar.gz
-scp nginx-$ver.tar.gz agentzh.org:~/www/agentzh/misc/nginx/
+scp nginx-$ver.tar.gz openresty.org:/home/agentz/www/agentzh/misc/nginx/
