@@ -767,8 +767,8 @@ _END_
             print $in <<"_EOC_";
 
 ngx_lua_dquote='"'
-CFLAGS="\$CFLAGS -DLUA_DEFAULT_PATH='\$ngx_lua_dquote$path_prefix/?.lua;$path_prefix/?/init.lua\$ngx_lua_dquote'"
-CFLAGS="\$CFLAGS -DLUA_DEFAULT_CPATH='\$ngx_lua_dquote$path_prefix/?.so\$ngx_lua_dquote'"
+CFLAGS="\$CFLAGS -DLUA_DEFAULT_PATH='\${ngx_lua_dquote}$path_prefix/?.lua;$path_prefix/?/init.lua\$ngx_lua_dquote'"
+CFLAGS="\$CFLAGS -DLUA_DEFAULT_CPATH='\${ngx_lua_dquote}$path_prefix/?.so\$ngx_lua_dquote'"
 _EOC_
         }
 
