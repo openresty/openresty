@@ -2,7 +2,7 @@
 
 PCRE=pcre-8.38
 ZLIB=zlib-1.2.8
-OPENSSL=openssl-1.0.2e
+OPENSSL=openssl-1.0.2f
 
 rm -rf objs || exit 1
 mkdir -p objs/lib || exit 1
