@@ -1,6 +1,6 @@
 diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/nginx.h nginx-1.9.15-patched/src/core/nginx.h
---- nginx-1.9.15/src/core/nginx.h	2014-07-08 06:22:39.000000000 -0700
-+++ nginx-1.9.15-patched/src/core/nginx.h	2014-07-13 19:21:54.117099631 -0700
+--- nginx-1.9.15/src/core/nginx.h	2016-04-19 09:02:38.000000000 -0700
++++ nginx-1.9.15-patched/src/core/nginx.h	2016-04-21 16:25:07.452944624 -0700
 @@ -10,7 +10,7 @@
  
  
@@ -11,8 +11,8 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/nginx.
  
  #ifdef NGX_BUILD
 diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_array.c nginx-1.9.15-patched/src/core/ngx_array.c
---- nginx-1.9.15/src/core/ngx_array.c	2014-07-08 06:22:39.000000000 -0700
-+++ nginx-1.9.15-patched/src/core/ngx_array.c	2014-07-13 19:21:54.117099631 -0700
+--- nginx-1.9.15/src/core/ngx_array.c	2016-04-19 09:02:38.000000000 -0700
++++ nginx-1.9.15-patched/src/core/ngx_array.c	2016-04-21 16:25:07.453947190 -0700
 @@ -30,26 +30,30 @@ ngx_array_create(ngx_pool_t *p, ngx_uint
  void
  ngx_array_destroy(ngx_array_t *a)
@@ -161,8 +161,8 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_ar
  
      elt = (u_char *) a->elts + a->size * a->nelts;
 diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_array.h nginx-1.9.15-patched/src/core/ngx_array.h
---- nginx-1.9.15/src/core/ngx_array.h	2014-07-08 06:22:39.000000000 -0700
-+++ nginx-1.9.15-patched/src/core/ngx_array.h	2014-07-13 19:21:54.118099637 -0700
+--- nginx-1.9.15/src/core/ngx_array.h	2016-04-19 09:02:38.000000000 -0700
++++ nginx-1.9.15-patched/src/core/ngx_array.h	2016-04-21 16:25:07.453947190 -0700
 @@ -13,12 +13,23 @@
  #include <ngx_core.h>
  
@@ -196,12 +196,14 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_ar
      array->elts = ngx_palloc(pool, n * size);
      if (array->elts == NULL) {
 diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_palloc.c nginx-1.9.15-patched/src/core/ngx_palloc.c
---- nginx-1.9.15/src/core/ngx_palloc.c	2014-07-08 06:22:39.000000000 -0700
-+++ nginx-1.9.15-patched/src/core/ngx_palloc.c	2014-07-13 20:04:41.786419098 -0700
-@@ -9,32 +9,26 @@
+--- nginx-1.9.15/src/core/ngx_palloc.c	2016-04-19 09:02:38.000000000 -0700
++++ nginx-1.9.15-patched/src/core/ngx_palloc.c	2016-04-21 16:25:45.912282685 -0700
+@@ -9,34 +9,26 @@
  #include <ngx_core.h>
  
  
+-static ngx_inline void *ngx_palloc_small(ngx_pool_t *pool, size_t size,
+-    ngx_uint_t align);
 -static void *ngx_palloc_block(ngx_pool_t *pool, size_t size);
 -static void *ngx_palloc_large(ngx_pool_t *pool, size_t size);
 +static void * ngx_malloc(ngx_pool_t *pool, size_t size);
@@ -236,7 +238,7 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_pa
      p->log = log;
  
      return p;
-@@ -44,8 +38,7 @@ ngx_create_pool(size_t size, ngx_log_t *
+@@ -46,8 +38,7 @@ ngx_create_pool(size_t size, ngx_log_t *
  void
  ngx_destroy_pool(ngx_pool_t *pool)
  {
@@ -246,27 +248,26 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_pa
      ngx_pool_cleanup_t  *c;
  
      for (c = pool->cleanup; c; c = c->next) {
-@@ -56,13 +49,9 @@ ngx_destroy_pool(ngx_pool_t *pool)
+@@ -58,6 +49,11 @@ ngx_destroy_pool(ngx_pool_t *pool)
          }
      }
  
--    for (l = pool->large; l; l = l->next) {
--
--        ngx_log_debug1(NGX_LOG_DEBUG_ALLOC, pool->log, 0, "free: %p", l->alloc);
--
--        if (l->alloc) {
--            ngx_free(l->alloc);
--        }
 +    if (pool->d == NULL) {
 +        ngx_free(pool);
 +        return;
-     }
- 
++    }
++
  #if (NGX_DEBUG)
-@@ -72,9 +61,9 @@ ngx_destroy_pool(ngx_pool_t *pool)
+ 
+     /*
+@@ -65,13 +61,9 @@ ngx_destroy_pool(ngx_pool_t *pool)
       * so we cannot use this log while free()ing the pool
       */
  
+-    for (l = pool->large; l; l = l->next) {
+-        ngx_log_debug1(NGX_LOG_DEBUG_ALLOC, pool->log, 0, "free: %p", l->alloc);
+-    }
+-
 -    for (p = pool, n = pool->d.next; /* void */; p = n, n = n->d.next) {
 +    for (d = pool->d, n = d->next; ; d = n, n = n->next) {
          ngx_log_debug2(NGX_LOG_DEBUG_ALLOC, pool->log, 0,
@@ -275,10 +276,16 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_pa
  
          if (n == NULL) {
              break;
-@@ -83,170 +72,82 @@ ngx_destroy_pool(ngx_pool_t *pool)
+@@ -80,171 +72,82 @@ ngx_destroy_pool(ngx_pool_t *pool)
  
  #endif
  
+-    for (l = pool->large; l; l = l->next) {
+-        if (l->alloc) {
+-            ngx_free(l->alloc);
+-        }
+-    }
+-
 -    for (p = pool, n = pool->d.next; /* void */; p = n, n = n->d.next) {
 -        ngx_free(p);
 +    for (d = pool->d, n = d->next; ; d = n, n = n->next) {
@@ -339,28 +346,11 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_pa
  void *
  ngx_palloc(ngx_pool_t *pool, size_t size)
  {
--    u_char      *m;
--    ngx_pool_t  *p;
--
+-#if !(NGX_DEBUG_PALLOC)
 -    if (size <= pool->max) {
--
--        p = pool->current;
--
--        do {
--            m = ngx_align_ptr(p->d.last, NGX_ALIGNMENT);
--
--            if ((size_t) (p->d.end - m) >= size) {
--                p->d.last = m + size;
--
--                return m;
--            }
--
--            p = p->d.next;
--
--        } while (p);
--
--        return ngx_palloc_block(pool, size);
+-        return ngx_palloc_small(pool, size, 1);
 -    }
+-#endif
 -
 -    return ngx_palloc_large(pool, size);
 +    return ngx_malloc(pool, size);
@@ -370,30 +360,42 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_pa
  void *
  ngx_pnalloc(ngx_pool_t *pool, size_t size)
  {
+-#if !(NGX_DEBUG_PALLOC)
+-    if (size <= pool->max) {
+-        return ngx_palloc_small(pool, size, 0);
+-    }
+-#endif
+-
+-    return ngx_palloc_large(pool, size);
+-}
+-
+-
+-static ngx_inline void *
+-ngx_palloc_small(ngx_pool_t *pool, size_t size, ngx_uint_t align)
+-{
 -    u_char      *m;
 -    ngx_pool_t  *p;
 -
--    if (size <= pool->max) {
+-    p = pool->current;
 -
--        p = pool->current;
+-    do {
+-        m = p->d.last;
 -
--        do {
--            m = p->d.last;
+-        if (align) {
+-            m = ngx_align_ptr(m, NGX_ALIGNMENT);
+-        }
 -
--            if ((size_t) (p->d.end - m) >= size) {
--                p->d.last = m + size;
+-        if ((size_t) (p->d.end - m) >= size) {
+-            p->d.last = m + size;
 -
--                return m;
--            }
+-            return m;
+-        }
 -
--            p = p->d.next;
+-        p = p->d.next;
 -
--        } while (p);
+-    } while (p);
 -
--        return ngx_palloc_block(pool, size);
--    }
--
--    return ngx_palloc_large(pool, size);
+-    return ngx_palloc_block(pool, size);
 -}
 -
 -
@@ -462,7 +464,7 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_pa
 -        }
 -    }
 -
--    large = ngx_palloc(pool, sizeof(ngx_pool_large_t));
+-    large = ngx_palloc_small(pool, sizeof(ngx_pool_large_t), 1);
 -    if (large == NULL) {
 +    d = ngx_alloc(sizeof(ngx_pool_data_t), pool->log);
 +    if (d == NULL){
@@ -480,7 +482,7 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_pa
      return p;
  }
  
-@@ -255,38 +156,48 @@ void *
+@@ -253,38 +156,48 @@ void *
  ngx_pmemalign(ngx_pool_t *pool, size_t size, size_t alignment)
  {
      void              *p;
@@ -492,7 +494,7 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_pa
          return NULL;
      }
  
--    large = ngx_palloc(pool, sizeof(ngx_pool_large_t));
+-    large = ngx_palloc_small(pool, sizeof(ngx_pool_large_t), 1);
 -    if (large == NULL) {
 +    d = ngx_alloc(sizeof(ngx_pool_data_t), pool->log);
 +    if (d == NULL){
@@ -545,8 +547,8 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_pa
              return NGX_OK;
          }
 diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.9.15/src/core/ngx_palloc.h nginx-1.9.15-patched/src/core/ngx_palloc.h
---- nginx-1.9.15/src/core/ngx_palloc.h	2014-07-08 06:22:39.000000000 -0700
-+++ nginx-1.9.15-patched/src/core/ngx_palloc.h	2014-07-13 19:21:54.119099642 -0700
+--- nginx-1.9.15/src/core/ngx_palloc.h	2016-04-19 09:02:38.000000000 -0700
++++ nginx-1.9.15-patched/src/core/ngx_palloc.h	2016-04-21 16:25:07.454949755 -0700
 @@ -38,28 +38,21 @@ struct ngx_pool_cleanup_s {
  };
  
