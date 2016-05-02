@@ -756,11 +756,10 @@ index 0000000..e824daf
 +
 diff --git a/src/dtrace/nginx_provider.d b/src/dtrace/nginx_provider.d
 new file mode 100644
-index 0000000..5887ae7
+index 0000000..435adf4
 --- /dev/null
 +++ b/src/dtrace/nginx_provider.d
-@@ -0,0 +1,40 @@
-+typedef struct { int dummy; } ngx_http_request_t;
+@@ -0,0 +1,39 @@
 +typedef struct { int dummy; } ngx_str_t;
 +typedef int64_t ngx_int_t;
 +typedef uint64_t ngx_uint_t;
@@ -775,18 +774,18 @@ index 0000000..5887ae7
 +
 +provider nginx {
 +    /* probes for subrequests */
-+    probe http__subrequest__cycle(ngx_http_request_t *pr, ngx_str_t *uri, ngx_str_t *args);
-+    probe http__subrequest__start(ngx_http_request_t *r);
-+    probe http__subrequest__finalize_writing(ngx_http_request_t *r);
-+    probe http__subrequest__finalize_nonactive(ngx_http_request_t *r);
-+    probe http__subrequest__wake__parent(ngx_http_request_t *r);
-+    probe http__subrequest__done(ngx_http_request_t *r);
-+    probe http__subrequest__post__start(ngx_http_request_t *r, ngx_int_t rc);
-+    probe http__subrequest__post__done(ngx_http_request_t *r, ngx_int_t rc);
++    probe http__subrequest__cycle(void *pr, ngx_str_t *uri, ngx_str_t *args);
++    probe http__subrequest__start(void *r);
++    probe http__subrequest__finalize_writing(void *r);
++    probe http__subrequest__finalize_nonactive(void *r);
++    probe http__subrequest__wake__parent(void *r);
++    probe http__subrequest__done(void *r);
++    probe http__subrequest__post__start(void *r, ngx_int_t rc);
++    probe http__subrequest__post__done(void *r, ngx_int_t rc);
 +    probe http__module__post__config(ngx_module_t *m);
-+    probe http__read__body__done(ngx_http_request_t *r);
-+    probe http__read__req__line__done(ngx_http_request_t *r);
-+    probe http__read__req__header__done(ngx_http_request_t *r, ngx_table_elt_t *h);
++    probe http__read__body__done(void *r);
++    probe http__read__req__line__done(void *r);
++    probe http__read__req__header__done(void *r, ngx_table_elt_t *h);
 +    probe timer__add(ngx_event_t *ev, ngx_msec_t timer);
 +    probe timer__del(ngx_event_t *ev);
 +    probe timer__expire(ngx_event_t *ev);
