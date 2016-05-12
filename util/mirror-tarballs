@@ -478,10 +478,11 @@ mv openresty-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.06
+ver=0.07rc1
 $root/util/get-tarball "https://github.com/openresty/resty-cli/tarball/v$ver" -O resty-cli-$ver.tar.gz || exit 1
 tar -xzf resty-cli-$ver.tar.gz || exit 1
 mv openresty-resty-cli-* resty-cli-$ver || exit 1
+resty_cli=resty-cli-$ver
 
 #################################
 
@@ -703,14 +704,13 @@ rm *.tar.gz
 
 cd ..
 cp $root/util/configure ./ || exit 1
-#markdown2pod -e utf8 -d GitHub $root/README.markdown|$root/util/fix-pod2markdown|pod2text > README || exit 1
 cp $root/README.markdown ./ || exit 1
 cp $root/util/install bundle/ || exit 1
 mkdir util || exit 1
 cp $root/util/package-win32.sh util/ || exit 1
 cp $root/util/build-win32.sh util/ || exit 1
 cp $root/COPYRIGHT ./ || exit 1
-markdown2pod -e utf8 -d GitHub $root/doc/README-win32.md|$root/util/fix-pod2markdown|pod2text > README-win32.txt || exit 1
+perl bundle/$resty_cli/bin/md2pod.pl $root/doc/README-win32.md | pod2text > README-win32.txt || exit 1
 unix2dos README-win32.txt || exit 1
 find bundle -name '*~' -delete
 
