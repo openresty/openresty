@@ -278,6 +278,7 @@ for my $opt (@ARGV) {
 
     } elsif ($opt eq '--without-http_ssl_module') {
         $resty_opts{no_http_ssl} = 1;
+        $resty_opts{no_http_encrypted_session} = 1;
 
     } elsif ($opt =~ /^--add-module=(.*)/) {
 
