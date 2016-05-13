@@ -17,6 +17,8 @@ if [ -z $debug ]; then
     mkdir -p $name/bundle || exit 1
 fi
 
+bundle_dir=$root/$name/bundle
+
 cd $name/bundle || exit 1
 
 if [ ! -d $work ]; then
@@ -478,7 +480,7 @@ mv openresty-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.07rc1
+ver=0.07rc2
 $root/util/get-tarball "https://github.com/openresty/resty-cli/tarball/v$ver" -O resty-cli-$ver.tar.gz || exit 1
 tar -xzf resty-cli-$ver.tar.gz || exit 1
 mv openresty-resty-cli-* resty-cli-$ver || exit 1
@@ -713,6 +715,41 @@ cp $root/COPYRIGHT ./ || exit 1
 perl bundle/$resty_cli/bin/md2pod.pl $root/doc/README-win32.md | pod2text > README-win32.txt || exit 1
 unix2dos README-win32.txt || exit 1
 find bundle -name '*~' -delete
+
+restydoc_index=$bundle_dir/$resty_cli/bin/restydoc-index
+#restydoc_index=$HOME/git/resty-cli/bin/restydoc-index
+
+nginx_xml2pod=$bundle_dir/$resty_cli/bin/nginx-xml2pod
+#nginx_xml2pod=$HOME/git/resty-cli/bin/nginx-xml2pod
+
+# generate restydoc index from nginx docs
+
+curdir=$PWD
+cd $root/work/
+if [ -d nginx.org ]; then
+    cd nginx.org/ || exit 1
+    hg pull || exit 1
+    hg update || exit 1
+    cd ..
+else
+    hg clone http://hg.nginx.org/nginx.org || exit 1
+fi
+cd nginx.org/ || exit 1
+$nginx_xml2pod xml/en/docs || exit 1
+cd $curdir
+
+echo "restydoc-index $root/work/nginx.org"
+$restydoc_index --outdir bundle $root/work/nginx.org || exit 1
+
+# generate restydoc index from openresty docs
+
+for indir in bundle/*/; do
+    if [ "$indir" == "bundle/pod/" ]; then
+        continue
+    fi
+    echo "restydoc-index $indir"
+    $restydoc_index --outdir bundle $indir || exit 1
+done
 
 cd $root
 

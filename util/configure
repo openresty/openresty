@@ -964,8 +964,13 @@ _EOC_
             $target_dir = "\$(DESTDIR)$prefix/bin/";
         }
         push @make_install_cmds, "cd $root_dir/build/$resty_cli_dir && "
-             . "$root_dir/build/install resty $target_dir";
+             . "$root_dir/build/install bin/* $target_dir";
     }
+
+    # configure restydoc indexes
+
+    push @make_install_cmds, "cp $root_dir/build/resty.index \$(DESTDIR)$prefix/",
+                             "cp -r $root_dir/build/pod \$(DESTDIR)$prefix/";
 
     # prepare nginx configure line
 
