@@ -364,7 +364,7 @@ mv openresty-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.29
+ver=0.30
 $root/util/get-tarball "https://github.com/openresty/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
 tar -xzf headers-more-nginx-module-$ver.tar.gz || exit 1
 mv openresty-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
