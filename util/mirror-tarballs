@@ -399,7 +399,7 @@ mv openresty-array-var-nginx-module-* array-var-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.16
+ver=0.17
 $root/util/get-tarball "https://github.com/openresty/memc-nginx-module/tarball/v$ver" -O memc-nginx-module-$ver.tar.gz || exit 1
 tar -xzf memc-nginx-module-$ver.tar.gz || exit 1
 mv openresty-memc-nginx-module-* memc-nginx-module-$ver || exit 1
