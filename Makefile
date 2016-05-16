@@ -3,7 +3,7 @@
 all:
 	./util/mirror-tarballs
 
-test: all
+test:
 	prove -r t
 
 try-luajit: all
