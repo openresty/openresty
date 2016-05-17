@@ -68,7 +68,7 @@ sub write_config_file ($) {
 write_config_file "/tmp/nginx.conf";
 
 warn "=== --with-stream ===\n";
-$prefix = "/usr/local/openresty-nogzip";
+$prefix = "/usr/local/openresty-stream";
 sh "sudo rm -rf $prefix/lualib $prefix/luajit $prefix/bin $prefix/lua $prefix/nginx/sbin $prefix/nginx/html";
 unless ($opts{f}) {
     sh "./configure $cfg_opts --with-stream --prefix=$prefix -j$jobs > /dev/null";
@@ -87,7 +87,7 @@ sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "=== --with-stream + dtrace static probes ===\n";
-$prefix = "/usr/local/openresty-nogzip";
+$prefix = "/usr/local/openresty-stream-usdt";
 sh "sudo rm -rf $prefix/lualib $prefix/luajit $prefix/bin $prefix/lua $prefix/nginx/sbin $prefix/nginx/html";
 unless ($opts{f}) {
     sh "./configure $cfg_opts --with-dtrace-probes --with-stream --prefix=$prefix -j$jobs > /dev/null";
