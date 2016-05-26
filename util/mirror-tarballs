@@ -480,7 +480,7 @@ mv openresty-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.08
+ver=0.09
 $root/util/get-tarball "https://github.com/openresty/resty-cli/tarball/v$ver" -O resty-cli-$ver.tar.gz || exit 1
 tar -xzf resty-cli-$ver.tar.gz || exit 1
 mv openresty-resty-cli-* resty-cli-$ver || exit 1
@@ -725,7 +725,7 @@ nginx_xml2pod=$bundle_dir/$resty_cli/bin/nginx-xml2pod
 # generate restydoc index from nginx docs
 
 curdir=$PWD
-cd $root/work/
+cd $root/work/ || exit 1
 if [ -d nginx.org ]; then
     cd nginx.org/ || exit 1
     hg pull || exit 1
@@ -754,8 +754,12 @@ for indir in bundle/*/; do
     $restydoc_index --outdir bundle $indir || exit 1
 done
 
-cd $root
+cd $curdir || exit 1
+find bundle -name '*.md' -delete
+find bundle -name '*.markdown' -delete
+find bundle -name '*.wiki' -delete
 
-tar cf $name.tar $name
-gzip -f --best $name.tar
+cd $root || exit 1
 
+tar cf $name.tar $name || exit 1
+gzip -f --best $name.tar || exit 1
