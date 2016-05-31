@@ -46,6 +46,13 @@ if [ "$answer" = "N" ]; then
     echo "$info_txt applying the patch for nginx security advisory (CVE-2016-4450)"
     patch -p0 < $root/patches/patch.2016.write2.txt || exit 1
     echo
+else
+    answer=`$root/util/ver-ge "$main_ver" 1.10.1`
+    if [ "$answer" = "N" ]; then
+        echo "$info_txt applying the patch for nginx security advisory (CVE-2016-4450)"
+        patch -p0 < $root/patches/patch.2016.write.txt || exit 1
+        echo
+    fi
 fi
 
 echo "$info_txt applying the upstream-pipelining patch for nginx"

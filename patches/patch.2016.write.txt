@@ -1,0 +1,14 @@
+--- src/os/unix/ngx_files.c
++++ src/os/unix/ngx_files.c
+@@ -356,6 +356,11 @@
+     n = 0;
+ 
+     for ( /* void */ ; cl; cl = cl->next) {
++
++        if (ngx_buf_special(cl->buf)) {
++            continue;
++        }
++
+         size = cl->buf->last - cl->buf->pos;
+ 
+         if (prev == cl->buf->pos) {
