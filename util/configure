@@ -144,7 +144,7 @@ for my $opt (@ARGV) {
 
     if ($opt =~ /^--with-cc=(.+)/) {
         $cc = $1;
-        push @ngx_opts, "'$opt'";
+        push @ngx_opts, "$opt";
         next;
     }
 
@@ -330,7 +330,7 @@ if (@ngx_ld_opts) {
 my $cmd = "sh ./configure --prefix=$ngx_prefix"
     . $resty_opts
     . $ld_opts
-    . (@ngx_opts ? " \\\n  @ngx_opts" : "");
+    . (@ngx_opts ? " \\\n  " . quote_cli_args(\@ngx_opts) : "");
     ;
 
 shell $cmd, $dry_run;
@@ -1290,3 +1290,20 @@ sub can_run {
     return undef;
 }
 
+sub quote_cli_args {
+    my $args = shift;
+    my @quoted;
+    for my $arg (@$args) {
+        if ($arg =~ /[\\\s'"\$]/) {
+            if ($arg =~ /'/) {
+                $arg =~ s/([\\'])/\\$1/g;
+                push @quoted, "\$'$arg'";
+            } else {
+                push @quoted, "'$arg'";
+            }
+        } else {
+            push @quoted, $arg;
+        }
+    }
+    join " ", @quoted;
+}
