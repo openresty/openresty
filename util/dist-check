@@ -67,6 +67,24 @@ sub write_config_file ($) {
 
 write_config_file "/tmp/nginx.conf";
 
+warn "=== Without FFI ===\n";
+$prefix = "/usr/local/openresty-noffi";
+sh "sudo rm -rf $prefix/lualib $prefix/luajit $prefix/bin $prefix/lua $prefix/nginx/sbin $prefix/nginx/html";
+unless ($opts{f}) {
+    sh "./configure $cfg_opts --with-cc-opt='-DNGX_LUA_NO_FFI_API' --prefix=$prefix -j$jobs > /dev/null";
+}
+sh "$make -j$jobs > /dev/null";
+sh "sudo $make install > /dev/null";
+sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
+system "sudo killall nginx > /dev/null 2>&1";
+sh "sudo $prefix/nginx/sbin/nginx";
+sh "curl -si localhost/lua|grep $lua";
+sh "curl -si localhost/lua|grep $ver";
+sh "curl -si localhost/cjson|grep 'json.safe: '";
+sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
+sh "sudo $prefix/nginx/sbin/nginx -sstop";
+
 warn "=== --with-stream ===\n";
 $prefix = "/usr/local/openresty-stream";
 sh "sudo rm -rf $prefix/lualib $prefix/luajit $prefix/bin $prefix/lua $prefix/nginx/sbin $prefix/nginx/html";
