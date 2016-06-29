@@ -1,0 +1,83 @@
+=pod
+
+LuaJIT
+
+=head1 Contact
+
+=over
+
+=item * LuaJIT
+
+=over
+
+=item * Download E<rchevron>
+
+=item * Installation
+
+=item * Running
+
+=back
+
+=item * Extensions
+
+=over
+
+=item * FFI Library
+
+=over
+
+=item * FFI Tutorial
+
+=item * ffi.* API
+
+=item * FFI Semantics
+
+=back
+
+=item * jit.* Library
+
+=item * Lua/C API
+
+=item * Profiler
+
+=back
+
+=item * Status
+
+=over
+
+=item * Changes
+
+=back
+
+=item * FAQ
+
+=item * Performance E<rchevron>
+
+=item * Wiki E<rchevron>
+
+=item * Mailing List E<rchevron>
+
+=back
+
+Please send general questions to the E<rchevron> LuaJIT mailing list.
+You can also send any questions you have directly to me:
+
+Contact info in image
+
+=head2 Copyright
+
+All documentation is Copyright E<copy> 2005-2016 Mike Pall.
+
+----
+
+Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+
+=cut
+
+#Pod::HTML2Pod conversion notes:
+#From file contact.html
+# 2813 bytes of input
+#Wed Jun 29 13:18:14 2016 agentzh
+# No a_name switch not specified, so will not try to render <a name='...'>
+# No a_href switch not specified, so will not try to render <a href='...'>

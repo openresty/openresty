@@ -1,0 +1,182 @@
+=pod
+
+LuaJIT
+
+=head1 C<jit.*> Library
+
+=over
+
+=item * LuaJIT
+
+=over
+
+=item * Download E<rchevron>
+
+=item * Installation
+
+=item * Running
+
+=back
+
+=item * Extensions
+
+=over
+
+=item * FFI Library
+
+=over
+
+=item * FFI Tutorial
+
+=item * ffi.* API
+
+=item * FFI Semantics
+
+=back
+
+=item * jit.* Library
+
+=item * Lua/C API
+
+=item * Profiler
+
+=back
+
+=item * Status
+
+=over
+
+=item * Changes
+
+=back
+
+=item * FAQ
+
+=item * Performance E<rchevron>
+
+=item * Wiki E<rchevron>
+
+=item * Mailing List E<rchevron>
+
+=back
+
+The functions in this built-in module control the behavior of the JIT
+compiler engine. Note that JIT-compilation is fully automatic E<mdash>
+you probably won't need to use any of the following functions unless
+you have special needs.
+
+=head2 jit.on()
+
+jit.off()
+
+Turns the whole JIT compiler on (default) or off.
+
+These functions are typically used with the command line options C<-j
+on> or C<-j off>.
+
+=head2 C<jit.flush()>
+
+Flushes the whole cache of compiled code.
+
+=head2 jit.on(func|true [,true|false])
+
+jit.off(func|true [,true|false])
+
+jit.flush(func|true [,true|false])
+
+C<jit.on> enables JIT compilation for a Lua function (this is the
+default).
+
+C<jit.off> disables JIT compilation for a Lua function and flushes any
+already compiled code from the code cache.
+
+C<jit.flush> flushes the code, but doesn't affect the enable/disable
+status.
+
+The current function, i.e. the Lua function calling this library
+function, can also be specified by passing C<true> as the first
+argument.
+
+If the second argument is C<true>, JIT compilation is also enabled,
+disabled or flushed recursively for all sub-functions of a function.
+With C<false> only the sub-functions are affected.
+
+The C<jit.on> and C<jit.off> functions only set a flag which is checked
+when the function is about to be compiled. They do not trigger
+immediate compilation.
+
+Typical usage is C<jit.off(true, true)> in the main chunk of a module
+to turn off JIT compilation for the whole module for debugging
+purposes.
+
+=head2 C<jit.flush(tr)>
+
+Flushes the root trace, specified by its number, and all of its side
+traces from the cache. The code for the trace will be retained as long
+as there are any other traces which link to it.
+
+=head2 C<status, ... = jit.status()>
+
+Returns the current status of the JIT compiler. The first result is
+either C<true> or C<false> if the JIT compiler is turned on or off. The
+remaining results are strings for CPU-specific features and enabled
+optimizations.
+
+=head2 C<jit.version>
+
+Contains the LuaJIT version string.
+
+=head2 C<jit.version_num>
+
+Contains the version number of the LuaJIT core. Version xx.yy.zz is
+represented by the decimal number xxyyzz.
+
+=head2 C<jit.os>
+
+Contains the target OS name: "Windows", "Linux", "OSX", "BSD", "POSIX"
+or "Other".
+
+=head2 C<jit.arch>
+
+Contains the target architecture name: "x86", "x64", "arm", "arm64",
+"ppc", "mips" or "mips64".
+
+=head2 C<jit.opt.*> E<mdash> JIT compiler optimization control
+
+This sub-module provides the backend for the C<-O> command line option.
+
+You can also use it programmatically, e.g.:
+
+ jit.opt.start(2) -- same as -O2
+ jit.opt.start("-dce")
+ jit.opt.start("hotloop=10", "hotexit=2")
+
+Unlike in LuaJIT 1.x, the module is built-in and B<optimization is
+turned on by default!> It's no longer necessary to run
+C<require("jit.opt").start()>, which was one of the ways to enable
+optimization.
+
+=head2 C<jit.util.*> E<mdash> JIT compiler introspection
+
+This sub-module holds functions to introspect the bytecode, generated
+traces, the IR and the generated machine code. The functionality
+provided by this module is still in flux and therefore undocumented.
+
+The debug modules C<-jbc>, C<-jv> and C<-jdump> make extensive use of
+these functions. Please check out their source code, if you want to
+know more.
+
+----
+
+Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+
+=cut
+
+#Pod::HTML2Pod conversion notes:
+#From file ext_jit.html
+# 5903 bytes of input
+#Wed Jun 29 13:18:15 2016 agentzh
+# No a_name switch not specified, so will not try to render <a name='...'>
+# No a_href switch not specified, so will not try to render <a href='...'>
+# Deleting phrasal "code" element (`tt_6) because it has super-phrasal elements (`br_2, `br_3) as children.
+# Deleting phrasal "code" element (`tt_2) because it has super-phrasal elements (`br_1) as children.

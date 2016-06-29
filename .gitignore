@@ -74,3 +74,4 @@ upload
 upload-win32
 html_out/
 TODO
+doc/LuaJIT-2.1/changes.pod

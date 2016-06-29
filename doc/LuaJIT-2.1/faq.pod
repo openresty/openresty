@@ -1,0 +1,224 @@
+=pod
+
+LuaJIT
+
+=head1 Frequently Asked Questions (FAQ)
+
+=over
+
+=item * LuaJIT
+
+=over
+
+=item * Download E<rchevron>
+
+=item * Installation
+
+=item * Running
+
+=back
+
+=item * Extensions
+
+=over
+
+=item * FFI Library
+
+=over
+
+=item * FFI Tutorial
+
+=item * ffi.* API
+
+=item * FFI Semantics
+
+=back
+
+=item * jit.* Library
+
+=item * Lua/C API
+
+=item * Profiler
+
+=back
+
+=item * Status
+
+=over
+
+=item * Changes
+
+=back
+
+=item * FAQ
+
+=item * Performance E<rchevron>
+
+=item * Wiki E<rchevron>
+
+=item * Mailing List E<rchevron>
+
+=back
+
+=over
+
+=item Q: Where can I learn more about LuaJIT and Lua?
+
+=over
+
+=item * The E<rchevron> LuaJIT mailing list focuses on topics related
+to LuaJIT.
+
+=item * The E<rchevron> LuaJIT wiki gathers community resources about
+LuaJIT.
+
+=item * News about Lua itself can be found at the E<rchevron> Lua
+mailing list. The mailing list archives are worth checking out for
+older postings about LuaJIT.
+
+=item * The E<rchevron> main Lua.org site has complete E<rchevron>
+documentation of the language and links to books and papers about Lua.
+
+=item * The community-managed E<rchevron> Lua Wiki has information
+about diverse topics.
+
+=back
+
+=back
+
+=over
+
+=item Q: Where can I learn more about the compiler technology used by
+LuaJIT?
+
+I'm planning to write more documentation about the internals of LuaJIT.
+In the meantime, please use the following Google Scholar searches to
+find relevant papers:
+
+Search for: E<rchevron> Trace Compiler
+
+Search for: E<rchevron> JIT Compiler
+
+Search for: E<rchevron> Dynamic Language Optimizations
+
+Search for: E<rchevron> SSA Form
+
+Search for: E<rchevron> Linear Scan Register Allocation
+
+Here is a list of the E<rchevron> innovative features in LuaJIT.
+
+And, you know, reading the source is of course the only way to
+enlightenment. :-)
+
+=back
+
+=over
+
+=item Q: Why do I get this error: "attempt to index global 'arg' (a nil
+value)"?
+
+Q: My vararg functions fail after switching to LuaJIT!
+
+LuaJIT is compatible to the Lua 5.1 language standard. It doesn't
+support the implicit C<arg> parameter for old-style vararg functions
+from Lua 5.0.
+
+Please convert your code to the E<rchevron> Lua 5.1 vararg syntax.
+
+=back
+
+=over
+
+=item Q: Why do I get this error: "bad FPU precision"?
+
+=item Q: I get weird behavior after initializing Direct3D.
+
+=item Q: Some FPU operations crash after I load a Delphi DLL.
+
+DirectX/Direct3D (up to version 9) sets the x87 FPU to single-precision
+mode by default. This violates the Windows ABI and interferes with the
+operation of many programs E<mdash> LuaJIT is affected, too. Please
+make sure you always use the C<D3DCREATE_FPU_PRESERVE> flag when
+initializing Direct3D.
+
+Direct3D version 10 or higher do not show this behavior anymore.
+Consider testing your application with older versions, too.
+
+Similarly, the Borland/Delphi runtime modifies the FPU control word and
+enables FP exceptions. Of course this violates the Windows ABI, too.
+Please check the Delphi docs for the Set8087CW method.
+
+=back
+
+=over
+
+=item Q: Sometimes Ctrl-C fails to stop my Lua program. Why?
+
+The interrupt signal handler sets a Lua debug hook. But this is
+currently ignored by compiled code (this will eventually be fixed). If
+your program is running in a tight loop and never falls back to the
+interpreter, the debug hook never runs and can't throw the
+"interrupted!" error.
+
+In the meantime you have to press Ctrl-C twice to get stop your
+program. That's similar to when it's stuck running inside a C function
+under the Lua interpreter.
+
+=back
+
+=over
+
+=item Q: Why doesn't my favorite power-patch for Lua apply against
+LuaJIT?
+
+Because it's a completely redesigned VM and has very little code in
+common with Lua anymore. Also, if the patch introduces changes to the
+Lua semantics, these would need to be reflected everywhere in the VM,
+from the interpreter up to all stages of the compiler.
+
+Please use only standard Lua language constructs. For many common needs
+you can use source transformations or use wrapper or proxy functions.
+The compiler will happily optimize away such indirections.
+
+=back
+
+=over
+
+=item Q: Lua runs everywhere. Why doesn't LuaJIT support my CPU?
+
+Because it's a compiler E<mdash> it needs to generate native machine
+code. This means the code generator must be ported to each
+architecture. And the fast interpreter is written in assembler and must
+be ported, too. This is quite an undertaking.
+
+The install documentation shows the supported architectures. Other
+architectures will follow based on sufficient user demand and/or
+sponsoring.
+
+=back
+
+=over
+
+=item Q: When will feature X be added? When will the next version be
+released?
+
+When it's ready.
+
+C'mon, it's open source E<mdash> I'm doing it on my own time and you're
+getting it for free. You can either contribute a patch or sponsor the
+development of certain features, if they are important to you.
+
+=back
+
+----
+
+Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+
+=cut
+
+#Pod::HTML2Pod conversion notes:
+#From file faq.html
+# 7685 bytes of input
+#Wed Jun 29 13:18:15 2016 agentzh
+# No a_name switch not specified, so will not try to render <a name='...'>
+# No a_href switch not specified, so will not try to render <a href='...'>

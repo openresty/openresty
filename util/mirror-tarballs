@@ -494,7 +494,7 @@ mv openresty-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.12
+ver=0.13rc1
 $root/util/get-tarball "https://github.com/openresty/resty-cli/tarball/v$ver" -O resty-cli-$ver.tar.gz || exit 1
 tar -xzf resty-cli-$ver.tar.gz || exit 1
 mv openresty-resty-cli-* resty-cli-$ver || exit 1
@@ -757,6 +757,9 @@ $restydoc_index --outdir bundle $root/work/nginx.org || exit 1
 
 echo "restydoc-index $root/doc/lua-5.1.5"
 $restydoc_index --outdir bundle $root/doc/lua-5.1.5 || exit 1
+
+echo "restydoc-index $root/doc/LuaJIT-2.1"
+$restydoc_index --outdir bundle $root/doc/LuaJIT-2.1 || exit 1
 
 # generate restydoc index from openresty docs
 

@@ -1,0 +1,103 @@
+=pod
+
+LuaJIT
+
+=head1 Status
+
+=over
+
+=item * LuaJIT
+
+=over
+
+=item * Download E<rchevron>
+
+=item * Installation
+
+=item * Running
+
+=back
+
+=item * Extensions
+
+=over
+
+=item * FFI Library
+
+=over
+
+=item * FFI Tutorial
+
+=item * ffi.* API
+
+=item * FFI Semantics
+
+=back
+
+=item * jit.* Library
+
+=item * Lua/C API
+
+=item * Profiler
+
+=back
+
+=item * Status
+
+=over
+
+=item * Changes
+
+=back
+
+=item * FAQ
+
+=item * Performance E<rchevron>
+
+=item * Wiki E<rchevron>
+
+=item * Mailing List E<rchevron>
+
+=back
+
+LuaJIT 2.0 is the current stable branch. This branch is in
+feature-freeze E<mdash> new features will only be added to LuaJIT 2.1.
+
+=head2 Current Status
+
+LuaJIT ought to run all Lua 5.1-compatible source code just fine. It's
+considered a serious bug if the VM crashes or produces unexpected
+results E<mdash> please report this.
+
+Known incompatibilities and issues in LuaJIT 2.0:
+
+=over
+
+=item * There are some differences in B<implementation-defined>
+behavior. These either have a good reason, are arbitrary design choices
+or are due to quirks in the VM. The latter cases may get fixed if a
+demonstrable need is shown.
+
+=item * The Lua B<debug API> is missing a couple of features (return
+hooks for non-Lua functions) and shows slightly different behavior in
+LuaJIT (no per-coroutine hooks, no tail call counting).
+
+=item * Currently some B<out-of-memory> errors from B<on-trace code>
+are not handled correctly. The error may fall through an on-trace
+C<pcall> or it may be passed on to the function set with C<lua_atpanic>
+on x64. This issue will be fixed with the new garbage collector.
+
+=back
+
+----
+
+Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+
+=cut
+
+#Pod::HTML2Pod conversion notes:
+#From file status.html
+# 3334 bytes of input
+#Wed Jun 29 13:18:15 2016 agentzh
+# No a_name switch not specified, so will not try to render <a name='...'>
+# No a_href switch not specified, so will not try to render <a href='...'>

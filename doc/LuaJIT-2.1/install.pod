@@ -1,0 +1,698 @@
+=pod
+
+LuaJIT
+
+=head1 Installation
+
+=over
+
+=item * LuaJIT
+
+=over
+
+=item * Download E<rchevron>
+
+=item * Installation
+
+=item * Running
+
+=back
+
+=item * Extensions
+
+=over
+
+=item * FFI Library
+
+=over
+
+=item * FFI Tutorial
+
+=item * ffi.* API
+
+=item * FFI Semantics
+
+=back
+
+=item * jit.* Library
+
+=item * Lua/C API
+
+=item * Profiler
+
+=back
+
+=item * Status
+
+=over
+
+=item * Changes
+
+=back
+
+=item * FAQ
+
+=item * Performance E<rchevron>
+
+=item * Wiki E<rchevron>
+
+=item * Mailing List E<rchevron>
+
+=back
+
+LuaJIT is only distributed as a source package. This page explains how
+to build and install LuaJIT with different operating systems and C
+compilers.
+
+For the impatient (on POSIX systems):
+
+ make && sudo make install
+
+LuaJIT currently builds out-of-the box on most systems. Here's the
+compatibility matrix for the supported combinations of operating
+systems, CPUs and compilers:
+
+CPU / OS
+
+Linux or
+
+Android
+
+*BSD, Other
+
+OSX 10.4+ or
+
+iOS 3.0+
+
+Windows
+
+XP/Vista/7
+
+x86 (32 bit)
+
+GCC 4.2+
+
+GCC 4.2+
+
+XCode 5.0+
+
+Clang
+
+MSVC, MSVC/EE
+
+WinSDK
+
+MinGW, Cygwin
+
+x64 (64 bit)
+
+GCC 4.2+
+
+GCC 4.2+
+
+ORBIS (PS4)
+
+XCode 5.0+
+
+Clang
+
+MSVC + SDK v7.0
+
+WinSDK v7.0
+
+Durango (Xbox One)
+
+ARMv5+
+
+ARM9E+
+
+GCC 4.2+
+
+GCC 4.2+
+
+PSP2 (PS VITA)
+
+XCode 5.0+
+
+Clang
+
+ARM64
+
+GCC 4.8+
+
+XCode 6.0+
+
+Clang 3.5+
+
+PPC
+
+GCC 4.3+
+
+GCC 4.3+
+
+GCC 4.1 (PS3)
+
+XEDK (Xbox 360)
+
+MIPS32
+
+MIPS64
+
+GCC 4.3+
+
+GCC 4.3+
+
+=head2 Configuring LuaJIT
+
+The standard configuration should work fine for most installations.
+Usually there is no need to tweak the settings. The following files
+hold all user-configurable settings:
+
+=over
+
+=item * C<src/luaconf.h> sets some configuration variables.
+
+=item * C<Makefile> has settings for B<installing> LuaJIT (POSIX only).
+
+=item * C<src/Makefile> has settings for B<compiling> LuaJIT under
+POSIX, MinGW or Cygwin.
+
+=item * C<src/msvcbuild.bat> has settings for compiling LuaJIT with
+MSVC or WinSDK.
+
+=back
+
+Please read the instructions given in these files, before changing any
+settings.
+
+=head2 POSIX Systems (Linux, OSX, *BSD etc.)
+
+=head2 Prerequisites
+
+Depending on your distribution, you may need to install a package for
+GCC, the development headers and/or a complete SDK. E.g. on a current
+Debian/Ubuntu, install C<libc6-dev> with the package manager.
+
+Download the current source package of LuaJIT (pick the .tar.gz), if
+you haven't already done so. Move it to a directory of your choice,
+open a terminal window and change to this directory. Now unpack the
+archive and change to the newly created directory:
+
+ tar zxf LuaJIT-2.0.4.tar.gz
+ cd LuaJIT-2.0.4
+
+=head2 Building LuaJIT
+
+The supplied Makefiles try to auto-detect the settings needed for your
+operating system and your compiler. They need to be run with GNU Make,
+which is probably the default on your system, anyway. Simply run:
+
+ make
+
+This always builds a native binary, depending on the host OS you're
+running this command on. Check the section on cross-compilation for
+more options.
+
+By default, modules are only searched under the prefix C</usr/local>.
+You can add an extra prefix to the search paths by appending the
+C<PREFIX> option, e.g.:
+
+ make PREFIX=/home/myself/lj2
+
+Note for OSX: if the C<MACOSX_DEPLOYMENT_TARGET> environment variable
+is not set, then it's forced to C<10.4>.
+
+=head2 Installing LuaJIT
+
+The top-level Makefile installs LuaJIT by default under C</usr/local>,
+i.e. the executable ends up in C</usr/local/bin> and so on. You need
+root privileges to write to this path. So, assuming sudo is installed
+on your system, run the following command and enter your sudo password:
+
+ sudo make install
+
+Otherwise specify the directory prefix as an absolute path, e.g.:
+
+ make install PREFIX=/home/myself/lj2
+
+Obviously the prefixes given during build and installation need to be
+the same.
+
+=head2 Windows Systems
+
+=head2 Prerequisites
+
+Either install one of the open source SDKs (E<rchevron> MinGW or
+E<rchevron> Cygwin), which come with a modified GCC plus the required
+development headers.
+
+Or install Microsoft's Visual C++ (MSVC). The freely downloadable
+E<rchevron> Express Edition works just fine, but only contains an x86
+compiler.
+
+The freely downloadable E<rchevron> Windows SDK only comes with command
+line tools, but this is all you need to build LuaJIT. It contains x86
+and x64 compilers.
+
+Next, download the source package and unpack it using an archive
+manager (e.g. the Windows Explorer) to a directory of your choice.
+
+=head2 Building with MSVC
+
+Open a "Visual Studio .NET Command Prompt", C<cd> to the directory
+where you've unpacked the sources and run these commands:
+
+ cd src
+ msvcbuild
+
+Then follow the installation instructions below.
+
+=head2 Building with the Windows SDK
+
+Open a "Windows SDK Command Shell" and select the x86 compiler:
+
+ setenv /release /x86
+
+Or select the x64 compiler:
+
+ setenv /release /x64
+
+Then C<cd> to the directory where you've unpacked the sources and run
+these commands:
+
+ cd src
+ msvcbuild
+
+Then follow the installation instructions below.
+
+=head2 Building with MinGW or Cygwin
+
+Open a command prompt window and make sure the MinGW or Cygwin programs
+are in your path. Then C<cd> to the directory where you've unpacked the
+sources and run this command for MinGW:
+
+ mingw32-make
+
+Or this command for Cygwin:
+
+ make
+
+Then follow the installation instructions below.
+
+=head2 Installing LuaJIT
+
+Copy C<luajit.exe> and C<lua51.dll> (built in the C<src> directory) to
+a newly created directory (any location is ok). Add C<lua> and
+C<lua\jit> directories below it and copy all Lua files from the
+C<src\jit> directory of the distribution to the latter directory.
+
+There are no hardcoded absolute path names E<mdash> all modules are
+loaded relative to the directory where C<luajit.exe> is installed (see
+C<src/luaconf.h>).
+
+=head2 Cross-compiling LuaJIT
+
+First, let's clear up some terminology:
+
+=over
+
+=item * Host: This is your development system, usually based on a x64
+or x86 CPU.
+
+=item * Target: This is the target system you want LuaJIT to run on,
+e.g. Android/ARM.
+
+=item * Toolchain: This comprises a C compiler, linker, assembler and a
+matching C library.
+
+=item * Host (or system) toolchain: This is the toolchain used to build
+native binaries for your host system.
+
+=item * Cross-compile toolchain: This is the toolchain used to build
+binaries for the target system. They can only be run on the target
+system.
+
+=back
+
+The GNU Makefile-based build system allows cross-compiling on any host
+for any supported target:
+
+=over
+
+=item * Yes, you need a toolchain for both your host I<and> your
+target!
+
+=item * Both host and target architectures must have the same pointer
+size.
+
+=item * E.g. if you want to cross-compile to a 32 bit target on a 64
+bit host, you need to install the multilib development package (e.g.
+C<libc6-dev-i386> on Debian/Ubuntu) and build a 32 bit host part
+(C<HOST_CC="gcc -m32">).
+
+=item * 64 bit targets always require compilation on a 64 bit host.
+
+=back
+
+You need to specify C<TARGET_SYS> whenever the host OS and the target
+OS differ, or you'll get assembler or linker errors:
+
+=over
+
+=item * E.g. if you're compiling on a Windows or OSX host for embedded
+Linux or Android, you need to add C<TARGET_SYS=Linux> to the examples
+below.
+
+=item * For a minimal target OS, you may need to disable the built-in
+allocator in C<src/Makefile> and use C<TARGET_SYS=Other>.
+
+=item * Don't forget to specify the same C<TARGET_SYS> for the install
+step, too.
+
+=back
+
+Here are some examples where host and target have the same CPU:
+
+ # Cross-compile to a 32 bit binary on a multilib x64 OS
+ make CC="gcc -m32"
+ 
+ # Cross-compile on Debian/Ubuntu for Windows (mingw32 package)
+ make HOST_CC="gcc -m32" CROSS=i586-mingw32msvc- TARGET_SYS=Windows
+
+The C<CROSS> prefix allows specifying a standard GNU cross-compile
+toolchain (Binutils, GCC and a matching libc). The prefix may vary
+depending on the C<--target> the toolchain was built for (note the
+C<CROSS> prefix has a trailing C<"-">). The examples below use the
+canonical toolchain triplets for Linux.
+
+Since there's often no easy way to detect CPU features at runtime, it's
+important to compile with the proper CPU or architecture settings:
+
+=over
+
+=item * The best way to get consistent results is to specify the
+correct settings when building the toolchain yourself.
+
+=item * For a pre-built, generic toolchain add C<-mcpu=...> or
+C<-march=...> and other necessary flags to C<TARGET_CFLAGS>.
+
+=item * For ARM it's important to have the correct C<-mfloat-abi=...>
+setting, too. Otherwise LuaJIT may not run at the full performance of
+your target CPU.
+
+=item * For MIPS it's important to select a supported ABI (o32 on
+MIPS32, n64 on MIPS64) and consistently compile your project either
+with hard-float or soft-float compiler settings.
+
+=back
+
+Here are some examples for targets with a different CPU than the host:
+
+ # ARM soft-float
+ make HOST_CC="gcc -m32" CROSS=arm-linux-gnueabi- \
+      TARGET_CFLAGS="-mfloat-abi=soft"
+ 
+ # ARM soft-float ABI with VFP (example for Cortex-A9)
+ make HOST_CC="gcc -m32" CROSS=arm-linux-gnueabi- \
+      TARGET_CFLAGS="-mcpu=cortex-a9 -mfloat-abi=softfp"
+ 
+ # ARM hard-float ABI with VFP (armhf, most modern toolchains)
+ make HOST_CC="gcc -m32" CROSS=arm-linux-gnueabihf-
+ 
+ # ARM64
+ make CROSS=aarch64-linux-
+ 
+ # PPC
+ make HOST_CC="gcc -m32" CROSS=powerpc-linux-gnu-
+ 
+ # MIPS32 big-endian
+ make HOST_CC="gcc -m32" CROSS=mips-linux-
+ # MIPS32 little-endian
+ make HOST_CC="gcc -m32" CROSS=mipsel-linux-
+ 
+ # MIPS64 big-endian
+ make CROSS=mips-linux- TARGET_CFLAGS="-mips64r2 -mabi=64"
+ # MIPS64 little-endian
+ make CROSS=mipsel-linux- TARGET_CFLAGS="-mips64r2 -mabi=64"
+
+You can cross-compile for B<Android> using the Android NDK. The
+environment variables need to match the install locations and the
+desired target platform. E.g. Android 4.0 corresponds to ABI level 14.
+For details check the folder C<docs> in the NDK directory.
+
+Only a few common variations for the different CPUs, ABIs and platforms
+are listed. Please use your own judgement for which combination you
+want to build/deploy or which lowest common denominator you want to
+pick:
+
+ # Android/ARM, armeabi (ARMv5TE soft-float), Android 2.2+ (Froyo)
+ NDK=/opt/android/ndk
+ NDKABI=8
+ NDKVER=$NDK/toolchains/arm-linux-androideabi-4.9
+ NDKP=$NDKVER/prebuilt/linux-x86/bin/arm-linux-androideabi-
+ NDKF="--sysroot $NDK/platforms/android-$NDKABI/arch-arm"
+ make HOST_CC="gcc -m32" CROSS=$NDKP TARGET_FLAGS="$NDKF"
+ 
+ # Android/ARM, armeabi-v7a (ARMv7 VFP), Android 4.0+ (ICS)
+ NDK=/opt/android/ndk
+ NDKABI=14
+ NDKVER=$NDK/toolchains/arm-linux-androideabi-4.9
+ NDKP=$NDKVER/prebuilt/linux-x86/bin/arm-linux-androideabi-
+ NDKF="--sysroot $NDK/platforms/android-$NDKABI/arch-arm"
+ NDKARCH="-march=armv7-a -mfloat-abi=softfp -Wl,--fix-cortex-a8"
+ make HOST_CC="gcc -m32" CROSS=$NDKP TARGET_FLAGS="$NDKF $NDKARCH"
+ 
+ # Android/MIPS, mipsel (MIPS32R1 hard-float), Android 4.0+ (ICS)
+ NDK=/opt/android/ndk
+ NDKABI=14
+ NDKVER=$NDK/toolchains/mipsel-linux-android-4.9
+ NDKP=$NDKVER/prebuilt/linux-x86/bin/mipsel-linux-android-
+ NDKF="--sysroot $NDK/platforms/android-$NDKABI/arch-mips"
+ make HOST_CC="gcc -m32" CROSS=$NDKP TARGET_FLAGS="$NDKF"
+ 
+ # Android/x86, x86 (i686 SSE3), Android 4.0+ (ICS)
+ NDK=/opt/android/ndk
+ NDKABI=14
+ NDKVER=$NDK/toolchains/x86-4.9
+ NDKP=$NDKVER/prebuilt/linux-x86/bin/i686-linux-android-
+ NDKF="--sysroot $NDK/platforms/android-$NDKABI/arch-x86"
+ make HOST_CC="gcc -m32" CROSS=$NDKP TARGET_FLAGS="$NDKF"
+
+You can cross-compile for B<iOS 3.0+> (iPhone/iPad) using the
+E<rchevron> iOS SDK:
+
+Note: B<the JIT compiler is disabled for iOS>, because regular iOS Apps
+are not allowed to generate code at runtime. You'll only get the
+performance of the LuaJIT interpreter on iOS. This is still faster than
+plain Lua, but much slower than the JIT compiler. Please complain to
+Apple, not me. Or use Android. :-p
+
+ # iOS/ARM (32 bit)
+ ISDKP=$(xcrun --sdk iphoneos --show-sdk-path)
+ ICC=$(xcrun --sdk iphoneos --find clang)
+ ISDKF="-arch armv7 -isysroot $ISDKP"
+ make HOST_CC="clang -m32 -arch i386" CROSS="$(dirname $ICC)/" \
+      TARGET_FLAGS="$ISDKF" TARGET_SYS=iOS
+ 
+ # iOS/ARM64
+ ISDKP=$(xcrun --sdk iphoneos --show-sdk-path)
+ ICC=$(xcrun --sdk iphoneos --find clang)
+ ISDKF="-arch arm64 -isysroot $ISDKP"
+ make CROSS="$(dirname $ICC)/" TARGET_FLAGS="$ISDKF" TARGET_SYS=iOS
+
+=head2 Cross-compiling for consoles
+
+Building LuaJIT for consoles requires both a supported host compiler
+(x86 or x64) and a cross-compiler (to PPC or ARM) from the official
+console SDK.
+
+Due to restrictions on consoles, the JIT compiler is disabled and only
+the fast interpreter is built. This is still faster than plain Lua, but
+much slower than the JIT compiler. The FFI is disabled, too, since it's
+not very useful in such an environment.
+
+The following commands build a static library C<libluajit.a>, which can
+be linked against your game, just like the Lua library.
+
+To cross-compile for B<PS3> from a Linux host (requires 32 bit GCC,
+i.e. multilib Linux/x64) or a Windows host (requires 32 bit MinGW), run
+this command:
+
+ make HOST_CC="gcc -m32" CROSS=ppu-lv2-
+
+To cross-compile for B<PS4> from a Windows host, open a "Visual Studio
+.NET Command Prompt" (64 bit host compiler), C<cd> to the directory
+where you've unpacked the sources and run the following commands:
+
+ cd src
+ ps4build
+
+To cross-compile for B<PS Vita> from a Windows host, open a "Visual
+Studio .NET Command Prompt" (32 bit host compiler), C<cd> to the
+directory where you've unpacked the sources and run the following
+commands:
+
+ cd src
+ psvitabuild
+
+To cross-compile for B<Xbox 360> from a Windows host, open a "Visual
+Studio .NET Command Prompt" (32 bit host compiler), C<cd> to the
+directory where you've unpacked the sources and run the following
+commands:
+
+ cd src
+ xedkbuild
+
+To cross-compile for B<Xbox One> from a Windows host, open a "Visual
+Studio .NET Command Prompt" (64 bit host compiler), C<cd> to the
+directory where you've unpacked the sources and run the following
+commands:
+
+ cd src
+ xb1build
+
+=head2 Embedding LuaJIT
+
+LuaJIT is API-compatible with Lua 5.1. If you've already embedded Lua
+into your application, you probably don't need to do anything to switch
+to LuaJIT, except link with a different library:
+
+=over
+
+=item * It's strongly suggested to build LuaJIT separately using the
+supplied build system. Please do I<not> attempt to integrate the
+individual source files into your build tree. You'll most likely get
+the internal build dependencies wrong or mess up the compiler flags.
+Treat LuaJIT like any other external library and link your application
+with either the dynamic or static library, depending on your needs.
+
+=item * If you want to load C modules compiled for plain Lua with
+C<require()>, you need to make sure the public symbols (e.g.
+C<lua_pushnumber>) are exported, too:
+
+=over
+
+=item * On POSIX systems you can either link to the shared library or
+link the static library into your application. In the latter case
+you'll need to export all public symbols from your main executable
+(e.g. C<-Wl,-E> on Linux) and add the external dependencies (e.g. C<-lm
+-ldl> on Linux).
+
+=item * Since Windows symbols are bound to a specific DLL name, you
+need to link to the C<lua51.dll> created by the LuaJIT build (do not
+rename the DLL). You may link LuaJIT statically on Windows only if you
+don't intend to load Lua/C modules at runtime.
+
+=back
+
+=item * If you're building a 64 bit application on OSX which links
+directly or indirectly against LuaJIT, you need to link your main
+executable with these flags:
+
+ -pagezero_size 10000 -image_base 100000000
+
+Also, it's recommended to C<rebase> all (self-compiled) shared
+libraries which are loaded at runtime on OSX/x64 (e.g. C extension
+modules for Lua). See: C<man rebase>
+
+=back
+
+Additional hints for initializing LuaJIT using the C API functions:
+
+=over
+
+=item * Here's a E<rchevron> simple example for embedding Lua or LuaJIT
+into your application.
+
+=item * Make sure you use C<luaL_newstate>. Avoid using
+C<lua_newstate>, since this uses the (slower) default memory allocator
+from your system (no support for this on x64).
+
+=item * Make sure you use C<luaL_openlibs> and not the old Lua 5.0
+style of calling C<luaopen_base> etc. directly.
+
+=item * To change or extend the list of standard libraries to load,
+copy C<src/lib_init.c> to your project and modify it accordingly. Make
+sure the C<jit> library is loaded or the JIT compiler will not be
+activated.
+
+=item * The C<bit.*> module for bitwise operations is already built-in.
+There's no need to statically link E<rchevron> Lua BitOp to your
+application.
+
+=back
+
+=head2 Hints for Distribution Maintainers
+
+The LuaJIT build system has extra provisions for the needs of most
+POSIX-based distributions. If you're a package maintainer for a
+distribution, I<please> make use of these features and avoid patching,
+subverting, autotoolizing or messing up the build system in unspeakable
+ways.
+
+There should be absolutely no need to patch C<luaconf.h> or any of the
+Makefiles. And please do not hand-pick files for your packages E<mdash>
+simply use whatever C<make install> creates. There's a reason for all
+of the files I<and> directories it creates.
+
+The build system uses GNU make and auto-detects most settings based on
+the host you're building it on. This should work fine for native
+builds, even when sandboxed. You may need to pass some of the following
+flags to I<both> the C<make> and the C<make install> command lines for
+a regular distribution build:
+
+=over
+
+=item * C<PREFIX> overrides the installation path and should usually be
+set to C</usr>. Setting this also changes the module paths and the
+paths needed to locate the shared library.
+
+=item * C<DESTDIR> is an absolute path which allows you to install to a
+shadow tree instead of the root tree of the build system.
+
+=item * C<MULTILIB> sets the architecture-specific library path
+component for multilib systems. The default is C<lib>.
+
+=item * Have a look at the top-level C<Makefile> and C<src/Makefile>
+for additional variables to tweak. The following variables I<may> be
+overridden, but it's I<not> recommended, except for special needs like
+cross-builds: C<BUILDMODE, CC, HOST_CC, STATIC_CC, DYNAMIC_CC, CFLAGS,
+HOST_CFLAGS, TARGET_CFLAGS, LDFLAGS, HOST_LDFLAGS, TARGET_LDFLAGS,
+TARGET_SHLDFLAGS, TARGET_FLAGS, LIBS, HOST_LIBS, TARGET_LIBS, CROSS,
+HOST_SYS, TARGET_SYS>
+
+=back
+
+The build system has a special target for an amalgamated build, i.e.
+C<make amalg>. This compiles the LuaJIT core as one huge C file and
+allows GCC to generate faster and shorter code. Alas, this requires
+lots of memory during the build. This may be a problem for some users,
+that's why it's not enabled by default. But it shouldn't be a problem
+for most build farms. It's recommended that binary distributions use
+this target for their LuaJIT builds.
+
+The tl;dr version of the above:
+
+ make amalg PREFIX=/usr && \
+ make install PREFIX=/usr DESTDIR=/tmp/buildroot
+
+Finally, if you encounter any difficulties, please contact me first,
+instead of releasing a broken package onto unsuspecting users. Because
+they'll usually gonna complain to me (the upstream) and not you (the
+package maintainer), anyway.
+
+----
+
+Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+
+=cut
+
+#Pod::HTML2Pod conversion notes:
+#From file install.html
+# 25008 bytes of input
+#Wed Jun 29 13:18:15 2016 agentzh
+# No a_name switch not specified, so will not try to render <a name='...'>
+# No a_href switch not specified, so will not try to render <a href='...'>
+# Deleting phrasal "a" element (`a_34) because it has super-phrasal elements (`br_16) as children.
+# Deleting phrasal "a" element (`a_28) because it has super-phrasal elements (`br_11) as children.
+# Deleting phrasal "a" element (`a_25) because it has super-phrasal elements (`br_3) as children.

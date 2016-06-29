@@ -1,0 +1,358 @@
+=pod
+
+LuaJIT
+
+=head1 Profiler
+
+=over
+
+=item * LuaJIT
+
+=over
+
+=item * Download E<rchevron>
+
+=item * Installation
+
+=item * Running
+
+=back
+
+=item * Extensions
+
+=over
+
+=item * FFI Library
+
+=over
+
+=item * FFI Tutorial
+
+=item * ffi.* API
+
+=item * FFI Semantics
+
+=back
+
+=item * jit.* Library
+
+=item * Lua/C API
+
+=item * Profiler
+
+=back
+
+=item * Status
+
+=over
+
+=item * Changes
+
+=back
+
+=item * FAQ
+
+=item * Performance E<rchevron>
+
+=item * Wiki E<rchevron>
+
+=item * Mailing List E<rchevron>
+
+=back
+
+LuaJIT has an integrated statistical profiler with very low overhead.
+It allows sampling the currently executing stack and other parameters
+in regular intervals.
+
+The integrated profiler can be accessed from three levels:
+
+=over
+
+=item * The bundled high-level profiler, invoked by the C<-jp> command
+line option.
+
+=item * A low-level Lua API to control the profiler.
+
+=item * A low-level C API to control the profiler.
+
+=back
+
+=head2 High-Level Profiler
+
+The bundled high-level profiler offers basic profiling functionality.
+It generates simple textual summaries or source code annotations. It
+can be accessed with the C<-jp> command line option or from Lua code by
+loading the underlying C<jit.p> module.
+
+To cut to the chase E<mdash> run this to get a CPU usage profile by
+function name:
+
+ luajit -jp myapp.lua
+
+It's I<not> a stated goal of the bundled profiler to add every possible
+option or to cater for special profiling needs. The low-level profiler
+APIs are documented below. They may be used by third-party authors to
+implement advanced functionality, e.g. IDE integration or graphical
+profilers.
+
+Note: Sampling works for both interpreted and JIT-compiled code. The
+results for JIT-compiled code may sometimes be surprising. LuaJIT
+heavily optimizes and inlines Lua code E<mdash> there's no simple
+one-to-one correspondence between source code lines and the sampled
+machine code.
+
+=head2 C<-jp=[options[,output]]>
+
+The C<-jp> command line option starts the high-level profiler. When the
+application run by the command line terminates, the profiler stops and
+writes the results to C<stdout> or to the specified C<output> file.
+
+The C<options> argument specifies how the profiling is to be performed:
+
+=over
+
+=item * C<f> E<mdash> Stack dump: function name, otherwise module:line.
+This is the default mode.
+
+=item * C<F> E<mdash> Stack dump: ditto, but dump module:name.
+
+=item * C<l> E<mdash> Stack dump: module:line.
+
+=item * C<E<lt>numberE<gt>> E<mdash> stack dump depth (callee E<larr>
+caller). Default: 1.
+
+=item * C<-E<lt>numberE<gt>> E<mdash> Inverse stack dump depth (caller
+E<rarr> callee).
+
+=item * C<s> E<mdash> Split stack dump after first stack level. Implies
+depth E<ge> 2 or depth E<le> -2.
+
+=item * C<p> E<mdash> Show full path for module names.
+
+=item * C<v> E<mdash> Show VM states.
+
+=item * C<z> E<mdash> Show zones.
+
+=item * C<r> E<mdash> Show raw sample counts. Default: show
+percentages.
+
+=item * C<a> E<mdash> Annotate excerpts from source code files.
+
+=item * C<A> E<mdash> Annotate complete source code files.
+
+=item * C<G> E<mdash> Produce raw output suitable for graphical tools.
+
+=item * C<mE<lt>numberE<gt>> E<mdash> Minimum sample percentage to be
+shown. Default: 3%.
+
+=item * C<iE<lt>numberE<gt>> E<mdash> Sampling interval in
+milliseconds. Default: 10ms.
+
+Note: The actual sampling precision is OS-dependent.
+
+=back
+
+The default output for C<-jp> is a list of the most CPU consuming spots
+in the application. Increasing the stack dump depth with (say) C<-jp=2>
+may help to point out the main callers or callees of hotspots. But
+sample aggregation is still flat per unique stack dump.
+
+To get a two-level view (split view) of callers/callees, use C<-jp=s>
+or C<-jp=-s>. The percentages shown for the second level are relative
+to the first level.
+
+To see how much time is spent in each line relative to a function, use
+C<-jp=fl>.
+
+To see how much time is spent in different VM states or zones, use
+C<-jp=v> or C<-jp=z>.
+
+Combinations of C<v/z> with C<f/F/l> produce two-level views, e.g.
+C<-jp=vf> or C<-jp=fv>. This shows the time spent in a VM state or zone
+vs. hotspots. This can be used to answer questions like "Which time
+consuming functions are only interpreted?" or "What's the garbage
+collector overhead for a specific function?".
+
+Multiple options can be combined E<mdash> but not all combinations make
+sense, see above. E.g. C<-jp=3si4m1> samples three stack levels deep in
+4ms intervals and shows a split view of the CPU consuming functions and
+their callers with a 1% threshold.
+
+Source code annotations produced by C<-jp=a> or C<-jp=A> are always
+flat and at the line level. Obviously, the source code files need to be
+readable by the profiler script.
+
+The high-level profiler can also be started and stopped from Lua code
+with:
+
+ require("jit.p").start(options, output)
+ ...
+ require("jit.p").stop()
+
+=head2 C<jit.zone> E<mdash> Zones
+
+Zones can be used to provide information about different parts of an
+application to the high-level profiler. E.g. a game could make use of
+an C<"AI"> zone, a C<"PHYS"> zone, etc. Zones are hierarchical,
+organized as a stack.
+
+The C<jit.zone> module needs to be loaded explicitly:
+
+ local zone = require("jit.zone")
+
+=over
+
+=item * C<zone("name")> pushes a named zone to the zone stack.
+
+=item * C<zone()> pops the current zone from the zone stack and returns
+its name.
+
+=item * C<zone:get()> returns the current zone name or C<nil>.
+
+=item * C<zone:flush()> flushes the zone stack.
+
+=back
+
+To show the time spent in each zone use C<-jp=z>. To show the time
+spent relative to hotspots use e.g. C<-jp=zf> or C<-jp=fz>.
+
+=head2 Low-level Lua API
+
+The C<jit.profile> module gives access to the low-level API of the
+profiler from Lua code. This module needs to be loaded explicitly:
+
+ local profile = require("jit.profile")
+
+This module can be used to implement your own higher-level profiler. A
+typical profiling run starts the profiler, captures stack dumps in the
+profiler callback, adds them to a hash table to aggregate the number of
+samples, stops the profiler and then analyzes all of the captured stack
+dumps. Other parameters can be sampled in the profiler callback, too.
+But it's important not to spend too much time in the callback, since
+this may skew the statistics.
+
+=head2 C<profile.start(mode, cb)> E<mdash> Start profiler
+
+This function starts the profiler. The C<mode> argument is a string
+holding options:
+
+=over
+
+=item * C<f> E<mdash> Profile with precision down to the function
+level.
+
+=item * C<l> E<mdash> Profile with precision down to the line level.
+
+=item * C<iE<lt>numberE<gt>> E<mdash> Sampling interval in milliseconds
+(default 10ms). Note: The actual sampling precision is OS-dependent.
+
+=back
+
+The C<cb> argument is a callback function which is called with three
+arguments: C<(thread, samples, vmstate)>. The callback is called on a
+separate coroutine, the C<thread> argument is the state that holds the
+stack to sample for profiling. Note: do I<not> modify the stack of that
+state or call functions on it.
+
+C<samples> gives the number of accumulated samples since the last
+callback (usually 1).
+
+C<vmstate> holds the VM state at the time the profiling timer
+triggered. This may or may not correspond to the state of the VM when
+the profiling callback is called. The state is either C<'N'> native
+(compiled) code, C<'I'> interpreted code, C<'C'> C code, C<'G'> the
+garbage collector, or C<'J'> the JIT compiler.
+
+=head2 C<profile.stop()> E<mdash> Stop profiler
+
+This function stops the profiler.
+
+=head2 C<dump = profile.dumpstack([thread,] fmt, depth)> E<mdash> Dump
+stack
+
+This function allows taking stack dumps in an efficient manner. It
+returns a string with a stack dump for the C<thread> (coroutine),
+formatted according to the C<fmt> argument:
+
+=over
+
+=item * C<p> E<mdash> Preserve the full path for module names.
+Otherwise only the file name is used.
+
+=item * C<f> E<mdash> Dump the function name if it can be derived.
+Otherwise use module:line.
+
+=item * C<F> E<mdash> Ditto, but dump module:name.
+
+=item * C<l> E<mdash> Dump module:line.
+
+=item * C<Z> E<mdash> Zap the following characters for the last dumped
+frame.
+
+=item * All other characters are added verbatim to the output string.
+
+=back
+
+The C<depth> argument gives the number of frames to dump, starting at
+the topmost frame of the thread. A negative number dumps the frames in
+inverse order.
+
+The first example prints a list of the current module names and line
+numbers of up to 10 frames in separate lines. The second example prints
+semicolon-separated function names for all frames (up to 100) in
+inverse order:
+
+ print(profile.dumpstack(thread, "l\n", 10))
+ print(profile.dumpstack(thread, "lZ;", -100))
+
+=head2 Low-level C API
+
+The profiler can be controlled directly from C code, e.g. for use by
+IDEs. The declarations are in C<"luajit.h"> (see Lua/C API extensions).
+
+=head2 C<luaJIT_profile_start(L, mode, cb, data)> E<mdash> Start
+profiler
+
+This function starts the profiler. See above for a description of the
+C<mode> argument.
+
+The C<cb> argument is a callback function with the following
+declaration:
+
+ typedef void (*luaJIT_profile_callback)(void *data, lua_State *L,
+                                         int samples, int vmstate);
+
+C<data> is available for use by the callback. C<L> is the state that
+holds the stack to sample for profiling. Note: do I<not> modify this
+stack or call functions on this stack E<mdash> use a separate coroutine
+for this purpose. See above for a description of C<samples> and
+C<vmstate>.
+
+=head2 C<luaJIT_profile_stop(L)> E<mdash> Stop profiler
+
+This function stops the profiler.
+
+=head2 C<p = luaJIT_profile_dumpstack(L, fmt, depth, len)> E<mdash>
+Dump stack
+
+This function allows taking stack dumps in an efficient manner. See
+above for a description of C<fmt> and C<depth>.
+
+This function returns a C<const char *> pointing to a private string
+buffer of the profiler. The C<int *len> argument returns the length of
+the output string. The buffer is overwritten on the next call and
+deallocated when the profiler stops. You either need to consume the
+content immediately or copy it for later use.
+
+----
+
+Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+
+=cut
+
+#Pod::HTML2Pod conversion notes:
+#From file ext_profiler.html
+# 13135 bytes of input
+#Wed Jun 29 13:18:15 2016 agentzh
+# No a_name switch not specified, so will not try to render <a name='...'>
+# No a_href switch not specified, so will not try to render <a href='...'>

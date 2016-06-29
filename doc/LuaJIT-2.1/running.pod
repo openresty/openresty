@@ -1,0 +1,421 @@
+=pod
+
+LuaJIT
+
+=head1 Running LuaJIT
+
+=over
+
+=item * LuaJIT
+
+=over
+
+=item * Download E<rchevron>
+
+=item * Installation
+
+=item * Running
+
+=back
+
+=item * Extensions
+
+=over
+
+=item * FFI Library
+
+=over
+
+=item * FFI Tutorial
+
+=item * ffi.* API
+
+=item * FFI Semantics
+
+=back
+
+=item * jit.* Library
+
+=item * Lua/C API
+
+=item * Profiler
+
+=back
+
+=item * Status
+
+=over
+
+=item * Changes
+
+=back
+
+=item * FAQ
+
+=item * Performance E<rchevron>
+
+=item * Wiki E<rchevron>
+
+=item * Mailing List E<rchevron>
+
+=back
+
+LuaJIT has only a single stand-alone executable, called C<luajit> on
+POSIX systems or C<luajit.exe> on Windows. It can be used to run simple
+Lua statements or whole Lua applications from the command line. It has
+an interactive mode, too.
+
+=head2 Command Line Options
+
+The C<luajit> stand-alone executable is just a slightly modified
+version of the regular C<lua> stand-alone executable. It supports the
+same basic options, too. C<luajit -h> prints a short list of the
+available options. Please have a look at the E<rchevron> Lua manual for
+details.
+
+LuaJIT has some additional options:
+
+=head2 C<-b[options] input output>
+
+This option saves or lists bytecode. The following additional options
+are accepted:
+
+=over
+
+=item * C<-l> E<mdash> Only list bytecode.
+
+=item * C<-s> E<mdash> Strip debug info (this is the default).
+
+=item * C<-g> E<mdash> Keep debug info.
+
+=item * C<-n name> E<mdash> Set module name (default: auto-detect from
+input name)
+
+=item * C<-t type> E<mdash> Set output file type (default: auto-detect
+from output name).
+
+=item * C<-a arch> E<mdash> Override architecture for object files
+(default: native).
+
+=item * C<-o os> E<mdash> Override OS for object files (default:
+native).
+
+=item * C<-e chunk> E<mdash> Use chunk string as input.
+
+=item * C<-> (a single minus sign) E<mdash> Use stdin as input and/or
+stdout as output.
+
+=back
+
+The output file type is auto-detected from the extension of the output
+file name:
+
+=over
+
+=item * C<c> E<mdash> C source file, exported bytecode data.
+
+=item * C<h> E<mdash> C header file, static bytecode data.
+
+=item * C<obj> or C<o> E<mdash> Object file, exported bytecode data
+(OS- and architecture-specific).
+
+=item * C<raw> or any other extension E<mdash> Raw bytecode file
+(portable).
+
+=back
+
+Notes:
+
+=over
+
+=item * See also string.dump() for information on bytecode portability
+and compatibility.
+
+=item * A file in raw bytecode format is auto-detected and can be
+loaded like any Lua source file. E.g. directly from the command line or
+with C<loadfile()>, C<dofile()> etc.
+
+=item * To statically embed the bytecode of a module in your
+application, generate an object file and just link it with your
+application.
+
+=item * On most ELF-based systems (e.g. Linux) you need to explicitly
+export the global symbols when linking your application, e.g. with:
+C<-Wl,-E>
+
+=item * C<require()> tries to load embedded bytecode data from exported
+symbols (in C<*.exe> or C<lua51.dll> on Windows) and from shared
+libraries in C<package.cpath>.
+
+=back
+
+Typical usage examples:
+
+ luajit -b test.lua test.out                 # Save bytecode to test.out
+ luajit -bg test.lua test.out                # Keep debug info
+ luajit -be "print('hello world')" test.out  # Save cmdline script
+ 
+ luajit -bl test.lua                         # List to stdout
+ luajit -bl test.lua test.txt                # List to test.txt
+ luajit -ble "print('hello world')"          # List cmdline script
+ 
+ luajit -b test.lua test.obj                 # Generate object file
+ # Link test.obj with your application and load it with require("test")
+
+=head2 C<-j cmd[=arg[,arg...]]>
+
+This option performs a LuaJIT control command or activates one of the
+loadable extension modules. The command is first looked up in the
+C<jit.*> library. If no matching function is found, a module named
+C<jit.E<lt>cmdE<gt>> is loaded and the C<start()> function of the
+module is called with the specified arguments (if any). The space
+between C<-j> and C<cmd> is optional.
+
+Here are the available LuaJIT control commands:
+
+=over
+
+=item * C<-jon> E<mdash> Turns the JIT compiler on (default).
+
+=item * C<-joff> E<mdash> Turns the JIT compiler off (only use the
+interpreter).
+
+=item * C<-jflush> E<mdash> Flushes the whole cache of compiled code.
+
+=item * C<-jv> E<mdash> Shows verbose information about the progress of
+the JIT compiler.
+
+=item * C<-jdump> E<mdash> Dumps the code and structures used in
+various compiler stages.
+
+=item * C<-jp> E<mdash> Start the integrated profiler.
+
+=back
+
+The C<-jv> and C<-jdump> commands are extension modules written in Lua.
+They are mainly used for debugging the JIT compiler itself. For a
+description of their options and output format, please read the comment
+block at the start of their source. They can be found in the C<lib>
+directory of the source distribution or installed under the C<jit>
+directory. By default this is C</usr/local/share/luajit-2.0.4/jit> on
+POSIX systems.
+
+=head2 C<-O[level]>
+
+C<-O[+]flag> C<-O-flag>
+
+C<-Oparam=value>
+
+This options allows fine-tuned control of the optimizations used by the
+JIT compiler. This is mainly intended for debugging LuaJIT itself.
+Please note that the JIT compiler is extremely fast (we are talking
+about the microsecond to millisecond range). Disabling optimizations
+doesn't have any visible impact on its overhead, but usually generates
+code that runs slower.
+
+The first form sets an optimization level E<mdash> this enables a
+specific mix of optimization flags. C<-O0> turns off all optimizations
+and higher numbers enable more optimizations. Omitting the level (i.e.
+just C<-O>) sets the default optimization level, which is C<-O3> in the
+current version.
+
+The second form adds or removes individual optimization flags. The
+third form sets a parameter for the VM or the JIT compiler to a
+specific value.
+
+You can either use this option multiple times (like C<-Ocse -O-dce
+-Ohotloop=10>) or separate several settings with a comma (like
+C<-O+cse,-dce,hotloop=10>). The settings are applied from left to right
+and later settings override earlier ones. You can freely mix the three
+forms, but note that setting an optimization level overrides all
+earlier flags.
+
+Here are the available flags and at what optimization levels they are
+enabled:
+
+Flag
+
+-O1
+
+-O2
+
+-O3
+
+fold
+
+E<bull>
+
+E<bull>
+
+E<bull>
+
+Constant Folding, Simplifications and Reassociation
+
+cse
+
+E<bull>
+
+E<bull>
+
+E<bull>
+
+Common-Subexpression Elimination
+
+dce
+
+E<bull>
+
+E<bull>
+
+E<bull>
+
+Dead-Code Elimination
+
+narrow
+
+E<bull>
+
+E<bull>
+
+Narrowing of numbers to integers
+
+loop
+
+E<bull>
+
+E<bull>
+
+Loop Optimizations (code hoisting)
+
+fwd
+
+E<bull>
+
+Load Forwarding (L2L) and Store Forwarding (S2L)
+
+dse
+
+E<bull>
+
+Dead-Store Elimination
+
+abc
+
+E<bull>
+
+Array Bounds Check Elimination
+
+sink
+
+E<bull>
+
+Allocation/Store Sinking
+
+fuse
+
+E<bull>
+
+Fusion of operands into instructions
+
+Here are the parameters and their default settings:
+
+Parameter
+
+Default
+
+maxtrace
+
+1000
+
+Max. number of traces in the cache
+
+maxrecord
+
+4000
+
+Max. number of recorded IR instructions
+
+maxirconst
+
+500
+
+Max. number of IR constants of a trace
+
+maxside
+
+100
+
+Max. number of side traces of a root trace
+
+maxsnap
+
+500
+
+Max. number of snapshots for a trace
+
+hotloop
+
+56
+
+Number of iterations to detect a hot loop or hot call
+
+hotexit
+
+10
+
+Number of taken exits to start a side trace
+
+tryside
+
+4
+
+Number of attempts to compile a side trace
+
+instunroll
+
+4
+
+Max. unroll factor for instable loops
+
+loopunroll
+
+15
+
+Max. unroll factor for loop ops in side traces
+
+callunroll
+
+3
+
+Max. unroll factor for pseudo-recursive calls
+
+recunroll
+
+2
+
+Min. unroll factor for true recursion
+
+sizemcode
+
+32
+
+Size of each machine code area in KBytes (Windows: 64K)
+
+maxmcode
+
+512
+
+Max. total size of all machine code areas in KBytes
+
+----
+
+Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+
+=cut
+
+#Pod::HTML2Pod conversion notes:
+#From file running.html
+# 13720 bytes of input
+#Wed Jun 29 13:18:15 2016 agentzh
+# No a_name switch not specified, so will not try to render <a name='...'>
+# No a_href switch not specified, so will not try to render <a href='...'>

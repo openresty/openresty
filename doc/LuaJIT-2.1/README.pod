@@ -1,0 +1,201 @@
+=pod
+
+LuaJIT
+
+=head1 LuaJIT
+
+=over
+
+=item * LuaJIT
+
+=over
+
+=item * Download E<rchevron>
+
+=item * Installation
+
+=item * Running
+
+=back
+
+=item * Extensions
+
+=over
+
+=item * FFI Library
+
+=over
+
+=item * FFI Tutorial
+
+=item * ffi.* API
+
+=item * FFI Semantics
+
+=back
+
+=item * jit.* Library
+
+=item * Lua/C API
+
+=item * Profiler
+
+=back
+
+=item * Status
+
+=over
+
+=item * Changes
+
+=back
+
+=item * FAQ
+
+=item * Performance E<rchevron>
+
+=item * Wiki E<rchevron>
+
+=item * Mailing List E<rchevron>
+
+=back
+
+LuaJIT is a B<Just-In-Time Compiler> (JIT) for the E<rchevron> Lua
+programming language. Lua is a powerful, dynamic and light-weight
+programming language. It may be embedded or used as a general-purpose,
+stand-alone language.
+
+LuaJIT is Copyright E<copy> 2005-2016 Mike Pall, released under the
+E<rchevron> MIT open source license.
+
+=head2 Compatibility
+
+Windows
+
+Linux
+
+BSD
+
+OSX
+
+POSIX
+
+Embedded
+
+Android
+
+iOS
+
+PS3
+
+PS4
+
+PS Vita
+
+Xbox 360
+
+Xbox One
+
+GCC
+
+Clang
+
+LLVM
+
+MSVC
+
+x86
+
+x64
+
+ARM
+
+ARM64
+
+PPC
+
+MIPS32
+
+MIPS64
+
+Lua 5.1
+
+API+ABI
+
++ JIT
+
++ BitOp
+
++ FFI
+
+Drop-in
+
+DLL/.so
+
+=head2 Overview
+
+3x
+
+- 100x
+
+115 KB
+
+VM
+
+90 KB
+
+JIT
+
+63 KLOC
+
+C
+
+24 KLOC
+
+ASM
+
+11 KLOC
+
+Lua
+
+LuaJIT has been successfully used as a B<scripting middleware> in
+games, appliances, network and graphics apps, numerical simulations,
+trading platforms and many other specialty applications. It scales from
+embedded devices, smartphones, desktops up to server farms. It combines
+high flexibility with E<rchevron> high performance and an unmatched
+B<low memory footprint>.
+
+LuaJIT has been in continuous development since 2005. It's widely
+considered to be B<one of the fastest dynamic language
+implementations>. It has outperformed other dynamic languages on many
+cross-language benchmarks since its first release E<mdash> often by a
+substantial margin.
+
+For B<LuaJIT 2.0>, the whole VM has been rewritten from the ground up
+and relentlessly optimized for performance. It combines a B<high-speed
+interpreter>, written in assembler, with a B<state-of-the-art JIT
+compiler>.
+
+An innovative B<trace compiler> is integrated with advanced, SSA-based
+optimizations and highly tuned code generation backends. A substantial
+reduction of the overhead associated with dynamic languages allows it
+to break into the performance range traditionally reserved for offline,
+static language compilers.
+
+=head2 More ...
+
+Please select a sub-topic in the navigation bar to learn more about
+LuaJIT.
+
+----
+
+Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+
+=cut
+
+#Pod::HTML2Pod conversion notes:
+#From file luajit.html
+# 8082 bytes of input
+#Wed Jun 29 13:18:15 2016 agentzh
+# No a_name switch not specified, so will not try to render <a name='...'>
+# No a_href switch not specified, so will not try to render <a href='...'>

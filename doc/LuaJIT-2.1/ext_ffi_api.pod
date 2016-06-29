@@ -1,0 +1,503 @@
+=pod
+
+LuaJIT
+
+=head1 C<ffi.*> API Functions
+
+=over
+
+=item * LuaJIT
+
+=over
+
+=item * Download E<rchevron>
+
+=item * Installation
+
+=item * Running
+
+=back
+
+=item * Extensions
+
+=over
+
+=item * FFI Library
+
+=over
+
+=item * FFI Tutorial
+
+=item * ffi.* API
+
+=item * FFI Semantics
+
+=back
+
+=item * jit.* Library
+
+=item * Lua/C API
+
+=item * Profiler
+
+=back
+
+=item * Status
+
+=over
+
+=item * Changes
+
+=back
+
+=item * FAQ
+
+=item * Performance E<rchevron>
+
+=item * Wiki E<rchevron>
+
+=item * Mailing List E<rchevron>
+
+=back
+
+This page describes the API functions provided by the FFI library in
+detail. It's recommended to read through the introduction and the FFI
+tutorial first.
+
+=head2 Glossary
+
+=over
+
+=item * B<cdecl> E<mdash> An abstract C type declaration (a Lua
+string).
+
+=item * B<ctype> E<mdash> A C type object. This is a special kind of
+B<cdata> returned by C<ffi.typeof()>. It serves as a B<cdata>
+constructor when called.
+
+=item * B<cdata> E<mdash> A C data object. It holds a value of the
+corresponding B<ctype>.
+
+=item * B<ct> E<mdash> A C type specification which can be used for
+most of the API functions. Either a B<cdecl>, a B<ctype> or a B<cdata>
+serving as a template type.
+
+=item * B<cb> E<mdash> A callback object. This is a C data object
+holding a special function pointer. Calling this function from C code
+runs an associated Lua function.
+
+=item * B<VLA> E<mdash> A variable-length array is declared with a C<?>
+instead of the number of elements, e.g. C<"int[?]">. The number of
+elements (C<nelem>) must be given when it's created.
+
+=item * B<VLS> E<mdash> A variable-length struct is a C<struct> C type
+where the last element is a B<VLA>. The same rules for declaration and
+creation apply.
+
+=back
+
+=head2 Declaring and Accessing External Symbols
+
+External symbols must be declared first and can then be accessed by
+indexing a C library namespace, which automatically binds the symbol to
+a specific library.
+
+=head2 C<ffi.cdef(def)>
+
+Adds multiple C declarations for types or external symbols (named
+variables or functions). C<def> must be a Lua string. It's recommended
+to use the syntactic sugar for string arguments as follows:
+
+ ffi.cdef[[
+ typedef struct foo { int a, b; } foo_t;  // Declare a struct and typedef.
+ int dofoo(foo_t *f, int n);  /* Declare an external C function. */
+ ]]
+
+The contents of the string (the part in green above) must be a sequence
+of C declarations, separated by semicolons. The trailing semicolon for
+a single declaration may be omitted.
+
+Please note that external symbols are only I<declared>, but they are
+I<not bound> to any specific address, yet. Binding is achieved with C
+library namespaces (see below).
+
+C declarations are not passed through a C pre-processor, yet. No
+pre-processor tokens are allowed, except for C<#pragma pack>. Replace
+C<#define> in existing C header files with C<enum>, C<static const> or
+C<typedef> and/or pass the files through an external C pre-processor
+(once). Be careful not to include unneeded or redundant declarations
+from unrelated header files.
+
+=head2 C<ffi.C>
+
+This is the default C library namespace E<mdash> note the uppercase
+C<'C'>. It binds to the default set of symbols or libraries on the
+target system. These are more or less the same as a C compiler would
+offer by default, without specifying extra link libraries.
+
+On POSIX systems, this binds to symbols in the default or global
+namespace. This includes all exported symbols from the executable and
+any libraries loaded into the global namespace. This includes at least
+C<libc>, C<libm>, C<libdl> (on Linux), C<libgcc> (if compiled with
+GCC), as well as any exported symbols from the Lua/C API provided by
+LuaJIT itself.
+
+On Windows systems, this binds to symbols exported from the C<*.exe>,
+the C<lua51.dll> (i.e. the Lua/C API provided by LuaJIT itself), the C
+runtime library LuaJIT was linked with (C<msvcrt*.dll>),
+C<kernel32.dll>, C<user32.dll> and C<gdi32.dll>.
+
+=head2 C<clib = ffi.load(name [,global])>
+
+This loads the dynamic library given by C<name> and returns a new C
+library namespace which binds to its symbols. On POSIX systems, if
+C<global> is C<true>, the library symbols are loaded into the global
+namespace, too.
+
+If C<name> is a path, the library is loaded from this path. Otherwise
+C<name> is canonicalized in a system-dependent way and searched in the
+default search path for dynamic libraries:
+
+On POSIX systems, if the name contains no dot, the extension C<.so> is
+appended. Also, the C<lib> prefix is prepended if necessary. So
+C<ffi.load("z")> looks for C<"libz.so"> in the default shared library
+search path.
+
+On Windows systems, if the name contains no dot, the extension C<.dll>
+is appended. So C<ffi.load("ws2_32")> looks for C<"ws2_32.dll"> in the
+default DLL search path.
+
+=head2 Creating cdata Objects
+
+The following API functions create cdata objects (C<type()> returns
+C<"cdata">). All created cdata objects are garbage collected.
+
+=head2 cdata = ffi.new(ct [,nelem] [,init...])
+
+cdata = I<ctype>([nelem,] [init...])
+
+Creates a cdata object for the given C<ct>. VLA/VLS types require the
+C<nelem> argument. The second syntax uses a ctype as a constructor and
+is otherwise fully equivalent.
+
+The cdata object is initialized according to the rules for
+initializers, using the optional C<init> arguments. Excess initializers
+cause an error.
+
+Performance notice: if you want to create many objects of one kind,
+parse the cdecl only once and get its ctype with C<ffi.typeof()>. Then
+use the ctype as a constructor repeatedly.
+
+Please note that an anonymous C<struct> declaration implicitly creates
+a new and distinguished ctype every time you use it for C<ffi.new()>.
+This is probably B<not> what you want, especially if you create more
+than one cdata object. Different anonymous C<structs> are not
+considered assignment-compatible by the C standard, even though they
+may have the same fields! Also, they are considered different types by
+the JIT-compiler, which may cause an excessive number of traces. It's
+strongly suggested to either declare a named C<struct> or C<typedef>
+with C<ffi.cdef()> or to create a single ctype object for an anonymous
+C<struct> with C<ffi.typeof()>.
+
+=head2 C<ctype = ffi.typeof(ct)>
+
+Creates a ctype object for the given C<ct>.
+
+This function is especially useful to parse a cdecl only once and then
+use the resulting ctype object as a constructor.
+
+=head2 C<cdata = ffi.cast(ct, init)>
+
+Creates a scalar cdata object for the given C<ct>. The cdata object is
+initialized with C<init> using the "cast" variant of the C type
+conversion rules.
+
+This functions is mainly useful to override the pointer compatibility
+checks or to convert pointers to addresses or vice versa.
+
+=head2 C<ctype = ffi.metatype(ct, metatable)>
+
+Creates a ctype object for the given C<ct> and associates it with a
+metatable. Only C<struct>/C<union> types, complex numbers and vectors
+are allowed. Other types may be wrapped in a C<struct>, if needed.
+
+The association with a metatable is permanent and cannot be changed
+afterwards. Neither the contents of the C<metatable> nor the contents
+of an C<__index> table (if any) may be modified afterwards. The
+associated metatable automatically applies to all uses of this type, no
+matter how the objects are created or where they originate from. Note
+that pre-defined operations on types have precedence (e.g. declared
+field names cannot be overriden).
+
+All standard Lua metamethods are implemented. These are called
+directly, without shortcuts and on any mix of types. For binary
+operations, the left operand is checked first for a valid ctype
+metamethod. The C<__gc> metamethod only applies to C<struct>/C<union>
+types and performs an implicit C<ffi.gc()> call during creation of an
+instance.
+
+=head2 C<cdata = ffi.gc(cdata, finalizer)>
+
+Associates a finalizer with a pointer or aggregate cdata object. The
+cdata object is returned unchanged.
+
+This function allows safe integration of unmanaged resources into the
+automatic memory management of the LuaJIT garbage collector. Typical
+usage:
+
+ local p = ffi.gc(ffi.C.malloc(n), ffi.C.free)
+ ...
+ p = nil -- Last reference to p is gone.
+ -- GC will eventually run finalizer: ffi.C.free(p)
+
+A cdata finalizer works like the C<__gc> metamethod for userdata
+objects: when the last reference to a cdata object is gone, the
+associated finalizer is called with the cdata object as an argument.
+The finalizer can be a Lua function or a cdata function or cdata
+function pointer. An existing finalizer can be removed by setting a
+C<nil> finalizer, e.g. right before explicitly deleting a resource:
+
+ ffi.C.free(ffi.gc(p, nil)) -- Manually free the memory.
+
+=head2 C Type Information
+
+The following API functions return information about C types. They are
+most useful for inspecting cdata objects.
+
+=head2 C<size = ffi.sizeof(ct [,nelem])>
+
+Returns the size of C<ct> in bytes. Returns C<nil> if the size is not
+known (e.g. for C<"void"> or function types). Requires C<nelem> for
+VLA/VLS types, except for cdata objects.
+
+=head2 C<align = ffi.alignof(ct)>
+
+Returns the minimum required alignment for C<ct> in bytes.
+
+=head2 C<ofs [,bpos,bsize] = ffi.offsetof(ct, field)>
+
+Returns the offset (in bytes) of C<field> relative to the start of
+C<ct>, which must be a C<struct>. Additionally returns the position and
+the field size (in bits) for bit fields.
+
+=head2 C<status = ffi.istype(ct, obj)>
+
+Returns C<true> if C<obj> has the C type given by C<ct>. Returns
+C<false> otherwise.
+
+C type qualifiers (C<const> etc.) are ignored. Pointers are checked
+with the standard pointer compatibility rules, but without any special
+treatment for C<void *>. If C<ct> specifies a C<struct>/C<union>, then
+a pointer to this type is accepted, too. Otherwise the types must match
+exactly.
+
+Note: this function accepts all kinds of Lua objects for the C<obj>
+argument, but always returns C<false> for non-cdata objects.
+
+=head2 Utility Functions
+
+=head2 C<err = ffi.errno([newerr])>
+
+Returns the error number set by the last C function call which
+indicated an error condition. If the optional C<newerr> argument is
+present, the error number is set to the new value and the previous
+value is returned.
+
+This function offers a portable and OS-independent way to get and set
+the error number. Note that only I<some> C functions set the error
+number. And it's only significant if the function actually indicated an
+error condition (e.g. with a return value of C<-1> or C<NULL>).
+Otherwise, it may or may not contain any previously set value.
+
+You're advised to call this function only when needed and as close as
+possible after the return of the related C function. The C<errno> value
+is preserved across hooks, memory allocations, invocations of the JIT
+compiler and other internal VM activity. The same applies to the value
+returned by C<GetLastError()> on Windows, but you need to declare and
+call it yourself.
+
+=head2 C<str = ffi.string(ptr [,len])>
+
+Creates an interned Lua string from the data pointed to by C<ptr>.
+
+If the optional argument C<len> is missing, C<ptr> is converted to a
+C<"char *"> and the data is assumed to be zero-terminated. The length
+of the string is computed with C<strlen()>.
+
+Otherwise C<ptr> is converted to a C<"void *"> and C<len> gives the
+length of the data. The data may contain embedded zeros and need not be
+byte-oriented (though this may cause endianess issues).
+
+This function is mainly useful to convert (temporary) C<"const char *">
+pointers returned by C functions to Lua strings and store them or pass
+them to other functions expecting a Lua string. The Lua string is an
+(interned) copy of the data and bears no relation to the original data
+area anymore. Lua strings are 8 bit clean and may be used to hold
+arbitrary, non-character data.
+
+Performance notice: it's faster to pass the length of the string, if
+it's known. E.g. when the length is returned by a C call like
+C<sprintf()>.
+
+=head2 ffi.copy(dst, src, len)
+
+ffi.copy(dst, str)
+
+Copies the data pointed to by C<src> to C<dst>. C<dst> is converted to
+a C<"void *"> and C<src> is converted to a C<"const void *">.
+
+In the first syntax, C<len> gives the number of bytes to copy. Caveat:
+if C<src> is a Lua string, then C<len> must not exceed C<#src+1>.
+
+In the second syntax, the source of the copy must be a Lua string. All
+bytes of the string I<plus a zero-terminator> are copied to C<dst>
+(i.e. C<#src+1> bytes).
+
+Performance notice: C<ffi.copy()> may be used as a faster (inlinable)
+replacement for the C library functions C<memcpy()>, C<strcpy()> and
+C<strncpy()>.
+
+=head2 C<ffi.fill(dst, len [,c])>
+
+Fills the data pointed to by C<dst> with C<len> constant bytes, given
+by C<c>. If C<c> is omitted, the data is zero-filled.
+
+Performance notice: C<ffi.fill()> may be used as a faster (inlinable)
+replacement for the C library function C<memset(dst, c, len)>. Please
+note the different order of arguments!
+
+=head2 Target-specific Information
+
+=head2 C<status = ffi.abi(param)>
+
+Returns C<true> if C<param> (a Lua string) applies for the target ABI
+(Application Binary Interface). Returns C<false> otherwise. The
+following parameters are currently defined:
+
+Parameter
+
+Description
+
+32bit
+
+32 bit architecture
+
+64bit
+
+64 bit architecture
+
+le
+
+Little-endian architecture
+
+be
+
+Big-endian architecture
+
+fpu
+
+Target has a hardware FPU
+
+softfp
+
+softfp calling conventions
+
+hardfp
+
+hardfp calling conventions
+
+eabi
+
+EABI variant of the standard ABI
+
+win
+
+Windows variant of the standard ABI
+
+gc64
+
+64 bit GC references
+
+=head2 C<ffi.os>
+
+Contains the target OS name. Same contents as C<jit.os>.
+
+=head2 C<ffi.arch>
+
+Contains the target architecture name. Same contents as C<jit.arch>.
+
+=head2 Methods for Callbacks
+
+The C types for callbacks have some extra methods:
+
+=head2 C<cb:free()>
+
+Free the resources associated with a callback. The associated Lua
+function is unanchored and may be garbage collected. The callback
+function pointer is no longer valid and must not be called anymore (it
+may be reused by a subsequently created callback).
+
+=head2 C<cb:set(func)>
+
+Associate a new Lua function with a callback. The C type of the
+callback and the callback function pointer are unchanged.
+
+This method is useful to dynamically switch the receiver of callbacks
+without creating a new callback each time and registering it again
+(e.g. with a GUI library).
+
+=head2 Extended Standard Library Functions
+
+The following standard library functions have been extended to work
+with cdata objects:
+
+=head2 C<n = tonumber(cdata)>
+
+Converts a number cdata object to a C<double> and returns it as a Lua
+number. This is particularly useful for boxed 64 bit integer values.
+Caveat: this conversion may incur a precision loss.
+
+=head2 C<s = tostring(cdata)>
+
+Returns a string representation of the value of 64 bit integers
+(C<B<">nnnB<LL">> or C<B<">nnnB<ULL">>) or complex numbers
+(C<B<">reE<plusmn>imB<i">>). Otherwise returns a string representation
+of the C type of a ctype object (C<B<"ctypeE<lt>>typeB<E<gt>">>) or a
+cdata object (C<B<"cdataE<lt>>typeB<E<gt>: >address">), unless you
+override it with a C<__tostring> metamethod (see C<ffi.metatype()>).
+
+=head2 iter, obj, start = pairs(cdata)
+
+iter, obj, start = ipairs(cdata)
+
+Calls the C<__pairs> or C<__ipairs> metamethod of the corresponding
+ctype.
+
+=head2 Extensions to the Lua Parser
+
+The parser for Lua source code treats numeric literals with the
+suffixes C<LL> or C<ULL> as signed or unsigned 64 bit integers. Case
+doesn't matter, but uppercase is recommended for readability. It
+handles decimal (C<42LL>), hexadecimal (C<0x2aLL>) and binary
+(C<0b101010LL>) literals.
+
+The imaginary part of complex numbers can be specified by suffixing
+number literals with C<i> or C<I>, e.g. C<12.5i>. Caveat: you'll need
+to use C<1i> to get an imaginary part with the value one, since C<i>
+itself still refers to a variable named C<i>.
+
+----
+
+Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+
+=cut
+
+#Pod::HTML2Pod conversion notes:
+#From file ext_ffi_api.html
+# 21471 bytes of input
+#Wed Jun 29 13:18:15 2016 agentzh
+# No a_name switch not specified, so will not try to render <a name='...'>
+# No a_href switch not specified, so will not try to render <a href='...'>
+# Deleting phrasal "code" element (`tt_157) because it has super-phrasal elements (`br_3, `br_4) as children.
+# Deleting phrasal "code" element (`tt_113) because it has super-phrasal elements (`br_2) as children.
+# Deleting phrasal "code" element (`tt_41) because it has super-phrasal elements (`br_1) as children.
