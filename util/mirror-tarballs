@@ -755,6 +755,9 @@ cd $curdir
 echo "restydoc-index $root/work/nginx.org"
 $restydoc_index --outdir bundle $root/work/nginx.org || exit 1
 
+echo "restydoc-index $root/doc/lua-5.1.5"
+$restydoc_index --outdir bundle $root/doc/lua-5.1.5 || exit 1
+
 # generate restydoc index from openresty docs
 
 for indir in bundle/*/; do
