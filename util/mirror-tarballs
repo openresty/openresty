@@ -325,6 +325,10 @@ echo "$info_txt applying the ssl_cert_cb_yield.patch patch to nginx"
 patch -p1 < $root/patches/nginx-$main_ver-ssl_cert_cb_yield.patch
 echo
 
+echo "$info_txt applying the upstream_timeout_fields patch for nginx"
+patch -p1 < $root/patches/nginx-$main_ver-upstream_timeout_fields.patch || exit 1
+echo
+
 cd .. || exit 1
 
 cp $root/patches/nginx-$main_ver-no_pool.patch ./nginx-no_pool.patch || exit 1
