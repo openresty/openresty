@@ -110,7 +110,7 @@ diff -r 13070ecfda67 src/http/ngx_http_upstream.h
  
      ngx_http_upstream_conf_t        *conf;
 +
-+#define HAVE_UPSTREAM_TIMEOUT_FIELDS  1
++#define HAVE_NGX_UPSTREAM_TIMEOUT_FIELDS  1
 +    ngx_msec_t                       connect_timeout;
 +    ngx_msec_t                       send_timeout;
 +    ngx_msec_t                       read_timeout;
