@@ -122,6 +122,7 @@ my $with_resty_mods_regex;
 
 my $prefix = '/usr/local/openresty';
 my %resty_opts;
+my @resty_mods;
 my $dry_run;
 my @ngx_rpaths;
 my $cc;
@@ -284,6 +285,11 @@ for my $opt (@ARGV) {
 
         my $mod_path = File::Spec->rel2abs($1);
         push @ngx_opts, "--add-module=$mod_path";
+
+    } elsif ($opt =~ /^--add-resty-module=(.*)/) {
+
+        my $mod_path = File::Spec->rel2abs($1);
+        push @resty_mods, "$mod_path";
 
     } elsif ($opt =~ /^--with-(openssl|pcre|zlib|libatomic|md5|sha1)=(.*)/) {
 
@@ -952,6 +958,30 @@ _EOC_
                     "\$(MAKE) install$extra_opts";
             }
         }
+
+        for my $mod_dir (@resty_mods) {
+            shell "cp -rp $mod_dir .";
+
+            use File::Basename;
+            my $dir = basename($mod_dir);
+
+            my $lua_inc;
+            if ($opts->{luajit} || $opts->{luajit_path}) {
+                $lua_inc = $ENV{LUAJIT_INC};
+
+            } else {
+                $lua_inc = $ENV{LUA_INC};
+            }
+
+            my $extra_opts = " DESTDIR=\$(DESTDIR) LUA_INCLUDE_DIR=$lua_inc " .
+                "LUA_LIB_DIR=$lualib_prefix";
+
+            push @make_cmds, "cd $root_dir/build/$dir && ".
+                "\$(MAKE)$extra_opts";
+
+            push @make_install_cmds, "cd $root_dir/build/$dir && " .
+                "\$(MAKE) install$extra_opts";
+        }
     }
 
     # configure resty-cli:
@@ -1193,6 +1223,8 @@ Options directly inherited from nginx
   --with-cpp_test_module             enable ngx_cpp_test_module
 
   --add-module=PATH                  enable an external module
+
+  --add-resty-module=PATH            enable an external lua-resty-* module
 
   --with-cc=PATH                     set path to C compiler
   --with-cpp=PATH                    set path to C preprocessor
