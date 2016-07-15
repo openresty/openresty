@@ -283,6 +283,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -358,6 +359,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -444,6 +446,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -519,6 +522,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -594,6 +598,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -669,6 +674,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -743,6 +749,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -791,6 +798,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -865,6 +873,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/opt/blah/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/opt/blah/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /opt/blah/nginx/sbin/nginx $(DESTDIR)/opt/blah/bin/openresty
 
 clean:
 	rm -rf build
@@ -1144,6 +1153,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1219,6 +1229,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1294,6 +1305,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1383,6 +1395,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1457,6 +1470,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1533,6 +1547,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1609,11 +1624,12 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
 --- err
-Can't exec "cl": No such file or directory at ./configure line 589.
+Can't exec "cl": No such file or directory at ./configure line 593.
 
 
 
@@ -1700,6 +1716,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1775,6 +1792,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1873,6 +1891,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1958,6 +1977,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2033,6 +2053,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2108,6 +2129,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2183,6 +2205,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2258,6 +2281,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2332,6 +2356,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2407,11 +2432,12 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 629.
+Can't exec "sw_vers": No such file or directory at ./configure line 633.
 
 
 
@@ -2484,11 +2510,12 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 629.
+Can't exec "sw_vers": No such file or directory at ./configure line 633.
 
 
 
@@ -2561,6 +2588,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2633,6 +2661,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2703,6 +2732,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2775,6 +2805,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2844,6 +2875,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2924,6 +2956,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2998,6 +3031,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3073,6 +3107,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3147,6 +3182,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3221,6 +3257,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3294,6 +3331,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3367,6 +3405,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3442,6 +3481,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3518,6 +3558,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3592,6 +3633,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3666,6 +3708,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3740,6 +3783,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3814,6 +3858,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3888,6 +3933,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3961,6 +4007,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -4037,6 +4084,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)./
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)./
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf ./nginx/sbin/nginx $(DESTDIR)./bin/openresty
 
 clean:
 	rm -rf build
@@ -4114,6 +4162,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)./
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)./
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf ./nginx/sbin/nginx $(DESTDIR)./bin/openresty
 
 clean:
 	rm -rf build
@@ -4191,6 +4240,7 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)./
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)./
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf ./nginx/sbin/nginx $(DESTDIR)./bin/openresty
 
 clean:
 	rm -rf build
@@ -4277,8 +4327,7 @@ clean:
 
 
 
-
-=== TEST 5: --with-pcre-opt='foo bar'
+=== TEST 61: --with-pcre-opt='foo bar'
 --- cmd: ./configure --dry-run --with-pcre-opt='-foo -bar' --with-zlib-opt="hello, '\world"
 --- out
 platform: linux (linux)
@@ -4347,6 +4396,8 @@ install: all
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.9.15 && $(MAKE) install DESTDIR=$(DESTDIR)
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
+

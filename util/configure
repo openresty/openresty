@@ -341,6 +341,10 @@ push @make_cmds, "cd $root_dir/build/$ngx_dir && "
 push @make_install_cmds, "cd $root_dir/build/$ngx_dir && "
     . "\$(MAKE) install DESTDIR=\$(DESTDIR)";
 
+if ($platform ne 'msys') {
+    push @make_install_cmds, "ln -sf $ngx_prefix/sbin/nginx \$(DESTDIR)$prefix/bin/openresty";
+}
+
 cd '../..'; # to the root
 #die "pwd: " .. `pwd`;
 
