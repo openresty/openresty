@@ -753,6 +753,7 @@ _END_
         # build lua modules
 
         my $lualib_prefix = File::Spec->catfile($prefix, "lualib");
+        my $site_lualib_prefix = File::Spec->catfile($prefix, "site/lualib");
 
         my $ngx_lua_dir = auto_complete 'ngx_lua';
 
@@ -760,20 +761,11 @@ _END_
             die "Cannot open $ngx_lua_dir/config for appending: $!\n";
 
         {
-            my $path_prefix = $lualib_prefix;
-
-            #if (File::Spec->rel2abs($lualib_prefix) ne File::Spec->canonpath($lualib_prefix)
-            #&& $platform eq 'msys')
-            #{
-                # being a relative path and on MSYS
-                #$path_prefix = "!/$lualib_prefix";
-            #}
-
             print $in <<"_EOC_";
 
 ngx_lua_dquote='"'
-CFLAGS="\$CFLAGS -DLUA_DEFAULT_PATH='\${ngx_lua_dquote}$path_prefix/?.lua;$path_prefix/?/init.lua\$ngx_lua_dquote'"
-CFLAGS="\$CFLAGS -DLUA_DEFAULT_CPATH='\${ngx_lua_dquote}$path_prefix/?.so\$ngx_lua_dquote'"
+CFLAGS="\$CFLAGS -DLUA_DEFAULT_PATH='\${ngx_lua_dquote}$site_lualib_prefix/?.lua;$site_lualib_prefix/?/init.lua;$lualib_prefix/?.lua;$lualib_prefix/?/init.lua\$ngx_lua_dquote'"
+CFLAGS="\$CFLAGS -DLUA_DEFAULT_CPATH='\${ngx_lua_dquote}$site_lualib_prefix/?.so;$lualib_prefix/?.so\$ngx_lua_dquote'"
 _EOC_
         }
 
