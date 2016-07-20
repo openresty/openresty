@@ -1,0 +1,233 @@
+diff -urp openssl-1.0.2h/ssl/s3_srvr.c openssl-1.0.2h-patched/ssl/s3_srvr.c
+--- openssl-1.0.2h/ssl/s3_srvr.c	2016-05-03 06:44:42.000000000 -0700
++++ openssl-1.0.2h-patched/ssl/s3_srvr.c	2016-07-19 19:18:03.779159083 -0700
+@@ -358,14 +358,20 @@ int ssl3_accept(SSL *s)
+         case SSL3_ST_SR_CLNT_HELLO_A:
+         case SSL3_ST_SR_CLNT_HELLO_B:
+         case SSL3_ST_SR_CLNT_HELLO_C:
++        case SSL3_ST_SR_CLNT_HELLO_D:
+ 
+             s->shutdown = 0;
+             ret = ssl3_get_client_hello(s);
++            if (ret == PENDING_SESSION) {
++                s->state = SSL3_ST_SR_CLNT_HELLO_D;
++                s->rwstate = SSL_PENDING_SESSION;
++                goto end;
++            }
+             if (ret <= 0)
+                 goto end;
+ #ifndef OPENSSL_NO_SRP
+-            s->state = SSL3_ST_SR_CLNT_HELLO_D;
+-        case SSL3_ST_SR_CLNT_HELLO_D:
++            s->state = SSL3_ST_SR_CLNT_HELLO_E;
++        case SSL3_ST_SR_CLNT_HELLO_E:
+             {
+                 int al;
+                 if ((ret = ssl_check_srp_ext_ClientHello(s, &al)) < 0) {
+@@ -925,16 +931,25 @@ int ssl3_get_client_hello(SSL *s)
+     if (s->state == SSL3_ST_SR_CLNT_HELLO_A) {
+         s->state = SSL3_ST_SR_CLNT_HELLO_B;
+     }
+-    s->first_packet = 1;
+-    n = s->method->ssl_get_message(s,
+-                                   SSL3_ST_SR_CLNT_HELLO_B,
+-                                   SSL3_ST_SR_CLNT_HELLO_C,
+-                                   SSL3_MT_CLIENT_HELLO,
+-                                   SSL3_RT_MAX_PLAIN_LENGTH, &ok);
+-
+-    if (!ok)
+-        return ((int)n);
+-    s->first_packet = 0;
++
++    if (s->state != SSL3_ST_SR_CLNT_HELLO_D) {
++        s->first_packet = 1;
++        n = s->method->ssl_get_message(s,
++                                       SSL3_ST_SR_CLNT_HELLO_B,
++                                       SSL3_ST_SR_CLNT_HELLO_C,
++                                       SSL3_MT_CLIENT_HELLO,
++                                       SSL3_RT_MAX_PLAIN_LENGTH, &ok);
++ 
++        if (!ok)
++            return ((int)n);
++        s->first_packet = 0;
++    } else {
++        /* We have previously parsed the ClientHello message, and can't
++         * call ssl_get_message again without hashing the message into
++         * the Finished digest again. */
++        n = s->init_num;
++    }
++
+     d = p = (unsigned char *)s->init_msg;
+ 
+     /*
+@@ -1041,15 +1056,26 @@ int ssl3_get_client_hello(SSL *s)
+         if (i == 1 && s->version == s->session->ssl_version) { /* previous
+                                                                 * session */
+             s->hit = 1;
+-        } else if (i == -1)
++        } else if (i == -1) {
++            goto err;
++        } else if (i == PENDING_SESSION) {
++            ret = PENDING_SESSION;
+             goto err;
+-        else {                  /* i == 0 */
++        } else {                /* i == 0 */
+ 
+             if (!ssl_get_new_session(s, 1))
+                 goto err;
+         }
+     }
+ 
++    /*
++     * Switch to server state ClientHello C once the session lookup
++     * is finished so it can proceed with original state loop.
++     */
++    if (s->state == SSL3_ST_SR_CLNT_HELLO_D) {
++        s->state = SSL3_ST_SR_CLNT_HELLO_C;
++    }
++
+     p += j;
+ 
+     if (SSL_IS_DTLS(s)) {
+diff -urp openssl-1.0.2h/ssl/ssl3.h openssl-1.0.2h-patched/ssl/ssl3.h
+--- openssl-1.0.2h/ssl/ssl3.h	2016-05-03 06:44:42.000000000 -0700
++++ openssl-1.0.2h-patched/ssl/ssl3.h	2016-07-19 19:15:54.117778328 -0700
+@@ -698,6 +698,7 @@ typedef struct ssl3_state_st {
+ # define SSL3_ST_SR_CLNT_HELLO_B         (0x111|SSL_ST_ACCEPT)
+ # define SSL3_ST_SR_CLNT_HELLO_C         (0x112|SSL_ST_ACCEPT)
+ # define SSL3_ST_SR_CLNT_HELLO_D         (0x115|SSL_ST_ACCEPT)
++# define SSL3_ST_SR_CLNT_HELLO_E         (0x116|SSL_ST_ACCEPT)
+ /* write to client */
+ # define DTLS1_ST_SW_HELLO_VERIFY_REQUEST_A (0x113|SSL_ST_ACCEPT)
+ # define DTLS1_ST_SW_HELLO_VERIFY_REQUEST_B (0x114|SSL_ST_ACCEPT)
+diff -urp openssl-1.0.2h/ssl/ssl.h openssl-1.0.2h-patched/ssl/ssl.h
+--- openssl-1.0.2h/ssl/ssl.h	2016-05-03 06:44:42.000000000 -0700
++++ openssl-1.0.2h-patched/ssl/ssl.h	2016-07-19 19:19:44.699562938 -0700
+@@ -1243,6 +1243,13 @@ void SSL_CTX_sess_set_get_cb(SSL_CTX *ct
+ SSL_SESSION *(*SSL_CTX_sess_get_get_cb(SSL_CTX *ctx)) (struct ssl_st *ssl,
+                                                        unsigned char *Data,
+                                                        int len, int *copy);
++
++/* SSL_magic_pending_session_ptr returns a magic SSL_SESSION* which indicates
++ * that the session isn't currently unavailable. SSL_get_error will then return
++ * SSL_ERROR_PENDING_SESSION and the handshake can be retried later when the
++ * lookup has completed. */
++SSL_SESSION *SSL_magic_pending_session_ptr(void);
++
+ void SSL_CTX_set_info_callback(SSL_CTX *ctx,
+                                void (*cb) (const SSL *ssl, int type,
+                                            int val));
+@@ -1408,11 +1415,14 @@ int SSL_extension_supported(unsigned int
+ # define SSL_READING     3
+ # define SSL_X509_LOOKUP 4
+ 
++# define SSL_PENDING_SESSION 7
++
+ /* These will only be used when doing non-blocking IO */
+ # define SSL_want_nothing(s)     (SSL_want(s) == SSL_NOTHING)
+ # define SSL_want_read(s)        (SSL_want(s) == SSL_READING)
+ # define SSL_want_write(s)       (SSL_want(s) == SSL_WRITING)
+ # define SSL_want_x509_lookup(s) (SSL_want(s) == SSL_X509_LOOKUP)
++# define SSL_want_session(s)     (SSL_want(s) == SSL_PENDING_SESSION)
+ 
+ # define SSL_MAC_FLAG_READ_MAC_STREAM 1
+ # define SSL_MAC_FLAG_WRITE_MAC_STREAM 2
+@@ -1865,6 +1875,7 @@ DECLARE_PEM_rw(SSL_SESSION, SSL_SESSION)
+ # define SSL_ERROR_ZERO_RETURN           6
+ # define SSL_ERROR_WANT_CONNECT          7
+ # define SSL_ERROR_WANT_ACCEPT           8
++# define SSL_ERROR_PENDING_SESSION       11
+ # define SSL_CTRL_NEED_TMP_RSA                   1
+ # define SSL_CTRL_SET_TMP_RSA                    2
+ # define SSL_CTRL_SET_TMP_DH                     3
+diff -urp openssl-1.0.2h/ssl/ssl_lib.c openssl-1.0.2h-patched/ssl/ssl_lib.c
+--- openssl-1.0.2h/ssl/ssl_lib.c	2016-05-03 06:44:42.000000000 -0700
++++ openssl-1.0.2h-patched/ssl/ssl_lib.c	2016-07-19 19:21:04.032021549 -0700
+@@ -2709,6 +2709,9 @@ int SSL_get_error(const SSL *s, int i)
+             return (SSL_ERROR_SSL);
+     }
+ 
++    if ((i < 0) && SSL_want_session(s))
++        return (SSL_ERROR_PENDING_SESSION);
++
+     if ((i < 0) && SSL_want_read(s)) {
+         bio = SSL_get_rbio(s);
+         if (BIO_should_read(bio))
+diff -urp openssl-1.0.2h/ssl/ssl_locl.h openssl-1.0.2h-patched/ssl/ssl_locl.h
+--- openssl-1.0.2h/ssl/ssl_locl.h	2016-05-03 06:44:42.000000000 -0700
++++ openssl-1.0.2h-patched/ssl/ssl_locl.h	2016-07-19 19:15:54.117778328 -0700
+@@ -518,6 +518,8 @@
+ #define CERT_PRIVATE_KEY        2
+ */
+ 
++# define PENDING_SESSION        -10000
++
+ # ifndef OPENSSL_NO_EC
+ /*
+  * From ECC-TLS draft, used in encoding the curve type in ECParameters
+diff -urp openssl-1.0.2h/ssl/ssl_sess.c openssl-1.0.2h-patched/ssl/ssl_sess.c
+--- openssl-1.0.2h/ssl/ssl_sess.c	2016-05-03 06:44:42.000000000 -0700
++++ openssl-1.0.2h-patched/ssl/ssl_sess.c	2016-07-19 19:15:54.118778298 -0700
+@@ -143,10 +143,20 @@
+ #endif
+ #include "ssl_locl.h"
+ 
++/* The address of this is a magic value, a pointer to which is returned by
++ * SSL_magic_pending_session_ptr(). It allows a session callback to indicate
++ * that it needs to asynchronously fetch session information. */
++static char g_pending_session_magic;
++
+ static void SSL_SESSION_list_remove(SSL_CTX *ctx, SSL_SESSION *s);
+ static void SSL_SESSION_list_add(SSL_CTX *ctx, SSL_SESSION *s);
+ static int remove_session_lock(SSL_CTX *ctx, SSL_SESSION *c, int lck);
+ 
++SSL_SESSION *SSL_magic_pending_session_ptr()
++{
++    return (SSL_SESSION*) &g_pending_session_magic;
++}
++
+ SSL_SESSION *SSL_get_session(const SSL *ssl)
+ /* aka SSL_get0_session; gets 0 objects, just returns a copy of the pointer */
+ {
+@@ -626,6 +636,12 @@ int ssl_get_prev_session(SSL *s, unsigne
+         int copy = 1;
+ 
+         if ((ret = s->session_ctx->get_session_cb(s, session_id, len, &copy))) {
++            if (ret == SSL_magic_pending_session_ptr()) {
++                /* This is a magic value which indicates that
++                 * the callback needs to unwind the stack and
++                 * figure out the session asynchronously. */
++                return PENDING_SESSION;
++            }
+             s->session_ctx->stats.sess_cb_hit++;
+ 
+             /*
+diff -urp openssl-1.0.2h/ssl/ssl_stat.c openssl-1.0.2h-patched/ssl/ssl_stat.c
+--- openssl-1.0.2h/ssl/ssl_stat.c	2016-05-03 06:44:42.000000000 -0700
++++ openssl-1.0.2h-patched/ssl/ssl_stat.c	2016-07-19 19:15:54.118778298 -0700
+@@ -353,6 +353,12 @@ const char *SSL_state_string_long(const
+     case SSL3_ST_SR_CLNT_HELLO_C:
+         str = "SSLv3 read client hello C";
+         break;
++    case SSL3_ST_SR_CLNT_HELLO_D:
++        str = "SSLv3 read client hello D";
++        break;
++    case SSL3_ST_SR_CLNT_HELLO_E:
++        str = "SSLv3 read client hello E";
++        break;
+     case SSL3_ST_SW_HELLO_REQ_A:
+         str = "SSLv3 write hello request A";
+         break;
+@@ -737,6 +743,12 @@ const char *SSL_state_string(const SSL *
+     case SSL3_ST_SR_CLNT_HELLO_C:
+         str = "3RCH_C";
+         break;
++    case SSL3_ST_SR_CLNT_HELLO_D:
++        str = "3RCH_D";
++        break;
++    case SSL3_ST_SR_CLNT_HELLO_E:
++        str = "3RCH_E";
++        break;
+     case SSL3_ST_SW_SRVR_HELLO_A:
+         str = "3WSH_A";
+         break;
