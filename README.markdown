@@ -27,13 +27,14 @@ that all these modules are played well together.
 
 The bundled software components are copyrighted by the respective copyright holders.
 
-The homepage for this project is http://openresty.org.
+The homepage for this project is on [openresty.org](https://openresty.org/).
 
 For Users
 ---------
 
-Visit http://openresty.org/#Download to download the latest bundle tarball, and
-follow the installation instructions in the page http://openresty.org/#Installation.
+Visit the [download page](https://openresty.org/en/download.html) on the `openresty.org` web site
+to download the latest bundle tarball, and
+follow the installation instructions in the [installation page](https://openresty.org/en/installation.html).
 
 For Bundle Maintainers
 ----------------------
