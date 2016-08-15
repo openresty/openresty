@@ -740,6 +740,8 @@ cp $root/COPYRIGHT ./ || exit 1
 perl bundle/$resty_cli/bin/md2pod.pl $root/doc/README-win32.md | pod2text > README-win32.txt || exit 1
 unix2dos README-win32.txt || exit 1
 find bundle -name '*~' -delete
+mkdir patches/ || exit 1
+cp $root/patches/openssl-1.0.2h-sess_set_get_cb_yield.patch patches/ || exit 1
 
 restydoc_index=$bundle_dir/$resty_cli/bin/restydoc-index
 #restydoc_index=$HOME/git/resty-cli/bin/restydoc-index
