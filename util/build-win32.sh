@@ -8,10 +8,14 @@ rm -rf objs || exit 1
 mkdir -p objs/lib || exit 1
 cd objs/lib || exit 1
 ls ../../..
-tar -xf ../../../$OPENSSL.tar.gz
-tar -xf ../../../$ZLIB.tar.gz
-tar -xf ../../../$PCRE.tar.gz
+tar -xf ../../../$OPENSSL.tar.gz || exit 1
+tar -xf ../../../$ZLIB.tar.gz || exit 1
+tar -xf ../../../$PCRE.tar.gz || exit 1
 cd ../..
+
+cd objs/lib/$OPENSSL || exit 1
+patch -p1 < ../../../patches/$OPENSSL-sess_set_get_cb_yield.patch || exit 1
+cd ../../..
 
     #--with-openssl-opt="no-asm" \
 
