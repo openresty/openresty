@@ -22,14 +22,29 @@ cd ../../..
 ./configure --with-cc=gcc --with-ipv6 --prefix= \
     --with-cc-opt='-DFD_SETSIZE=1024' \
     --sbin-path=nginx.exe \
-    --with-ipv6 \
     --with-pcre-jit \
-    --with-http_stub_status_module \
-    --with-http_realip_module \
+    --without-http_rds_json_module \
+    --without-http_rds_csv_module \
+    --without-lua_rds_parser \
+    --with-ipv6 \
     --with-stream \
     --with-stream_ssl_module \
+    --with-http_v2_module \
+    --without-mail_pop3_module \
+    --without-mail_imap_module \
+    --without-mail_smtp_module \
+    --with-http_stub_status_module \
+    --with-http_realip_module \
     --with-http_addition_module \
+    --with-http_auth_request_module \
+    --with-http_secure_link_module \
+    --with-http_random_index_module \
+    --with-http_gzip_static_module \
     --with-http_sub_module \
+    --with-http_dav_module \
+    --with-http_flv_module \
+    --with-http_mp4_module \
+    --with-http_gunzip_module \
     --with-luajit-xcflags="-DLUAJIT_NUMMODE=2 -DLUAJIT_ENABLE_LUA52COMPAT" \
     --with-pcre=objs/lib/$PCRE \
     --with-zlib=objs/lib/$ZLIB \
