@@ -19,7 +19,10 @@ cd ../../..
 
     #--with-openssl-opt="no-asm" \
 
-./configure --with-cc=gcc --with-ipv6 --prefix= \
+./configure \
+    --with-cc=gcc \
+    --with-ipv6 \
+    --prefix= \
     --with-cc-opt='-DFD_SETSIZE=1024' \
     --sbin-path=nginx.exe \
     --with-pcre-jit \
@@ -45,11 +48,12 @@ cd ../../..
     --with-http_flv_module \
     --with-http_mp4_module \
     --with-http_gunzip_module \
+    --with-select_module \
     --with-luajit-xcflags="-DLUAJIT_NUMMODE=2 -DLUAJIT_ENABLE_LUA52COMPAT" \
     --with-pcre=objs/lib/$PCRE \
     --with-zlib=objs/lib/$ZLIB \
     --with-openssl=objs/lib/$OPENSSL \
-    --with-select_module -j5 || exit 1
+    -j5 || exit 1
 #gmake -j5
 make || exit 1
 make install

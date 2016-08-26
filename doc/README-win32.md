@@ -124,25 +124,58 @@ MinGW gcc 4.8.1, MSYS perl, MSYS bash, MSYS make, and etc. Basically, it is curr
  the following cmmands:
 
 ```bash
+PCRE=pcre-8.39
+ZLIB=zlib-1.2.8
+OPENSSL=openssl-1.0.2h
+
 mkdir -p objs/lib || exit 1
 cd objs/lib || exit 1
 ls ../../..
-tar -xf ../../../openssl-1.0.2d.tar.gz
-tar -xf ../../../zlib-1.2.8.tar.gz
-tar -xf ../../../pcre-8.37.tar.gz
+tar -xf ../../../$OPENSSL.tar.gz || exit 1
+tar -xf ../../../$ZLIB.tar.gz || exit 1
+tar -xf ../../../$PCRE.tar.gz || exit 1
 cd ../..
-./configure --with-cc=gcc \
+
+cd objs/lib/$OPENSSL || exit 1
+patch -p1 < ../../../patches/$OPENSSL-sess_set_get_cb_yield.patch || exit 1
+cd ../../..
+
+./configure \
+    --with-cc=gcc \
+    --with-ipv6 \
     --prefix= \
     --with-cc-opt='-DFD_SETSIZE=1024' \
-    --with-select_module \
-    --with-ipv6 \
     --sbin-path=nginx.exe \
     --with-pcre-jit \
+    --without-http_rds_json_module \
+    --without-http_rds_csv_module \
+    --without-lua_rds_parser \
+    --with-ipv6 \
+    --with-stream \
+    --with-stream_ssl_module \
+    --with-http_v2_module \
+    --without-mail_pop3_module \
+    --without-mail_imap_module \
+    --without-mail_smtp_module \
+    --with-http_stub_status_module \
+    --with-http_realip_module \
+    --with-http_addition_module \
+    --with-http_auth_request_module \
+    --with-http_secure_link_module \
+    --with-http_random_index_module \
+    --with-http_gzip_static_module \
+    --with-http_sub_module \
+    --with-http_dav_module \
+    --with-http_flv_module \
+    --with-http_mp4_module \
+    --with-http_gunzip_module \
+    --with-select_module \
     --with-luajit-xcflags="-DLUAJIT_NUMMODE=2 -DLUAJIT_ENABLE_LUA52COMPAT" \
-    --with-pcre=objs/lib/pcre-8.37 \
-    --with-zlib=objs/lib/zlib-1.2.8 \
-    --with-openssl=objs/lib/openssl-1.0.2d \
-    -j5
+    --with-pcre=objs/lib/$PCRE \
+    --with-zlib=objs/lib/$ZLIB \
+    --with-openssl=objs/lib/$OPENSSL \
+    -j5 || exit 1
+
 make
 make install
 ```
