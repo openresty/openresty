@@ -121,6 +121,7 @@ my $with_resty_mods_regex;
 }
 
 my $prefix = '/usr/local/openresty';
+my $ngx_sbin;
 my %resty_opts;
 my $dry_run;
 my @ngx_rpaths;
@@ -304,6 +305,10 @@ for my $opt (@ARGV) {
         $path = File::Spec->rel2abs($path);
         push @ngx_opts, "--with-$lib=$path";
 
+    } elsif ($opt =~ /^--sbin-path=(.*)/) {
+        $ngx_sbin = $1;
+        push @ngx_opts, $opt;
+
     } elsif ($opt =~ /^--\w.*/) {
         push @ngx_opts, $opt;
 
@@ -354,7 +359,10 @@ push @make_install_cmds,
     . " \$(DESTDIR)$prefix/site/manifest";
 
 if ($platform ne 'msys') {
-    push @make_install_cmds, "ln -sf $ngx_prefix/sbin/nginx \$(DESTDIR)$prefix/bin/openresty";
+    if (!$ngx_sbin) {
+        $ngx_sbin = "$ngx_prefix/sbin/nginx";
+    }
+    push @make_install_cmds, "ln -sf $ngx_sbin \$(DESTDIR)$prefix/bin/openresty";
 }
 
 cd '../..'; # to the root
