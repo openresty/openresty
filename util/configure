@@ -341,7 +341,10 @@ push @make_cmds, "cd $root_dir/build/$ngx_dir && "
 push @make_install_cmds, "cd $root_dir/build/$ngx_dir && "
     . "\$(MAKE) install DESTDIR=\$(DESTDIR)";
 
-push @make_install_cmds, "mkdir -p \$(DESTDIR)$prefix/site/lualib";
+push @make_install_cmds,
+    "mkdir -p \$(DESTDIR)$prefix/site/lualib"
+    . " \$(DESTDIR)$prefix/site/pod"
+    . " \$(DESTDIR)$prefix/site/manifest";
 
 if ($platform ne 'msys') {
     push @make_install_cmds, "ln -sf $ngx_prefix/sbin/nginx \$(DESTDIR)$prefix/bin/openresty";
