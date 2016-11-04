@@ -958,6 +958,19 @@ _EOC_
         }
     }
 
+    # configure opm:
+    {
+        my $opm_dir = auto_complete 'opm';
+        my $target_dir;
+        if ($platform eq 'msys') {
+            $target_dir = "\$(DESTDIR)$prefix/";
+        } else {
+            $target_dir = "\$(DESTDIR)$prefix/bin/";
+        }
+        push @make_install_cmds, "cd $root_dir/build/$opm_dir && "
+             . "$root_dir/build/install bin/* $target_dir";
+    }
+
     # configure resty-cli:
 
     {
