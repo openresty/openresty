@@ -643,7 +643,7 @@ cd ..
 
 #################################
 
-ver=0.09
+ver=0.10
 $root/util/get-tarball "https://github.com/openresty/lua-resty-upload/tarball/v$ver" -O "lua-resty-upload-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-upload-$ver.tar.gz || exit 1
 mv openresty-lua-resty-upload-* lua-resty-upload-$ver || exit 1
