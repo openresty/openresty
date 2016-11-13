@@ -758,7 +758,6 @@ cp $root/util/build-win32.sh util/ || exit 1
 cp $root/COPYRIGHT ./ || exit 1
 perl bundle/$resty_cli/bin/md2pod.pl $root/doc/README-win32.md | pod2text > README-win32.txt || exit 1
 unix2dos README-win32.txt || exit 1
-find bundle -name '*~' -delete
 mkdir patches/ || exit 1
 cp $root/patches/openssl-1.0.2h-sess_set_get_cb_yield.patch patches/ || exit 1
 
@@ -782,7 +781,7 @@ else
 fi
 cd nginx.org/ || exit 1
 $nginx_xml2pod xml/en/docs || exit 1
-cd $curdir
+cd $curdir || exit 1
 
 echo "restydoc-index $root/work/nginx.org"
 $restydoc_index --outdir bundle $root/work/nginx.org || exit 1
@@ -802,14 +801,15 @@ for indir in bundle/*/; do
     if [ "$indir" == "bundle/nginx-$main_ver/" ]; then
         continue
     fi
-    echo "restydoc-index $indir"
-    $restydoc_index --outdir bundle $indir || exit 1
+    echo "$restydoc_index --outdir bundle $indir"
+    $restydoc_index --outdir $curdir/bundle $indir || exit 1
 done
 
 cd $curdir || exit 1
 find bundle -name '*.md' -delete
 find bundle -name '*.markdown' -delete
 find bundle -name '*.wiki' -delete
+find bundle -name '*~' -delete
 
 cd $root || exit 1
 

@@ -127,6 +127,7 @@ my @ngx_rpaths;
 my $cc;
 my $cores;
 my $luajit_xcflags = '';
+my $no_luajit_lua52;
 
 my (@ngx_opts, @ngx_cc_opts, @ngx_ld_opts);
 
@@ -254,6 +255,9 @@ for my $opt (@ARGV) {
 
     } elsif ($opt =~ /^--with-luajit-xcflags=(.*)/) {
         $luajit_xcflags .= " $1";
+
+    } elsif ($opt =~ /^--without-luajit-lua52/) {
+        $no_luajit_lua52 = 1;
 
     } elsif ($opt =~ /^--with-libdrizzle=(.*)/) {
         $resty_opts{libdrizzle} = $1;
@@ -605,6 +609,12 @@ _END_
                     $luajit_xcflags .= " -std=gnu99";
                 }
             }
+        }
+
+        if (!$no_luajit_lua52
+            && (!$luajit_xcflags || $luajit_xcflags !~ /-DLUAJIT_ENABLE_LUA52COMPAT\b/))
+        {
+            $luajit_xcflags .= " -DLUAJIT_ENABLE_LUA52COMPAT";
         }
 
         if ($opts->{debug}) {
@@ -1108,9 +1118,13 @@ _EOC_
   --with-lua51                       enable and build the bundled standard Lua 5.1 interpreter
   --without-lua51                    disable the bundled standard Lua 5.1 interpreter
   --with-lua51=DIR                   specify the external installation of Lua 5.1 by DIR
+
   --with-luajit                      enable and build the bundled LuaJIT 2.1 (the default)
   --with-luajit=DIR                  use the external LuaJIT 2.1 installation specified by DIR
   --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.1
+  --without-luajit-lua52             Turns off the LuaJIT extensions from Lua 5.2 that may break
+                                     backward compatibility.
+
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
   --with-libpq=DIR                   specify the libpq (or postgresql) installation prefix
   --with-pg_config=PATH              specify the path of the pg_config utility
