@@ -6,9 +6,9 @@ README-win32 - README for the Windows 32-bit build of OpenResty
 Description
 ===========
 
-The binary distributions of OpenResty can be downloaded from the following web page:
+The official binary Win32 distribution of OpenResty can be downloaded from the following web page:
 
-https://openresty.org/#Download
+https://openresty.org/en/download.html
 
 To start the NGINX server of the nginx server of the Win32 binary distribution of OpenResty:
 
