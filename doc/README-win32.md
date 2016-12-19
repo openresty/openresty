@@ -126,7 +126,7 @@ MinGW gcc 4.8.1, MSYS perl, MSYS bash, MSYS make, and etc. Basically, it is curr
 ```bash
 PCRE=pcre-8.39
 ZLIB=zlib-1.2.8
-OPENSSL=openssl-1.0.2h
+OPENSSL=openssl-1.0.2j
 
 mkdir -p objs/lib || exit 1
 cd objs/lib || exit 1
@@ -137,7 +137,7 @@ tar -xf ../../../$PCRE.tar.gz || exit 1
 cd ../..
 
 cd objs/lib/$OPENSSL || exit 1
-patch -p1 < ../../../patches/$OPENSSL-sess_set_get_cb_yield.patch || exit 1
+patch -p1 < ../../../patches/openssl-1.0.2h-sess_set_get_cb_yield.patch || exit 1
 cd ../../..
 
 ./configure \
