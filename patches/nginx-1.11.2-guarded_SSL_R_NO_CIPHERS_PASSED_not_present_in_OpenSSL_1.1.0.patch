@@ -1,0 +1,24 @@
+# HG changeset patch
+# User Sergey Kandaurov <pluknet@nginx.com>
+# Date 1470653089 -10800
+# Node ID 1891b2892b68223dcc8f6bec7205d0d8c03682d5
+# Parent  7d4e33092e2abe92f0b904e5dadad4728eb12257
+SSL: guarded SSL_R_NO_CIPHERS_PASSED not present in OpenSSL 1.1.0.
+
+It was removed in OpenSSL 1.1.0 Beta 3 (pre-release 6).  It was
+not used since OpenSSL 1.0.1n and 1.0.2b.
+
+diff -r 7d4e33092e2a -r 1891b2892b68 src/event/ngx_event_openssl.c
+--- a/src/event/ngx_event_openssl.c	Thu Aug 04 23:43:10 2016 +0300
++++ b/src/event/ngx_event_openssl.c	Mon Aug 08 13:44:49 2016 +0300
+@@ -2023,7 +2023,9 @@
+             || n == SSL_R_ERROR_IN_RECEIVED_CIPHER_LIST              /*  151 */
+             || n == SSL_R_EXCESSIVE_MESSAGE_SIZE                     /*  152 */
+             || n == SSL_R_LENGTH_MISMATCH                            /*  159 */
++#ifdef SSL_R_NO_CIPHERS_PASSED
+             || n == SSL_R_NO_CIPHERS_PASSED                          /*  182 */
++#endif
+             || n == SSL_R_NO_CIPHERS_SPECIFIED                       /*  183 */
+             || n == SSL_R_NO_COMPRESSION_SPECIFIED                   /*  187 */
+             || n == SSL_R_NO_SHARED_CIPHER                           /*  193 */
+
