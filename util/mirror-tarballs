@@ -333,6 +333,10 @@ echo "$info_txt applying the upstream_timeout_fields patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-upstream_timeout_fields.patch || exit 1
 echo
 
+echo "$info_txt applying the guarded_SSL_R_NO_CIPHERS_PASSED_not_present_in_OpenSSL_1.1.0 patch for nginx"
+patch -p1 < $root/patches/nginx-$main_ver-guarded_SSL_R_NO_CIPHERS_PASSED_not_present_in_OpenSSL_1.1.0.patch || exit 1
+echo
+
 cp $root/html/index.html docs/html/ || exit 1
 cp $root/html/50x.html docs/html/ || exit 1
 
