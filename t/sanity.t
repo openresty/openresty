@@ -2,7 +2,7 @@
 
 use t::Config;
 
-plan tests => 243;
+plan tests => 251;
 
 #no_diff();
 
@@ -315,7 +315,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -394,7 +394,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -484,7 +484,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -563,7 +563,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -642,7 +642,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -721,7 +721,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -799,7 +799,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -850,7 +850,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -928,7 +928,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/opt/blah/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/opt/blah/site/lualib $(DESTDIR)/opt/blah/site/pod $(DESTDIR)/opt/blah/site/manifest
-	ln -sf /opt/blah/nginx/sbin/nginx $(DESTDIR)/opt/blah/bin/openresty
+	ln -sf $(DESTDIR)/opt/blah/nginx/sbin/nginx $(DESTDIR)/opt/blah/bin/openresty
 
 clean:
 	rm -rf build
@@ -1240,7 +1240,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1319,7 +1319,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1398,7 +1398,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1491,7 +1491,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1569,7 +1569,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1649,7 +1649,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1729,12 +1729,12 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
 --- err
-Can't exec "cl": No such file or directory at ./configure line 605.
+Can't exec "cl": No such file or directory at ./configure line 613.
 
 
 
@@ -1824,7 +1824,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -1903,7 +1903,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2005,7 +2005,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2094,7 +2094,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2173,7 +2173,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2252,7 +2252,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2331,7 +2331,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2410,7 +2410,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2488,7 +2488,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2567,12 +2567,12 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 651.
+Can't exec "sw_vers": No such file or directory at ./configure line 659.
 
 
 
@@ -2648,12 +2648,12 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 651.
+Can't exec "sw_vers": No such file or directory at ./configure line 659.
 
 
 
@@ -2729,7 +2729,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2805,7 +2805,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2879,7 +2879,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -2955,7 +2955,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3028,7 +3028,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3112,7 +3112,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3190,7 +3190,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3269,7 +3269,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3347,7 +3347,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3425,7 +3425,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3502,7 +3502,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3579,7 +3579,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3658,7 +3658,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3738,7 +3738,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3816,7 +3816,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3894,7 +3894,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -3972,7 +3972,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -4050,7 +4050,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -4128,7 +4128,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -4205,7 +4205,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -4285,7 +4285,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)./
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)./site/lualib $(DESTDIR)./site/pod $(DESTDIR)./site/manifest
-	ln -sf ./nginx/sbin/nginx $(DESTDIR)./bin/openresty
+	ln -sf $(DESTDIR)./nginx/sbin/nginx $(DESTDIR)./bin/openresty
 
 clean:
 	rm -rf build
@@ -4366,7 +4366,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)./
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)./site/lualib $(DESTDIR)./site/pod $(DESTDIR)./site/manifest
-	ln -sf ./nginx/sbin/nginx $(DESTDIR)./bin/openresty
+	ln -sf $(DESTDIR)./nginx/sbin/nginx $(DESTDIR)./bin/openresty
 
 clean:
 	rm -rf build
@@ -4447,7 +4447,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)./
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)./site/lualib $(DESTDIR)./site/pod $(DESTDIR)./site/manifest
-	ln -sf ./nginx/sbin/nginx $(DESTDIR)./bin/openresty
+	ln -sf $(DESTDIR)./nginx/sbin/nginx $(DESTDIR)./bin/openresty
 
 clean:
 	rm -rf build
@@ -4609,7 +4609,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -4688,7 +4688,7 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
@@ -4767,8 +4767,167 @@ install: all
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
 	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+	ln -sf $(DESTDIR)/usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
 
 clean:
 	rm -rf build
 
+
+
+=== TEST 64: --sbin-path
+--- cmd: ./configure --sbin-path=/opt/blah/nginx --dry-run
+--- out
+platform: linux (linux)
+cp -rp bundle/ build
+cd build
+cd LuaJIT-2.1-20161104
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
+cd ..
+cd nginx-1.11.2
+sh ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
+  --add-module=../ngx_devel_kit-0.3.0 \
+  --add-module=../echo-nginx-module-0.60 \
+  --add-module=../xss-nginx-module-0.05 \
+  --add-module=../ngx_coolkit-0.2rc3 \
+  --add-module=../set-misc-nginx-module-0.31 \
+  --add-module=../form-input-nginx-module-0.12 \
+  --add-module=../encrypted-session-nginx-module-0.06 \
+  --add-module=../srcache-nginx-module-0.31 \
+  --add-module=../ngx_lua-0.10.7 \
+  --add-module=../ngx_lua_upstream-0.06 \
+  --add-module=../headers-more-nginx-module-0.32 \
+  --add-module=../array-var-nginx-module-0.05 \
+  --add-module=../memc-nginx-module-0.17 \
+  --add-module=../redis2-nginx-module-0.13 \
+  --add-module=../redis-nginx-module-0.3.7 \
+  --add-module=../rds-json-nginx-module-0.14 \
+  --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --sbin-path=/opt/blah/nginx --with-http_ssl_module
+cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
+
+--- makefile
+.PHONY: all install clean
+
+all:
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20161104 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.4 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
+
+install: all
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20161104 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-mysql-0.17 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-string-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-upload-0.10 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-websocket-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-lock-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.9 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/opm-0.0.2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.16 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
+	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
+	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
+	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
+	ln -sf $(DESTDIR)/opt/blah/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+
+clean:
+	rm -rf build
+
+
+
+=== TEST 65 --sbin-path --prefix (relative path: ".")
+--- cmd: ./configure --sbin-path=/opt/blah/nginx --prefix=. --dry-run
+--- out
+platform: linux (linux)
+cp -rp bundle/ build
+cd build
+cd LuaJIT-2.1-20161104
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' CC=cc PREFIX=./luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' CC=cc PREFIX=./luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1'
+cd ..
+cd nginx-1.11.2
+sh ./configure --prefix=./nginx \
+  --with-cc-opt='-O2' \
+  --add-module=../ngx_devel_kit-0.3.0 \
+  --add-module=../echo-nginx-module-0.60 \
+  --add-module=../xss-nginx-module-0.05 \
+  --add-module=../ngx_coolkit-0.2rc3 \
+  --add-module=../set-misc-nginx-module-0.31 \
+  --add-module=../form-input-nginx-module-0.12 \
+  --add-module=../encrypted-session-nginx-module-0.06 \
+  --add-module=../srcache-nginx-module-0.31 \
+  --add-module=../ngx_lua-0.10.7 \
+  --add-module=../ngx_lua_upstream-0.06 \
+  --add-module=../headers-more-nginx-module-0.32 \
+  --add-module=../array-var-nginx-module-0.05 \
+  --add-module=../memc-nginx-module-0.17 \
+  --add-module=../redis2-nginx-module-0.13 \
+  --add-module=../redis-nginx-module-0.3.7 \
+  --add-module=../rds-json-nginx-module-0.14 \
+  --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,luajit/lib' \
+  --sbin-path=/opt/blah/nginx --with-http_ssl_module
+cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
+
+--- makefile
+DESTDIR ?= $OPENRESTY_DIR/
+
+.PHONY: all install clean
+
+all:
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20161104 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' CC=cc PREFIX=./luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.4 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1 LUA_CMODULE_DIR=./lualib LUA_MODULE_DIR=./lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1 LUA_LIB_DIR=./lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1 LUA_LIB_DIR=./lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
+
+install: all
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20161104 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' CC=cc PREFIX=./luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.4 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1 LUA_CMODULE_DIR=./lualib LUA_MODULE_DIR=./lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1 LUA_LIB_DIR=./lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1 LUA_LIB_DIR=./lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-mysql-0.17 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-string-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-upload-0.10 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-websocket-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-lock-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.9 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/opm-0.0.2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.16 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./bin/
+	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)./
+	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)./
+	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
+	mkdir -p $(DESTDIR)./site/lualib $(DESTDIR)./site/pod $(DESTDIR)./site/manifest
+	ln -sf $(DESTDIR)/opt/blah/nginx $(DESTDIR)./bin/openresty
+
+clean:
+	rm -rf build
