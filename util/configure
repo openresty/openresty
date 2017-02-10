@@ -362,7 +362,7 @@ if ($platform ne 'msys') {
     if (!$ngx_sbin) {
         $ngx_sbin = "$ngx_prefix/sbin/nginx";
     }
-    push @make_install_cmds, "ln -sf \$(DESTDIR)$ngx_sbin \$(DESTDIR)$prefix/bin/openresty";
+    push @make_install_cmds, "ln -sf $ngx_sbin \$(DESTDIR)$prefix/bin/openresty";
 }
 
 cd '../..'; # to the root
