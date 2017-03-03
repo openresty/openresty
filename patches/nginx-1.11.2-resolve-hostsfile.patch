@@ -1,0 +1,373 @@
+# HG changeset patch
+# User Thibault Charbonnier <thibaultcha@me.com>
+# Date 1488252201 28800
+#      Mon Feb 27 19:23:21 2017 -0800
+# Branch resolve-hostsfile
+# Node ID e348d382e1ed78fba55261c1962625415ea21fd6
+# Parent  640f035293959b2d4b0ba5939d954bc517f57f77
+Resolver: parse hosts file entries
+
+The resolver directive can now take an optional 'hostsfile=<path>' option, such
+as:
+
+    resolver 8.8.4.4 hostsfile=/etc/hosts;
+
+Hosts parsed from the hosts file are considered valid forever. The behavior
+tries to be conservative, and only parses the hosts file when the option is
+provided, to enforce backwards compatibility.
+
+diff -r 640f03529395 -r e348d382e1ed src/core/ngx_resolver.c
+--- a/src/core/ngx_resolver.c	Fri Jan 27 19:06:35 2017 +0300
++++ b/src/core/ngx_resolver.c	Mon Feb 27 19:23:21 2017 -0800
+@@ -9,11 +9,12 @@
+ #include <ngx_core.h>
+ #include <ngx_event.h>
+ 
+-
+-#define NGX_RESOLVER_UDP_SIZE   4096
+-
+-#define NGX_RESOLVER_TCP_RSIZE  (2 + 65535)
+-#define NGX_RESOLVER_TCP_WSIZE  8192
++#define NGX_RESOLVER_HOSTSFILE_SIZE  4096
++
++#define NGX_RESOLVER_UDP_SIZE        4096
++
++#define NGX_RESOLVER_TCP_RSIZE       (2 + 65535)
++#define NGX_RESOLVER_TCP_WSIZE       8192
+ 
+ 
+ typedef struct {
+@@ -120,6 +121,8 @@
+     ngx_resolver_node_t *rn);
+ static void ngx_resolver_srv_names_handler(ngx_resolver_ctx_t *ctx);
+ static ngx_int_t ngx_resolver_cmp_srvs(const void *one, const void *two);
++static ngx_int_t ngx_resolver_parse_hostsfile(ngx_conf_t *cf,
++    ngx_resolver_t *r);
+ 
+ #if (NGX_HAVE_INET6)
+ static void ngx_resolver_rbtree_insert_addr6_value(ngx_rbtree_node_t *temp,
+@@ -128,7 +131,6 @@
+     struct in6_addr *addr, uint32_t hash);
+ #endif
+ 
+-
+ ngx_resolver_t *
+ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
+ {
+@@ -243,6 +245,24 @@
+         }
+ #endif
+ 
++        if (ngx_strncmp(names[i].data, "hostsfile=", 10) == 0) {
++            r->hostsfile.len = names[i].len - 10;
++
++            if (r->hostsfile.len == 0) {
++                ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
++                                   "invalid parameter: %V", &names[i]);
++                return NULL;
++            }
++
++            r->hostsfile.data = ngx_resolver_dup(r, names[i].data + 10,
++                                                 r->hostsfile.len + 1);
++            if (r->hostsfile.data == NULL) {
++                return NULL;
++            }
++
++            continue;
++        }
++
+         ngx_memzero(&u, sizeof(ngx_url_t));
+ 
+         u.url = names[i];
+@@ -273,6 +293,13 @@
+         }
+     }
+ 
++    if (r->hostsfile.len > 0
++        && ngx_resolver_parse_hostsfile(cf, r)
++        != NGX_OK)
++    {
++        return NULL;
++    }
++
+     return r;
+ }
+ 
+@@ -4660,3 +4687,265 @@
+ 
+     return p1 - p2;
+ }
++
++
++static ngx_int_t
++ngx_resolver_parse_hostsfile(ngx_conf_t *cf, ngx_resolver_t *r)
++{
++    off_t                    file_size;
++    u_char                   ch;
++    u_char                  *start;
++    size_t                   len;
++    ssize_t                  n, size;
++    ngx_int_t                rc;
++    ngx_buf_t                b;
++    ngx_fd_t                 fd;
++    ngx_str_t                filename, s;
++    ngx_file_t               file;
++    in_addr_t                addr;
++    ngx_resolver_node_t     *rn;
++    enum {
++        scan_line = 0,
++        scan_skipline,
++        scan_addr,
++        scan_hosts,
++        scan_name
++    } state;
++
++    b.start = NULL;
++    s.data = NULL;
++    s.len = 0;
++    rn = NULL;
++    rc = NGX_OK;
++
++    filename = r->hostsfile;
++
++    fd = ngx_open_file(filename.data, NGX_FILE_RDONLY, NGX_FILE_OPEN, 0);
++    if (fd == NGX_INVALID_FILE) {
++        ngx_log_error(NGX_LOG_ALERT, cf->log, ngx_errno,
++                      ngx_open_file_n " \"%s\" failed", filename.data);
++        return NGX_ERROR;
++    }
++
++    ngx_memzero(&file, sizeof(ngx_file_t));
++
++    if (ngx_fd_info(fd, &file.info) == NGX_FILE_ERROR) {
++        ngx_log_error(NGX_LOG_ALERT, cf->log, ngx_errno,
++                      ngx_fd_info_n " \"%s\" failed", filename.data);
++        goto fail;
++    }
++
++    file.fd = fd;
++    file.log = cf->log;
++    file.name.len = filename.len;
++    file.name.data = filename.data;
++    file.offset = 0;
++
++    b.start = ngx_resolver_alloc(r, NGX_RESOLVER_HOSTSFILE_SIZE);
++    if (b.start == NULL) {
++        goto fail;
++    }
++
++    b.pos = b.start;
++    b.last = b.start;
++    b.end = b.last + NGX_RESOLVER_HOSTSFILE_SIZE;
++    b.temporary = 1;
++
++    start = b.pos;
++    state = scan_line;
++    file_size = ngx_file_size(&file.info);
++
++    for ( ;; ) {
++
++        if (b.pos >= b.last) {
++            len = b.pos - start;
++
++            if (len) {
++                ngx_memmove(b.start, start, len);
++            }
++
++            size = (ssize_t) (file_size - file.offset);
++
++            if (size > b.end - (b.start + len)) {
++                size = b.end - (b.start + len);
++
++            } else if (size == 0) {
++                goto done;
++            }
++
++            n = ngx_read_file(&file, b.start + len, size, file.offset);
++            if (n == NGX_ERROR) {
++                ngx_log_error(NGX_LOG_ALERT, cf->log, ngx_errno,
++                              ngx_read_file_n, " \"%s\" failed",
++                              filename.data);
++                goto fail;
++            }
++
++            if (n != size) {
++                ngx_log_error(NGX_LOG_ERR, cf->log, ngx_errno,
++                              ngx_read_file_n, " returned only %z bytes "
++                              "instead of %z", n, size);
++                goto fail;
++            }
++
++            b.pos = b.start + len;
++            b.last = b.pos + n;
++            start = b.start;
++        }
++
++        ch = *b.pos;
++
++        switch (state) {
++
++        case scan_line:
++            if (ch == ' ') {
++                break;
++            }
++
++            if (ch == '#') {
++                state = scan_skipline;
++                break;
++            }
++
++            start = b.pos;
++            state = scan_addr;
++            break;
++
++        case scan_skipline:
++            if (ch == LF || ch == CR) {
++                state = scan_line;
++            }
++
++            break;
++
++        case scan_addr:
++            if (ch == LF || ch == CR) {
++                state = scan_line;
++                break;
++            }
++
++            if (ch == ' ' || ch == '\t') {
++                if (s.data) {
++                    ngx_resolver_free(r, s.data);
++                }
++
++                s.len = b.pos - start;
++
++                s.data = ngx_resolver_dup(r, start, s.len);
++                if (s.data == NULL) {
++                    goto fail;
++                }
++
++                state = scan_hosts;
++            }
++
++            break;
++
++        case scan_hosts:
++            if (ch == LF || ch == CR) {
++                state = scan_line;
++                break;
++            }
++
++            if (ch == ' ' || ch == '\t') {
++                break;
++            }
++
++            start = b.pos;
++            state = scan_name;
++            break;
++
++        case scan_name:
++            if (ch == ' ' || ch == '\t' || ch == LF || ch == CR) {
++                rn = ngx_resolver_calloc(r, sizeof(ngx_resolver_node_t));
++                if (rn == NULL) {
++                    goto fail;
++                }
++
++                rn->nlen = b.pos - start;
++
++                rn->name = ngx_resolver_dup(r, start, rn->nlen);
++                if (rn->name == NULL) {
++                    goto fail;
++                }
++
++                rn->ttl = NGX_MAX_UINT32_VALUE;
++                rn->valid = NGX_MAX_UINT32_VALUE;
++                rn->expire = NGX_MAX_UINT32_VALUE;
++                rn->node.key = ngx_crc32_short(rn->name, rn->nlen);
++
++                if (ngx_strlchr(s.data,
++                                s.data + s.len, ':') != NULL)
++                {
++
++#if (NGX_HAVE_INET6)
++                    if (!r->ipv6
++                        || ngx_inet6_addr(s.data, s.len,
++                                          rn->u6.addr6.s6_addr) != NGX_OK)
++                    {
++                        ngx_resolver_free_node(r, rn);
++                        state = scan_skipline;
++                        break;
++                    }
++
++                    rn->naddrs6 = 1;
++#endif
++
++                } else {
++                    addr = ngx_inet_addr(s.data, s.len);
++                    if (addr == INADDR_NONE) {
++                        ngx_resolver_free_node(r, rn);
++                        state = scan_skipline;
++                        break;
++                    }
++
++                    rn->naddrs = 1;
++                    rn->u.addr = addr;
++                }
++
++                ngx_rbtree_insert(&r->name_rbtree, &rn->node);
++
++                ngx_queue_insert_head(&r->name_expire_queue, &rn->queue);
++
++                if (ch == LF || ch == CR) {
++                    state = scan_line;
++                    break;
++                }
++
++                state = scan_hosts;
++            }
++
++            break;
++        }
++
++        b.pos++;
++    }
++
++fail:
++
++    rc = NGX_ERROR;
++
++done:
++
++    if (s.data) {
++        ngx_resolver_free(r, s.data);
++    }
++
++    if (b.start) {
++        ngx_resolver_free(r, b.start);
++    }
++
++    if (ngx_close_file(fd) == NGX_FILE_ERROR) {
++        ngx_log_error(NGX_LOG_ALERT, cf->log, ngx_errno,
++                      ngx_close_file_n, " \"%s\" failed",
++                      filename.data);
++        rc = NGX_ERROR;
++    }
++
++    if (rc == NGX_ERROR) {
++        return NGX_ERROR;
++    }
++
++    return NGX_OK;
++}
++
+diff -r 640f03529395 -r e348d382e1ed src/core/ngx_resolver.h
+--- a/src/core/ngx_resolver.h	Fri Jan 27 19:06:35 2017 +0300
++++ b/src/core/ngx_resolver.h	Mon Feb 27 19:23:21 2017 -0800
+@@ -146,6 +146,8 @@
+ 
+ 
+ struct ngx_resolver_s {
++    ngx_str_t                 hostsfile;
++
+     /* has to be pointer because of "incomplete type" */
+     ngx_event_t              *event;
+     void                     *dummy;
