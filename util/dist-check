@@ -68,7 +68,7 @@ sub write_config_file ($) {
 
 write_config_file "/tmp/nginx.conf";
 
-warn "=== Without FFI ===\n";
+warn "\n=== Without FFI ===\n";
 $prefix = "/usr/local/openresty-noffi";
 cleanup();
 unless ($opts{f}) {
@@ -86,7 +86,7 @@ sh "curl -si localhost/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
-warn "=== --with-stream ===\n";
+warn "\n=== --with-stream ===\n";
 $prefix = "/usr/local/openresty-stream";
 cleanup();
 unless ($opts{f}) {
@@ -105,7 +105,7 @@ sh "curl -si localhost/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
-warn "=== --with-stream + dtrace static probes ===\n";
+warn "\n=== --with-stream + dtrace static probes ===\n";
 $prefix = "/usr/local/openresty-stream-usdt";
 cleanup();
 unless ($opts{f}) {
@@ -125,7 +125,7 @@ sh "curl -si localhost/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
-warn "=== Without Gzip/SSL/PCRE ===\n";
+warn "\n=== Without Gzip/SSL/PCRE ===\n";
 $prefix = "/usr/local/openresty-nogzip";
 cleanup();
 unless ($opts{f}) {
