@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use File::Spec;
+use File::Temp qw( tempfile tmpnam );
 
 sub shell ($@);
 sub env ($$);
@@ -623,6 +624,28 @@ _END_
             && (!$luajit_xcflags || $luajit_xcflags !~ /-DLUAJIT_ENABLE_LUA52COMPAT\b/))
         {
             $luajit_xcflags .= " -DLUAJIT_ENABLE_LUA52COMPAT";
+        }
+
+        {
+            # check -msse4.2
+            my ($out, $cfile) = tempfile("resty-config-XXXXXX",
+                                         SUFFIX => '.c', TMPDIR => 1,
+                                         UNLINK => 1);
+
+            print $out "int main(void) { return 0; }";
+            close $out;
+
+            my $ofile = tmpnam();
+            my $comp = ($cc || 'cc');
+
+            if (system("$comp -o $ofile -msse4.2 -c $cfile") == 0 && -s $ofile) {
+                print "INFO: found -msse4.2 in $comp.\n";
+                $luajit_xcflags .= " -msse4.2";
+                unlink $ofile;
+
+            } else {
+                print "WARNING: -msse4.2 not supported in $comp.\n";
+            }
         }
 
         if ($opts->{debug}) {
