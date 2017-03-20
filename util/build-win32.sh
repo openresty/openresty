@@ -1,8 +1,8 @@
 #!/bin/bash
 
-PCRE=pcre-8.39
-ZLIB=zlib-1.2.8
-OPENSSL=openssl-1.0.2j
+PCRE=pcre-8.40
+ZLIB=zlib-1.2.11
+OPENSSL=openssl-1.0.2k
 
 rm -rf objs || exit 1
 mkdir -p objs/lib || exit 1
