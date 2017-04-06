@@ -55,9 +55,19 @@ else
     fi
 fi
 
-echo "$info_txt applying the privileged-agent-process patch"
-patch -p1 < $root/patches/nginx-$main_ver-privileged_agent_process.patch || exit 1
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.11.2`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying the privileged-agent-process patch"
+    patch -p1 < $root/patches/nginx-$main_ver-privileged_agent_process.patch || exit 1
+    echo
+fi
+
+answer=`$root/util/ver-ge "$main_ver" 1.11.2`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying the intercept-error-log patch"
+    patch -p1 < $root/patches/nginx-$main_ver-intercept_error_log.patch || exit 1
+    echo
+fi
 
 echo "$info_txt applying the upstream-pipelining patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-upstream_pipelining.patch || exit 1
