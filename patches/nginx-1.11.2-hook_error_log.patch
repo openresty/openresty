@@ -1,0 +1,86 @@
+diff --git a/src/core/ngx_log.c b/src/core/ngx_log.c
+index 8e9408d..093351c 100644
+--- a/src/core/ngx_log.c
++++ b/src/core/ngx_log.c
+@@ -164,6 +164,13 @@ ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
+             break;
+         }
+ 
++        if (log->intercept_log_handler && log->enter_error_log == 0)
++        {
++            log->enter_error_log = 1;
++            log->intercept_log_handler(log, level, errstr, p - errstr);
++            log->enter_error_log = 0;
++        }
++
+         if (log->writer) {
+             log->writer(log, level, errstr, p - errstr);
+             goto next;
+diff --git a/src/core/ngx_log.h b/src/core/ngx_log.h
+index 385fee4..2731db8 100644
+--- a/src/core/ngx_log.h
++++ b/src/core/ngx_log.h
+@@ -45,6 +45,8 @@
+ typedef u_char *(*ngx_log_handler_pt) (ngx_log_t *log, u_char *buf, size_t len);
+ typedef void (*ngx_log_writer_pt) (ngx_log_t *log, ngx_uint_t level,
+     u_char *buf, size_t len);
++typedef ngx_int_t (*ngx_log_intercept_pt) (ngx_log_t *log, ngx_uint_t level,
++    u_char *buf, size_t len);
+ 
+ 
+ struct ngx_log_s {
+@@ -58,6 +60,8 @@ struct ngx_log_s {
+     ngx_log_handler_pt   handler;
+     void                *data;
+ 
++    ngx_log_intercept_pt intercept_log_handler;
++
+     ngx_log_writer_pt    writer;
+     void                *wdata;
+ 
+@@ -70,6 +74,8 @@ struct ngx_log_s {
+     char                *action;
+ 
+     ngx_log_t           *next;
++
++    unsigned             enter_error_log:1;
+ };
+ 
+ 
+diff --git a/src/http/ngx_http_core_module.h b/src/http/ngx_http_core_module.h
+index 773c215..3be0158 100644
+--- a/src/http/ngx_http_core_module.h
++++ b/src/http/ngx_http_core_module.h
+@@ -175,6 +175,8 @@ typedef struct {
+     ngx_uint_t                 try_files;       /* unsigned  try_files:1 */
+ 
+     ngx_http_phase_t           phases[NGX_HTTP_LOG_PHASE + 1];
++
++    ngx_log_intercept_pt       intercept_log_handler;
+ } ngx_http_core_main_conf_t;
+ 
+ 
+diff --git a/src/http/ngx_http_request.c b/src/http/ngx_http_request.c
+index c157aae..b4a573c 100644
+--- a/src/http/ngx_http_request.c
++++ b/src/http/ngx_http_request.c
+@@ -605,6 +605,7 @@ ngx_http_create_request(ngx_connection_t *c)
+     ctx->request = r;
+     ctx->current_request = r;
+     r->log_handler = ngx_http_log_error_handler;
++    c->log->intercept_log_handler = cmcf->intercept_log_handler;
+ 
+ #if (NGX_STAT_STUB)
+     (void) ngx_atomic_fetch_add(ngx_stat_reading, 1);
+diff --git a/src/http/ngx_http_request.h b/src/http/ngx_http_request.h
+index 499c1ef..6c7ca9f 100644
+--- a/src/http/ngx_http_request.h
++++ b/src/http/ngx_http_request.h
+@@ -383,6 +383,7 @@ struct ngx_http_request_s {
+     ngx_http_upstream_t              *upstream;
+     ngx_array_t                      *upstream_states;
+                                          /* of ngx_http_upstream_state_t */
++    ngx_array_t                      *intercept_logs;    /* of ngx_str_t */
+ 
+     ngx_pool_t                       *pool;
+     ngx_buf_t                        *header_in;
