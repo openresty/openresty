@@ -517,7 +517,7 @@ resty_cli=resty-cli-$ver
 
 #################################
 
-ver=0.0.2
+ver=0.0.3
 $root/util/get-tarball "https://github.com/openresty/opm/tarball/v$ver" -O opm-$ver.tar.gz || exit 1
 tar -xzf opm-$ver.tar.gz || exit 1
 mv openresty-opm-* opm-$ver || exit 1
