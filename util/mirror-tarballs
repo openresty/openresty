@@ -400,14 +400,14 @@ mv openresty-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 
 
 #################################
 
-ver=0.1.9
+ver=0.1.10
 $root/util/get-tarball "https://github.com/openresty/drizzle-nginx-module/tarball/v$ver" -O drizzle-nginx-module-$ver.tar.gz || exit 1
 tar -xzf drizzle-nginx-module-$ver.tar.gz || exit 1
 mv openresty-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.10.7
+ver=0.10.8
 $root/util/get-tarball "https://github.com/openresty/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv openresty-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -702,7 +702,7 @@ cd ..
 
 #################################
 
-ver=0.04
+ver=0.05
 $root/util/get-tarball "https://github.com/openresty/lua-resty-lock/tarball/v$ver" -O "lua-resty-lock-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-lock-$ver.tar.gz || exit 1
 mv openresty-lua-resty-lock-* lua-resty-lock-$ver || exit 1
@@ -726,7 +726,7 @@ cd ..
 
 #################################
 
-ver=0.1.9
+ver=0.1.10
 $root/util/get-tarball "https://github.com/openresty/lua-resty-core/tarball/v$ver" -O "lua-resty-core-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-core-$ver.tar.gz || exit 1
 mv openresty-lua-resty-core-* lua-resty-core-$ver || exit 1
