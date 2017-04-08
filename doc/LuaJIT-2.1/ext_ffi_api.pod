@@ -488,14 +488,14 @@ itself still refers to a variable named C<i>.
 
 ----
 
-Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+Copyright E<copy> 2005-2017 Mike Pall E<middot> Contact
 
 =cut
 
 #Pod::HTML2Pod conversion notes:
 #From file ext_ffi_api.html
 # 21471 bytes of input
-#Wed Jun 29 13:18:15 2016 agentzh
+#Sat Apr  8 14:31:44 2017 agentzh
 # No a_name switch not specified, so will not try to render <a name='...'>
 # No a_href switch not specified, so will not try to render <a href='...'>
 # Deleting phrasal "code" element (`tt_157) because it has super-phrasal elements (`br_3, `br_4) as children.

@@ -166,7 +166,8 @@ and cannot be loaded.
 
 Note: C<LJ_GC64> mode requires a different frame layout, which implies
 a different, incompatible bytecode format for ports that use this mode
-(e.g. ARM64). This may be rectified in the future.
+(e.g. ARM64 or MIPS64) or when explicitly enabled for x64. This may be
+rectified in the future.
 
 =head2 C<table.new(narray, nhash)> allocates a pre-sized table
 
@@ -275,6 +276,12 @@ functions.
 
 =item * C<debug.upvalueid()> and C<debug.upvaluejoin()>.
 
+=item * Lua/C API extensions: C<lua_upvalueid()> C<lua_upvaluejoin()>
+C<lua_loadx()> C<luaL_fileresult()> C<luaL_execresult()>
+C<luaL_loadfilex()> C<luaL_loadbufferx()> C<luaL_traceback()>
+C<luaL_setfuncs()> C<luaL_pushmodule()> C<luaL_newlibtable()>
+C<luaL_newlib()>
+
 =item * Command line option C<-E>.
 
 =item * Command line checks C<__tostring> for errors.
@@ -314,6 +321,10 @@ status.
 
 =item * Remove C<math.mod()>, C<string.gfind()>.
 
+=item * C<package.searchers>.
+
+=item * C<module()> returns the module table.
+
 =back
 
 Note: this provides only partial compatibility with Lua 5.2 at the
@@ -329,6 +340,16 @@ LuaJIT supports some extensions from Lua 5.3:
 
 =item * Unicode escape C<'\u{XX...}'> embeds the UTF-8 encoding in
 string literals.
+
+=item * The argument table C<arg> can be read (and modified) by
+C<LUA_INIT> and C<-e> chunks.
+
+=item * C<io.read()> and C<file:read()> accept formats with or without
+a leading C<*>.
+
+=item * C<table.move(a1, f, e, t [,a2])>.
+
+=item * C<coroutine.isyieldable()>.
 
 =back
 
@@ -441,13 +462,13 @@ destructors.
 
 ----
 
-Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+Copyright E<copy> 2005-2017 Mike Pall E<middot> Contact
 
 =cut
 
 #Pod::HTML2Pod conversion notes:
 #From file extensions.html
-# 16722 bytes of input
-#Wed Jun 29 13:18:15 2016 agentzh
+# 17525 bytes of input
+#Sat Apr  8 14:31:44 2017 agentzh
 # No a_name switch not specified, so will not try to render <a name='...'>
 # No a_href switch not specified, so will not try to render <a href='...'>

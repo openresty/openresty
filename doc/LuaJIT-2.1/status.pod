@@ -87,17 +87,27 @@ are not handled correctly. The error may fall through an on-trace
 C<pcall> or it may be passed on to the function set with C<lua_atpanic>
 on x64. This issue will be fixed with the new garbage collector.
 
+=item * LuaJIT on 64 bit systems provides a B<limited range> of 47 bits
+for the B<legacy C<lightuserdata>> data type. This is only relevant on
+x64 systems which use the negative part of the virtual address space in
+user mode, e.g. Solaris/x64, and on ARM64 systems configured with a 48
+bit or 52 bit VA. Avoid using C<lightuserdata> to hold pointers that
+may point outside of that range, e.g. variables on the stack. In
+general, avoid this data type for new code and replace it with (much
+more performant) FFI bindings. FFI cdata pointers can address the full
+64 bit range.
+
 =back
 
 ----
 
-Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+Copyright E<copy> 2005-2017 Mike Pall E<middot> Contact
 
 =cut
 
 #Pod::HTML2Pod conversion notes:
 #From file status.html
-# 3334 bytes of input
-#Wed Jun 29 13:18:15 2016 agentzh
+# 3931 bytes of input
+#Sat Apr  8 14:31:44 2017 agentzh
 # No a_name switch not specified, so will not try to render <a name='...'>
 # No a_href switch not specified, so will not try to render <a href='...'>

@@ -65,7 +65,7 @@ programming language. Lua is a powerful, dynamic and light-weight
 programming language. It may be embedded or used as a general-purpose,
 stand-alone language.
 
-LuaJIT is Copyright E<copy> 2005-2016 Mike Pall, released under the
+LuaJIT is Copyright E<copy> 2005-2017 Mike Pall, released under the
 E<rchevron> MIT open source license.
 
 =head2 Compatibility
@@ -189,13 +189,13 @@ LuaJIT.
 
 ----
 
-Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+Copyright E<copy> 2005-2017 Mike Pall E<middot> Contact
 
 =cut
 
 #Pod::HTML2Pod conversion notes:
 #From file luajit.html
 # 8082 bytes of input
-#Wed Jun 29 13:18:15 2016 agentzh
+#Sat Apr  8 14:31:44 2017 agentzh
 # No a_name switch not specified, so will not try to render <a name='...'>
 # No a_href switch not specified, so will not try to render <a href='...'>

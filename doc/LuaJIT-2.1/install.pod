@@ -185,6 +185,11 @@ MSVC or WinSDK.
 Please read the instructions given in these files, before changing any
 settings.
 
+LuaJIT on x64 currently uses 32 bit GC objects by default. C<LJ_GC64>
+mode may be explicitly enabled: add C<XCFLAGS=-DLUAJIT_ENABLE_GC64> to
+the make command or run C<msvcbuild gc64> for MSVC/WinSDK. Please check
+the note about the bytecode format differences, too.
+
 =head2 POSIX Systems (Linux, OSX, *BSD etc.)
 
 =head2 Prerequisites
@@ -491,14 +496,15 @@ Apple, not me. Or use Android. :-p
  ISDKP=$(xcrun --sdk iphoneos --show-sdk-path)
  ICC=$(xcrun --sdk iphoneos --find clang)
  ISDKF="-arch armv7 -isysroot $ISDKP"
- make HOST_CC="clang -m32 -arch i386" CROSS="$(dirname $ICC)/" \
-      TARGET_FLAGS="$ISDKF" TARGET_SYS=iOS
+ make DEFAULT_CC=clang HOST_CC="clang -m32 -arch i386" \
+      CROSS="$(dirname $ICC)/" TARGET_FLAGS="$ISDKF" TARGET_SYS=iOS
  
  # iOS/ARM64
  ISDKP=$(xcrun --sdk iphoneos --show-sdk-path)
  ICC=$(xcrun --sdk iphoneos --find clang)
  ISDKF="-arch arm64 -isysroot $ISDKP"
- make CROSS="$(dirname $ICC)/" TARGET_FLAGS="$ISDKF" TARGET_SYS=iOS
+ make DEFAULT_CC=clang CROSS="$(dirname $ICC)/" \
+      TARGET_FLAGS="$ISDKF" TARGET_SYS=iOS
 
 =head2 Cross-compiling for consoles
 
@@ -586,14 +592,10 @@ don't intend to load Lua/C modules at runtime.
 =back
 
 =item * If you're building a 64 bit application on OSX which links
-directly or indirectly against LuaJIT, you need to link your main
-executable with these flags:
+directly or indirectly against LuaJIT which is not built for C<LJ_GC64>
+mode, you need to link your main executable with these flags:
 
  -pagezero_size 10000 -image_base 100000000
-
-Also, it's recommended to C<rebase> all (self-compiled) shared
-libraries which are loaded at runtime on OSX/x64 (e.g. C extension
-modules for Lua). See: C<man rebase>
 
 =back
 
@@ -683,14 +685,14 @@ package maintainer), anyway.
 
 ----
 
-Copyright E<copy> 2005-2016 Mike Pall E<middot> Contact
+Copyright E<copy> 2005-2017 Mike Pall E<middot> Contact
 
 =cut
 
 #Pod::HTML2Pod conversion notes:
 #From file install.html
-# 25008 bytes of input
-#Wed Jun 29 13:18:15 2016 agentzh
+# 25250 bytes of input
+#Sat Apr  8 14:31:44 2017 agentzh
 # No a_name switch not specified, so will not try to render <a name='...'>
 # No a_href switch not specified, so will not try to render <a href='...'>
 # Deleting phrasal "a" element (`a_34) because it has super-phrasal elements (`br_16) as children.
