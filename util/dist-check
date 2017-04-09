@@ -33,14 +33,8 @@ if ($^O eq 'freebsd' || $^O eq 'solaris') {
 
 my $cfg_opts = "";
 
-if ($opts{l}) {
-    $lua = 'Lua';
-    $cfg_opts .= " --with-lua51";
-
-} else {
-    $lua = 'LuaJIT';
-    #$cfg_opts .= " --with-luajit";
-}
+$lua = 'LuaJIT';
+#$cfg_opts .= " --with-luajit";
 
 if ($^O eq 'solaris') {
     $cfg_opts .= " --with-cc=gcc";
