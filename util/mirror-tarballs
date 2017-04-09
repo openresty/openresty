@@ -582,10 +582,10 @@ tar -xzf lua-cjson-$ver.tar.gz || exit 1
 
 #################################
 
-ver=0.12
-$root/util/get-tarball "https://github.com/openresty/lua-redis-parser/tarball/v$ver" -O "lua-redis-parser-$ver.tar.gz" || exit 1
+ver=0.13
+$root/util/get-tarball "https://github.com/openresty/lua-redis-parser/archive/v$ver.tar.gz" -O "lua-redis-parser-$ver.tar.gz" || exit 1
 tar -xzf lua-redis-parser-$ver.tar.gz || exit 1
-mv openresty-lua-redis-parser-* lua-redis-parser-$ver || exit 1
+#mv lua-redis-parser-* lua-redis-parser-$ver || exit 1
 #cd lua-redis-parser-$ver || exit 1
 #patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
 #sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
