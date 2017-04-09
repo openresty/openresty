@@ -168,13 +168,13 @@ for my $opt (@ARGV) {
         }
 
     } elsif ($opt eq '--without-lua51') {
-        undef $resty_opts{lua};
+        die "ERROR: --without-lua51 is no longer supported.\n";
 
     } elsif ($opt eq '--with-lua51') {
-        $resty_opts{lua} = 1;
+        die "ERROR: --with-lua51 is no longer supported.\n";
 
     } elsif ($opt =~ /^--with-lua51=(.*)/) {
-        $resty_opts{lua_path} = $1;
+        die "ERROR: --with-lua51=PATH is no longer supported.\n";
 
     } elsif ($opt eq '--without-http_rewrite_module') {
         warn "WARNING: ngx_devel_kit is automatically disabled ",
@@ -1145,10 +1145,6 @@ _EOC_
   --without-lua_resty_lock           disable the lua-resty-lock library
   --without-lua_resty_lrucache       disable the lua-resty-lrucache library
   --without-lua_resty_core           disable the lua-resty-core library
-
-  --with-lua51                       enable and build the bundled standard Lua 5.1 interpreter
-  --without-lua51                    disable the bundled standard Lua 5.1 interpreter
-  --with-lua51=DIR                   specify the external installation of Lua 5.1 by DIR
 
   --with-luajit                      enable and build the bundled LuaJIT 2.1 (the default)
   --with-luajit=DIR                  use the external LuaJIT 2.1 installation specified by DIR

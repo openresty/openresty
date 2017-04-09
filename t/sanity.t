@@ -2,7 +2,7 @@
 
 use t::Config;
 
-plan tests => 251;
+plan tests => 227;
 
 #no_diff();
 
@@ -66,10 +66,6 @@ __DATA__
   --without-lua_resty_lock           disable the lua-resty-lock library
   --without-lua_resty_lrucache       disable the lua-resty-lrucache library
   --without-lua_resty_core           disable the lua-resty-core library
-
-  --with-lua51                       enable and build the bundled standard Lua 5.1 interpreter
-  --without-lua51                    disable the bundled standard Lua 5.1 interpreter
-  --with-lua51=DIR                   specify the external installation of Lua 5.1 by DIR
 
   --with-luajit                      enable and build the bundled LuaJIT 2.1 (the default)
   --with-luajit=DIR                  use the external LuaJIT 2.1 installation specified by DIR
@@ -242,162 +238,6 @@ Options directly inherited from nginx
   --dry-run                          dry running the configure, for testing only
   --platform=PLATFORM                forcibly specify a platform name, for testing only
 
-
-
-=== TEST 2: lua 5.1
---- cmd: ./configure --with-lua51 --dry-run
---- out
-platform: linux (linux)
-cp -rp bundle/ build
-cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
-cd ..
-cd nginx-1.11.2
-sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
-  --add-module=../ngx_devel_kit-0.3.0 \
-  --add-module=../echo-nginx-module-0.60 \
-  --add-module=../xss-nginx-module-0.05 \
-  --add-module=../ngx_coolkit-0.2rc3 \
-  --add-module=../set-misc-nginx-module-0.31 \
-  --add-module=../form-input-nginx-module-0.12 \
-  --add-module=../encrypted-session-nginx-module-0.06 \
-  --add-module=../srcache-nginx-module-0.31 \
-  --add-module=../ngx_lua-0.10.8 \
-  --add-module=../ngx_lua_upstream-0.06 \
-  --add-module=../headers-more-nginx-module-0.32 \
-  --add-module=../array-var-nginx-module-0.05 \
-  --add-module=../memc-nginx-module-0.18 \
-  --add-module=../redis2-nginx-module-0.14 \
-  --add-module=../redis-nginx-module-0.3.7 \
-  --add-module=../rds-json-nginx-module-0.14 \
-  --add-module=../rds-csv-nginx-module-0.07 \
-  --with-http_ssl_module
-cd ../..
-Type the following commands to build and install:
-    gmake
-    gmake install
-
---- makefile
-.PHONY: all install clean
-
-all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
-
-install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-mysql-0.19 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-string-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-upload-0.10 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-websocket-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-lock-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.11 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/opm-0.0.3 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.17 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
-	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
-	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
-	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
-
-clean:
-	rm -rf build
-
-
-
-=== TEST 3: --with-debug (standard lua)
---- cmd: ./configure --with-lua51 --with-debug --dry-run
---- out
-platform: linux (linux)
-cp -rp bundle/ build
-cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
-cd ..
-cd nginx-1.11.2
-sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-debug \
-  --with-cc-opt='-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC -O2' \
-  --add-module=../ngx_devel_kit-0.3.0 \
-  --add-module=../echo-nginx-module-0.60 \
-  --add-module=../xss-nginx-module-0.05 \
-  --add-module=../ngx_coolkit-0.2rc3 \
-  --add-module=../set-misc-nginx-module-0.31 \
-  --add-module=../form-input-nginx-module-0.12 \
-  --add-module=../encrypted-session-nginx-module-0.06 \
-  --add-module=../srcache-nginx-module-0.31 \
-  --add-module=../ngx_lua-0.10.8 \
-  --add-module=../ngx_lua_upstream-0.06 \
-  --add-module=../headers-more-nginx-module-0.32 \
-  --add-module=../array-var-nginx-module-0.05 \
-  --add-module=../memc-nginx-module-0.18 \
-  --add-module=../redis2-nginx-module-0.14 \
-  --add-module=../redis-nginx-module-0.3.7 \
-  --add-module=../rds-json-nginx-module-0.14 \
-  --add-module=../rds-csv-nginx-module-0.07 \
-  --with-http_ssl_module
-cd ../..
-Type the following commands to build and install:
-    gmake
-    gmake install
-
---- makefile
-.PHONY: all install clean
-
-all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -O -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O -Wall" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O -Wall" CC=cc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
-
-install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -O -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O -Wall" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CFLAGS="-g -O -Wall" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-mysql-0.19 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-string-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-upload-0.10 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-websocket-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-lock-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.11 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/opm-0.0.3 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.17 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
-	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
-	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
-	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
-
-clean:
-	rm -rf build
 
 
 
@@ -862,84 +702,6 @@ clean:
 
 
 
-=== TEST 11: --prefix
---- cmd: ./configure --with-lua51 --prefix=/opt/blah --dry-run
---- out
-platform: linux (linux)
-cp -rp bundle/ build
-cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//opt/blah/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include'
-cd ..
-cd nginx-1.11.2
-sh ./configure --prefix=/opt/blah/nginx \
-  --with-cc-opt='-O2' \
-  --add-module=../ngx_devel_kit-0.3.0 \
-  --add-module=../echo-nginx-module-0.60 \
-  --add-module=../xss-nginx-module-0.05 \
-  --add-module=../ngx_coolkit-0.2rc3 \
-  --add-module=../set-misc-nginx-module-0.31 \
-  --add-module=../form-input-nginx-module-0.12 \
-  --add-module=../encrypted-session-nginx-module-0.06 \
-  --add-module=../srcache-nginx-module-0.31 \
-  --add-module=../ngx_lua-0.10.8 \
-  --add-module=../ngx_lua_upstream-0.06 \
-  --add-module=../headers-more-nginx-module-0.32 \
-  --add-module=../array-var-nginx-module-0.05 \
-  --add-module=../memc-nginx-module-0.18 \
-  --add-module=../redis2-nginx-module-0.14 \
-  --add-module=../redis-nginx-module-0.3.7 \
-  --add-module=../rds-json-nginx-module-0.14 \
-  --add-module=../rds-csv-nginx-module-0.07 \
-  --with-http_ssl_module
-cd ../..
-Type the following commands to build and install:
-    gmake
-    gmake install
-
---- makefile
-.PHONY: all install clean
-
-all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_CMODULE_DIR=/opt/blah/lualib LUA_MODULE_DIR=/opt/blah/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_LIB_DIR=/opt/blah/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_LIB_DIR=/opt/blah/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
-
-install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/opt/blah/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_CMODULE_DIR=/opt/blah/lualib LUA_MODULE_DIR=/opt/blah/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_LIB_DIR=/opt/blah/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/opt/blah/lua/include LUA_LIB_DIR=/opt/blah/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-mysql-0.19 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-string-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-upload-0.10 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-websocket-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-lock-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.11 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/opt/blah/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/opm-0.0.3 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/opt/blah/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.17 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/opt/blah/bin/
-	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/opt/blah/
-	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/opt/blah/
-	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
-	mkdir -p $(DESTDIR)/opt/blah/site/lualib $(DESTDIR)/opt/blah/site/pod $(DESTDIR)/opt/blah/site/manifest
-	ln -sf /opt/blah/nginx/sbin/nginx $(DESTDIR)/opt/blah/bin/openresty
-
-clean:
-	rm -rf build
-
-
-
 === TEST 12: --help on solaris
 --- cmd: ./configure --help --platform=solaris
 --- out
@@ -996,10 +758,6 @@ clean:
   --without-lua_resty_lock           disable the lua-resty-lock library
   --without-lua_resty_lrucache       disable the lua-resty-lrucache library
   --without-lua_resty_core           disable the lua-resty-core library
-
-  --with-lua51                       enable and build the bundled standard Lua 5.1 interpreter
-  --without-lua51                    disable the bundled standard Lua 5.1 interpreter
-  --with-lua51=DIR                   specify the external installation of Lua 5.1 by DIR
 
   --with-luajit                      enable and build the bundled LuaJIT 2.1 (the default)
   --with-luajit=DIR                  use the external LuaJIT 2.1 installation specified by DIR
@@ -1174,95 +932,19 @@ Options directly inherited from nginx
 
 
 
-=== TEST 13: std lua 5.1 interpreter on solaris
---- cmd: ./configure --with-lua51 --dry-run --platform=solaris
---- out
-platform: solaris (solaris)
-cp -rp bundle/ build
-cd build
-cd lua-5.1.5
-gmake solaris
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
-cd ..
-cd nginx-1.11.2
-sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
-  --add-module=../ngx_devel_kit-0.3.0 \
-  --add-module=../echo-nginx-module-0.60 \
-  --add-module=../xss-nginx-module-0.05 \
-  --add-module=../ngx_coolkit-0.2rc3 \
-  --add-module=../set-misc-nginx-module-0.31 \
-  --add-module=../form-input-nginx-module-0.12 \
-  --add-module=../encrypted-session-nginx-module-0.06 \
-  --add-module=../srcache-nginx-module-0.31 \
-  --add-module=../ngx_lua-0.10.8 \
-  --add-module=../ngx_lua_upstream-0.06 \
-  --add-module=../headers-more-nginx-module-0.32 \
-  --add-module=../array-var-nginx-module-0.05 \
-  --add-module=../memc-nginx-module-0.18 \
-  --add-module=../redis2-nginx-module-0.14 \
-  --add-module=../redis-nginx-module-0.3.7 \
-  --add-module=../rds-json-nginx-module-0.14 \
-  --add-module=../rds-csv-nginx-module-0.07 \
-  --with-http_ssl_module
-cd ../..
-Type the following commands to build and install:
-    gmake
-    gmake install
-
---- makefile
-.PHONY: all install clean
-
-all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) solaris
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
-
-install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-mysql-0.19 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-string-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-upload-0.10 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-websocket-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-lock-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.11 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/opm-0.0.3 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.17 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
-	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
-	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
-	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
-
-clean:
-	rm -rf build
-
-
 
 === TEST 14: --with-http_drizzle_module on solaris
---- cmd: ./configure --with-lua51 --with-http_drizzle_module --dry-run --platform=solaris
+--- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake solaris
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -1285,6 +967,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1295,17 +978,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) solaris
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -1332,16 +1015,17 @@ clean:
 
 
 === TEST 15: --with-http_drizzle_module on Solaris
---- cmd: ./configure --with-lua51 --with-http_drizzle_module --dry-run --platform=solaris
+--- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake solaris
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -1364,6 +1048,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1374,17 +1059,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) solaris
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -1422,18 +1107,19 @@ The http_drizzle_module is not enabled while --with-libdrizzle is specified.
 
 
 === TEST 17: ngx_drizzle enabled and --with-libdrizzle is specified
---- cmd: ./configure --with-lua51 --with-libdrizzle=/opt/drizzle --with-http_drizzle_module --dry-run
+--- cmd: ./configure --with-libdrizzle=/opt/drizzle --with-http_drizzle_module --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
 export LIBDRIZZLE_LIB='/opt/drizzle/lib'
 export LIBDRIZZLE_INC='/opt/drizzle/include/libdrizzle-1.0'
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -1456,7 +1142,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
-  --with-ld-opt='-Wl,-rpath,/opt/drizzle/lib' \
+  --with-ld-opt='-Wl,-rpath,/opt/drizzle/lib:/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1467,17 +1153,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -1504,16 +1190,17 @@ clean:
 
 
 === TEST 18: --with-cc on Solaris
---- cmd: ./configure --with-lua51 --with-cc=gcc-4.2 --dry-run --platform=solaris
+--- cmd: ./configure --with-cc=gcc-4.2 --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake CC='gcc-4.2' solaris
-gmake install CC='gcc-4.2' INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+WARNING: -msse4.2 not supported in gcc-4.2.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC='gcc-4.2' PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC='gcc-4.2' PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -1535,6 +1222,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-cc=gcc-4.2 --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1545,17 +1233,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) CC='gcc-4.2' solaris
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC='gcc-4.2'
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC='gcc-4.2'
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC='gcc-4.2'
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC='gcc-4.2' PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC='gcc-4.2'
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC='gcc-4.2'
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC='gcc-4.2'
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install CC='gcc-4.2' INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC='gcc-4.2'
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC='gcc-4.2'
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC='gcc-4.2'
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC='gcc-4.2' PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic -DUSE_INTERNAL_ISINF" CC='gcc-4.2'
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC='gcc-4.2'
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CC='gcc-4.2'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -1578,6 +1266,9 @@ install: all
 
 clean:
 	rm -rf build
+--- err
+Can't exec "gcc-4.2": No such file or directory at ./configure line 614.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 641.
 
 
 
@@ -1758,18 +1449,19 @@ The http_postgres_module is not enabled while --with-libpq is specified.
 
 
 === TEST 22: ngx_postgres enabled and --with-libpq is specified
---- cmd: ./configure --with-lua51 --with-libpq=/opt/postgres --with-http_postgres_module --dry-run
+--- cmd: ./configure --with-libpq=/opt/postgres --with-http_postgres_module --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
 export LIBPQ_LIB='/opt/postgres/lib'
 export LIBPQ_INC='/opt/postgres/include'
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -1792,7 +1484,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
-  --with-ld-opt='-Wl,-rpath,/opt/postgres/lib' \
+  --with-ld-opt='-Wl,-rpath,/opt/postgres/lib:/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1803,17 +1495,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -1840,16 +1532,17 @@ clean:
 
 
 === TEST 23: with iconv
---- cmd: ./configure --with-lua51 --with-http_iconv_module --dry-run
+--- cmd: ./configure --with-http_iconv_module --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -1872,6 +1565,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1882,17 +1576,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -1939,18 +1633,19 @@ clean:
 
 
 === TEST 26: ngx_postgres enabled and --with-pg_config is specified
---- cmd: ./configure --with-lua51 --with-pg_config=pg_config --with-http_postgres_module --dry-run
+--- cmd: ./configure --with-pg_config=pg_config --with-http_postgres_module --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
 export LIBPQ_LIB='/usr/lib64'
 export LIBPQ_INC='/usr/include'
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -1973,7 +1668,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
-  --with-ld-opt='-Wl,-rpath,/usr/lib64' \
+  --with-ld-opt='-Wl,-rpath,/usr/lib64:/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -1984,17 +1679,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -2032,16 +1727,17 @@ The http_postgres_module is not enabled while --with-pg_config is specified.
 
 
 === TEST 28: --with-make option
---- cmd: ./configure --with-lua51 --with-make=make --dry-run
+--- cmd: ./configure --with-make=make --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-make linux
-make install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+make TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+make install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -2063,6 +1759,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2073,17 +1770,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -2429,84 +2126,6 @@ clean:
 
 
 
-=== TEST 33: lua51 on Mac OS X
---- cmd: ./configure --with-lua51 --dry-run --platform=darwin
---- out
-platform: macosx (darwin)
-cp -rp bundle/ build
-cd build
-cd lua-5.1.5
-gmake macosx
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
-cd ..
-cd nginx-1.11.2
-sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
-  --add-module=../ngx_devel_kit-0.3.0 \
-  --add-module=../echo-nginx-module-0.60 \
-  --add-module=../xss-nginx-module-0.05 \
-  --add-module=../ngx_coolkit-0.2rc3 \
-  --add-module=../set-misc-nginx-module-0.31 \
-  --add-module=../form-input-nginx-module-0.12 \
-  --add-module=../encrypted-session-nginx-module-0.06 \
-  --add-module=../srcache-nginx-module-0.31 \
-  --add-module=../ngx_lua-0.10.8 \
-  --add-module=../ngx_lua_upstream-0.06 \
-  --add-module=../headers-more-nginx-module-0.32 \
-  --add-module=../array-var-nginx-module-0.05 \
-  --add-module=../memc-nginx-module-0.18 \
-  --add-module=../redis2-nginx-module-0.14 \
-  --add-module=../redis-nginx-module-0.3.7 \
-  --add-module=../rds-json-nginx-module-0.14 \
-  --add-module=../rds-csv-nginx-module-0.07 \
-  --with-http_ssl_module
-cd ../..
-Type the following commands to build and install:
-    gmake
-    gmake install
-
---- makefile
-.PHONY: all install clean
-
-all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) macosx
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CJSON_LDFLAGS='-bundle -undefined dynamic_lookup' CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=cc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
-
-install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CJSON_LDFLAGS='-bundle -undefined dynamic_lookup' CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib LDFLAGS='-bundle -undefined dynamic_lookup' CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-mysql-0.19 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-string-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-upload-0.10 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-websocket-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-lock-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.11 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/opm-0.0.3 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.17 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
-	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
-	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
-	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
-
-clean:
-	rm -rf build
-
-
-
 === TEST 34: --with-luajit on Mac OS X
 --- cmd: ./configure --dry-run --platform=darwin --with-luajit
 --- out
@@ -2672,16 +2291,17 @@ Can't exec "sw_vers": No such file or directory at ./configure line 682.
 
 
 === TEST 36: --with-debug on solaris
---- cmd: ./configure --with-lua51 --dry-run --platform=solaris --with-debug
+--- cmd: ./configure --dry-run --platform=solaris --with-debug
 --- out
 platform: solaris (solaris)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake solaris
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g Q= XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2 -DLUA_USE_APICHECK -DLUA_USE_ASSERT' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g Q= XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2 -DLUA_USE_APICHECK -DLUA_USE_ASSERT' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -2704,6 +2324,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2714,17 +2335,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) solaris
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -O -fpic -DUSE_INTERNAL_ISINF" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O -Wall" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O -Wall" CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g Q= XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2 -DLUA_USE_APICHECK -DLUA_USE_ASSERT' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -O -fpic -DUSE_INTERNAL_ISINF" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O -Wall" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O -Wall" CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -O -fpic -DUSE_INTERNAL_ISINF" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O -Wall" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O -Wall" CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g Q= XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2 -DLUA_USE_APICHECK -DLUA_USE_ASSERT' INSTALL_X='$OPENRESTY_BUILD_DIR/install -m 0755' INSTALL_F='$OPENRESTY_BUILD_DIR/install -m 0644' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -O -fpic -DUSE_INTERNAL_ISINF" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O -Wall" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install CFLAGS="-g -O -Wall" CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -2751,16 +2372,17 @@ clean:
 
 
 === TEST 37: --without-lua_cjson
---- cmd: ./configure --with-lua51 --dry-run --without-lua_cjson
+--- cmd: ./configure --dry-run --without-lua_cjson
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -2782,6 +2404,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2792,15 +2415,15 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -2827,16 +2450,17 @@ clean:
 
 
 === TEST 38: --without-lua_redis_parser & --without-lua_cjson
---- cmd: ./configure --with-lua51 --dry-run --without-lua_redis_parser --without-lua_cjson
+--- cmd: ./configure --dry-run --without-lua_redis_parser --without-lua_cjson
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -2858,6 +2482,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2868,13 +2493,13 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -2901,16 +2526,17 @@ clean:
 
 
 === TEST 39: disable rds-parser
---- cmd: ./configure --with-lua51 --dry-run --without-lua_rds_parser
+--- cmd: ./configure --dry-run --without-lua_rds_parser
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -2932,6 +2558,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2942,15 +2569,15 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -3060,90 +2687,18 @@ platform: linux (linux)
 
 
 
-=== TEST 42: --with-lua51=PATH
---- cmd: ./configure --dry-run --with-lua51=/tmp/lua
---- out
-platform: linux (linux)
-cp -rp bundle/ build
-cd build
-export LUA_LIB='/tmp/lua/lib'
-export LUA_INC='/tmp/lua/include'
-cd nginx-1.11.2
-sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
-  --add-module=../ngx_devel_kit-0.3.0 \
-  --add-module=../echo-nginx-module-0.60 \
-  --add-module=../xss-nginx-module-0.05 \
-  --add-module=../ngx_coolkit-0.2rc3 \
-  --add-module=../set-misc-nginx-module-0.31 \
-  --add-module=../form-input-nginx-module-0.12 \
-  --add-module=../encrypted-session-nginx-module-0.06 \
-  --add-module=../srcache-nginx-module-0.31 \
-  --add-module=../ngx_lua-0.10.8 \
-  --add-module=../ngx_lua_upstream-0.06 \
-  --add-module=../headers-more-nginx-module-0.32 \
-  --add-module=../array-var-nginx-module-0.05 \
-  --add-module=../memc-nginx-module-0.18 \
-  --add-module=../redis2-nginx-module-0.14 \
-  --add-module=../redis-nginx-module-0.3.7 \
-  --add-module=../rds-json-nginx-module-0.14 \
-  --add-module=../rds-csv-nginx-module-0.07 \
-  --with-ld-opt='-Wl,-rpath,/tmp/lua/lib' \
-  --with-http_ssl_module
-cd ../..
-Type the following commands to build and install:
-    gmake
-    gmake install
-
---- makefile
-.PHONY: all install clean
-
-all:
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
-
-install: all
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=/tmp/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-mysql-0.19 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-string-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-upload-0.10 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-websocket-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-lock-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.11 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.04 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
-	cd $OPENRESTY_BUILD_DIR/opm-0.0.3 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.17 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
-	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
-	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE) install DESTDIR=$(DESTDIR)
-	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
-	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
-
-clean:
-	rm -rf build
-
-
-
 === TEST 43: ./configure with -jN
---- cmd: ./configure --with-lua51 --dry-run -j10
+--- cmd: ./configure --dry-run -j10
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake -j10 linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake -j10 TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -3165,6 +2720,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -3175,17 +2731,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -3292,16 +2848,17 @@ clean:
 
 
 === TEST 45: relative path as the --add-module option's value
---- cmd: ./configure --with-lua51 --add-module=/path/to/some/module --add-module=../some/module/ --dry-run
+--- cmd: ./configure --add-module=/path/to/some/module --add-module=../some/module/ --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -3323,6 +2880,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --add-module=/path/to/some/module --add-module=$OPENRESTY_DIR/../some/module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -3333,17 +2891,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -3370,16 +2928,17 @@ clean:
 
 
 === TEST 46: relative path as the --with-openssl option's value
---- cmd: ./configure --with-lua51 --with-openssl=../some/module/ --dry-run
+--- cmd: ./configure --with-openssl=../some/module/ --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -3401,6 +2960,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-openssl=$OPENRESTY_DIR/../some/module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -3411,17 +2971,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -3448,16 +3008,17 @@ clean:
 
 
 === TEST 47: --without-lua_resty_memcached
---- cmd: ./configure --with-lua51 --dry-run --without-lua_resty_memcached
+--- cmd: ./configure --dry-run --without-lua_resty_memcached
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -3479,6 +3040,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -3489,17 +3051,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-mysql-0.19 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -3525,16 +3087,17 @@ clean:
 
 
 === TEST 48: --without-lua_resty_redis
---- cmd: ./configure --with-lua51 --dry-run --without-lua_resty_redis
+--- cmd: ./configure --dry-run --without-lua_resty_redis
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -3556,6 +3119,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -3566,17 +3130,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-mysql-0.19 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -3763,16 +3327,17 @@ clean:
 
 
 === TEST 51: relative path as the --with-pcre option's value
---- cmd: ./configure --with-lua51 --with-pcre=../some/module/ --dry-run
+--- cmd: ./configure --with-pcre=../some/module/ --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -3794,6 +3359,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-pcre=$OPENRESTY_DIR/../some/module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -3804,17 +3370,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -3841,16 +3407,17 @@ clean:
 
 
 === TEST 52: relative path as the --with-zlib option's value
---- cmd: ./configure --with-lua51 --with-zlib=../some/module/ --dry-run
+--- cmd: ./configure --with-zlib=../some/module/ --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -3872,6 +3439,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-zlib=$OPENRESTY_DIR/../some/module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -3882,17 +3450,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -3919,16 +3487,17 @@ clean:
 
 
 === TEST 53: relative path as the --with-md5 option's value
---- cmd: ./configure --with-lua51 --with-md5=../some/module/ --dry-run
+--- cmd: ./configure --with-md5=../some/module/ --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -3950,6 +3519,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-md5=$OPENRESTY_DIR/../some/module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -3960,17 +3530,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -3997,16 +3567,17 @@ clean:
 
 
 === TEST 54: relative path as the --with-sha1 option's value
---- cmd: ./configure --with-lua51 --with-sha1=../some/module/ --dry-run
+--- cmd: ./configure --with-sha1=../some/module/ --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -4028,6 +3599,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-sha1=$OPENRESTY_DIR/../some/module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -4038,17 +3610,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -4075,16 +3647,17 @@ clean:
 
 
 === TEST 55: relative path as the --with-libatomic option's value
---- cmd: ./configure --with-lua51 --with-libatomic=../some/module/ --dry-run
+--- cmd: ./configure --with-libatomic=../some/module/ --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -4106,6 +3679,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-libatomic=$OPENRESTY_DIR/../some/module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -4116,17 +3690,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -4153,16 +3727,17 @@ clean:
 
 
 === TEST 56: --without-lua_resty_dns
---- cmd: ./configure --with-lua51 --dry-run --without-lua_resty_dns
+--- cmd: ./configure --dry-run --without-lua_resty_dns
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root//usr/local/openresty/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=/usr/local/openresty/nginx \
@@ -4184,6 +3759,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -4194,17 +3770,17 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)/usr/local/openresty/lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/usr/local/openresty/lua/include LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-mysql-0.19 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -4230,16 +3806,17 @@ clean:
 
 
 === TEST 57: --prefix (relative path: "."), lua51
---- cmd: ./configure --with-lua51 --prefix=. --dry-run
+--- cmd: ./configure --prefix=. --dry-run
 --- out
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
-cd lua-5.1.5
-gmake linux
-gmake install INSTALL_TOP=$OPENRESTY_BUILD_DIR/lua-root/lua/
-export LUA_LIB='$OPENRESTY_BUILD_DIR/lua-root/lua/lib'
-export LUA_INC='$OPENRESTY_BUILD_DIR/lua-root/lua/include'
+cd LuaJIT-2.1-20170405
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=./luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=./luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1'
 cd ..
 cd nginx-1.11.2
 sh ./configure --prefix=./nginx \
@@ -4261,6 +3838,7 @@ sh ./configure --prefix=./nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.14 \
   --add-module=../rds-csv-nginx-module-0.07 \
+  --with-ld-opt='-Wl,-rpath,luajit/lib' \
   --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -4273,17 +3851,17 @@ DESTDIR ?= $OPENRESTY_DIR/
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) linux
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/lua/include LUA_CMODULE_DIR=./lualib LUA_MODULE_DIR=./lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/lua/include LUA_LIB_DIR=./lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/lua/include LUA_LIB_DIR=./lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=./luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1 LUA_CMODULE_DIR=./lualib LUA_MODULE_DIR=./lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1 LUA_LIB_DIR=./lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1 LUA_LIB_DIR=./lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/nginx-1.11.2 && $(MAKE)
 
 install: all
-	cd $OPENRESTY_BUILD_DIR/lua-5.1.5 && $(MAKE) install INSTALL_TOP=$(DESTDIR)./lua
-	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/lua/include LUA_CMODULE_DIR=./lualib LUA_MODULE_DIR=./lualib CJSON_CFLAGS="-g -fpic" CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/lua/include LUA_LIB_DIR=./lualib CC=cc
-	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/lua-root/lua/include LUA_LIB_DIR=./lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20170405 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=./luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.5 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1 LUA_CMODULE_DIR=./lualib LUA_MODULE_DIR=./lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.12 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1 LUA_LIB_DIR=./lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1 LUA_LIB_DIR=./lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.18 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.26 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
@@ -4954,3 +4532,4 @@ install: all
 
 clean:
 	rm -rf build
+

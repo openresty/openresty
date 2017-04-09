@@ -524,9 +524,9 @@ mv openresty-opm-* opm-$ver || exit 1
 
 #################################
 
-ver=5.1.5
-$root/util/get-tarball "http://www.lua.org/ftp/lua-$ver.tar.gz" -O "lua-$ver.tar.gz" || exit 1
-tar -xzf lua-$ver.tar.gz || exit 1
+#ver=5.1.5
+#$root/util/get-tarball "http://www.lua.org/ftp/lua-$ver.tar.gz" -O "lua-$ver.tar.gz" || exit 1
+#tar -xzf lua-$ver.tar.gz || exit 1
 
 #$root/util/get-tarball "http://agentzh.org/misc/nginx/patch-lua-$ver-4" -O "patch-lua-$ver-4" || exit 1
 
@@ -536,17 +536,17 @@ tar -xzf lua-$ver.tar.gz || exit 1
 
 #rm "patch-lua-$ver-4" || exit 1
 
-echo "$info_txt applying the makefile_install_fix patch for lua $ver"
-patch -p0 < $root/patches/lua-$ver-makefile_install_fix.patch || exit 1
-echo
+#echo "$info_txt applying the makefile_install_fix patch for lua $ver"
+#patch -p0 < $root/patches/lua-$ver-makefile_install_fix.patch || exit 1
+#echo
 
-echo "$info_txt applying the disable_lua50_compat patch for lua $ver"
-patch -p0 < $root/patches/lua-$ver-disable_lua50_compat.patch || exit 1
-echo
+#echo "$info_txt applying the disable_lua50_compat patch for lua $ver"
+#patch -p0 < $root/patches/lua-$ver-disable_lua50_compat.patch || exit 1
+#echo
 
-echo "$info_txt applying the enable_debug_info patch for lua $ver"
-patch -p0 < $root/patches/lua-$ver-enable_debug_info.patch || exit 1
-echo
+#echo "$info_txt applying the enable_debug_info patch for lua $ver"
+#patch -p0 < $root/patches/lua-$ver-enable_debug_info.patch || exit 1
+#echo
 
 #################################
 
