@@ -1,23 +1,22 @@
 diff --git a/src/core/ngx_log.c b/src/core/ngx_log.c
-index 8e9408d..093351c 100644
+index 8e9408d..a2bbba2 100644
 --- a/src/core/ngx_log.c
 +++ b/src/core/ngx_log.c
-@@ -164,6 +164,13 @@ ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
+@@ -164,6 +164,12 @@ ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
              break;
          }
  
-+        if (log->intercept_log_handler && log->enter_error_log == 0)
-+        {
-+            log->enter_error_log = 1;
++        if (log->intercept_log_handler && log->entered_logger == 0) {
++            log->entered_logger = 1;
 +            log->intercept_log_handler(log, level, errstr, p - errstr);
-+            log->enter_error_log = 0;
++            log->entered_logger = 0;
 +        }
 +
          if (log->writer) {
              log->writer(log, level, errstr, p - errstr);
              goto next;
 diff --git a/src/core/ngx_log.h b/src/core/ngx_log.h
-index 385fee4..2731db8 100644
+index 385fee4..d30ff59 100644
 --- a/src/core/ngx_log.h
 +++ b/src/core/ngx_log.h
 @@ -45,6 +45,8 @@
@@ -43,7 +42,7 @@ index 385fee4..2731db8 100644
  
      ngx_log_t           *next;
 +
-+    unsigned             enter_error_log:1;
++    unsigned             entered_logger;    /* :1 */
  };
  
  
