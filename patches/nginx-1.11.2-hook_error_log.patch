@@ -1,8 +1,14 @@
 diff --git a/src/core/ngx_cycle.h b/src/core/ngx_cycle.h
-index c51b7ff..765a0c1 100644
+index c51b7ff..cde0733 100644
 --- a/src/core/ngx_cycle.h
 +++ b/src/core/ngx_cycle.h
-@@ -25,6 +25,8 @@
+@@ -22,9 +22,14 @@
+ #define NGX_DEBUG_POINTS_ABORT  2
+ 
+ 
++#define HAVE_INTERCEPT_ERROR_LOG_PATCH
++
++
  typedef struct ngx_shm_zone_s  ngx_shm_zone_t;
  
  typedef ngx_int_t (*ngx_shm_zone_init_pt) (ngx_shm_zone_t *zone, void *data);
@@ -11,61 +17,47 @@ index c51b7ff..765a0c1 100644
  
  struct ngx_shm_zone_s {
      void                     *data;
-@@ -75,6 +77,7 @@ struct ngx_cycle_s {
+@@ -75,6 +80,9 @@ struct ngx_cycle_s {
      ngx_str_t                 prefix;
      ngx_str_t                 lock_file;
      ngx_str_t                 hostname;
-+    ngx_log_intercept_pt      log_intercept_handler;
++
++    ngx_log_intercept_pt      intercept_error_log_handler;
++    unsigned                  entered_logger;    /* :1 */
  };
  
  
 diff --git a/src/core/ngx_log.c b/src/core/ngx_log.c
-index 8e9408d..a3b129a 100644
+index 8e9408d..87a6104 100644
 --- a/src/core/ngx_log.c
 +++ b/src/core/ngx_log.c
 @@ -112,6 +112,8 @@ ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
      ngx_uint_t   wrote_stderr, debug_connection;
      u_char       errstr[NGX_MAX_ERROR_STR];
  
-+    ngx_log_intercept_pt    log_intercept;
++    ngx_log_intercept_pt    log_intercept = NULL;
 +
      last = errstr + NGX_MAX_ERROR_STR;
  
      p = ngx_cpymem(errstr, ngx_cached_err_log_time.data,
-@@ -158,12 +160,23 @@ ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
-     wrote_stderr = 0;
-     debug_connection = (log->log_level & NGX_LOG_DEBUG_CONNECTION) != 0;
+@@ -153,6 +155,20 @@ ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
+         p = last - NGX_LINEFEED_SIZE;
+     }
  
-+    log_intercept = NULL;
++#ifdef HAVE_INTERCEPT_ERROR_LOG_PATCH
++
 +    if (ngx_cycle) {
-+        log_intercept = ngx_cycle->log_intercept_handler;
++        log_intercept = ngx_cycle->intercept_error_log_handler;
 +    }
 +
-     while (log) {
- 
-         if (log->log_level < level && !debug_connection) {
-             break;
-         }
- 
-+        if (log_intercept && log->entered_logger == 0) {
-+            log->entered_logger = 1;
-+            log_intercept(log, level, errstr, p - errstr);
-+            log->entered_logger = 0;
-+        }
++    if (log_intercept && !ngx_cycle->entered_logger) {
++        ngx_cycle->entered_logger = 1;
++        log_intercept(log, level, errstr, p - errstr);
++        ngx_cycle->entered_logger = 0;
++    }
 +
-         if (log->writer) {
-             log->writer(log, level, errstr, p - errstr);
-             goto next;
-diff --git a/src/core/ngx_log.h b/src/core/ngx_log.h
-index 385fee4..57e3795 100644
---- a/src/core/ngx_log.h
-+++ b/src/core/ngx_log.h
-@@ -70,6 +70,8 @@ struct ngx_log_s {
-     char                *action;
- 
-     ngx_log_t           *next;
++#endif
 +
-+    unsigned             entered_logger;    /* :1 */
- };
+     ngx_linefeed(p);
  
- 
+     wrote_stderr = 0;
