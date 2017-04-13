@@ -1,5 +1,5 @@
 diff --git a/src/core/ngx_cycle.h b/src/core/ngx_cycle.h
-index c51b7ff..cde0733 100644
+index c51b7ff..4c335b9 100644
 --- a/src/core/ngx_cycle.h
 +++ b/src/core/ngx_cycle.h
 @@ -22,9 +22,14 @@
@@ -17,12 +17,13 @@ index c51b7ff..cde0733 100644
  
  struct ngx_shm_zone_s {
      void                     *data;
-@@ -75,6 +80,9 @@ struct ngx_cycle_s {
+@@ -75,6 +80,10 @@ struct ngx_cycle_s {
      ngx_str_t                 prefix;
      ngx_str_t                 lock_file;
      ngx_str_t                 hostname;
 +
 +    ngx_log_intercept_pt      intercept_error_log_handler;
++    void                     *intercept_error_log_data;
 +    unsigned                  entered_logger;    /* :1 */
  };
  
