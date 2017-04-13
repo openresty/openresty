@@ -29,7 +29,7 @@ index c51b7ff..4c335b9 100644
  
  
 diff --git a/src/core/ngx_log.c b/src/core/ngx_log.c
-index 8e9408d..87a6104 100644
+index 8e9408d..ed9b11b 100644
 --- a/src/core/ngx_log.c
 +++ b/src/core/ngx_log.c
 @@ -112,6 +112,8 @@ ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
@@ -41,12 +41,10 @@ index 8e9408d..87a6104 100644
      last = errstr + NGX_MAX_ERROR_STR;
  
      p = ngx_cpymem(errstr, ngx_cached_err_log_time.data,
-@@ -153,6 +155,20 @@ ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
+@@ -153,6 +155,16 @@ ngx_log_error_core(ngx_uint_t level, ngx_log_t *log, ngx_err_t err,
          p = last - NGX_LINEFEED_SIZE;
      }
  
-+#ifdef HAVE_INTERCEPT_ERROR_LOG_PATCH
-+
 +    if (ngx_cycle) {
 +        log_intercept = ngx_cycle->intercept_error_log_handler;
 +    }
@@ -56,8 +54,6 @@ index 8e9408d..87a6104 100644
 +        log_intercept(log, level, errstr, p - errstr);
 +        ngx_cycle->entered_logger = 0;
 +    }
-+
-+#endif
 +
      ngx_linefeed(p);
  
