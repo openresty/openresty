@@ -55,6 +55,10 @@ else
     fi
 fi
 
+echo "$info_txt applying the privileged-agent-process patch"
+patch -p1 < $root/patches/nginx-$main_ver-privileged_agent_process.patch || exit 1
+echo
+
 echo "$info_txt applying the upstream-pipelining patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-upstream_pipelining.patch || exit 1
 echo
