@@ -33,10 +33,20 @@ index 60f8fe7..b15f84c 100644
  
      ngx_conf_init_value(ccf->worker_processes, 1);
 diff --git a/src/core/ngx_cycle.h b/src/core/ngx_cycle.h
-index c51b7ff..3862323 100644
+index c51b7ff..6b396fe 100644
 --- a/src/core/ngx_cycle.h
 +++ b/src/core/ngx_cycle.h
-@@ -81,6 +81,7 @@ struct ngx_cycle_s {
+@@ -22,6 +22,9 @@
+ #define NGX_DEBUG_POINTS_ABORT  2
+ 
+ 
++#define HAVE_PRIVILEGE_PROCESS_PATCH 1
++
++
+ typedef struct ngx_shm_zone_s  ngx_shm_zone_t;
+ 
+ typedef ngx_int_t (*ngx_shm_zone_init_pt) (ngx_shm_zone_t *zone, void *data);
+@@ -81,6 +84,7 @@ struct ngx_cycle_s {
  typedef struct {
      ngx_flag_t                daemon;
      ngx_flag_t                master;
