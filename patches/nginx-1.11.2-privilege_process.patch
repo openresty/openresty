@@ -40,20 +40,8 @@ index c51b7ff..3261f90 100644
  
      ngx_msec_t                timer_resolution;
  
-diff --git a/src/os/unix/ngx_process.c b/src/os/unix/ngx_process.c
-index 24a63fb..4579aba 100644
---- a/src/os/unix/ngx_process.c
-+++ b/src/os/unix/ngx_process.c
-@@ -396,6 +396,7 @@ ngx_signal_handler(int signo)
- 
-         break;
- 
-+    case NGX_PROCESS_PRIVILEGED:
-     case NGX_PROCESS_WORKER:
-     case NGX_PROCESS_HELPER:
-         switch (signo) {
 diff --git a/src/os/unix/ngx_process_cycle.c b/src/os/unix/ngx_process_cycle.c
-index 3ead164..6151e8a 100644
+index 3ead164..4e06e97 100644
 --- a/src/os/unix/ngx_process_cycle.c
 +++ b/src/os/unix/ngx_process_cycle.c
 @@ -15,6 +15,8 @@ static void ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n,
@@ -81,17 +69,7 @@ index 3ead164..6151e8a 100644
  
      ngx_new_binary = 0;
      delay = 0;
-@@ -188,7 +192,8 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
-                 continue;
-             }
- 
--            sigio = ccf->worker_processes + 2 /* cache processes */;
-+            sigio = ccf->worker_processes + 2   /* cache processes */
-+                                          + 1 ; /* privileged agent process */
- 
-             if (delay > 1000) {
-                 ngx_signal_worker_processes(cycle, SIGKILL);
-@@ -224,6 +229,7 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
+@@ -224,6 +228,7 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
                  ngx_start_worker_processes(cycle, ccf->worker_processes,
                                             NGX_PROCESS_RESPAWN);
                  ngx_start_cache_manager_processes(cycle, 0);
@@ -99,7 +77,7 @@ index 3ead164..6151e8a 100644
                  ngx_noaccepting = 0;
  
                  continue;
-@@ -243,6 +249,7 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
+@@ -243,6 +248,7 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
              ngx_start_worker_processes(cycle, ccf->worker_processes,
                                         NGX_PROCESS_JUST_RESPAWN);
              ngx_start_cache_manager_processes(cycle, 1);
@@ -107,7 +85,7 @@ index 3ead164..6151e8a 100644
  
              /* allow new processes to start */
              ngx_msleep(100);
-@@ -257,6 +264,7 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
+@@ -257,6 +263,7 @@ ngx_master_process_cycle(ngx_cycle_t *cycle)
              ngx_start_worker_processes(cycle, ccf->worker_processes,
                                         NGX_PROCESS_RESPAWN);
              ngx_start_cache_manager_processes(cycle, 0);
@@ -115,7 +93,7 @@ index 3ead164..6151e8a 100644
              live = 1;
          }
  
-@@ -424,6 +432,34 @@ ngx_start_cache_manager_processes(ngx_cycle_t *cycle, ngx_uint_t respawn)
+@@ -424,6 +431,34 @@ ngx_start_cache_manager_processes(ngx_cycle_t *cycle, ngx_uint_t respawn)
  
  
  static void
@@ -150,16 +128,20 @@ index 3ead164..6151e8a 100644
  ngx_pass_open_channel(ngx_cycle_t *cycle, ngx_channel_t *ch)
  {
      ngx_int_t  i;
-@@ -827,7 +863,7 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
+@@ -827,7 +862,11 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
          }
      }
  
 -    if (geteuid() == 0) {
-+    if (ngx_process != NGX_PROCESS_PRIVILEGED && geteuid() == 0) {
++    /*
++     * worker: -99
++     * privileged agent process have the same permission as master process
++     */
++    if (worker != -99 && geteuid() == 0) {
          if (setgid(ccf->group) == -1) {
              ngx_log_error(NGX_LOG_EMERG, cycle->log, ngx_errno,
                            "setgid(%d) failed", ccf->group);
-@@ -1144,6 +1180,43 @@ ngx_cache_manager_process_cycle(ngx_cycle_t *cycle, void *data)
+@@ -1144,6 +1183,47 @@ ngx_cache_manager_process_cycle(ngx_cycle_t *cycle, void *data)
  
  
  static void
@@ -167,19 +149,23 @@ index 3ead164..6151e8a 100644
 +{
 +    char              *name = data;
 +
++    ngx_setproctitle(name);
++
 +    /*
 +     * Set correct process type since closing listening Unix domain socket
 +     * in a master process also removes the Unix domain socket file.
 +     */
-+    ngx_process = NGX_PROCESS_PRIVILEGED;
++    ngx_process = NGX_PROCESS_HELPER;
 +
 +    ngx_close_listening_sockets(cycle);
 +
-+    ngx_worker_process_init(cycle, -1);
++    /*
++     * worker: -99
++     * privileged agent process have the same permission as master process
++     */
++    ngx_worker_process_init(cycle, -99);
 +
 +    ngx_use_accept_mutex = 0;
-+
-+    ngx_setproctitle(name);
 +
 +    for ( ;; ) {
 +
@@ -203,15 +189,3 @@ index 3ead164..6151e8a 100644
  ngx_cache_manager_process_handler(ngx_event_t *ev)
  {
      time_t        next, n;
-diff --git a/src/os/unix/ngx_process_cycle.h b/src/os/unix/ngx_process_cycle.h
-index 69495d5..eba7e8a 100644
---- a/src/os/unix/ngx_process_cycle.h
-+++ b/src/os/unix/ngx_process_cycle.h
-@@ -25,6 +25,7 @@
- #define NGX_PROCESS_SIGNALLER  2
- #define NGX_PROCESS_WORKER     3
- #define NGX_PROCESS_HELPER     4
-+#define NGX_PROCESS_PRIVILEGED 99
- 
- 
- typedef struct {
