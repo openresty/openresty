@@ -638,7 +638,7 @@ _END_
             my $ofile = tmpnam();
             my $comp = ($cc || 'cc');
 
-            if (system("$comp -o $ofile -msse4.2 -c $cfile") == 0 && -s $ofile) {
+            if (system("grep -q sse4_2 /proc/cpuinfo") && system("$comp -o $ofile -msse4.2 -c $cfile") == 0 && -s $ofile) {
                 print "INFO: found -msse4.2 in $comp.\n";
                 $luajit_xcflags .= " -msse4.2";
                 unlink $ofile;
