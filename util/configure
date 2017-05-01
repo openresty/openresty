@@ -628,12 +628,28 @@ _END_
 
         {
             # check -msse4.2
-            
+            my ($out, $cfile) = tempfile("resty-config-XXXXXX",
+                                         SUFFIX => '.c', TMPDIR => 1,
+                                         UNLINK => 1);
+
+            print $out "
+int main(int argc, char** argv) {
+#if !defined(__SSE4_2__)
+#error not support
+#endif
+    return 0;
+}
+";
+            close $out;
+
+            my $ofile = tmpnam();
             my $comp = ($cc || 'cc');
 
-            if (system("echo '' |$comp -march=native -dM -E - |grep -q SSE4_2") == 0) {
+            if (system("$comp -o $ofile -march=native -c $cfile") == 0 && -s $ofile) {
                 print "INFO: found -msse4.2 in $comp.\n";
                 $luajit_xcflags .= " -msse4.2";
+                unlink $ofile;
+
             } else {
                 print "WARNING: -msse4.2 not supported in $comp.\n";
             }
