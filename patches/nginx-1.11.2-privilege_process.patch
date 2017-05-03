@@ -41,7 +41,7 @@ index c51b7ff..3261f90 100644
      ngx_msec_t                timer_resolution;
  
 diff --git a/src/os/unix/ngx_process_cycle.c b/src/os/unix/ngx_process_cycle.c
-index 3ead164..658adfc 100644
+index 3ead164..2b3f8df 100644
 --- a/src/os/unix/ngx_process_cycle.c
 +++ b/src/os/unix/ngx_process_cycle.c
 @@ -15,6 +15,8 @@ static void ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n,
@@ -143,7 +143,7 @@ index 3ead164..658adfc 100644
  
 -    if (geteuid() == 0) {
 +    /*
-+     * privileged agent process have the same permission as master process
++     * privileged agent process has the same permission as master process
 +     */
 +    if (!ngx_is_privileged_agent && geteuid() == 0) {
          if (setgid(ccf->group) == -1) {
@@ -155,7 +155,7 @@ index 3ead164..658adfc 100644
  static void
 +ngx_privileged_agent_process_cycle(ngx_cycle_t *cycle, void *data)
 +{
-+    char              *name = data;
++    char *name = data;
 +
 +    /*
 +     * Set correct process type since closing listening Unix domain socket
