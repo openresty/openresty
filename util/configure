@@ -632,13 +632,20 @@ _END_
                                          SUFFIX => '.c', TMPDIR => 1,
                                          UNLINK => 1);
 
-            print $out "int main(void) { return 0; }";
+            print $out "
+int main(int argc, char** argv) {
+#if !defined(__SSE4_2__)
+#error not support
+#endif
+    return 0;
+}
+";
             close $out;
 
             my $ofile = tmpnam();
             my $comp = ($cc || 'cc');
 
-            if (system("$comp -o $ofile -msse4.2 -c $cfile") == 0 && -s $ofile) {
+            if (system("$comp -o $ofile -march=native -c $cfile") == 0 && -s $ofile) {
                 print "INFO: found -msse4.2 in $comp.\n";
                 $luajit_xcflags .= " -msse4.2";
                 unlink $ofile;
