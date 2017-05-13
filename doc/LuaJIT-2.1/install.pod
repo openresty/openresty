@@ -203,8 +203,8 @@ you haven't already done so. Move it to a directory of your choice,
 open a terminal window and change to this directory. Now unpack the
 archive and change to the newly created directory:
 
- tar zxf LuaJIT-2.0.4.tar.gz
- cd LuaJIT-2.0.4
+ tar zxf LuaJIT-2.0.5.tar.gz
+ cd LuaJIT-2.0.5
 
 =head2 Building LuaJIT
 
@@ -692,7 +692,7 @@ Copyright E<copy> 2005-2017 Mike Pall E<middot> Contact
 #Pod::HTML2Pod conversion notes:
 #From file install.html
 # 25250 bytes of input
-#Sat Apr  8 14:31:44 2017 agentzh
+#Sat May 13 16:35:32 2017 agentzh
 # No a_name switch not specified, so will not try to render <a name='...'>
 # No a_href switch not specified, so will not try to render <a href='...'>
 # Deleting phrasal "a" element (`a_34) because it has super-phrasal elements (`br_16) as children.

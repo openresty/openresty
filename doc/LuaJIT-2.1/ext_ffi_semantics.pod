@@ -1330,8 +1330,6 @@ exhibit suboptimal performance, especially when used in inner loops:
 
 =over
 
-=item * Bitfield accesses and initializations.
-
 =item * Vector operations.
 
 =item * Table initializers.
@@ -1341,7 +1339,7 @@ exhibit suboptimal performance, especially when used in inner loops:
 =item * Non-default initialization of VLA/VLS or large C types (E<gt>
 128 bytes or E<gt> 16 array elements.
 
-=item * Conversions from lightuserdata to C<void *>.
+=item * Bitfield initializations.
 
 =item * Pointer differences for element sizes that are not a power of
 two.
@@ -1381,7 +1379,7 @@ Copyright E<copy> 2005-2017 Mike Pall E<middot> Contact
 
 #Pod::HTML2Pod conversion notes:
 #From file ext_ffi_semantics.html
-# 53847 bytes of input
-#Sat Apr  8 14:31:44 2017 agentzh
+# 53769 bytes of input
+#Sat May 13 16:35:32 2017 agentzh
 # No a_name switch not specified, so will not try to render <a name='...'>
 # No a_href switch not specified, so will not try to render <a href='...'>

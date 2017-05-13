@@ -276,11 +276,12 @@ functions.
 
 =item * C<debug.upvalueid()> and C<debug.upvaluejoin()>.
 
-=item * Lua/C API extensions: C<lua_upvalueid()> C<lua_upvaluejoin()>
-C<lua_loadx()> C<luaL_fileresult()> C<luaL_execresult()>
+=item * Lua/C API extensions: C<lua_version()> C<lua_upvalueid()>
+C<lua_upvaluejoin()> C<lua_loadx()> C<lua_copy()> C<lua_tonumberx()>
+C<lua_tointegerx()> C<luaL_fileresult()> C<luaL_execresult()>
 C<luaL_loadfilex()> C<luaL_loadbufferx()> C<luaL_traceback()>
 C<luaL_setfuncs()> C<luaL_pushmodule()> C<luaL_newlibtable()>
-C<luaL_newlib()>
+C<luaL_newlib()> C<luaL_testudata()> C<luaL_setmetatable()>
 
 =item * Command line option C<-E>.
 
@@ -350,6 +351,8 @@ a leading C<*>.
 =item * C<table.move(a1, f, e, t [,a2])>.
 
 =item * C<coroutine.isyieldable()>.
+
+=item * Lua/C API extensions: C<lua_isyieldable()>
 
 =back
 
@@ -468,7 +471,7 @@ Copyright E<copy> 2005-2017 Mike Pall E<middot> Contact
 
 #Pod::HTML2Pod conversion notes:
 #From file extensions.html
-# 17525 bytes of input
-#Sat Apr  8 14:31:44 2017 agentzh
+# 17733 bytes of input
+#Sat May 13 16:35:32 2017 agentzh
 # No a_name switch not specified, so will not try to render <a name='...'>
 # No a_href switch not specified, so will not try to render <a href='...'>

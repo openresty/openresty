@@ -197,7 +197,7 @@ They are mainly used for debugging the JIT compiler itself. For a
 description of their options and output format, please read the comment
 block at the start of their source. They can be found in the C<lib>
 directory of the source distribution or installed under the C<jit>
-directory. By default this is C</usr/local/share/luajit-2.0.4/jit> on
+directory. By default this is C</usr/local/share/luajit-2.0.5/jit> on
 POSIX systems.
 
 =head2 C<-O[level]>
@@ -416,6 +416,6 @@ Copyright E<copy> 2005-2017 Mike Pall E<middot> Contact
 #Pod::HTML2Pod conversion notes:
 #From file running.html
 # 13720 bytes of input
-#Sat Apr  8 14:31:44 2017 agentzh
+#Sat May 13 16:35:32 2017 agentzh
 # No a_name switch not specified, so will not try to render <a name='...'>
 # No a_href switch not specified, so will not try to render <a href='...'>
