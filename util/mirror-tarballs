@@ -740,7 +740,7 @@ cd ..
 
 #################################
 
-ver=0.1.12rc1
+ver=0.1.12rc2
 $root/util/get-tarball "https://github.com/openresty/lua-resty-core/tarball/v$ver" -O "lua-resty-core-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-core-$ver.tar.gz || exit 1
 mv openresty-lua-resty-core-* lua-resty-core-$ver || exit 1
