@@ -64,6 +64,13 @@ fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.11.2`
 if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying the single-process-graceful-exit patch"
+    patch -p1 < $root/patches/nginx-$main_ver-single_process_graceful_exit.patch || exit 1
+    echo
+fi
+
+answer=`$root/util/ver-ge "$main_ver" 1.11.2`
+if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the intercept-error-log patch"
     patch -p1 < $root/patches/nginx-$main_ver-intercept_error_log.patch || exit 1
     echo
