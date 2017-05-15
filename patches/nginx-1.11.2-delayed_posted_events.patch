@@ -1,5 +1,5 @@
 diff --git a/src/event/ngx_event.c b/src/event/ngx_event.c
-index c8ae5b2..948760e 100644
+index c8ae5b2..f59a8ee 100644
 --- a/src/event/ngx_event.c
 +++ b/src/event/ngx_event.c
 @@ -193,8 +193,10 @@ ngx_module_t  ngx_event_core_module = {
@@ -29,7 +29,7 @@ index c8ae5b2..948760e 100644
      if (ngx_use_accept_mutex) {
          if (ngx_accept_disabled > 0) {
              ngx_accept_disabled--;
-@@ -257,6 +266,32 @@ ngx_process_events_and_timers(ngx_cycle_t *cycle)
+@@ -257,6 +266,35 @@ ngx_process_events_and_timers(ngx_cycle_t *cycle)
      }
  
      ngx_event_process_posted(cycle, &ngx_posted_events);
@@ -40,15 +40,18 @@ index c8ae5b2..948760e 100644
 +        ev = ngx_queue_data(q, ngx_event_t, queue);
 +        if (ev->delayed) {
 +            /* start of newly inserted nodes */
-+            for (; q != ngx_queue_sentinel(&ngx_posted_delayed_events);
-+                 q = ngx_queue_next(q)) {
++            for (/* void */;
++                 q != ngx_queue_sentinel(&ngx_posted_delayed_events);
++                 q = ngx_queue_next(q))
++            {
 +                ev = ngx_queue_data(q, ngx_event_t, queue);
 +                ev->delayed = 0;
 +
 +                ngx_log_debug1(NGX_LOG_DEBUG_EVENT, cycle->log, 0,
 +                               "skipping delayed posted event %p,"
-+                               " til next loop", ev);
++                               " till next iteration", ev);
 +            }
++
 +            break;
 +        }
 +
@@ -62,7 +65,7 @@ index c8ae5b2..948760e 100644
  }
  
  
-@@ -601,6 +636,7 @@ ngx_event_process_init(ngx_cycle_t *cycle)
+@@ -601,6 +639,7 @@ ngx_event_process_init(ngx_cycle_t *cycle)
  
      ngx_queue_init(&ngx_posted_accept_events);
      ngx_queue_init(&ngx_posted_events);
