@@ -1,0 +1,43 @@
+Requires openresty bundle http://openresty.org/
+  or ngx-lua module http://wiki.nginx.org/HttpLuaModule#Installation
+  and lua-resty-redis from: https://github.com/agentzh/lua-resty-redis
+
+Replace the distribution nginx with local installation of openresty
+
+# service nginx stop
+mv /usr/local/openresty/nginx/conf /usr/local/openresty/nginx/conf_install
+ln -s /etc/nginx /usr/local/openresty/nginx/conf
+mv /usr/sbin/nginx /usr/sbin/nginx-back
+ln -s /usr/local/openresty/nginx/sbin/nginx /usr/sbin/nginx
+
+mkdir /etc/nginx/lua
+cp ip_blacklist.conf.lua /etc/nginx/lua/
+cp ip_blacklist.lua /etc/nginx/lua/
+
+Configure the NGINX - add two lines only:
+1) on http section init_by_lua_file
+2) on location section access_by_lua_file
+
+nginx.conf example
+...
+http {
+  ...
+  # you do not need the following line if you are using the ngx_openresty bundle:
+  #lua_package_path "/path/to/lua-resty-redis/lib/?.lua;;";
+  # Инициализировать ip_blacklist
+  init_by_lua_file '/etc/nginx/lua/ip_blacklist.conf.lua';
+  
+  ...
+  
+  location <...> {
+    access_by_lua_file '/etc/nginx/lua/ip_blacklist.lua';
+    proxy_pass ...
+    ...
+  }
+}
+
+# end nginx conf
+
+Edit ip_blacklist config file ip_blacklist.conf.lua
+
+
