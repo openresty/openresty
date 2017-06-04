@@ -1,0 +1,25 @@
+--- src/http/ngx_http_header_filter_module.c.orig	2016-12-17 19:07:29.574766785 +0700
++++ src/http/ngx_http_header_filter_module.c	2016-12-17 19:09:47.124364315 +0700
+@@ -365,7 +365,10 @@
+         len += sizeof("Connection: upgrade" CRLF) - 1;
+ 
+     } else if (r->keepalive) {
++
++    if ((r->http_version == NGX_HTTP_VERSION_10) || (clcf->keepalive_header)) {
+         len += sizeof("Connection: keep-alive" CRLF) - 1;
++    }
+ 
+         /*
+          * MSIE and Opera ignore the "Keep-Alive: timeout=<N>" header.
+@@ -538,8 +541,10 @@
+                              sizeof("Connection: upgrade" CRLF) - 1);
+ 
+     } else if (r->keepalive) {
+-        b->last = ngx_cpymem(b->last, "Connection: keep-alive" CRLF,
++       if ((r->http_version == NGX_HTTP_VERSION_10) || (clcf->keepalive_header)) {
++               b->last = ngx_cpymem(b->last, "Connection: keep-alive" CRLF,
+                              sizeof("Connection: keep-alive" CRLF) - 1);
++       }
+ 
+         if (clcf->keepalive_header) {
+             b->last = ngx_sprintf(b->last, "Keep-Alive: timeout=%T" CRLF,
