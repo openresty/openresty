@@ -57,6 +57,13 @@ fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.11.2`
 if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying the balancer_status_code patch"
+    patch -p1 < $root/patches/nginx-$main_ver-balancer_status_code.patch || exit 1
+    echo
+fi
+
+answer=`$root/util/ver-ge "$main_ver" 1.11.2`
+if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the builtin_error_page_footer patch"
     patch -p1 < $root/patches/nginx-$main_ver-builtin_error_page_footer.patch || exit 1
     echo
