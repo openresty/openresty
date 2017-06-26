@@ -475,7 +475,6 @@ _END_
     if (!$opts->{lua}
         && !$opts->{lua_path}
         && !$opts->{no_http_lua}
-        && !$opts->{no_http_lua_upstream}
         && !$opts->{luajit_path})
     {
         $opts->{luajit} = 1;
