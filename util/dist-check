@@ -77,7 +77,7 @@ sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
 sh "curl -si localhost/cjson|grep 'json.safe: '";
-sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
+#sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== --with-stream ===\n";
@@ -137,7 +137,7 @@ sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
 sh "curl -si localhost/cjson|grep 'json.safe: '";
-sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
+#sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 $cfg_opts .= " --with-http_iconv_module";
@@ -263,7 +263,7 @@ sub cleanup () {
 __DATA__
 
 user  nobody;
-worker_processes  1;
+worker_processes  2;
 error_log  logs/error.log;
 pid        logs/nginx.pid;
 
@@ -276,11 +276,11 @@ http {
     include       mime.types;
     default_type  application/octet-stream;
 
-    init_by_lua '
+    init_by_lua_block {
         if jit then
             require "resty.core"
         end
-    ';
+    }
 
     upstream backend {
         server 0.0.0.1;
@@ -294,21 +294,21 @@ http {
         server_name  localhost;
 
         location = /lua {
-            content_by_lua '
+            content_by_lua_block {
                 local upstream = require "ngx.upstream"
                 if jit then
                     ngx.say(jit.version)
                 else
                     ngx.say(_VERSION)
                 end
-            ';
+            }
         }
 
         location = /cjson {
-            content_by_lua '
+            content_by_lua_block {
                 local json = require "cjson.safe"
                 ngx.say("cjson.safe: ", json.encode{foo = 123})
-            ';
+            }
         }
     }
 }
