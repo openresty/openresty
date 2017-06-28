@@ -14,3 +14,14 @@ index 0f6b3ae..56d44fc 100644
      u->state->peer = u->peer.name;
  
      if (rc == NGX_BUSY) {
+diff --git a/src/http/ngx_http_upstream.h b/src/http/ngx_http_upstream.h
+index b288f28..9b60e12 100644
+--- a/src/http/ngx_http_upstream.h
++++ b/src/http/ngx_http_upstream.h
+@@ -418,5 +418,6 @@ extern ngx_module_t        ngx_http_upstream_module;
+ extern ngx_conf_bitmask_t  ngx_http_upstream_cache_method_mask[];
+ extern ngx_conf_bitmask_t  ngx_http_upstream_ignore_headers_masks[];
+ 
++#define HAVE_BALANCER_STATUS_CODE_PATCH
+ 
+ #endif /* _NGX_HTTP_UPSTREAM_H_INCLUDED_ */
