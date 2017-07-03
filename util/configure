@@ -531,6 +531,9 @@ _END_
 
     cd 'build';
 
+    push @make_install_cmds, "mkdir -p \$(DESTDIR)$prefix/",
+        "cp $root_dir/COPYRIGHT \$(DESTDIR)$prefix/";
+
     # build 3rd-party C libraries if required
 
     if ($opts->{no_pool}) {
