@@ -51,12 +51,12 @@ make
 
 at the top of the bundle source tree.
 
-Please note that you may need to install some extra dependencies, like `perl` and `dos2unix`.
+Please note that you may need to install some extra dependencies, like `perl`, `dos2unix`, and `mercurial`.
 On Fedora 22, for example, installing the dependencies
 is as simple as running the following commands:
 
 ```bash
-sudo dnf install perl dos2unix
+sudo dnf install perl dos2unix mercurial
 ```
 
 [Back to TOC](#table-of-contents)
