@@ -1,0 +1,14 @@
+diffsrc/http/modules/ngx_http_range_filter_module.c b/src/http/modules/ngx_http_range_filter_module.c
+--- src/http/modules/ngx_http_range_filter_module.c
++++ src/http/modules/ngx_http_range_filter_module.c
+@@ -377,6 +377,10 @@ ngx_http_range_parse(ngx_http_request_t 
+             range->start = start;
+             range->end = end;
+ 
++            if (size > NGX_MAX_OFF_T_VALUE - (end - start)) {
++                return NGX_HTTP_RANGE_NOT_SATISFIABLE;
++            }
++
+             size += end - start;
+ 
+             if (ranges-- == 0) {
