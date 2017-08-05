@@ -1,6 +1,8 @@
---- nginx-1.13.2/src/http/modules/ngx_http_log_module.c	2011-11-01 21:24:50.000000000 +0800
-+++ nginx-1.13.2-patched/src/http/modules/ngx_http_log_module.c	2011-11-10 16:17:29.599039534 +0800
-@@ -61,6 +61,8 @@
+diff --git a/src/http/modules/ngx_http_log_module.c b/src/http/modules/ngx_http_log_module.c
+index 917ed55f..b769dfd3 100644
+--- a/src/http/modules/ngx_http_log_module.c
++++ b/src/http/modules/ngx_http_log_module.c
+@@ -79,6 +79,8 @@ typedef struct {
      time_t                      open_file_cache_valid;
      ngx_uint_t                  open_file_cache_min_uses;
  
@@ -9,17 +11,17 @@
      ngx_uint_t                  off;        /* unsigned  off:1 */
  } ngx_http_log_loc_conf_t;
  
-@@ -104,7 +106,8 @@
+@@ -131,7 +133,8 @@ static size_t ngx_http_log_variable_getlen(ngx_http_request_t *r,
      uintptr_t data);
  static u_char *ngx_http_log_variable(ngx_http_request_t *r, u_char *buf,
      ngx_http_log_op_t *op);
 -static uintptr_t ngx_http_log_escape(u_char *dst, u_char *src, size_t size);
 +static uintptr_t ngx_http_log_escape(ngx_http_log_loc_conf_t *lcf, u_char *dst,
 +    u_char *src, size_t size);
- 
- 
- static void *ngx_http_log_create_main_conf(ngx_conf_t *cf);
-@@ -146,6 +149,13 @@
+ static size_t ngx_http_log_json_variable_getlen(ngx_http_request_t *r,
+     uintptr_t data);
+ static u_char *ngx_http_log_json_variable(ngx_http_request_t *r, u_char *buf,
+@@ -177,6 +180,13 @@ static ngx_command_t  ngx_http_log_commands[] = {
        0,
        NULL },
  
@@ -33,7 +35,7 @@
        ngx_null_command
  };
  
-@@ -637,6 +647,7 @@
+@@ -935,6 +945,7 @@ static size_t
  ngx_http_log_variable_getlen(ngx_http_request_t *r, uintptr_t data)
  {
      uintptr_t                   len;
@@ -41,7 +43,7 @@
      ngx_http_variable_value_t  *value;
  
      value = ngx_http_get_indexed_variable(r, data);
-@@ -645,7 +656,9 @@
+@@ -943,7 +954,9 @@ ngx_http_log_variable_getlen(ngx_http_request_t *r, uintptr_t data)
          return 1;
      }
  
@@ -52,7 +54,7 @@
  
      value->escape = len ? 1 : 0;
  
-@@ -656,6 +669,7 @@
+@@ -954,6 +967,7 @@ ngx_http_log_variable_getlen(ngx_http_request_t *r, uintptr_t data)
  static u_char *
  ngx_http_log_variable(ngx_http_request_t *r, u_char *buf, ngx_http_log_op_t *op)
  {
@@ -60,7 +62,7 @@
      ngx_http_variable_value_t  *value;
  
      value = ngx_http_get_indexed_variable(r, op->data);
-@@ -669,16 +683,18 @@
+@@ -967,16 +981,18 @@ ngx_http_log_variable(ngx_http_request_t *r, u_char *buf, ngx_http_log_op_t *op)
          return ngx_cpymem(buf, value->data, value->len);
  
      } else {
@@ -83,7 +85,7 @@
  
      static uint32_t   escape[] = {
          0xffffffff, /* 1111 1111 1111 1111  1111 1111 1111 1111 */
-@@ -698,6 +714,12 @@
+@@ -996,6 +1012,12 @@ ngx_http_log_escape(u_char *dst, u_char *src, size_t size)
          0xffffffff, /* 1111 1111 1111 1111  1111 1111 1111 1111 */
      };
  
@@ -96,7 +98,7 @@
  
      if (dst == NULL) {
  
-@@ -781,6 +803,7 @@
+@@ -1120,6 +1142,7 @@ ngx_http_log_create_loc_conf(ngx_conf_t *cf)
      }
  
      conf->open_file_cache = NGX_CONF_UNSET_PTR;
@@ -104,7 +106,7 @@
  
      return conf;
  }
-@@ -796,6 +819,8 @@
+@@ -1135,6 +1158,8 @@ ngx_http_log_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
      ngx_http_log_fmt_t        *fmt;
      ngx_http_log_main_conf_t  *lmcf;
  
