@@ -1,5 +1,5 @@
 diff --git a/README b/README
-index 2f68e14..262822a 100644
+index 2f68e14e..262822a5 100644
 --- a/README
 +++ b/README
 @@ -1,3 +1,38 @@
@@ -43,7 +43,7 @@ index 2f68e14..262822a 100644
 +The original Nginx documentation is available at http://nginx.org
  
 diff --git a/auto/install b/auto/install
-index 4dcc743..fbce42b 100644
+index d884487a..c5027679 100644
 --- a/auto/install
 +++ b/auto/install
 @@ -16,6 +16,20 @@ END
@@ -84,7 +84,7 @@ index 4dcc743..fbce42b 100644
  case ".$NGX_ERROR_LOG_PATH" in
      ./* | .)
      ;;
-@@ -159,6 +183,36 @@ install:	$NGX_OBJS${ngx_dirsep}nginx${ngx_binext} \
+@@ -158,6 +182,36 @@ install:	build $NGX_INSTALL_PERL_MODULES
  		|| cp -R $NGX_HTML '\$(DESTDIR)$NGX_PREFIX'
  END
  
@@ -121,8 +121,8 @@ index 4dcc743..fbce42b 100644
  
  if test -n "$NGX_ERROR_LOG_PATH"; then
      cat << END                                                >> $NGX_MAKEFILE
-@@ -181,6 +235,19 @@ END
- fi
+@@ -194,6 +248,19 @@ END
+ done
  
  
 +if [ $NGX_DTRACE = YES ]; then
@@ -142,7 +142,7 @@ index 4dcc743..fbce42b 100644
  
  cat << END >> Makefile
 diff --git a/auto/make b/auto/make
-index 039a70f..eafe77c 100644
+index 7ddd1007..367a4e55 100644
 --- a/auto/make
 +++ b/auto/make
 @@ -27,6 +27,9 @@ LINK =	$LINK
@@ -155,7 +155,7 @@ index 039a70f..eafe77c 100644
  
  if test -n "$NGX_PERL_CFLAGS"; then
      echo NGX_PERL_CFLAGS = $NGX_PERL_CFLAGS                   >> $NGX_MAKEFILE
-@@ -208,6 +211,46 @@ ngx_objs=`echo $ngx_all_objs $ngx_modules_obj \
+@@ -209,6 +212,46 @@ ngx_objs=`echo $ngx_all_objs $ngx_modules_obj \
      | sed -e "s/  *\([^ ][^ ]*\)/$ngx_long_regex_cont\1/g" \
            -e "s/\//$ngx_regex_dirsep/g"`
  
@@ -203,21 +203,21 @@ index 039a70f..eafe77c 100644
  if test -n "$NGX_LD_OPT$CORE_LIBS"; then
      ngx_libs=`echo $NGX_LD_OPT $CORE_LIBS \
 diff --git a/auto/modules b/auto/modules
-index 2074778..a722871 100644
+index be3561e6..609af7d6 100644
 --- a/auto/modules
 +++ b/auto/modules
-@@ -75,7 +75,8 @@ if :; then
-                      src/http/ngx_http_variables.h \
-                      src/http/ngx_http_script.h \
-                      src/http/ngx_http_upstream.h \
--                     src/http/ngx_http_upstream_round_robin.h"
-+                     src/http/ngx_http_upstream_round_robin.h \
-+                     src/http/ngx_http_probe.h"
-     ngx_module_srcs="src/http/ngx_http.c \
-                      src/http/ngx_http_core_module.c \
-                      src/http/ngx_http_special_response.c \
+@@ -77,7 +77,8 @@ if [ $HTTP = YES ]; then
+                          src/http/ngx_http_variables.h \
+                          src/http/ngx_http_script.h \
+                          src/http/ngx_http_upstream.h \
+-                         src/http/ngx_http_upstream_round_robin.h"
++                         src/http/ngx_http_upstream_round_robin.h \
++                         src/http/ngx_http_probe.h"
+         ngx_module_srcs="src/http/ngx_http.c \
+                          src/http/ngx_http_core_module.c \
+                          src/http/ngx_http_special_response.c \
 diff --git a/auto/options b/auto/options
-index 2833fb1..f02b8b8 100644
+index 66b822a7..fb141218 100644
 --- a/auto/options
 +++ b/auto/options
 @@ -13,6 +13,8 @@ NGX_CONF_PATH=
@@ -242,7 +242,7 @@ index 2833fb1..f02b8b8 100644
  NGX_CC_OPT=
  NGX_LD_OPT=
  CPU=NO
-@@ -189,6 +197,8 @@ do
+@@ -187,6 +195,8 @@ do
          --error-log-path=*)              NGX_ERROR_LOG_PATH="$value";;
          --pid-path=*)                    NGX_PID_PATH="$value"      ;;
          --lock-path=*)                   NGX_LOCK_PATH="$value"     ;;
@@ -251,7 +251,7 @@ index 2833fb1..f02b8b8 100644
          --user=*)                        NGX_USER="$value"          ;;
          --group=*)                       NGX_GROUP="$value"         ;;
  
-@@ -322,7 +332,8 @@ use the \"--with-mail_ssl_module\" option instead"
+@@ -338,7 +348,8 @@ use the \"--with-mail_ssl_module\" option instead"
          --with-ld-opt=*)                 NGX_LD_OPT="$value"        ;;
          --with-cpu-opt=*)                CPU="$value"               ;;
          --with-debug)                    NGX_DEBUG=YES              ;;
@@ -261,7 +261,7 @@ index 2833fb1..f02b8b8 100644
          --without-pcre)                  USE_PCRE=DISABLED          ;;
          --with-pcre)                     USE_PCRE=YES               ;;
          --with-pcre=*)                   PCRE="$value"              ;;
-@@ -377,6 +388,8 @@ cat << END
+@@ -410,6 +421,8 @@ cat << END
    --error-log-path=PATH              set error log pathname
    --pid-path=PATH                    set nginx.pid pathname
    --lock-path=PATH                   set nginx.lock pathname
@@ -270,7 +270,7 @@ index 2833fb1..f02b8b8 100644
  
    --user=USER                        set non-privileged user for
                                       worker processes
-@@ -532,6 +545,8 @@ cat << END
+@@ -567,6 +580,8 @@ cat << END
    --with-openssl-opt=OPTIONS         set additional build options for OpenSSL
  
    --with-debug                       enable debug logging
@@ -279,7 +279,7 @@ index 2833fb1..f02b8b8 100644
  
  END
  
-@@ -563,6 +578,7 @@ NGX_CONF_PATH=${NGX_CONF_PATH:-conf/nginx.conf}
+@@ -585,6 +600,7 @@ NGX_CONF_PATH=${NGX_CONF_PATH:-conf/nginx.conf}
  NGX_CONF_PREFIX=`dirname $NGX_CONF_PATH`
  NGX_PID_PATH=${NGX_PID_PATH:-logs/nginx.pid}
  NGX_LOCK_PATH=${NGX_LOCK_PATH:-logs/nginx.lock}
@@ -288,18 +288,18 @@ index 2833fb1..f02b8b8 100644
  if [ ".$NGX_ERROR_LOG_PATH" = ".stderr" ]; then
      NGX_ERROR_LOG_PATH=
 diff --git a/auto/os/darwin b/auto/os/darwin
-index 9b31b1f..1bd931c 100644
+index 429468f7..be2d78dc 100644
 --- a/auto/os/darwin
 +++ b/auto/os/darwin
-@@ -116,3 +116,6 @@ ngx_feature_libs=
- ngx_feature_test="int32_t  lock, n;
-                   n = OSAtomicCompareAndSwap32Barrier(0, 1, &lock)"
+@@ -118,3 +118,6 @@ ngx_feature_libs=
+ ngx_feature_test="int32_t  lock = 0;
+                   if (!OSAtomicCompareAndSwap32Barrier(0, 1, &lock)) return 1"
  . auto/feature
 +
 +DTRACE_PROBE_OBJ=NO
 +
 diff --git a/auto/os/freebsd b/auto/os/freebsd
-index 937ca20..d76b32b 100644
+index 937ca204..d76b32b6 100644
 --- a/auto/os/freebsd
 +++ b/auto/os/freebsd
 @@ -105,3 +105,8 @@ if [ $version -ge 701000 ]; then
@@ -312,17 +312,17 @@ index 937ca20..d76b32b 100644
 +fi
 +
 diff --git a/auto/os/linux b/auto/os/linux
-index c932267..b5114d6 100644
+index a0c8795b..64825435 100644
 --- a/auto/os/linux
 +++ b/auto/os/linux
-@@ -171,3 +171,5 @@ ngx_include="sys/vfs.h";     . auto/include
+@@ -174,3 +174,5 @@ ngx_include="sys/vfs.h";     . auto/include
  
  
  CC_AUX_FLAGS="$cc_aux_flags -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64"
 +
 +DTRACE_FROM_SYSTEMTAP=YES
 diff --git a/auto/sources b/auto/sources
-index e08e863..0432068 100644
+index 13981474..1e61bf90 100644
 --- a/auto/sources
 +++ b/auto/sources
 @@ -40,10 +40,16 @@ CORE_DEPS="src/core/nginx.h \
@@ -342,7 +342,7 @@ index e08e863..0432068 100644
  CORE_SRCS="src/core/nginx.c \
             src/core/ngx_log.c \
             src/core/ngx_palloc.c \
-@@ -88,7 +94,8 @@ EVENT_DEPS="src/event/ngx_event.h \
+@@ -89,7 +95,8 @@ EVENT_DEPS="src/event/ngx_event.h \
              src/event/ngx_event_timer.h \
              src/event/ngx_event_posted.h \
              src/event/ngx_event_connect.h \
@@ -352,7 +352,7 @@ index e08e863..0432068 100644
  
  EVENT_SRCS="src/event/ngx_event.c \
              src/event/ngx_event_timer.c \
-@@ -250,3 +257,7 @@ NGX_WIN32_RC="src/os/win32/nginx.rc"
+@@ -253,3 +260,7 @@ NGX_WIN32_RC="src/os/win32/nginx.rc"
  
  
  HTTP_FILE_CACHE_SRCS=src/http/ngx_http_file_cache.c
@@ -361,10 +361,10 @@ index e08e863..0432068 100644
 +
 +NGX_TAPSET_SRCS=src/dtrace/nginx.stp
 diff --git a/auto/summary b/auto/summary
-index dc8fe4f..ed67c75 100644
+index 9aa776ed..d8f727db 100644
 --- a/auto/summary
 +++ b/auto/summary
-@@ -72,6 +72,19 @@ else
+@@ -58,6 +58,19 @@ else
      echo "  nginx logs errors to stderr"
  fi
  
@@ -385,7 +385,7 @@ index dc8fe4f..ed67c75 100644
    nginx http access log file: "$NGX_HTTP_LOG_PATH"
    nginx http client request body temporary files: "$NGX_HTTP_CLIENT_TEMP_PATH"
 diff --git a/configure b/configure
-index ceff15e..49223f8 100755
+index 7e6e33a7..c4ca23c9 100755
 --- a/configure
 +++ b/configure
 @@ -23,6 +23,9 @@ if [ $NGX_DEBUG = YES ]; then
@@ -400,7 +400,7 @@ index ceff15e..49223f8 100755
      echo "checking for OS"
 diff --git a/src/core/ngx_core_probe.h b/src/core/ngx_core_probe.h
 new file mode 100644
-index 0000000..1841df9
+index 00000000..1841df9c
 --- /dev/null
 +++ b/src/core/ngx_core_probe.h
 @@ -0,0 +1,24 @@
@@ -429,7 +429,7 @@ index 0000000..1841df9
 +
 +#endif /* _NGX_CORE_PROBE_H_INCLUDED_ */
 diff --git a/src/core/ngx_palloc.c b/src/core/ngx_palloc.c
-index ef4a647..49bb30b 100644
+index d3044ac9..d62ac45f 100644
 --- a/src/core/ngx_palloc.c
 +++ b/src/core/ngx_palloc.c
 @@ -7,6 +7,7 @@
@@ -439,8 +439,8 @@ index ef4a647..49bb30b 100644
 +#include <ngx_core_probe.h>
  
  
- static void *ngx_palloc_block(ngx_pool_t *pool, size_t size);
-@@ -37,6 +38,8 @@ ngx_create_pool(size_t size, ngx_log_t *log)
+ static ngx_inline void *ngx_palloc_small(ngx_pool_t *pool, size_t size,
+@@ -39,6 +40,8 @@ ngx_create_pool(size_t size, ngx_log_t *log)
      p->cleanup = NULL;
      p->log = log;
  
@@ -451,7 +451,7 @@ index ef4a647..49bb30b 100644
  
 diff --git a/src/dtrace/nginx.stp b/src/dtrace/nginx.stp
 new file mode 100644
-index 0000000..e824daf
+index 00000000..e824dafe
 --- /dev/null
 +++ b/src/dtrace/nginx.stp
 @@ -0,0 +1,299 @@
@@ -756,7 +756,7 @@ index 0000000..e824daf
 +
 diff --git a/src/dtrace/nginx_provider.d b/src/dtrace/nginx_provider.d
 new file mode 100644
-index 0000000..435adf4
+index 00000000..435adf47
 --- /dev/null
 +++ b/src/dtrace/nginx_provider.d
 @@ -0,0 +1,39 @@
@@ -800,8 +800,8 @@ index 0000000..435adf4
 +#pragma D attributes Evolving/Evolving/Common      provider nginx args
 +
 diff --git a/src/dtrace/stap-nginx b/src/dtrace/stap-nginx
-new file mode 100755
-index 0000000..1bca4cf
+new file mode 100644
+index 00000000..1bca4cfb
 --- /dev/null
 +++ b/src/dtrace/stap-nginx
 @@ -0,0 +1,6 @@
@@ -813,7 +813,7 @@ index 0000000..1bca4cf
 +
 diff --git a/src/event/ngx_event_probe.h b/src/event/ngx_event_probe.h
 new file mode 100644
-index 0000000..b7b2749
+index 00000000..b7b27496
 --- /dev/null
 +++ b/src/event/ngx_event_probe.h
 @@ -0,0 +1,32 @@
@@ -850,7 +850,7 @@ index 0000000..b7b2749
 +
 +#endif /* _NGX_EVENT_PROBE_H_INCLUDED_ */
 diff --git a/src/event/ngx_event_timer.c b/src/event/ngx_event_timer.c
-index 8f547b2..6e77465 100644
+index 698b88fa..591558dc 100644
 --- a/src/event/ngx_event_timer.c
 +++ b/src/event/ngx_event_timer.c
 @@ -8,6 +8,7 @@
@@ -870,9 +870,9 @@ index 8f547b2..6e77465 100644
          ev->handler(ev);
      }
  }
-@@ -136,3 +139,19 @@ ngx_event_cancel_timers(void)
-         ev->handler(ev);
-     }
+@@ -124,3 +127,19 @@ ngx_event_no_timers_left(void)
+ 
+     return NGX_OK;
  }
 +
 +
@@ -891,11 +891,11 @@ index 8f547b2..6e77465 100644
 +}
 +#endif
 diff --git a/src/event/ngx_event_timer.h b/src/event/ngx_event_timer.h
-index 99f8a48..8bc619a 100644
+index be81b157..c448771a 100644
 --- a/src/event/ngx_event_timer.h
 +++ b/src/event/ngx_event_timer.h
 @@ -25,12 +25,23 @@ void ngx_event_expire_timers(void);
- void ngx_event_cancel_timers(void);
+ ngx_int_t ngx_event_no_timers_left(void);
  
  
 +#if (NGX_DTRACE)
@@ -930,7 +930,7 @@ index 99f8a48..8bc619a 100644
                     "event timer add: %d: %M:%M",
                      ngx_event_ident(ev->data), timer, ev->timer.key);
 diff --git a/src/http/ngx_http.c b/src/http/ngx_http.c
-index 0ceb613..986f717 100644
+index c036389a..0e32f3d2 100644
 --- a/src/http/ngx_http.c
 +++ b/src/http/ngx_http.c
 @@ -8,6 +8,7 @@
@@ -952,7 +952,7 @@ index 0ceb613..986f717 100644
                  return NGX_CONF_ERROR;
              }
 diff --git a/src/http/ngx_http_core_module.c b/src/http/ngx_http_core_module.c
-index 3f1b595..d6f61bf 100644
+index 02059efd..194e62a0 100644
 --- a/src/http/ngx_http_core_module.c
 +++ b/src/http/ngx_http_core_module.c
 @@ -8,6 +8,7 @@
@@ -963,7 +963,7 @@ index 3f1b595..d6f61bf 100644
  
  
  typedef struct {
-@@ -2431,6 +2432,8 @@ ngx_http_subrequest(ngx_http_request_t *r,
+@@ -2448,6 +2449,8 @@ ngx_http_subrequest(ngx_http_request_t *r,
      ngx_http_postponed_request_t  *pr, *p;
  
      if (r->subrequests == 0) {
@@ -972,9 +972,9 @@ index 3f1b595..d6f61bf 100644
          ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
                        "subrequests cycle while processing \"%V\"", uri);
          return NGX_ERROR;
-@@ -2557,6 +2560,8 @@ ngx_http_subrequest(ngx_http_request_t *r,
- 
-     *psr = sr;
+@@ -2596,6 +2599,8 @@ ngx_http_subrequest(ngx_http_request_t *r,
+         ngx_http_update_location_config(sr);
+     }
  
 +    ngx_http_probe_subrequest_start(sr);
 +
@@ -983,7 +983,7 @@ index 3f1b595..d6f61bf 100644
  
 diff --git a/src/http/ngx_http_probe.h b/src/http/ngx_http_probe.h
 new file mode 100644
-index 0000000..d7d2d45
+index 00000000..d7d2d45d
 --- /dev/null
 +++ b/src/http/ngx_http_probe.h
 @@ -0,0 +1,75 @@
@@ -1063,7 +1063,7 @@ index 0000000..d7d2d45
 +
 +#endif /* _NGX_HTTP_PROBE_H_INCLUDED_ */
 diff --git a/src/http/ngx_http_request.c b/src/http/ngx_http_request.c
-index 860b228..7d9fb5d 100644
+index de1b2027..887cf6cd 100644
 --- a/src/http/ngx_http_request.c
 +++ b/src/http/ngx_http_request.c
 @@ -8,6 +8,7 @@
@@ -1074,7 +1074,7 @@ index 860b228..7d9fb5d 100644
  
  
  static void ngx_http_wait_request_handler(ngx_event_t *ev);
-@@ -1058,7 +1059,6 @@ ngx_http_process_request_line(ngx_event_t *rev)
+@@ -1091,7 +1092,6 @@ ngx_http_process_request_line(ngx_event_t *rev)
      }
  }
  
@@ -1082,7 +1082,7 @@ index 860b228..7d9fb5d 100644
  ngx_int_t
  ngx_http_process_request_uri(ngx_http_request_t *r)
  {
-@@ -1315,6 +1315,8 @@ ngx_http_process_request_headers(ngx_event_t *rev)
+@@ -1348,6 +1348,8 @@ ngx_http_process_request_headers(ngx_event_t *rev)
                  return;
              }
  
@@ -1091,7 +1091,7 @@ index 860b228..7d9fb5d 100644
              ngx_log_debug2(NGX_LOG_DEBUG_HTTP, r->connection->log, 0,
                             "http header: \"%V: %V\"",
                             &h->key, &h->value);
-@@ -2285,7 +2287,11 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+@@ -2327,7 +2329,11 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
      }
  
      if (r != r->main && r->post_subrequest) {
@@ -1103,7 +1103,7 @@ index 860b228..7d9fb5d 100644
      }
  
      if (rc == NGX_ERROR
-@@ -2335,6 +2341,8 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+@@ -2393,6 +2399,8 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
  
          if (r->buffered || r->postponed) {
  
@@ -1112,7 +1112,7 @@ index 860b228..7d9fb5d 100644
              if (ngx_http_set_write_handler(r) != NGX_OK) {
                  ngx_http_terminate_request(r, 0);
              }
-@@ -2370,10 +2378,14 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+@@ -2425,10 +2433,14 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
                  pr->postponed = pr->postponed->next;
              }
  
@@ -1127,7 +1127,7 @@ index 860b228..7d9fb5d 100644
              ngx_log_debug2(NGX_LOG_DEBUG_HTTP, c->log, 0,
                             "http finalize non-active request: \"%V?%V\"",
                             &r->uri, &r->args);
-@@ -2385,6 +2397,8 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+@@ -2440,6 +2452,8 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
              }
          }
  
@@ -1137,7 +1137,7 @@ index 860b228..7d9fb5d 100644
              r->main->count++;
              ngx_http_terminate_request(r, 0);
 diff --git a/src/http/ngx_http_request_body.c b/src/http/ngx_http_request_body.c
-index e9562c0..2a65644 100644
+index c4f092e5..67a8cbf9 100644
 --- a/src/http/ngx_http_request_body.c
 +++ b/src/http/ngx_http_request_body.c
 @@ -8,6 +8,7 @@
@@ -1148,7 +1148,7 @@ index e9562c0..2a65644 100644
  
  
  static void ngx_http_read_client_request_body_handler(ngx_http_request_t *r);
-@@ -471,6 +472,8 @@ ngx_http_do_read_client_request_body(ngx_http_request_t *r)
+@@ -421,6 +422,8 @@ ngx_http_do_read_client_request_body(ngx_http_request_t *r)
          rb->post_handler(r);
      }
  
