@@ -1,0 +1,17 @@
+--- redis-nginx-module-0.3.7/ngx_http_redis_module.c	2017-08-05 15:52:26.135688662 -0700
++++ redis-nginx-module-0.3.7-patched/ngx_http_redis_module.c	2017-08-05 15:53:21.338594155 -0700
+@@ -1005,12 +1005,14 @@ ngx_http_redis_upstream_add(ngx_http_req
+             continue;
+         }
+ 
++#if (nginx_version < 1011006)
+         if (uscfp[i]->default_port
+             && url->default_port
+             && uscfp[i]->default_port != url->default_port)
+         {
+             continue;
+         }
++#endif
+ 
+         return uscfp[i];
+     }
