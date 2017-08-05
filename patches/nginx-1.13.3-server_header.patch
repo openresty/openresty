@@ -1,0 +1,26 @@
+diff --git a/src/core/nginx.h b/src/core/nginx.h
+index 37e257fc..fd49eff7 100644
+--- a/src/core/nginx.h
++++ b/src/core/nginx.h
+@@ -11,7 +11,7 @@
+ 
+ #define nginx_version      1013003
+ #define NGINX_VERSION      "1.13.3"
+-#define NGINX_VER          "nginx/" NGINX_VERSION
++#define NGINX_VER          "openresty/" NGINX_VERSION ".unknown"
+ 
+ #ifdef NGX_BUILD
+ #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
+diff --git a/src/http/ngx_http_header_filter_module.c b/src/http/ngx_http_header_filter_module.c
+index 9b894059..ca13f2a3 100644
+--- a/src/http/ngx_http_header_filter_module.c
++++ b/src/http/ngx_http_header_filter_module.c
+@@ -46,7 +46,7 @@ ngx_module_t  ngx_http_header_filter_module = {
+ };
+ 
+ 
+-static u_char ngx_http_server_string[] = "Server: nginx" CRLF;
++static u_char ngx_http_server_string[] = "Server: openresty" CRLF;
+ static u_char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
+ static u_char ngx_http_server_build_string[] = "Server: " NGINX_VER_BUILD CRLF;
+ 
