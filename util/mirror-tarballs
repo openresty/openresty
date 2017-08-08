@@ -537,10 +537,10 @@ cd ..
 
 #################################
 
-ver=1.0rc7
-$root/util/get-tarball "https://github.com/FRiCKLE/ngx_postgres/tarball/$ver" -O ngx_postgres-$ver.tar.gz || exit 1
+ver=1.0
+$root/util/get-tarball "https://github.com/openresty/ngx_postgres/tarball/$ver" -O ngx_postgres-$ver.tar.gz || exit 1
 tar -xzf ngx_postgres-$ver.tar.gz || exit 1
-mv FRiCKLE-ngx_postgres-* ngx_postgres-$ver || exit 1
+mv openresty-ngx_postgres-* ngx_postgres-$ver || exit 1
 
 #################################
 
