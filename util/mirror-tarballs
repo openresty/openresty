@@ -599,8 +599,8 @@ mv openresty-opm-* opm-$ver || exit 1
 
 #################################
 
-ver=2.1-20170808
-$root/util/get-tarball "https://github.com/openresty/luajit2/archive/v$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
+ver=2.1-20170822
+$root/util/get-tarball "https://github.com/baishancloud/luajit2/archive/v$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 mv luajit2-* LuaJIT-$ver || exit 1
 
@@ -795,6 +795,16 @@ cd lua-resty-upstream-healthcheck-$ver || exit 1
 #patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
 sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
 mv mk Makefile || exit 1
+cd ..
+
+#################################
+
+ver=OpenSSL_1_0_2h
+$root/util/get-tarball "https://github.com/openssl/openssl/tarball/$ver" -O "openssl-$ver.tar.gz" || exit 1
+tar -xzf openssl-$ver.tar.gz || exit 1
+mv openssl-openssl-* openssl-$ver || exit 1
+cd openssl-$ver || exit 1
+patch -p1 < $root/patches/openssl-1.0.2h-sess_set_get_cb_yield.patch || exit 1
 cd ..
 
 #################################
