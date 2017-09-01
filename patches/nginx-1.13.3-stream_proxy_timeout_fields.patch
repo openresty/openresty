@@ -43,7 +43,7 @@ index 0afde1c..c16db76 100644
                     "proxy connection handler");
  
 +    pctx = ngx_palloc(c->pool, sizeof(ngx_stream_proxy_ctx_t));
-+    if (sctx == NULL) {
++    if (pctx == NULL) {
 +        ngx_stream_proxy_finalize(s, NGX_STREAM_INTERNAL_SERVER_ERROR);
 +        return;
 +    }
