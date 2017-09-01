@@ -1,8 +1,8 @@
 diff --git a/src/stream/ngx_stream.h b/src/stream/ngx_stream.h
-index 09d2459..434965f 100644
+index 09d2459..a4dda5d 100644
 --- a/src/stream/ngx_stream.h
 +++ b/src/stream/ngx_stream.h
-@@ -241,6 +241,14 @@ typedef struct {
+@@ -241,6 +241,15 @@ typedef struct {
  } ngx_stream_module_t;
  
  
@@ -11,13 +11,14 @@ index 09d2459..434965f 100644
 +    ngx_msec_t                       timeout;
 +} ngx_stream_proxy_ctx_t;
 +
++
 +#define NGX_STREAM_HAVE_PROXY_TIMEOUT_FIELDS_PATCH 1
 +
 +
  #define NGX_STREAM_MODULE       0x4d525453     /* "STRM" */
  
  #define NGX_STREAM_MAIN_CONF    0x02000000
-@@ -294,6 +302,7 @@ void ngx_stream_finalize_session(ngx_stream_session_t *s, ngx_uint_t rc);
+@@ -294,6 +303,7 @@ void ngx_stream_finalize_session(ngx_stream_session_t *s, ngx_uint_t rc);
  extern ngx_module_t  ngx_stream_module;
  extern ngx_uint_t    ngx_stream_max_module;
  extern ngx_module_t  ngx_stream_core_module;
@@ -26,14 +27,14 @@ index 09d2459..434965f 100644
  
  typedef ngx_int_t (*ngx_stream_filter_pt)(ngx_stream_session_t *s,
 diff --git a/src/stream/ngx_stream_proxy_module.c b/src/stream/ngx_stream_proxy_module.c
-index 0afde1c..f197c83 100644
+index 0afde1c..c16db76 100644
 --- a/src/stream/ngx_stream_proxy_module.c
 +++ b/src/stream/ngx_stream_proxy_module.c
 @@ -359,6 +359,7 @@ ngx_stream_proxy_handler(ngx_stream_session_t *s)
      ngx_stream_proxy_srv_conf_t      *pscf;
      ngx_stream_upstream_srv_conf_t   *uscf, **uscfp;
      ngx_stream_upstream_main_conf_t  *umcf;
-+    ngx_stream_proxy_ctx_t           *sctx;
++    ngx_stream_proxy_ctx_t           *pctx;
  
      c = s->connection;
  
@@ -41,16 +42,16 @@ index 0afde1c..f197c83 100644
      ngx_log_debug0(NGX_LOG_DEBUG_STREAM, c->log, 0,
                     "proxy connection handler");
  
-+    sctx = ngx_palloc(c->pool, sizeof(ngx_stream_proxy_ctx_t));
++    pctx = ngx_palloc(c->pool, sizeof(ngx_stream_proxy_ctx_t));
 +    if (sctx == NULL) {
 +        ngx_stream_proxy_finalize(s, NGX_STREAM_INTERNAL_SERVER_ERROR);
 +        return;
 +    }
 +
-+    sctx->connect_timeout = pscf->connect_timeout;
-+    sctx->timeout = pscf->timeout;
++    pctx->connect_timeout = pscf->connect_timeout;
++    pctx->timeout = pscf->timeout;
 +
-+    ngx_stream_set_ctx(s, sctx, ngx_stream_proxy_module);
++    ngx_stream_set_ctx(s, pctx, ngx_stream_proxy_module);
 +
      u = ngx_pcalloc(c->pool, sizeof(ngx_stream_upstream_t));
      if (u == NULL) {

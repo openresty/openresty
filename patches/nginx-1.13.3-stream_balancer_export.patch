@@ -32,20 +32,22 @@ index 526de3a..b531ce1 100644
      void *data)
  {
 diff --git a/src/stream/ngx_stream_upstream_round_robin.h b/src/stream/ngx_stream_upstream_round_robin.h
-index 35d9fce..c721833 100644
+index 35d9fce..75f3e31 100644
 --- a/src/stream/ngx_stream_upstream_round_robin.h
 +++ b/src/stream/ngx_stream_upstream_round_robin.h
-@@ -141,6 +141,13 @@ ngx_int_t ngx_stream_upstream_get_round_robin_peer(ngx_peer_connection_t *pc,
-     void *data);
+@@ -142,5 +142,15 @@ ngx_int_t ngx_stream_upstream_get_round_robin_peer(ngx_peer_connection_t *pc,
  void ngx_stream_upstream_free_round_robin_peer(ngx_peer_connection_t *pc,
      void *data, ngx_uint_t state);
+ 
++#if (NGX_STREAM_SSL)
 +ngx_int_t ngx_stream_upstream_set_round_robin_peer_session(
 +    ngx_peer_connection_t *pc, void *data);
 +void ngx_stream_upstream_save_round_robin_peer_session(
 +    ngx_peer_connection_t *pc, void *data);
++#endif
 +
 +
 +#define HAVE_NGX_STREAM_BALANCER_EXPORT_PATCH 1
- 
++
  
  #endif /* _NGX_STREAM_UPSTREAM_ROUND_ROBIN_H_INCLUDED_ */
