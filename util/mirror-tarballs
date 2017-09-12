@@ -852,6 +852,7 @@ else
     hg clone http://hg.nginx.org/nginx.org || exit 1
 fi
 cd nginx.org/ || exit 1
+find xml/en/docs -name 'ngx_http_api_module.xml' -delete
 $nginx_xml2pod xml/en/docs || exit 1
 cd $curdir || exit 1
 
