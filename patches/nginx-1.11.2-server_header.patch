@@ -1,19 +1,21 @@
-diff -ur nginx-1.11.2/src/core/nginx.h nginx-1.11.2-patched/src/core/nginx.h
---- nginx-1.11.2/src/core/nginx.h	2010-02-12 17:31:01.000000000 +0800
-+++ nginx-1.11.2-patched/src/core/nginx.h	2010-03-30 10:52:13.240702627 +0800
-@@ -10,7 +10,7 @@
+diff --git a/src/core/nginx.h b/src/core/nginx.h
+index 75a4a40..ed4f104 100644
+--- a/src/core/nginx.h
++++ b/src/core/nginx.h
+@@ -11,7 +11,7 @@
  
- #define nginx_version         1011002
+ #define nginx_version      1011002
  #define NGINX_VERSION      "1.11.2"
 -#define NGINX_VER          "nginx/" NGINX_VERSION
 +#define NGINX_VER          "openresty/" NGINX_VERSION ".unknown"
  
- #define NGINX_VAR          "NGINX"
- #define NGX_OLDPID_EXT     ".oldbin"
-diff -ur nginx-1.11.2/src/http/ngx_http_header_filter_module.c nginx-1.11.2-patched/src/http/ngx_http_header_filter_module.c
---- nginx-1.11.2/src/http/ngx_http_header_filter_module.c	2010-03-03 23:14:04.000000000 +0800
-+++ nginx-1.11.2-patched/src/http/ngx_http_header_filter_module.c	2010-03-30 10:52:53.670909405 +0800
-@@ -45,7 +45,7 @@
+ #ifdef NGX_BUILD
+ #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
+diff --git a/src/http/ngx_http_header_filter_module.c b/src/http/ngx_http_header_filter_module.c
+index f000b2e..5882a66 100644
+--- a/src/http/ngx_http_header_filter_module.c
++++ b/src/http/ngx_http_header_filter_module.c
+@@ -46,7 +46,7 @@ ngx_module_t  ngx_http_header_filter_module = {
  };
  
  
@@ -22,3 +24,16 @@ diff -ur nginx-1.11.2/src/http/ngx_http_header_filter_module.c nginx-1.11.2-patc
  static char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
  
  
+diff --git a/src/http/v2/ngx_http_v2_filter_module.c b/src/http/v2/ngx_http_v2_filter_module.c
+index 39ff103..0dc3924 100644
+--- a/src/http/v2/ngx_http_v2_filter_module.c
++++ b/src/http/v2/ngx_http_v2_filter_module.c
+@@ -139,7 +139,7 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
+     ngx_http_core_srv_conf_t  *cscf;
+     u_char                     addr[NGX_SOCKADDR_STRLEN];
+ 
+-    static const u_char nginx[5] = "\x84\xaa\x63\x55\xe7";
++    static const u_char nginx[8] = "\x87\x3d\x65\xaa\xc2\xa1\x3e\xbf";
+ #if (NGX_HTTP_GZIP)
+     static const u_char accept_encoding[12] =
+         "\x8b\x84\x84\x2d\x69\x5b\x05\x44\x3c\x86\xaa\x6f";
