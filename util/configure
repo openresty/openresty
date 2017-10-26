@@ -89,6 +89,7 @@ my @modules = (
     #[http_auth_request => 'auth-request-nginx-module'],
     [http_rds_json => 'rds-json-nginx-module'],
     [http_rds_csv => 'rds-csv-nginx-module'],
+    [stream_lua => 'ngx_stream_lua'],
 );
 
 my $without_resty_mods_regex;
@@ -96,7 +97,7 @@ my $without_resty_mods_regex;
     my $s = '^--without-('
         . join('|',
             map { $_->[0] }
-                grep { @$_ == 2 && $_->[0] =~ /^http_/ }
+                grep { @$_ == 2 && $_->[0] =~ /^(?:http|stream)_/ }
                 @modules
           )
         . ')_module$';
@@ -111,7 +112,7 @@ my $with_resty_mods_regex;
     my $s = '^--with-('
         . join('|',
             map { $_->[0] }
-                grep { @$_ == 3 && $_->[0] =~ /^http_/ }
+                grep { @$_ == 3 && $_->[0] =~ /^(?:http|stream)_/ }
                 @modules
           )
         . ')_module$';
@@ -472,13 +473,20 @@ _END_
         }
     }
 
+    if (!$opts->{no_stream_lua}) {
+        push @ngx_opts, '--with-stream', '--with-stream_ssl_module';
+    }
+
     if (!$opts->{lua}
         && !$opts->{lua_path}
-        && !$opts->{no_http_lua}
+        && (!$opts->{no_http_lua} || !$opts->{no_stream_lua})
         && !$opts->{luajit_path})
     {
+        #warn "HIT!";
         $opts->{luajit} = 1;
     }
+
+    #die "luajit: ", $opts->{luajit};
 
     if ($opts->{luajit} && $opts->{luajit_path}) {
         die "--with-luajit and --with-luajit=DIR are mutually exclusive.\n";
@@ -1117,7 +1125,7 @@ _EOC_
 
     for my $mod (@modules) {
         my $name = $mod->[0];
-        if ($name =~ /^http_/) {
+        if ($name =~ /^(?:http|stream)_/) {
             if (@$mod == 2) {
                 my $opt = "  --without-${name}_module";
                 $msg .= $opt;
