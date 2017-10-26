@@ -1,0 +1,16 @@
+--- nginx-1.13.6/src/event/ngx_event_openssl.c	2016-07-17 19:20:30.411137606 -0700
++++ nginx-1.13.6-patched/src/event/ngx_event_openssl.c	2016-07-19 16:53:35.539768477 -0700
+@@ -1307,7 +1307,12 @@ ngx_ssl_handshake(ngx_connection_t *c)
+     }
+ 
+ #if OPENSSL_VERSION_NUMBER >= 0x10002000L
+-    if (sslerr == SSL_ERROR_WANT_X509_LOOKUP) {
++    if (sslerr == SSL_ERROR_WANT_X509_LOOKUP
++#   ifdef SSL_ERROR_PENDING_SESSION
++        || sslerr == SSL_ERROR_PENDING_SESSION
++#   endif
++       )
++    {
+         c->read->handler = ngx_ssl_handshake_handler;
+         c->write->handler = ngx_ssl_handshake_handler;
+ 
