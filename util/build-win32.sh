@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PCRE=pcre-8.40
+PCRE=pcre-8.41
 ZLIB=zlib-1.2.11
 OPENSSL=openssl-1.0.2k
 
