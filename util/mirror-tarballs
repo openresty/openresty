@@ -681,7 +681,7 @@ cd ..
 
 #################################
 
-ver=0.20
+ver=0.21rc1
 $root/util/get-tarball "https://github.com/openresty/lua-resty-dns/tarball/v$ver" -O "lua-resty-dns-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-dns-$ver.tar.gz || exit 1
 mv openresty-lua-resty-dns-* lua-resty-dns-$ver || exit 1
