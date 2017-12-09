@@ -23,10 +23,6 @@ my $OS = $^O;
 
 my $ngx_dir;
 
-if (-f 'Makefile') {
-    unlink 'Makefile' or die "ERROR: failed to remove existing Makefile: $!\n";
-}
-
 for my $opt (@ARGV) {
     if ($opt =~ /^--platform=(.*)/) {
         $OS = $1;
@@ -1368,6 +1364,11 @@ _EOC_
 }
 
 sub gen_makefile {
+    if (-f 'Makefile') {
+        unlink 'Makefile' or
+            die "ERROR: failed to remove existing Makefile: $!\n";
+    }
+
     open my $out, ">Makefile" or
         die "Cannot open Makefile for writing: $!\n";
 

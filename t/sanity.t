@@ -1327,8 +1327,8 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "gcc-4.2": No such file or directory at ./configure line 625.
-Can't exec "gcc-4.2": No such file or directory at ./configure line 663.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 621.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 659.
 
 
 
@@ -1498,8 +1498,8 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "cl": No such file or directory at ./configure line 625.
-Can't exec "cl": No such file or directory at ./configure line 663.
+Can't exec "cl": No such file or directory at ./configure line 621.
+Can't exec "cl": No such file or directory at ./configure line 659.
 
 
 
@@ -1700,7 +1700,7 @@ clean:
 
 --- err
 --with-libpq is not allowed when --with-pg_config is already specified.
---- exit: 2
+--- exit: 255
 
 
 
@@ -2297,7 +2297,7 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 722.
+Can't exec "sw_vers": No such file or directory at ./configure line 718.
 
 
 
@@ -2382,7 +2382,7 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 722.
+Can't exec "sw_vers": No such file or directory at ./configure line 718.
 
 
 
