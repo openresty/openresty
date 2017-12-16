@@ -379,6 +379,12 @@ if [ "$main_ver" = "1.9.7" ]; then
     echo
 fi
 
+if [ "$main_ver" = "1.13.6" ]; then
+    echo "$info_txt applying the init_cycle_pool_release patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-init_cycle_pool_release.patch || exit 1
+    echo
+fi
+
 rm -f *.patch || exit 1
 
 echo "$info_txt applying the always_enable_cc_feature_tests patch to nginx"

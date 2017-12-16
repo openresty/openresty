@@ -1,0 +1,44 @@
+diff -ur nginx-1.13.6/src/core/nginx.c nginx-1.13.6-patched/src/core/nginx.c
+--- nginx-1.13.6/src/core/nginx.c	2017-12-16 12:04:13.923270925 -0800
++++ nginx-1.13.6-patched/src/core/nginx.c	2017-12-16 12:03:55.013934545 -0800
+@@ -198,6 +198,7 @@
+ static u_char      *ngx_conf_file;
+ static u_char      *ngx_conf_params;
+ static char        *ngx_signal;
++ngx_pool_t         *saved_init_cycle_pool = NULL;
+ 
+ 
+ static char **ngx_os_environ;
+@@ -265,6 +266,8 @@
+         return 1;
+     }
+ 
++    saved_init_cycle_pool = init_cycle.pool;
++
+     if (ngx_save_argv(&init_cycle, argc, argv) != NGX_OK) {
+         return 1;
+     }
+diff -ur nginx-1.13.6/src/core/ngx_core.h nginx-1.13.6-patched/src/core/ngx_core.h
+--- nginx-1.13.6/src/core/ngx_core.h	2017-10-10 08:22:51.000000000 -0700
++++ nginx-1.13.6-patched/src/core/ngx_core.h	2017-12-16 12:03:55.013934545 -0800
+@@ -108,4 +108,6 @@
+ #define NGX_DISABLE_SYMLINKS_NOTOWNER   2
+ #endif
+ 
++extern ngx_pool_t        *saved_init_cycle_pool;
++
+ #endif /* _NGX_CORE_H_INCLUDED_ */
+diff -ur nginx-1.13.6/src/os/unix/ngx_process_cycle.c nginx-1.13.6-patched/src/os/unix/ngx_process_cycle.c
+--- nginx-1.13.6/src/os/unix/ngx_process_cycle.c	2017-12-16 12:04:13.901271675 -0800
++++ nginx-1.13.6-patched/src/os/unix/ngx_process_cycle.c	2017-12-16 12:03:55.027933951 -0800
+@@ -785,6 +785,10 @@
+ 
+     ngx_destroy_pool(cycle->pool);
+ 
++    if (saved_init_cycle_pool != NULL && saved_init_cycle_pool != cycle->pool) {
++        ngx_destroy_pool(saved_init_cycle_pool);
++    }
++
+     exit(0);
+ }
+ 
