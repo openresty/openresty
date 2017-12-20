@@ -4632,7 +4632,7 @@ clean:
 
 
 
-=== TEST 59 --sbin-path (relative)
+=== TEST 59: --sbin-path (relative)
 --- cmd: ./configure --sbin-path=../bin/nginx --dry-run
 --- out
 platform: linux (linux)
