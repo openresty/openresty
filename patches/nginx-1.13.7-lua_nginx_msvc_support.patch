@@ -67,7 +67,7 @@ diff --binary -Nur nginx-1.13.7.1-original/auto/lib/openssl/make nginx-1.13.7.1-
  END
 diff --binary -Nur nginx-1.13.7.1-original/auto/lib/openssl/makefile-x64.msvc nginx-1.13.7.1-msvc/auto/lib/openssl/makefile-x64.msvc
 --- nginx-1.13.7.1-original/auto/lib/openssl/makefile-x64.msvc	1970-01-01 04:00:00 +0400
-+++ nginx-1.13.7.1-msvc/auto/lib/openssl/makefile-x64.msvc	2018-01-01 16:36:59 +0400
++++ nginx-1.13.7.1-msvc/auto/lib/openssl/makefile-x64.msvc	2018-01-10 16:50:39 +0400
 @@ -0,0 +1,21 @@
 +
 +# Copyright (C) Igor Sysoev
@@ -75,24 +75,24 @@ diff --binary -Nur nginx-1.13.7.1-original/auto/lib/openssl/makefile-x64.msvc ng
 +
 +
 +all:
-+	cd $(OPENSSL)
++    cd $(OPENSSL)
 +
-+	perl Configure VC-WIN64A no-shared				\
-+		--prefix="%cd%/openssl" 				\
-+		--openssldir="%cd%/openssl/ssl" 			\
-+		$(OPENSSL_OPT)
++    perl Configure VC-WIN64A no-shared              \
++        --prefix="%cd%/openssl"                     \
++        --openssldir="%cd%/openssl/ssl"             \
++        $(OPENSSL_OPT)
 +
-+	if exist ms\do_win64a.bat (						\
-+		ms\do_win64a						\
-+		&& $(MAKE) -f ms\nt.mak					\
-+		&& $(MAKE) -f ms\nt.mak install				\
-+	) else (							\
-+		$(MAKE)							\
-+		&& $(MAKE) install_sw					\
-+	)
++    if exist ms\do_win64a.bat (                     \
++        ms\do_win64a                                \
++        && $(MAKE) -f ms\nt.mak                     \
++        && $(MAKE) -f ms\nt.mak install             \
++    ) else (                                        \
++        $(MAKE)                                     \
++        && $(MAKE) install_sw                       \
++    )
 diff --binary -Nur nginx-1.13.7.1-original/auto/lib/openssl/makefile-x86.msvc nginx-1.13.7.1-msvc/auto/lib/openssl/makefile-x86.msvc
 --- nginx-1.13.7.1-original/auto/lib/openssl/makefile-x86.msvc	1970-01-01 04:00:00 +0400
-+++ nginx-1.13.7.1-msvc/auto/lib/openssl/makefile-x86.msvc	2017-12-17 00:23:23 +0400
++++ nginx-1.13.7.1-msvc/auto/lib/openssl/makefile-x86.msvc	2018-01-10 16:49:41 +0400
 @@ -0,0 +1,21 @@
 +
 +# Copyright (C) Igor Sysoev
@@ -100,18 +100,18 @@ diff --binary -Nur nginx-1.13.7.1-original/auto/lib/openssl/makefile-x86.msvc ng
 +
 +
 +all:
-+	cd $(OPENSSL)
++    cd $(OPENSSL)
 +
-+	perl Configure VC-WIN32 no-shared				\
-+		--prefix="%cd%/openssl" 				\
-+		--openssldir="%cd%/openssl/ssl" 			\
-+		$(OPENSSL_OPT)
++    perl Configure VC-WIN32 no-shared               \
++        --prefix="%cd%/openssl"                     \
++        --openssldir="%cd%/openssl/ssl"             \
++        $(OPENSSL_OPT)
 +
-+	if exist ms\do_nasm.bat (						\
-+		ms\do_nasm						\
-+		&& $(MAKE) -f ms\nt.mak					\
-+		&& $(MAKE) -f ms\nt.mak install				\
-+	) else (							\
-+		$(MAKE)							\
-+		&& $(MAKE) install_sw					\
-+	)
++    if exist ms\do_nasm.bat (                       \
++        ms\do_nasm                                  \
++        && $(MAKE) -f ms\nt.mak                     \
++        && $(MAKE) -f ms\nt.mak install             \
++    ) else (                                        \
++        $(MAKE)                                     \
++        && $(MAKE) install_sw                       \
++    )
