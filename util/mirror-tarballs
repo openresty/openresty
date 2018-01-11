@@ -56,6 +56,13 @@ if [ "$answer" = "Y" ]; then
     echo
 fi
 
+answer=`$root/util/ver-ge "$main_ver" 1.13.6`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying the stream_ssl_preread_no_skip patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-stream_ssl_preread_no_skip.patch || exit 1
+    echo
+fi
+
 answer=`$root/util/ver-ge "$main_ver" 1.5.12`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the patch for nginx security advisory (CVE-2014-0133)"
