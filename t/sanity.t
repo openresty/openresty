@@ -192,9 +192,16 @@ Options directly inherited from nginx
   --with-stream                      enable TCP/UDP proxy module
   --with-stream=dynamic              enable dynamic TCP/UDP proxy module
   --with-stream_ssl_module           enable ngx_stream_ssl_module
+  --with-stream_realip_module        enable ngx_stream_realip_module
+  --with-stream_geoip_module         enable ngx_stream_geoip_module
+  --with-stream_geoip_module=dynamic enable dynamic ngx_stream_geoip_module
+  --with-stream_ssl_preread_module   enable ngx_stream_ssl_preread_module
   --without-stream_limit_conn_module disable ngx_stream_limit_conn_module
   --without-stream_access_module     disable ngx_stream_access_module
+  --without-stream_geo_module        disable ngx_stream_geo_module
   --without-stream_map_module        disable ngx_stream_map_module
+  --without-stream_split_clients_module
+                                     disable ngx_stream_split_clients_module
   --without-stream_return_module     disable ngx_stream_return_module
   --without-stream_upstream_hash_module
                                      disable ngx_stream_upstream_hash_module
@@ -931,9 +938,16 @@ Options directly inherited from nginx
   --with-stream                      enable TCP/UDP proxy module
   --with-stream=dynamic              enable dynamic TCP/UDP proxy module
   --with-stream_ssl_module           enable ngx_stream_ssl_module
+  --with-stream_realip_module        enable ngx_stream_realip_module
+  --with-stream_geoip_module         enable ngx_stream_geoip_module
+  --with-stream_geoip_module=dynamic enable dynamic ngx_stream_geoip_module
+  --with-stream_ssl_preread_module   enable ngx_stream_ssl_preread_module
   --without-stream_limit_conn_module disable ngx_stream_limit_conn_module
   --without-stream_access_module     disable ngx_stream_access_module
+  --without-stream_geo_module        disable ngx_stream_geo_module
   --without-stream_map_module        disable ngx_stream_map_module
+  --without-stream_split_clients_module
+                                     disable ngx_stream_split_clients_module
   --without-stream_return_module     disable ngx_stream_return_module
   --without-stream_upstream_hash_module
                                      disable ngx_stream_upstream_hash_module
