@@ -766,7 +766,7 @@ cd ..
 
 #################################
 
-ver=0.10
+ver=0.11rc1
 $root/util/get-tarball "https://github.com/openresty/lua-resty-string/tarball/v$ver" -O "lua-resty-string-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-string-$ver.tar.gz || exit 1
 mv openresty-lua-resty-string-* lua-resty-string-$ver || exit 1
