@@ -1,0 +1,121 @@
+diff --git a/auto/unix b/auto/unix
+index 10835f6c..16ea377b 100644
+--- a/auto/unix
++++ b/auto/unix
+@@ -990,3 +990,14 @@ ngx_feature_test='struct addrinfo *res;
+                   if (getaddrinfo("localhost", NULL, NULL, &res) != 0) return 1;
+                   freeaddrinfo(res)'
+ . auto/feature
++
++ngx_feature="SOCK_CLOEXEC support"
++ngx_feature_name="NGX_HAVE_SOCKET_CLOEXEC"
++ngx_feature_run=no
++ngx_feature_incs="#include <sys/types.h>
++                  #include <sys/socket.h>"
++ngx_feature_path=
++ngx_feature_libs=
++ngx_feature_test="int fd;
++                  fd = socket(AF_INET, SOCK_STREAM, SOCK_CLOEXEC);
++. auto/feature
+diff --git a/src/core/ngx_connection.c b/src/core/ngx_connection.c
+index 9a747589..56a8a955 100644
+--- a/src/core/ngx_connection.c
++++ b/src/core/ngx_connection.c
+@@ -450,7 +450,18 @@ ngx_open_listening_sockets(ngx_cycle_t *cycle)
+                 continue;
+             }
+ 
++#if (NGX_HAVE_SOCKET_CLOEXEC)
++            s = ngx_socket(ls[i].sockaddr->sa_family,
++                           ls[i].type | SOCK_CLOEXEC, 0);
++
++#else
+             s = ngx_socket(ls[i].sockaddr->sa_family, ls[i].type, 0);
++            if (ngx_cloexec(s) == -1) {
++                ngx_log_error(NGX_LOG_EMERG, log, ngx_socket_errno,
++                              ngx_cloexec_n " %V failed", &ls[i].addr_text);
++                return NGX_ERROR;
++            }
++#endif
+ 
+             if (s == (ngx_socket_t) -1) {
+                 ngx_log_error(NGX_LOG_EMERG, log, ngx_socket_errno,
+diff --git a/src/event/ngx_event_accept.c b/src/event/ngx_event_accept.c
+index 77563709..0c542e90 100644
+--- a/src/event/ngx_event_accept.c
++++ b/src/event/ngx_event_accept.c
+@@ -62,7 +62,8 @@ ngx_event_accept(ngx_event_t *ev)
+ 
+ #if (NGX_HAVE_ACCEPT4)
+         if (use_accept4) {
+-            s = accept4(lc->fd, &sa.sockaddr, &socklen, SOCK_NONBLOCK);
++            s = accept4(lc->fd, &sa.sockaddr, &socklen,
++                        SOCK_NONBLOCK | SOCK_CLOEXEC);
+         } else {
+             s = accept(lc->fd, &sa.sockaddr, &socklen);
+         }
+@@ -202,6 +203,13 @@ ngx_event_accept(ngx_event_t *ev)
+                     ngx_close_accepted_connection(c);
+                     return;
+                 }
++
++                if (ngx_cloexec(s) == -1) {
++                    ngx_log_error(NGX_LOG_ALERT, ev->log, ngx_socket_errno,
++                                  ngx_cloexec_n " failed");
++                    ngx_close_accepted_connection(c);
++                    return;
++                }
+             }
+         }
+ 
+diff --git a/src/event/ngx_event_connect.c b/src/event/ngx_event_connect.c
+index c5bb8068..b4920655 100644
+--- a/src/event/ngx_event_connect.c
++++ b/src/event/ngx_event_connect.c
+@@ -38,7 +38,18 @@ ngx_event_connect_peer(ngx_peer_connection_t *pc)
+ 
+     type = (pc->type ? pc->type : SOCK_STREAM);
+ 
++#if (NGX_HAVE_SOCKET_CLOEXEC)
++    s = ngx_socket(pc->sockaddr->sa_family, type | SOCK_CLOEXEC, 0);
++
++#else
+     s = ngx_socket(pc->sockaddr->sa_family, type, 0);
++    if (ngx_cloexec(s) == -1) {
++        ngx_log_error(NGX_LOG_ALERT, pc->log, ngx_socket_errno,
++                      ngx_cloexec_n " failed");
++        return NGX_ERROR;
++    }
++#endif
++
+ 
+     ngx_log_debug2(NGX_LOG_DEBUG_EVENT, pc->log, 0, "%s socket %d",
+                    (type == SOCK_STREAM) ? "stream" : "dgram", s);
+diff --git a/src/os/unix/ngx_socket.h b/src/os/unix/ngx_socket.h
+index fcc51533..1faf5a00 100644
+--- a/src/os/unix/ngx_socket.h
++++ b/src/os/unix/ngx_socket.h
+@@ -38,6 +38,9 @@ int ngx_blocking(ngx_socket_t s);
+ 
+ #endif
+ 
++#define ngx_cloexec(s)      fcntl(s, F_SETFD, FD_CLOEXEC)
++#define ngx_cloexec_n(s)    "fcntl(FD_CLOEXEC)"
++
+ int ngx_tcp_nopush(ngx_socket_t s);
+ int ngx_tcp_push(ngx_socket_t s);
+ 
+diff --git a/src/os/win32/ngx_socket.h b/src/os/win32/ngx_socket.h
+index a9e26c29..14113d96 100644
+--- a/src/os/win32/ngx_socket.h
++++ b/src/os/win32/ngx_socket.h
+@@ -31,6 +31,9 @@ int ngx_blocking(ngx_socket_t s);
+ #define ngx_nonblocking_n   "ioctlsocket(FIONBIO)"
+ #define ngx_blocking_n      "ioctlsocket(!FIONBIO)"
+ 
++#define ngx_cloexec(s)      1
++#define ngx_cloexec_n(s)    ""
++
+ #define ngx_shutdown_socket    shutdown
+ #define ngx_shutdown_socket_n  "shutdown()"
+ 
