@@ -232,6 +232,7 @@ for my $opt (@ARGV) {
         usage 0;
 
     } elsif ($opt =~ /^--with-cc-opt=(.*)/) {
+        shift @ngx_cc_opts；
         push @ngx_cc_opts, $1;
 
     } elsif ($opt =~ /^--with-ld-opt=(.*)/) {
