@@ -92,29 +92,33 @@ index c5bb8068..b4920655 100644
      ngx_log_debug2(NGX_LOG_DEBUG_EVENT, pc->log, 0, "%s socket %d",
                     (type == SOCK_STREAM) ? "stream" : "dgram", s);
 diff --git a/src/os/unix/ngx_socket.h b/src/os/unix/ngx_socket.h
-index fcc51533..1faf5a00 100644
+index fcc51533..7dda965c 100644
 --- a/src/os/unix/ngx_socket.h
 +++ b/src/os/unix/ngx_socket.h
-@@ -38,6 +38,9 @@ int ngx_blocking(ngx_socket_t s);
+@@ -38,6 +38,11 @@ int ngx_blocking(ngx_socket_t s);
  
  #endif
  
 +#define ngx_cloexec(s)      fcntl(s, F_SETFD, FD_CLOEXEC)
 +#define ngx_cloexec_n(s)    "fcntl(FD_CLOEXEC)"
 +
++#define HAVE_SOCKET_CLOEXEC_PATCH  1
++
  int ngx_tcp_nopush(ngx_socket_t s);
  int ngx_tcp_push(ngx_socket_t s);
  
 diff --git a/src/os/win32/ngx_socket.h b/src/os/win32/ngx_socket.h
-index a9e26c29..14113d96 100644
+index a9e26c29..fb5b622a 100644
 --- a/src/os/win32/ngx_socket.h
 +++ b/src/os/win32/ngx_socket.h
-@@ -31,6 +31,9 @@ int ngx_blocking(ngx_socket_t s);
+@@ -31,6 +31,11 @@ int ngx_blocking(ngx_socket_t s);
  #define ngx_nonblocking_n   "ioctlsocket(FIONBIO)"
  #define ngx_blocking_n      "ioctlsocket(!FIONBIO)"
  
 +#define ngx_cloexec(s)      1
 +#define ngx_cloexec_n(s)    ""
++
++#define HAVE_SOCKET_CLOEXEC_PATCH  1
 +
  #define ngx_shutdown_socket    shutdown
  #define ngx_shutdown_socket_n  "shutdown()"
