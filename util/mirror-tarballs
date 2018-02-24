@@ -61,6 +61,10 @@ if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the stream_ssl_preread_no_skip patch for nginx"
     patch -p1 < $root/patches/nginx-$main_ver-stream_ssl_preread_no_skip.patch || exit 1
     echo
+
+    echo "$info_txt applying the resolver_conf_parsing patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-resolver_conf_parsing.patch || exit 1
+    echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.5.12`
