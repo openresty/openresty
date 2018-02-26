@@ -1,5 +1,5 @@
 diff --git a/auto/unix b/auto/unix
-index 10835f6c..16ea377b 100644
+index 10835f6c..78a8073a 100644
 --- a/auto/unix
 +++ b/auto/unix
 @@ -990,3 +990,14 @@ ngx_feature_test='struct addrinfo *res;
@@ -15,7 +15,7 @@ index 10835f6c..16ea377b 100644
 +ngx_feature_path=
 +ngx_feature_libs=
 +ngx_feature_test="int fd;
-+                  fd = socket(AF_INET, SOCK_STREAM, SOCK_CLOEXEC);
++                  fd = socket(AF_INET, SOCK_STREAM, SOCK_CLOEXEC);"
 +. auto/feature
 diff --git a/src/core/ngx_connection.c b/src/core/ngx_connection.c
 index 9a747589..56a8a955 100644
@@ -92,7 +92,7 @@ index c5bb8068..b4920655 100644
      ngx_log_debug2(NGX_LOG_DEBUG_EVENT, pc->log, 0, "%s socket %d",
                     (type == SOCK_STREAM) ? "stream" : "dgram", s);
 diff --git a/src/os/unix/ngx_socket.h b/src/os/unix/ngx_socket.h
-index fcc51533..7dda965c 100644
+index fcc51533..74f90cc6 100644
 --- a/src/os/unix/ngx_socket.h
 +++ b/src/os/unix/ngx_socket.h
 @@ -38,6 +38,11 @@ int ngx_blocking(ngx_socket_t s);
@@ -100,7 +100,7 @@ index fcc51533..7dda965c 100644
  #endif
  
 +#define ngx_cloexec(s)      fcntl(s, F_SETFD, FD_CLOEXEC)
-+#define ngx_cloexec_n(s)    "fcntl(FD_CLOEXEC)"
++#define ngx_cloexec_n       "fcntl(FD_CLOEXEC)"
 +
 +#define HAVE_SOCKET_CLOEXEC_PATCH  1
 +
@@ -108,7 +108,7 @@ index fcc51533..7dda965c 100644
  int ngx_tcp_push(ngx_socket_t s);
  
 diff --git a/src/os/win32/ngx_socket.h b/src/os/win32/ngx_socket.h
-index a9e26c29..fb5b622a 100644
+index a9e26c29..10e1d82d 100644
 --- a/src/os/win32/ngx_socket.h
 +++ b/src/os/win32/ngx_socket.h
 @@ -31,6 +31,11 @@ int ngx_blocking(ngx_socket_t s);
@@ -116,7 +116,7 @@ index a9e26c29..fb5b622a 100644
  #define ngx_blocking_n      "ioctlsocket(!FIONBIO)"
  
 +#define ngx_cloexec(s)      1
-+#define ngx_cloexec_n(s)    ""
++#define ngx_cloexec_n       ""
 +
 +#define HAVE_SOCKET_CLOEXEC_PATCH  1
 +
