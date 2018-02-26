@@ -1,8 +1,8 @@
 diff --git a/auto/unix b/auto/unix
-index 10835f6c..78a8073a 100644
+index 10835f6c..d5d5de6a 100644
 --- a/auto/unix
 +++ b/auto/unix
-@@ -990,3 +990,14 @@ ngx_feature_test='struct addrinfo *res;
+@@ -990,3 +990,16 @@ ngx_feature_test='struct addrinfo *res;
                    if (getaddrinfo("localhost", NULL, NULL, &res) != 0) return 1;
                    freeaddrinfo(res)'
  . auto/feature
@@ -11,11 +11,13 @@ index 10835f6c..78a8073a 100644
 +ngx_feature_name="NGX_HAVE_SOCKET_CLOEXEC"
 +ngx_feature_run=no
 +ngx_feature_incs="#include <sys/types.h>
-+                  #include <sys/socket.h>"
++                  #include <sys/socket.h>
++                  #include <fcntl.h>"
 +ngx_feature_path=
 +ngx_feature_libs=
 +ngx_feature_test="int fd;
-+                  fd = socket(AF_INET, SOCK_STREAM, SOCK_CLOEXEC);"
++                  fd = socket(AF_INET, SOCK_STREAM | SOCK_CLOEXEC, 0);
++                  fcntl(fd, F_SETFD, FD_CLOEXEC);"
 +. auto/feature
 diff --git a/src/core/ngx_connection.c b/src/core/ngx_connection.c
 index 9a747589..56a8a955 100644
