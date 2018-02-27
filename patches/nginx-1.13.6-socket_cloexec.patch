@@ -31,10 +31,10 @@ index 10835f6c..b5b33bb3 100644
 +                  fcntl(fd, F_SETFD, FD_CLOEXEC);"
 +. auto/feature
 diff --git a/src/core/ngx_connection.c b/src/core/ngx_connection.c
-index 9a747589..252c05cf 100644
+index 9a747589..3c0a90c5 100644
 --- a/src/core/ngx_connection.c
 +++ b/src/core/ngx_connection.c
-@@ -450,8 +450,23 @@ ngx_open_listening_sockets(ngx_cycle_t *cycle)
+@@ -450,8 +450,15 @@ ngx_open_listening_sockets(ngx_cycle_t *cycle)
                  continue;
              }
  
@@ -45,19 +45,68 @@ index 9a747589..252c05cf 100644
 +#else
              s = ngx_socket(ls[i].sockaddr->sa_family, ls[i].type, 0);
  
-+#if (NGX_HAVE_FD_CLOEXEC)
-+            if (ngx_cloexec(s) == -1) {
-+                ngx_log_error(NGX_LOG_EMERG, log, ngx_socket_errno,
-+                              ngx_cloexec_n " %V failed", &ls[i].addr_text);
-+                return NGX_ERROR;
-+            }
-+#endif
-+
 +#endif
 +
              if (s == (ngx_socket_t) -1) {
                  ngx_log_error(NGX_LOG_EMERG, log, ngx_socket_errno,
                                ngx_socket_n " %V failed", &ls[i].addr_text);
+@@ -536,6 +543,21 @@ ngx_open_listening_sockets(ngx_cycle_t *cycle)
+                 }
+             }
+ 
++#if (NGX_HAVE_FD_CLOEXEC)
++            if (ngx_cloexec(s) == -1) {
++                ngx_log_error(NGX_LOG_EMERG, log, ngx_socket_errno,
++                              ngx_cloexec_n " %V failed", &ls[i].addr_text);
++
++                if (ngx_close_socket(s) == -1) {
++                    ngx_log_error(NGX_LOG_EMERG, log, ngx_socket_errno,
++                                  ngx_close_socket_n " %V failed",
++                                  &ls[i].addr_text);
++                }
++
++                return NGX_ERROR;
++            }
++#endif
++
+             ngx_log_debug2(NGX_LOG_DEBUG_CORE, log, 0,
+                            "bind() %V #%d ", &ls[i].addr_text, s);
+ 
+diff --git a/src/core/ngx_resolver.c b/src/core/ngx_resolver.c
+index cd55520c..438e0806 100644
+--- a/src/core/ngx_resolver.c
++++ b/src/core/ngx_resolver.c
+@@ -4466,8 +4466,14 @@ ngx_tcp_connect(ngx_resolver_connection_t *rec)
+     ngx_event_t       *rev, *wev;
+     ngx_connection_t  *c;
+ 
++#if (NGX_HAVE_SOCKET_CLOEXEC)
++    s = ngx_socket(rec->sockaddr->sa_family, SOCK_STREAM | SOCK_CLOEXEC, 0);
++
++#else
+     s = ngx_socket(rec->sockaddr->sa_family, SOCK_STREAM, 0);
+ 
++#endif
++
+     ngx_log_debug1(NGX_LOG_DEBUG_EVENT, &rec->log, 0, "TCP socket %d", s);
+ 
+     if (s == (ngx_socket_t) -1) {
+@@ -4494,6 +4500,15 @@ ngx_tcp_connect(ngx_resolver_connection_t *rec)
+         goto failed;
+     }
+ 
++#if (NGX_HAVE_FD_CLOEXEC)
++    if (ngx_cloexec(s) == -1) {
++        ngx_log_error(NGX_LOG_ALERT, &rec->log, ngx_socket_errno,
++                      ngx_cloexec_n " failed");
++
++        goto failed;
++    }
++#endif
++
+     rev = c->read;
+     wev = c->write;
+ 
 diff --git a/src/event/ngx_event_accept.c b/src/event/ngx_event_accept.c
 index 77563709..5827b9d0 100644
 --- a/src/event/ngx_event_accept.c
@@ -91,10 +140,10 @@ index 77563709..5827b9d0 100644
          }
  
 diff --git a/src/event/ngx_event_connect.c b/src/event/ngx_event_connect.c
-index c5bb8068..484fb0bb 100644
+index c5bb8068..cf33b1d2 100644
 --- a/src/event/ngx_event_connect.c
 +++ b/src/event/ngx_event_connect.c
-@@ -38,8 +38,23 @@ ngx_event_connect_peer(ngx_peer_connection_t *pc)
+@@ -38,8 +38,15 @@ ngx_event_connect_peer(ngx_peer_connection_t *pc)
  
      type = (pc->type ? pc->type : SOCK_STREAM);
  
@@ -104,20 +153,28 @@ index c5bb8068..484fb0bb 100644
 +#else
      s = ngx_socket(pc->sockaddr->sa_family, type, 0);
  
-+#if (NGX_HAVE_FD_CLOEXEC)
-+    if (ngx_cloexec(s) == -1) {
-+        ngx_log_error(NGX_LOG_ALERT, pc->log, ngx_socket_errno,
-+                      ngx_cloexec_n " failed");
-+        return NGX_ERROR;
-+    }
-+#endif
-+
 +#endif
 +
 +
      ngx_log_debug2(NGX_LOG_DEBUG_EVENT, pc->log, 0, "%s socket %d",
                     (type == SOCK_STREAM) ? "stream" : "dgram", s);
  
+@@ -80,6 +87,15 @@ ngx_event_connect_peer(ngx_peer_connection_t *pc)
+         goto failed;
+     }
+ 
++#if (NGX_HAVE_FD_CLOEXEC)
++    if (ngx_cloexec(s) == -1) {
++        ngx_log_error(NGX_LOG_ALERT, pc->log, ngx_socket_errno,
++                      ngx_cloexec_n " failed");
++
++        goto failed;
++    }
++#endif
++
+     if (pc->local) {
+ 
+ #if (NGX_HAVE_TRANSPARENT_PROXY)
 diff --git a/src/os/unix/ngx_socket.h b/src/os/unix/ngx_socket.h
 index fcc51533..d1eebf47 100644
 --- a/src/os/unix/ngx_socket.h
