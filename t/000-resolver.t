@@ -134,3 +134,63 @@ successfully connected to openresty.org
 --- no_error
 [error]
 [crit]
+
+
+
+=== TEST 5: CRLF
+--- config
+    resolver local=../html/resolv.conf ipv6=off;
+    resolver_timeout 5s;
+
+    location /t {
+        content_by_lua_block {
+            local sock = ngx.socket.tcp()
+            local ok, err = sock:connect("openresty.org", 80)
+            if not ok then
+                ngx.say("failed to connect to ", server, ": ", err)
+                return
+            end
+            ngx.say("successfully connected to openresty.org")
+            sock:close()
+        }
+    }
+--- user_files eval
+">>> resolv.conf
+domain example.com\r\nnameserver 8.8.8.8\r\nnameserver 8.8.4.4"
+--- request
+GET /t
+--- response_body
+successfully connected to openresty.org
+--- no_error
+[error]
+[crit]
+
+
+
+=== TEST 6: CR only, with comments
+--- config
+    resolver local=../html/resolv.conf ipv6=off;
+    resolver_timeout 5s;
+
+    location /t {
+        content_by_lua_block {
+            local sock = ngx.socket.tcp()
+            local ok, err = sock:connect("openresty.org", 80)
+            if not ok then
+                ngx.say("failed to connect to ", server, ": ", err)
+                return
+            end
+            ngx.say("successfully connected to openresty.org")
+            sock:close()
+        }
+    }
+--- user_files eval
+">>> resolv.conf
+#domain example.com\rnameserver 8.8.8.8\rnameserver 8.8.4.4"
+--- request
+GET /t
+--- response_body
+successfully connected to openresty.org
+--- no_error
+[error]
+[crit]
