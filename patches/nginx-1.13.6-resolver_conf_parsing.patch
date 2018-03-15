@@ -1,8 +1,16 @@
 diff --git a/src/core/ngx_resolver.c b/src/core/ngx_resolver.c
-index cd55520c..efa9ef55 100644
+index cd55520c..e61a6d53 100644
 --- a/src/core/ngx_resolver.c
 +++ b/src/core/ngx_resolver.c
-@@ -15,6 +15,9 @@
+@@ -5,6 +5,7 @@
+  */
+ 
+ 
++#include <resolv.h>
+ #include <ngx_config.h>
+ #include <ngx_core.h>
+ #include <ngx_event.h>
+@@ -15,6 +16,9 @@
  #define NGX_RESOLVER_TCP_RSIZE  (2 + 65535)
  #define NGX_RESOLVER_TCP_WSIZE  8192
  
@@ -12,7 +20,7 @@ index cd55520c..efa9ef55 100644
  
  typedef struct {
      u_char  ident_hi;
-@@ -131,6 +134,142 @@ static ngx_resolver_node_t *ngx_resolver_lookup_addr6(ngx_resolver_t *r,
+@@ -131,6 +135,144 @@ static ngx_resolver_node_t *ngx_resolver_lookup_addr6(ngx_resolver_t *r,
  #endif
  
  
@@ -24,7 +32,7 @@ index cd55520c..efa9ef55 100644
 +    ngx_fd_t                         fd;
 +    ngx_file_t                       file;
 +    u_char                           buf[NGX_RESOLVER_FILE_BUF_SIZE];
-+    ngx_uint_t                       address, j;
++    ngx_uint_t                       address, j, total = 0;
 +    ssize_t                          n, i;
 +    enum {
 +        sw_nameserver,
@@ -73,7 +81,7 @@ index cd55520c..efa9ef55 100644
 +        return NGX_OK;
 +    }
 +
-+    for (i = 0; i < n; /* void */) {
++    for (i = 0; i < n; total < MAXNS) {
 +        if (buf[i] == '#' || buf[i] == ';') {
 +            state = sw_skip;
 +        }
@@ -132,6 +140,8 @@ index cd55520c..efa9ef55 100644
 +                    rec[j].resolver = r;
 +                }
 +
++                total++;
++
 +                state = sw_nameserver;
 +            }
 +
@@ -155,7 +165,7 @@ index cd55520c..efa9ef55 100644
  ngx_resolver_t *
  ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
  {
-@@ -246,6 +385,33 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
+@@ -246,6 +388,33 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
          }
  #endif
  
