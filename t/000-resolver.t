@@ -248,7 +248,7 @@ parsed a resolver: "8.8.4.4"
 
 
 
-=== TEST 8: MAXNS is respected (on standard Glibc it is 3)
+=== TEST 8: MAXNS is respected (in standard Glibc it is 3)
 --- config
     resolver local=../html/resolv.conf ipv6=off;
     resolver_timeout 5s;
