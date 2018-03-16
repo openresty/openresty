@@ -1,5 +1,5 @@
 diff --git a/src/core/ngx_resolver.c b/src/core/ngx_resolver.c
-index cd55520c..9156fadd 100644
+index cd55520c..d8dc49e8 100644
 --- a/src/core/ngx_resolver.c
 +++ b/src/core/ngx_resolver.c
 @@ -5,6 +5,7 @@
@@ -39,7 +39,7 @@ index cd55520c..9156fadd 100644
 +    ngx_file_t                       file;
 +    u_char                           buf[NGX_RESOLVER_FILE_BUF_SIZE];
 +    u_char                           ipv6_buf[NGX_INET6_ADDRSTRLEN];
-+    ngx_uint_t                       address, j, total = 0;
++    ngx_uint_t                       address = 0, j, total = 0;
 +    ssize_t                          n, i;
 +    enum {
 +        sw_nameserver,
