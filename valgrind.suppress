@@ -1,0 +1,209 @@
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Addr1
+   fun:ngx_init_cycle
+   fun:ngx_master_process_cycle
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Addr4
+   fun:ngx_init_cycle
+   fun:ngx_master_process_cycle
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:ngx_vslprintf
+   fun:ngx_snprintf
+   fun:ngx_sock_ntop
+   fun:ngx_event_accept
+   fun:ngx_epoll_process_events
+   fun:ngx_process_events_and_timers
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Addr1
+   fun:ngx_vslprintf
+   fun:ngx_snprintf
+   fun:ngx_sock_ntop
+   fun:ngx_event_accept
+}
+{
+   <insert_a_suppression_name_here>
+   exp-sgcheck:SorG
+   fun:ngx_http_lua_ndk_set_var_get
+}
+{
+   <insert_a_suppression_name_here>
+   exp-sgcheck:SorG
+   fun:ngx_http_variables_init_vars
+   fun:ngx_http_block
+}
+{
+   <insert_a_suppression_name_here>
+   exp-sgcheck:SorG
+   fun:ngx_conf_parse
+}
+{
+   <insert_a_suppression_name_here>
+   exp-sgcheck:SorG
+   fun:ngx_vslprintf
+   fun:ngx_log_error_core
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   epoll_ctl(event)
+   fun:epoll_ctl
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:ngx_conf_flush_files
+   fun:ngx_single_process_cycle
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:memcpy
+   fun:ngx_vslprintf
+   fun:ngx_log_error_core
+   fun:ngx_http_charset_header_filter
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   socketcall.setsockopt(optval)
+   fun:setsockopt
+   fun:drizzle_state_connect
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:ngx_conf_flush_files
+   fun:ngx_single_process_cycle
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:ngx_alloc
+   fun:ngx_event_process_init
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   sendmsg(mmsg[0].msg_hdr)
+   fun:sendmmsg
+   fun:__libc_res_nsend
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   sendmsg(msg.msg_iov[0])
+   fun:__sendmsg_nocancel
+   fun:ngx_write_channel
+   fun:ngx_pass_open_channel
+   fun:ngx_start_cache_manager_processes
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:ngx_init_cycle
+   fun:ngx_master_process_cycle
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   fun:index
+   fun:expand_dynamic_string_token
+   fun:_dl_map_object
+   fun:map_doit
+   fun:_dl_catch_error
+   fun:do_preload
+   fun:dl_main
+   fun:_dl_sysdep_start
+   fun:_dl_start
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   sendmsg(mmsg[0].msg_hdr)
+   fun:sendmmsg
+   fun:__libc_res_nsend
+   fun:__libc_res_nquery
+   fun:__libc_res_nquerydomain
+   fun:__libc_res_nsearch
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:ngx_alloc
+   fun:ngx_set_environment
+   fun:ngx_single_process_cycle
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   obj:*
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:ngx_alloc
+   fun:ngx_set_environment
+   fun:ngx_worker_process_init
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:ngx_alloc
+   fun:ngx_create_pool
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   epoll_pwait(sigmask)
+   fun:epoll_pwait
+   fun:epoll_wait
+   fun:ngx_epoll_process_events
+   fun:ngx_process_events_and_timers
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   epoll_pwait(sigmask)
+   fun:epoll_pwait
+   fun:epoll_wait
+   fun:ngx_epoll_test_rdhup
+   fun:ngx_epoll_init
+   fun:ngx_event_process_init
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   epoll_pwait(sigmask)
+   fun:epoll_pwait
+   fun:ngx_epoll_process_events
+   fun:ngx_process_events_and_timers
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   epoll_pwait(sigmask)
+   fun:epoll_pwait
+   fun:ngx_epoll_test_rdhup
+   fun:ngx_epoll_init
+   fun:ngx_event_process_init
+}
