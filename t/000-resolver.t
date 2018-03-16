@@ -4,15 +4,14 @@ use Test::Nginx::Socket::Lua;
 
 #worker_connections(1014);
 #master_process_enabled(1);
-log_level('warn');
+log_level('debug');
 
-#repeat_each(120);
-repeat_each(2);
+repeat_each(1);
 
-plan tests => repeat_each() * (blocks() * 2);
+plan tests => repeat_each() * (blocks() * 5);
 
 #no_diff();
-#no_long_string();
+no_long_string();
 
 run_tests();
 
@@ -28,7 +27,7 @@ __DATA__
             local sock = ngx.socket.tcp()
             local ok, err = sock:connect("openresty.org", 80)
             if not ok then
-                ngx.say("failed to connect to ", server, ": ", err)
+                ngx.say("failed to connect to openresty.org: ", err)
                 return
             end
             ngx.say("successfully connected to openresty.org")
@@ -39,9 +38,11 @@ __DATA__
 GET /t
 --- response_body
 successfully connected to openresty.org
---- no_error
+--- no_error_log
 [error]
 [crit]
+--- error_log
+parsed a resolver: "
 
 
 
@@ -55,7 +56,7 @@ successfully connected to openresty.org
             local sock = ngx.socket.tcp()
             local ok, err = sock:connect("openresty.org", 80)
             if not ok then
-                ngx.say("failed to connect to ", server, ": ", err)
+                ngx.say("failed to connect to openresty.org: ", err)
                 return
             end
             ngx.say("successfully connected to openresty.org")
@@ -68,10 +69,11 @@ nameser 8.8.8.8"
 --- request
 GET /t
 --- response_body
-failed to connect to nil: no resolver defined to resolve "openresty.org"
---- no_error
+failed to connect to openresty.org: no resolver defined to resolve "openresty.org"
+--- no_error_log
 [error]
 [crit]
+parsed a resolver: "
 
 
 
@@ -85,7 +87,7 @@ failed to connect to nil: no resolver defined to resolve "openresty.org"
             local sock = ngx.socket.tcp()
             local ok, err = sock:connect("openresty.org", 80)
             if not ok then
-                ngx.say("failed to connect to ", server, ": ", err)
+                ngx.say("failed to connect to openresty.org: ", err)
                 return
             end
             ngx.say("successfully connected to openresty.org")
@@ -98,10 +100,11 @@ nameser 8.8.8.8"
 --- request
 GET /t
 --- response_body
-failed to connect to nil: no resolver defined to resolve "openresty.org"
---- no_error
+failed to connect to openresty.org: no resolver defined to resolve "openresty.org"
+--- no_error_log
 [error]
 [crit]
+parsed a resolver: "
 
 
 
@@ -115,7 +118,7 @@ failed to connect to nil: no resolver defined to resolve "openresty.org"
             local sock = ngx.socket.tcp()
             local ok, err = sock:connect("openresty.org", 80)
             if not ok then
-                ngx.say("failed to connect to ", server, ": ", err)
+                ngx.say("failed to connect to openresty.org: ", err)
                 return
             end
             ngx.say("successfully connected to openresty.org")
@@ -131,9 +134,13 @@ nameserver 8.8.4.4"
 GET /t
 --- response_body
 successfully connected to openresty.org
---- no_error
+--- no_error_log
 [error]
 [crit]
+--- grep_error_log eval: qr/parsed a resolver: ".+"/
+--- grep_error_log_out
+parsed a resolver: "8.8.8.8"
+parsed a resolver: "8.8.4.4"
 
 
 
@@ -147,7 +154,7 @@ successfully connected to openresty.org
             local sock = ngx.socket.tcp()
             local ok, err = sock:connect("openresty.org", 80)
             if not ok then
-                ngx.say("failed to connect to ", server, ": ", err)
+                ngx.say("failed to connect to openresty.org: ", err)
                 return
             end
             ngx.say("successfully connected to openresty.org")
@@ -161,9 +168,13 @@ domain example.com\r\nnameserver 8.8.8.8\r\nnameserver 8.8.4.4"
 GET /t
 --- response_body
 successfully connected to openresty.org
---- no_error
+--- no_error_log
 [error]
 [crit]
+--- grep_error_log eval: qr/parsed a resolver: ".+"/
+--- grep_error_log_out
+parsed a resolver: "8.8.8.8"
+parsed a resolver: "8.8.4.4"
 
 
 
@@ -177,7 +188,7 @@ successfully connected to openresty.org
             local sock = ngx.socket.tcp()
             local ok, err = sock:connect("openresty.org", 80)
             if not ok then
-                ngx.say("failed to connect to ", server, ": ", err)
+                ngx.say("failed to connect to openresty.org: ", err)
                 return
             end
             ngx.say("successfully connected to openresty.org")
@@ -191,6 +202,144 @@ successfully connected to openresty.org
 GET /t
 --- response_body
 successfully connected to openresty.org
---- no_error
+--- no_error_log
 [error]
 [crit]
+--- grep_error_log eval: qr/parsed a resolver: ".+"/
+--- grep_error_log_out
+parsed a resolver: "8.8.8.8"
+parsed a resolver: "8.8.4.4"
+
+
+
+=== TEST 7: spaces and tabs before and after nameserver
+--- config
+    resolver local=../html/resolv.conf ipv6=off;
+    resolver_timeout 5s;
+
+    location /t {
+        content_by_lua_block {
+            local sock = ngx.socket.tcp()
+            local ok, err = sock:connect("openresty.org", 80)
+            if not ok then
+                ngx.say("failed to connect to openresty.org: ", err)
+                return
+            end
+            ngx.say("successfully connected to openresty.org")
+            sock:close()
+        }
+    }
+--- user_files eval
+">>> resolv.conf
+domain example.com
+  \t \t  \tnameserver \t   \t 8.8.8.8
+ \t  \t   \tnameserver\t   \t8.8.4.4"
+--- request
+GET /t
+--- response_body
+successfully connected to openresty.org
+--- no_error_log
+[error]
+[crit]
+--- grep_error_log eval: qr/parsed a resolver: ".+"/
+--- grep_error_log_out
+parsed a resolver: "8.8.8.8"
+parsed a resolver: "8.8.4.4"
+
+
+
+=== TEST 8: MAXNS is respected (on standard Glibc it is 3)
+--- config
+    resolver local=../html/resolv.conf ipv6=off;
+    resolver_timeout 5s;
+
+    location /t {
+        content_by_lua_block {
+            local sock = ngx.socket.tcp()
+            local ok, err = sock:connect("openresty.org", 80)
+            if not ok then
+                ngx.say("failed to connect to openresty.org: ", err)
+                return
+            end
+            ngx.say("successfully connected to openresty.org")
+            sock:close()
+        }
+    }
+--- user_files eval
+">>> resolv.conf
+domain example.com
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+nameserver 208.67.222.222
+nameserver 208.67.220.220"
+--- request
+GET /t
+--- response_body
+successfully connected to openresty.org
+--- no_error_log
+[error]
+[crit]
+--- grep_error_log eval: qr/parsed a resolver: ".+"/
+--- grep_error_log_out
+parsed a resolver: "8.8.8.8"
+parsed a resolver: "8.8.4.4"
+parsed a resolver: "208.67.222.222"
+
+
+
+
+=== TEST 9: IPv6 is supported
+--- config
+    resolver local=../html/resolv.conf ipv6=off;
+    resolver_timeout 5s;
+
+    location = /t {
+        content_by_lua_block {
+            ngx.say("done")
+        }
+    }
+--- user_files eval
+">>> resolv.conf
+domain example.com
+nameserver 2001:4860:4860::8888
+nameserver 2001:4860:4860::8844"
+--- request
+GET /t
+--- response_body
+done
+--- no_error_log
+[crit]
+[error]
+--- grep_error_log eval: qr/parsed a resolver: ".+"/
+--- grep_error_log_out
+parsed a resolver: "[2001:4860:4860::8888]"
+parsed a resolver: "[2001:4860:4860::8844]"
+
+
+
+=== TEST 10: IPv6 with malformed and long address
+--- config
+    resolver local=../html/resolv.conf ipv6=off;
+    resolver_timeout 5s;
+
+    location = /t {
+        content_by_lua_block {
+            ngx.say("done")
+        }
+    }
+--- user_files eval
+">>> resolv.conf
+domain example.com
+nameserver 2001:4860:4860::8888:2001:4860:4860::8888:2001
+nameserver 2001:4860:4860::8844"
+--- request
+GET /t
+--- response_body
+done
+--- no_error_log
+[crit]
+[error]
+--- must_die
+--- error_log
+IPv6 resolver address is too long: "2001:4860:4860::8888:2001:4860:4860::8888:2001"
+unable to parse local resolver
