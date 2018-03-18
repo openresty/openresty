@@ -1351,8 +1351,8 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "gcc-4.2": No such file or directory at ./configure line 629.
-Can't exec "gcc-4.2": No such file or directory at ./configure line 667.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 639.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 677.
 
 
 
@@ -1524,8 +1524,8 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "cl": No such file or directory at ./configure line 629.
-Can't exec "cl": No such file or directory at ./configure line 667.
+Can't exec "cl": No such file or directory at ./configure line 639.
+Can't exec "cl": No such file or directory at ./configure line 677.
 
 
 
@@ -2332,7 +2332,7 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 726.
+Can't exec "sw_vers": No such file or directory at ./configure line 740.
 
 
 
@@ -2418,7 +2418,7 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 726.
+Can't exec "sw_vers": No such file or directory at ./configure line 740.
 
 
 

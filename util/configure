@@ -369,7 +369,8 @@ push @make_install_cmds,
     . " \$(DESTDIR)$prefix/site/manifest";
 
 if ($platform ne 'msys') {
-    push @make_install_cmds, "ln -sf $ngx_sbin \$(DESTDIR)$prefix/bin/openresty";
+    push @make_install_cmds,
+        "ln -sf $ngx_sbin \$(DESTDIR)$prefix/bin/openresty";
 }
 
 cd '../..'; # to the root
@@ -468,10 +469,12 @@ Type the following commands to build and install:
 _END_
 
     if ($opts->{no_ndk}) {
-        for my $name (qw(set_misc iconv lz_session form_input array_var encrypted_session)) {
+        for my $name (qw(set_misc iconv lz_session form_input array_var
+                         encrypted_session))
+        {
             if (! $opts->{"no_http_$name"}) {
-                warn "WARNING: ngx_http_${name}_module is automatically disabled ",
-                    "because ngx_devel_kit_module is disabled.\n";
+                warn "WARNING: ngx_http_${name}_module is automatically ",
+                     "disabled because ngx_devel_kit_module is disabled.\n";
                 $opts->{"no_http_$name"} = 1;
             }
         }
@@ -497,7 +500,8 @@ _END_
     }
 
     if ($opts->{no_http_ssl} && $opts->{http_ssl}) {
-        die "--with-http_ssl_module conflicts with --without-http_ssl_module.\n";
+        die "--with-http_ssl_module conflicts with --without-http_ssl_module.",
+            "\n";
     }
 
     if (! $opts->{no_http_ssl} && ! $opts->{http_ssl}) {
@@ -506,25 +510,30 @@ _END_
     }
 
     if (! $opts->{http_drizzle} && $opts->{libdrizzle}) {
-        die "The http_drizzle_module is not enabled while --with-libdrizzle is specified.\n";
+        die "The http_drizzle_module is not enabled while --with-libdrizzle ",
+            "is specified.\n";
     }
 
     if (! $opts->{http_postgres} && $opts->{libpq}) {
-        die "The http_postgres_module is not enabled while --with-libpq is specified.\n";
+        die "The http_postgres_module is not enabled while --with-libpq is ",
+            "specified.\n";
     }
 
     if (! $opts->{http_postgres} && $opts->{pg_config}) {
-        die "The http_postgres_module is not enabled while --with-pg_config is specified.\n";
+        die "The http_postgres_module is not enabled while --with-pg_config ",
+            "is specified.\n";
     }
 
     if ($platform eq 'linux' && $opts->{luajit} && ! can_run("ldconfig")) {
-        die "you need to have ldconfig in your PATH env when enabling luajit.\n";
+        die "you need to have ldconfig in your PATH env when enabling luajit.",
+            "\n";
     }
 
     my $opts_line = '';
 
     if ($opts->{debug}) {
-        unshift @ngx_cc_opts, '-DNGX_LUA_USE_ASSERT', '-DNGX_LUA_ABORT_AT_PANIC';
+        unshift @ngx_cc_opts, '-DNGX_LUA_USE_ASSERT',
+            '-DNGX_LUA_ABORT_AT_PANIC';
         $opts_line .= " \\\n  --with-debug";
 
     } else {
@@ -537,7 +546,8 @@ _END_
     }
 
     if (-e 'build') {
-        die "file or directory \"build\" already exists. please remove it first.\n";
+        die "file or directory \"build\" already exists. please remove it ",
+            "first.\n";
     }
     shell "cp -rp bundle/ build";
 
@@ -664,10 +674,14 @@ int main(void) {
             my $comp = ($cc || 'cc');
             my $found;
 
-            if (system("$comp -o $ofile -msse4.2 -c $cfile") == 0 && -s $ofile) {
+            if (system("$comp -o $ofile -msse4.2 -c $cfile") == 0
+                && -s $ofile)
+            {
                 unlink $ofile;
 
-                if (system("$comp -o $ofile -march=native -c $cfile") == 0 && -s $ofile) {
+                if (system("$comp -o $ofile -march=native -c $cfile") == 0
+                    && -s $ofile)
+                {
                     print "INFO: found -msse4.2 in $comp.\n";
                     $found = 1;
                     $luajit_xcflags .= " -msse4.2";
@@ -741,7 +755,8 @@ int main(void) {
 
         if ($platform eq 'msys') {
             $lib = $luajit_root;
-            shell "install -m 0755 src/luajit.exe src/lua51.dll $lib/", $dry_run;
+            shell "install -m 0755 src/luajit.exe src/lua51.dll $lib/",
+                  $dry_run;
 
             my $lua_jit_dir = File::Spec->catfile($luajit_root, "lua", "jit");
             shell "mkdir -p $lua_jit_dir", $dry_run;
@@ -751,20 +766,26 @@ int main(void) {
             $inc = File::Spec->catfile($luajit_root, "include", "luajit-2.1");
             shell "mkdir -p $inc", $dry_run;
 
-            shell "cd src && install -m 0644 lua.h lualib.h lauxlib.h luaconf.h lua.hpp luajit.h $inc/",
+            shell "cd src && install -m 0644 lua.h lualib.h lauxlib.h "
+                  . "luaconf.h lua.hpp luajit.h $inc/",
                   $dry_run;
 
         } else {
-            shell "${make} install$extra_opts PREFIX=$luajit_prefix DESTDIR=$luajit_root/", $dry_run;
+            shell "${make} install$extra_opts PREFIX=$luajit_prefix "
+                  . "DESTDIR=$luajit_root/", $dry_run;
 
             $lib = File::Spec->catfile($luajit_root, $luajit_prefix, "lib");
-            $inc = File::Spec->catfile($luajit_root, $luajit_prefix, "include", "luajit-2.1");
+            $inc = File::Spec->catfile($luajit_root, $luajit_prefix,
+                                       "include", "luajit-2.1");
         }
 
         push @make_cmds, "cd $root_dir/build/$luajit_src && "
             . "\$(MAKE)$extra_opts PREFIX=$luajit_prefix";
 
-        my $abs_luajit_src = File::Spec->rel2abs(File::Spec->catfile($root_dir, "build", $luajit_src), $root_dir);
+        my $abs_luajit_src =
+            File::Spec->rel2abs(File::Spec->catfile($root_dir, "build",
+                                                    $luajit_src),
+                                $root_dir);
 
         if ($platform eq 'msys') {
             push @make_install_cmds, "cd $abs_luajit_src && "
@@ -772,7 +793,8 @@ int main(void) {
 
         } else {
             push @make_install_cmds, "cd $abs_luajit_src && "
-                . "\$(MAKE) install$extra_opts PREFIX=$luajit_prefix DESTDIR=\$(DESTDIR)";
+                . "\$(MAKE) install$extra_opts PREFIX=$luajit_prefix "
+                . "DESTDIR=\$(DESTDIR)";
         }
 
         env LUAJIT_LIB => $lib;
@@ -832,7 +854,8 @@ int main(void) {
         env LUA_LIB => File::Spec->catfile($lua_root, $lua_prefix, "lib");
         env LUA_INC => File::Spec->catfile($lua_root, $lua_prefix, "include");
 
-        push @make_cmds, "cd $root_dir/build/$lua_src && \$(MAKE)$extra_opts $platform";
+        push @make_cmds,
+            "cd $root_dir/build/$lua_src && \$(MAKE)$extra_opts $platform";
 
         push @make_install_cmds, "cd $root_dir/build/$lua_src && "
             . "\$(MAKE) install$extra_opts INSTALL_TOP=\$(DESTDIR)$lua_prefix";
@@ -883,16 +906,19 @@ _EOC_
 
             if ($platform eq 'msys') {
                 my $luajit_root = File::Spec->rel2abs("luajit-root");
-                $extra_opts .= " CJSON_LDFLAGS=\"-shared -L$luajit_root -llua51\"";
+                $extra_opts .=
+                    " CJSON_LDFLAGS=\"-shared -L$luajit_root -llua51\"";
             }
 
             if ($on_solaris) {
                 #$extra_opts .= " INSTALL=$root_dir/build/install";
                 if ($opts->{debug}) {
-                    $extra_opts .= " CJSON_CFLAGS=\"-g -O -fpic -DUSE_INTERNAL_ISINF\"";
+                    $extra_opts .=
+                        " CJSON_CFLAGS=\"-g -O -fpic -DUSE_INTERNAL_ISINF\"";
 
                 } else {
-                    $extra_opts .= " CJSON_CFLAGS=\"-g -fpic -DUSE_INTERNAL_ISINF\"";
+                    $extra_opts .=
+                        " CJSON_CFLAGS=\"-g -fpic -DUSE_INTERNAL_ISINF\"";
                 }
 
             } else {
@@ -904,7 +930,8 @@ _EOC_
             }
 
             if ($platform eq 'macosx') {
-                $extra_opts .= " CJSON_LDFLAGS='-bundle -undefined dynamic_lookup'";
+                $extra_opts .=
+                    " CJSON_LDFLAGS='-bundle -undefined dynamic_lookup'";
             }
 
             if (defined $cc) {
@@ -1034,7 +1061,8 @@ _EOC_
                     die "No $name found";
                 }
 
-                my $extra_opts = " DESTDIR=\$(DESTDIR) LUA_LIB_DIR=$lualib_prefix"
+                my $extra_opts =
+                    " DESTDIR=\$(DESTDIR) LUA_LIB_DIR=$lualib_prefix"
                     ." INSTALL=$root_dir/build/install";
 
                 push @make_install_cmds, "cd $root_dir/build/$dir && " .
@@ -1104,8 +1132,9 @@ _EOC_
 
     # configure restydoc indexes
 
-    push @make_install_cmds, "cp $root_dir/build/resty.index \$(DESTDIR)$prefix/",
-                             "cp -r $root_dir/build/pod \$(DESTDIR)$prefix/";
+    push @make_install_cmds,
+        "cp $root_dir/build/resty.index \$(DESTDIR)$prefix/",
+        "cp -r $root_dir/build/pod \$(DESTDIR)$prefix/";
 
     # prepare nginx configure line
 
