@@ -332,6 +332,12 @@ if ($platform eq 'msys') {
 
 my $postamble = '';
 
+if ($platform ne 'msys') {
+    if (!$ngx_sbin) {
+        $ngx_sbin = "$ngx_prefix/sbin/nginx";
+    }
+}
+
 my $resty_opts = build_resty_opts(\%resty_opts);
 
 if (@ngx_rpaths) {
@@ -363,9 +369,6 @@ push @make_install_cmds,
     . " \$(DESTDIR)$prefix/site/manifest";
 
 if ($platform ne 'msys') {
-    if (!$ngx_sbin) {
-        $ngx_sbin = "$ngx_prefix/sbin/nginx";
-    }
     push @make_install_cmds, "ln -sf $ngx_sbin \$(DESTDIR)$prefix/bin/openresty";
 }
 
@@ -1065,6 +1068,38 @@ _EOC_
         }
         push @make_install_cmds, "cd $root_dir/build/$resty_cli_dir && "
              . "$root_dir/build/install bin/* $target_dir";
+
+        if ($platform ne 'msys') {
+            # patch the resty script:
+
+            print "patching the resty script with hard-coded nginx binary ",
+                  "path...\n";
+
+            my $resty_bin = "$root_dir/build/$resty_cli_dir/bin/resty";
+            open my $in, $resty_bin
+                or die "Cannot open $resty_bin for reading: $!\n";
+            my ($new, $found);
+            while (<$in>) {
+                if (/^my \$nginx_path;$/) {
+                    $found = 1;
+                    $new .= qq/my \$nginx_path = '$ngx_sbin';\n/;
+
+                } else {
+                    $new .= $_;
+                }
+            }
+            close $in;
+
+            if (!$found) {
+                die "failed to patch $resty_bin: the line 'my \$nginx_path' ",
+                    "was not found.\n";
+            }
+
+            open my $out, ">$resty_bin"
+                or die "Cannot open $resty_bin for writing: $!\n";
+            print $out $new;
+            close $out;
+        }
     }
 
     # configure restydoc indexes

@@ -273,6 +273,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -356,6 +357,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -439,6 +441,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2 -O3' \
@@ -522,6 +525,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -605,6 +609,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -687,6 +692,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -1008,6 +1014,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -1092,6 +1099,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -1189,6 +1197,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -1273,6 +1282,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT' I
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -1341,8 +1351,8 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "gcc-4.2": No such file or directory at ./configure line 626.
-Can't exec "gcc-4.2": No such file or directory at ./configure line 664.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 629.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 667.
 
 
 
@@ -1359,6 +1369,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g Q= XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
@@ -1443,6 +1454,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g Q= XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
@@ -1512,8 +1524,8 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "cl": No such file or directory at ./configure line 626.
-Can't exec "cl": No such file or directory at ./configure line 664.
+Can't exec "cl": No such file or directory at ./configure line 629.
+Can't exec "cl": No such file or directory at ./configure line 667.
 
 
 
@@ -1543,6 +1555,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -1627,6 +1640,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -1733,6 +1747,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -1828,6 +1843,7 @@ make install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -ms
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -1911,6 +1927,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -1994,6 +2011,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -2077,6 +2095,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -2160,6 +2179,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -2243,6 +2263,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -2311,7 +2332,7 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 723.
+Can't exec "sw_vers": No such file or directory at ./configure line 726.
 
 
 
@@ -2328,6 +2349,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -2396,7 +2418,7 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 723.
+Can't exec "sw_vers": No such file or directory at ./configure line 726.
 
 
 
@@ -2413,6 +2435,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g Q= XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
@@ -2497,6 +2520,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -2578,6 +2602,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -2657,6 +2682,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -2733,6 +2759,7 @@ cp -rp bundle/ build
 cd build
 export LUAJIT_LIB='/tmp/luajit/lib'
 export LUAJIT_INC='/tmp/luajit/include/luajit-2.1'
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -2825,6 +2852,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -2908,6 +2936,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -2991,6 +3020,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -3074,6 +3104,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -3157,6 +3188,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -3239,6 +3271,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -3321,6 +3354,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -3404,6 +3438,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g Q= XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-debug \
@@ -3488,6 +3523,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -3571,6 +3607,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -3654,6 +3691,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -3737,6 +3775,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -3820,6 +3859,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -3903,6 +3943,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -3985,6 +4026,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=./nginx \
   --with-cc-opt='-O2' \
@@ -4070,6 +4112,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=./nginx \
   --with-cc-opt='-O2' \
@@ -4155,6 +4198,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=./nginx \
   --with-cc-opt='-O2' \
@@ -4327,6 +4371,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -4410,6 +4455,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-msse4.2 -DLUAJIT_ENABLE_LUA52
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -4493,6 +4539,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-msse4.2' CC=cc PREFIX=/usr/lo
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -4576,6 +4623,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -4659,6 +4707,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -4742,6 +4791,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -4817,6 +4867,7 @@ clean:
 platform: linux (linux)
 cp -rp bundle/ build
 cd build
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
@@ -4877,6 +4928,7 @@ gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -m
 export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
 export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
+patching the resty script with hard-coded nginx binary path...
 cd nginx-1.13.6
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
