@@ -1,0 +1,13 @@
+##
+# Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+
+127.0.0.1 localhost             localhost.dev
+::1       localhost-v6
+
+#172.168.0.1 ignoreme
+
+127.0.0.2  localhost2

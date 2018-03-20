@@ -70,6 +70,7 @@ openresty-*
 work/
 reindex
 t/*.t_
+t/servroot
 upload
 upload-win32
 html_out/
