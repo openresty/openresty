@@ -1,5 +1,5 @@
 diff --git a/src/core/ngx_resolver.c b/src/core/ngx_resolver.c
-index cd55520c..d8dc49e8 100644
+index cd55520c..df55a484 100644
 --- a/src/core/ngx_resolver.c
 +++ b/src/core/ngx_resolver.c
 @@ -5,6 +5,7 @@
@@ -25,7 +25,7 @@ index cd55520c..d8dc49e8 100644
  
  typedef struct {
      u_char  ident_hi;
-@@ -131,6 +140,182 @@ static ngx_resolver_node_t *ngx_resolver_lookup_addr6(ngx_resolver_t *r,
+@@ -131,6 +140,189 @@ static ngx_resolver_node_t *ngx_resolver_lookup_addr6(ngx_resolver_t *r,
  #endif
  
  
@@ -127,7 +127,14 @@ index cd55520c..d8dc49e8 100644
 +                ngx_memzero(&u, sizeof(ngx_url_t));
 +
 +                u.url.data = buf + address;
-+                u.url.len = (i == n - 1) ? n - address : i - address;
++
++                if (i == n - 1 && buf[i] != CR && buf[i] != LF) {
++                    u.url.len = n - address;
++
++                } else {
++                    u.url.len = i - address;
++                }
++
 +                u.default_port = 53;
 +
 +                /* IPv6? */
@@ -208,7 +215,7 @@ index cd55520c..d8dc49e8 100644
  ngx_resolver_t *
  ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
  {
-@@ -246,6 +431,37 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
+@@ -246,6 +438,37 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
          }
  #endif
  

@@ -343,3 +343,40 @@ done
 --- error_log
 IPv6 resolver address is too long: "2001:4860:4860::8888:2001:4860:4860::8888:2001"
 unable to parse local resolver
+
+
+
+=== TEST 11: new line at the end of the file
+--- config
+    resolver local=../html/resolv.conf ipv6=off;
+    resolver_timeout 5s;
+
+    location /t {
+        content_by_lua_block {
+            local sock = ngx.socket.tcp()
+            local ok, err = sock:connect("openresty.org", 80)
+            if not ok then
+                ngx.say("failed to connect to openresty.org: ", err)
+                return
+            end
+            ngx.say("successfully connected to openresty.org")
+            sock:close()
+        }
+    }
+--- user_files eval
+">>> resolv.conf
+domain example.com
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+"
+--- request
+GET /t
+--- response_body
+successfully connected to openresty.org
+--- no_error_log
+[error]
+[crit]
+--- grep_error_log eval: qr/parsed a resolver: ".+"/
+--- grep_error_log_out
+parsed a resolver: "8.8.8.8"
+parsed a resolver: "8.8.4.4"
