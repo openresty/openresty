@@ -45,6 +45,13 @@ if ($^O eq 'darwin') {
                . "-I/usr/local/opt/pcre/include/'"
                . " --with-ld-opt='-L/usr/local/opt/openssl/lib/ "
                . "-L/usr/local/opt/pcre/lib/'";
+
+} else {
+    my $ssl_prefix = $ENV{OPENSSL_PREFIX};
+    if (defined $ssl_prefix) {
+        $cfg_opts .= " --with-cc-opt='-I$ssl_prefix/include/' "
+                   . " --with-ld-opt='-L$ssl_prefix/lib/' ";
+    }
 }
 
 my $prefix;
