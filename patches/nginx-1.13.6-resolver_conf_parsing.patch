@@ -1,19 +1,23 @@
 diff --git a/src/core/ngx_resolver.c b/src/core/ngx_resolver.c
-index cd55520c..df55a484 100644
+index cd55520c..7e7fca92 100644
 --- a/src/core/ngx_resolver.c
 +++ b/src/core/ngx_resolver.c
-@@ -5,6 +5,7 @@
+@@ -5,6 +5,10 @@
   */
  
  
++#if !(NGX_WIN32)
 +#include <resolv.h>
++#endif
++
  #include <ngx_config.h>
  #include <ngx_core.h>
  #include <ngx_event.h>
-@@ -15,6 +16,14 @@
+@@ -15,6 +19,16 @@
  #define NGX_RESOLVER_TCP_RSIZE  (2 + 65535)
  #define NGX_RESOLVER_TCP_WSIZE  8192
  
++#if !(NGX_WIN32)
 +/*
 + * note that 2KB should be more than enough for majority of the
 + * resolv.conf files out there. it also acts as a safety guard to prevent
@@ -21,14 +25,16 @@ index cd55520c..df55a484 100644
 + */
 +#define NGX_RESOLVER_FILE_BUF_SIZE  2048
 +#define NGX_RESOLVER_FILE_NAME      "/etc/resolv.conf"
++#endif
 +
  
  typedef struct {
      u_char  ident_hi;
-@@ -131,6 +140,189 @@ static ngx_resolver_node_t *ngx_resolver_lookup_addr6(ngx_resolver_t *r,
+@@ -131,6 +145,191 @@ static ngx_resolver_node_t *ngx_resolver_lookup_addr6(ngx_resolver_t *r,
  #endif
  
  
++#if !(NGX_WIN32)
 +static ngx_int_t
 +ngx_resolver_read_resolv_conf(ngx_conf_t *cf, ngx_resolver_t *r, u_char *path,
 +    size_t path_len)
@@ -210,15 +216,17 @@ index cd55520c..df55a484 100644
 +
 +    return NGX_OK;
 +}
++#endif
 +
 +
  ngx_resolver_t *
  ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
  {
-@@ -246,6 +438,37 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
+@@ -246,6 +445,39 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
          }
  #endif
  
++#if !(NGX_WIN32)
 +        if (ngx_strncmp(names[i].data, "local=", 6) == 0) {
 +
 +            if (ngx_strcmp(&names[i].data[6], "on") == 0) {
@@ -249,6 +257,7 @@ index cd55520c..df55a484 100644
 +
 +            continue;
 +        }
++#endif
 +
          ngx_memzero(&u, sizeof(ngx_url_t));
  
