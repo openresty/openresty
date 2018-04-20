@@ -1250,7 +1250,8 @@ _EOC_
             $msg .= "\n" . (" " x $opt_max_len);
         }
 
-        $msg .= "disable the lua-resty-${name} library\n";
+        (my $name2 = $name) =~ s/_/-/g;
+        $msg .= "disable the lua-resty-${name2} library\n";
     }
 
     $msg .= <<'_EOC_';
