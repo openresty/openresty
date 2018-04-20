@@ -18,10 +18,11 @@ With this option disappearing in Nginx 1.11.5, this patch would allow such tools
 to assume "ipv6=off" to be safe regardless of ipv6 support in the current
 build.
 
-diff -r a3dc657f4e95 -r 8bf038fe006f src/core/ngx_resolver.c
---- a/src/core/ngx_resolver.c	Thu Dec 15 21:44:34 2016 +0300
-+++ b/src/core/ngx_resolver.c	Thu Dec 15 16:17:01 2016 -0800
-@@ -224,14 +224,22 @@
+diff --git a/src/core/ngx_resolver.c b/src/core/ngx_resolver.c
+index dade1846..5a3f0aa4 100644
+--- a/src/core/ngx_resolver.c
++++ b/src/core/ngx_resolver.c
+@@ -426,14 +426,22 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
              continue;
          }
  
@@ -45,11 +46,11 @@ diff -r a3dc657f4e95 -r 8bf038fe006f src/core/ngx_resolver.c
  
              } else {
                  ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-@@ -241,7 +249,6 @@
+@@ -443,7 +451,6 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
  
              continue;
          }
 -#endif
  
-         ngx_memzero(&u, sizeof(ngx_url_t));
- 
+ #if !(NGX_WIN32)
+         if (ngx_strncmp(names[i].data, "local=", 6) == 0) {

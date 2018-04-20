@@ -88,6 +88,8 @@ path to be used for parsing, for example: `local=/tmp/test.conf`.
 
 When `local=off`, parsing will be disabled (this is the default).
 
+This feature is not available on Windows platforms.
+
 [Back to TOC](#table-of-contents)
 
 Mailing List
