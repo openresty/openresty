@@ -18,7 +18,7 @@ tar -xf ../../../$PCRE.tar.gz || exit 1
 cd ../..
 
 cd objs/lib/$OPENSSL || exit 1
-patch -p1 < ../../../patches/openssl-1.0.2h-sess_set_get_cb_yield.patch || exit 1
+patch -p1 < ../../../patches/openssl-1.1.0d-sess_set_get_cb_yield.patch || exit 1
 cd ../../..
 
     #--with-openssl-opt="no-asm" \
