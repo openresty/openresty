@@ -2,7 +2,7 @@
 
 PCRE=pcre-8.42
 ZLIB=zlib-1.2.11
-OPENSSL=openssl-1.1.0h
+OPENSSL=openssl-1.0.2n
 
 # wget https://www.openssl.org/source/openssl-1.0.2k.tar.gz
 # wget http://zlib.net/zlib-1.2.11.tar.gz
@@ -18,7 +18,7 @@ tar -xf ../../../$PCRE.tar.gz || exit 1
 cd ../..
 
 cd objs/lib/$OPENSSL || exit 1
-patch -p1 < ../../../patches/openssl-1.1.0d-sess_set_get_cb_yield.patch || exit 1
+patch -p1 < ../../../patches/openssl-1.0.2h-sess_set_get_cb_yield.patch || exit 1
 cd ../../..
 
     #--with-openssl-opt="no-asm" \
