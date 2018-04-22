@@ -1,12 +1,24 @@
 Name
 ====
 
-README-win32 - README for the Windows 32-bit build of OpenResty
+README-windows - README for the official 32-bit and 64-bit Windows builds of OpenResty
+
+Table of Contents
+=================
+
+* [Name](#name)
+* [Description](#description)
+* [Debugging](#debugging)
+* [Caveats](#caveats)
+* [TODO](#todo)
+* [Details About The Building Process](#details-about-the-building-process)
+* [Author](#author)
+* [Copyright & License](#copyright--license)
 
 Description
 ===========
 
-The official binary Win32 distribution of OpenResty can be downloaded from the following web page:
+The official binary Win32 and Win64 distributions of OpenResty can be downloaded from the following web page:
 
 https://openresty.org/en/download.html
 
@@ -37,7 +49,7 @@ nginx.exe                     5836 Console                    1      7,800 K
 
 One of the two processes is the master process while the other is the worker.
 
-If you are using the MSYS bash instead of the `cmd.exe` console, then you should replace the `/fi` option
+If you are using the MSYS2 bash instead of the `cmd.exe` console, then you should replace the `/fi` option
 with `-fi` in the command above instead.
 
 You can quickly shut down the server like this:
@@ -60,7 +72,7 @@ C:\> taskkill /pid 5488 /F
 
 where the PID (5488 in this example) can be found via the aforementioned `tasklist` command.
 
-Again, you should use the form `-pid` and `-F` for the options if you are in an MSYS bash
+Again, you should use the form `-pid` and `-F` for the options if you are in an MSYS2 bash
 session.
 
 Similarly, you can use the `nginx -s reload` command to reload nginx configurations without
@@ -76,14 +88,14 @@ Hello, OpenResty!
 
 The `resty` command-line utility requires a Perl interpreter installed in your
 system and visible to your PATH environment. Any perl distributions should
-work, including StrawberryPerl, ActivePerl, and MSYS perl (the former two are
+work, including StrawberryPerl, ActivePerl, and MSYS2 perl.
 recommended though).
 
 Debugging
 =========
 
 Debug symbosl are enabled even in release builds. So that when things go very wrong,
-one can still debug things with tools like MSYS GDB.
+one can still debug things with tools like MSYS2 GDB.
 
 Inclusion of debug symbols make the binary files (`.exe` and `.dll` files) much larger,
 but it generally will not load into memory during normal execution on a modern operating
@@ -92,13 +104,15 @@ system.
 Caveats
 =======
 
-The Win32 port of the NGINX core supports the good old `select` IO multiplexing mechanism
+The Win32/Win64 port of the NGINX core supports the good old `select` IO multiplexing mechanism
 only.
 The I/O Completion Ports (IOCP) feature is *not* supported (yet). So do not use this build
 for production environments with very high concurrency levels.
 
-This Win32 build of OpenResty is mainly for developers who want to develop their applications
+This Win32/Win64 build of OpenResty is mainly for developers who want to develop their applications
 in native Windows environment (though they eventually push the finished work onto a Linux or *BSD box, most of the time).
+
+[Back to TOC](#table-of-contents)
 
 TODO
 ====
@@ -109,24 +123,25 @@ TODO
 package redistribution.
 * Bundle StrawberryPerl to make command-line utilities like `resty` work out of the box (without
 manually installing a Perl).
-* Deliver an alternative Win32 binary package built with best debuggin capabilities (like enabling
+* Deliver an alternative Win32/Win64 binary package built with best debuggin capabilities (like enabling
 NGINX debugging logs, disabling C compiler optimizations, and enabling all the assertions and checks).
-* Deliver binary packages for 64-bit Windows (Win64).
+
+[Back to TOC](#table-of-contents)
 
 Details About The Building Process
 ==================================
 
-Usually you do not need to worry about how the Win32 binaries were built on the maintainers''
+Usually you do not need to worry about how the Win32/Win64 binaries were built on the maintainers''
 side. But if you do, please read on.
 
-The Win32 build of OpenResty is currently built via the MinGW/MSYS toolchain, including
-MinGW gcc 4.8.1, MSYS perl, MSYS bash, MSYS make, and etc. Basically, it is currently built via
+The Win32/Win64 build of OpenResty is currently built via the MSYS2/MinGW toolchain, including
+MinGW gcc 7.2.3, MSYS2 perl 5.24.4, MSYS2 bash, MSYS2 make, and etc. Basically, it is currently built via
  the following cmmands:
 
 ```bash
-PCRE=pcre-8.39
-ZLIB=zlib-1.2.8
-OPENSSL=openssl-1.0.2j
+PCRE=pcre-8.42
+ZLIB=zlib-1.2.11
+OPENSSL=openssl-1.1.0h
 
 mkdir -p objs/lib || exit 1
 cd objs/lib || exit 1
@@ -137,7 +152,7 @@ tar -xf ../../../$PCRE.tar.gz || exit 1
 cd ../..
 
 cd objs/lib/$OPENSSL || exit 1
-patch -p1 < ../../../patches/openssl-1.0.2h-sess_set_get_cb_yield.patch || exit 1
+patch -p1 < ../../../patches/openssl-1.1.0d-sess_set_get_cb_yield.patch || exit 1
 cd ../../..
 
 ./configure \
@@ -174,9 +189,9 @@ cd ../../..
     --with-pcre=objs/lib/$PCRE \
     --with-zlib=objs/lib/$ZLIB \
     --with-openssl=objs/lib/$OPENSSL \
-    -j5 || exit 1
+    -j9 || exit 1
 
-make
+make -j9
 make install
 ```
 
@@ -192,17 +207,21 @@ script.
 Usually you can just download and use the binary distribution of OpenResty without
 installing the build toolchain.
 
+[Back to TOC](#table-of-contents)
+
 Author
 ======
 
 Yichun "agentzh" Zhang <agentzh@gmail.com>, OpenResty Inc.
+
+[Back to TOC](#table-of-contents)
 
 Copyright & License
 ===================
 
 This module is licensed under the BSD license.
 
-Copyright (C) 2015-2016, by Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>, OpenResty Inc.
+Copyright (C) 2015-2018, by Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>, OpenResty Inc.
 
 All rights reserved.
 
@@ -213,3 +232,6 @@ Redistribution and use in source and binary forms, with or without modification,
 * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+[Back to TOC](#table-of-contents)
+
