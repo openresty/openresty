@@ -492,7 +492,7 @@ mv openresty-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.10.12
+ver=0.10.13
 $root/util/get-tarball "https://github.com/openresty/lua-nginx-module/tarball/v$ver" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv openresty-lua-nginx-module-* ngx_lua-$ver || exit 1
@@ -506,7 +506,7 @@ mv openresty-lua-upstream-nginx-module-* ngx_lua_upstream-$ver || exit 1
 
 #################################
 
-ver=0.0.4
+ver=0.0.5
 $root/util/get-tarball "https://github.com/openresty/stream-lua-nginx-module/tarball/v$ver" -O stream-lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf stream-lua-nginx-module-$ver.tar.gz || exit 1
 mv openresty-stream-lua-nginx-module-* ngx_stream_lua-$ver || exit 1
@@ -646,7 +646,7 @@ mv openresty-opm-* opm-$ver || exit 1
 
 #################################
 
-ver=2.1-20180419
+ver=2.1-20180420
 $root/util/get-tarball "https://github.com/openresty/luajit2/archive/v$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 mv luajit2-* LuaJIT-$ver || exit 1
@@ -822,7 +822,7 @@ cd ..
 
 #################################
 
-ver=0.1.14
+ver=0.1.15
 $root/util/get-tarball "https://github.com/openresty/lua-resty-core/tarball/v$ver" -O "lua-resty-core-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-core-$ver.tar.gz || exit 1
 mv openresty-lua-resty-core-* lua-resty-core-$ver || exit 1
@@ -856,8 +856,8 @@ mkdir util || exit 1
 cp $root/util/package-win32.sh util/ || exit 1
 cp $root/util/build-win32.sh util/ || exit 1
 cp $root/COPYRIGHT ./ || exit 1
-perl bundle/$resty_cli/bin/md2pod.pl $root/doc/README-win32.md | pod2text > README-win32.txt || exit 1
-unix2dos README-win32.txt || exit 1
+perl bundle/$resty_cli/bin/md2pod.pl $root/doc/README-windows.md | pod2text > README-windows.txt || exit 1
+unix2dos README-windows.txt || exit 1
 mkdir patches/ || exit 1
 cp $root/patches/openssl-1.0.2h-sess_set_get_cb_yield.patch patches/ || exit 1
 cp $root/patches/openssl-1.1.0c-sess_set_get_cb_yield.patch patches/ || exit 1
