@@ -82,8 +82,8 @@ second argument is either C<0> or a stack index (similar to the other
 Lua/C API functions).
 
 The third argument specifies the mode, which is 'or'ed with a flag. The
-flag can be C<LUAJIT_MODE_OFF> to turn a feature on, C<LUAJIT_MODE_ON>
-to turn a feature off, or C<LUAJIT_MODE_FLUSH> to flush cached code.
+flag can be C<LUAJIT_MODE_OFF> to turn a feature off, C<LUAJIT_MODE_ON>
+to turn a feature on, or C<LUAJIT_MODE_FLUSH> to flush cached code.
 
 The following modes are defined:
 
@@ -170,7 +170,7 @@ Copyright E<copy> 2005-2017 Mike Pall E<middot> Contact
 #Pod::HTML2Pod conversion notes:
 #From file ext_c_api.html
 # 6042 bytes of input
-#Sat May 13 16:35:32 2017 agentzh
+#Mon May 14 13:19:15 2018 agentzh
 # No a_name switch not specified, so will not try to render <a name='...'>
 # No a_href switch not specified, so will not try to render <a href='...'>
 # Deleting phrasal "code" element (`tt_18) because it has super-phrasal elements (`br_3) as children.

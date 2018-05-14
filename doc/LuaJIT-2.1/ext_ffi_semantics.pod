@@ -1019,10 +1019,10 @@ not mix this up: e.g. passing C<"int"> as a string doesn't work in
 place of a type, you'd need to use C<ffi.typeof("int")> instead.
 
 The main use for parameterized types are libraries implementing
-abstract data types (E<rchevron> example), similar to what can be
-achieved with C++ template metaprogramming. Another use case are
-derived types of anonymous structs, which avoids pollution of the
-global struct namespace.
+abstract data types (example), similar to what can be achieved with C++
+template metaprogramming. Another use case are derived types of
+anonymous structs, which avoids pollution of the global struct
+namespace.
 
 Please note that parameterized types are a nice tool and indispensable
 for certain use cases. But you'll want to use them sparingly in regular
@@ -1379,7 +1379,7 @@ Copyright E<copy> 2005-2017 Mike Pall E<middot> Contact
 
 #Pod::HTML2Pod conversion notes:
 #From file ext_ffi_semantics.html
-# 53769 bytes of input
-#Sat May 13 16:35:32 2017 agentzh
+# 53732 bytes of input
+#Mon May 14 13:19:16 2018 agentzh
 # No a_name switch not specified, so will not try to render <a name='...'>
 # No a_href switch not specified, so will not try to render <a href='...'>
