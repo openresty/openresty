@@ -798,7 +798,7 @@ cd ..
 
 #################################
 
-ver=0.07
+ver=0.08rc1
 $root/util/get-tarball "https://github.com/openresty/lua-resty-lock/tarball/v$ver" -O "lua-resty-lock-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-lock-$ver.tar.gz || exit 1
 mv openresty-lua-resty-lock-* lua-resty-lock-$ver || exit 1
