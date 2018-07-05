@@ -287,7 +287,6 @@ parsed a resolver: "208.67.222.222"
 
 
 
-
 === TEST 9: IPv6 is supported
 --- config
     resolver local=../html/resolv.conf ipv6=off;
