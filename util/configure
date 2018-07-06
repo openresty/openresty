@@ -498,7 +498,7 @@ _END_
         push @ngx_opts, '--with-stream';
     }
 
-    if ($opts->{no_stream_ssl} && $opts->{http_stream}) {
+    if ($opts->{no_stream_ssl} && $opts->{stream_ssl}) {
         die "--with-stream_ssl_module conflicts with --without-stream_ssl_module.",
             "\n";
     }
