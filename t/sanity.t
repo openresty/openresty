@@ -249,7 +249,6 @@ Options directly inherited from nginx
 
 
 
-
 === TEST 2: --with-http_ssl_module & --without-http_ssl_module
 --- cmd: ./configure --with-http_ssl_module --without-http_ssl_module
 --- out
@@ -999,7 +998,6 @@ Options directly inherited from nginx
 
   --dry-run                          dry running the configure, for testing only
   --platform=PLATFORM                forcibly specify a platform name, for testing only
-
 
 
 
