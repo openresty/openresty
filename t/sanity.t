@@ -2,7 +2,7 @@
 
 use t::Config;
 
-plan tests => 239;
+plan tests => 245;
 
 #no_diff();
 
@@ -46,6 +46,7 @@ __DATA__
   --without-stream_lua_module        disable ngx_stream_lua_module
   --without-ngx_devel_kit_module     disable ngx_devel_kit_module
   --without-http_ssl_module          disable ngx_http_ssl_module
+  --without-stream_ssl_module        disable ngx_stream_ssl_module
 
   --with-http_iconv_module           enable ngx_http_iconv_module
   --with-http_drizzle_module         enable ngx_http_drizzle_module
@@ -245,7 +246,6 @@ Options directly inherited from nginx
 
   --dry-run                          dry running the configure, for testing only
   --platform=PLATFORM                forcibly specify a platform name, for testing only
-
 
 
 
@@ -798,6 +798,7 @@ clean:
   --without-stream_lua_module        disable ngx_stream_lua_module
   --without-ngx_devel_kit_module     disable ngx_devel_kit_module
   --without-http_ssl_module          disable ngx_http_ssl_module
+  --without-stream_ssl_module        disable ngx_stream_ssl_module
 
   --with-http_iconv_module           enable ngx_http_iconv_module
   --with-http_drizzle_module         enable ngx_http_drizzle_module
@@ -997,7 +998,6 @@ Options directly inherited from nginx
 
   --dry-run                          dry running the configure, for testing only
   --platform=PLATFORM                forcibly specify a platform name, for testing only
-
 
 
 
@@ -4887,7 +4887,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.15 \
   --add-module=../rds-csv-nginx-module-0.09 \
-  --with-http_ssl_module
+  --with-stream_ssl_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4997,3 +4997,55 @@ install: all
 clean:
 	rm -rf build
 
+
+
+=== TEST 63: --without-stream_ssl_module and --without-http_ssl_module are respected
+--- cmd: ./configure --without-http_ssl_module --without-stream_ssl_module --dry-run
+--- out
+platform: linux (linux)
+cp -rp bundle/ build
+cd build
+cd LuaJIT-2.1-20180420
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
+cd ..
+patching the resty script with hard-coded nginx binary path...
+cd nginx-1.13.6
+sh ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
+  --add-module=../ngx_devel_kit-0.3.0 \
+  --add-module=../echo-nginx-module-0.61 \
+  --add-module=../xss-nginx-module-0.06 \
+  --add-module=../ngx_coolkit-0.2rc3 \
+  --add-module=../set-misc-nginx-module-0.32 \
+  --add-module=../form-input-nginx-module-0.12 \
+  --add-module=../srcache-nginx-module-0.31 \
+  --add-module=../ngx_lua-0.10.13 \
+  --add-module=../ngx_lua_upstream-0.07 \
+  --add-module=../headers-more-nginx-module-0.33 \
+  --add-module=../array-var-nginx-module-0.05 \
+  --add-module=../memc-nginx-module-0.19 \
+  --add-module=../redis2-nginx-module-0.15 \
+  --add-module=../redis-nginx-module-0.3.7 \
+  --add-module=../rds-json-nginx-module-0.15 \
+  --add-module=../rds-csv-nginx-module-0.09 \
+  --add-module=../ngx_stream_lua-0.0.5 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-stream
+cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
+
+
+
+=== TEST 64: --without-stream_ssl_module and --with-stream_ssl_module specified at the same time causes errors
+--- cmd: ./configure --with-stream_ssl_module --without-stream_ssl_module --dry-run
+--- out
+platform: linux (linux)
+--- err
+--with-stream_ssl_module conflicts with --without-stream_ssl_module.
+--- exit: 2
