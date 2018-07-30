@@ -1,0 +1,93 @@
+# HG changeset patch
+# User Thibault Charbonnier <thibaultcha@me.com>
+# Date 1532789509 -7200
+#      Sat Jul 28 16:51:49 2018 +0200
+# Node ID af4366d9fec2bc2ccce8fd03fc456621df13f673
+# Parent  f7e79596baf209151682f2f7d220161c034657ac
+Implemented the 'preserve_method_on_error_page' directive.
+
+By default, the internal redirect to non-named locations caused by the
+'error_page' directive causes the HTTP method to be rewritten to GET (unless it
+is HEAD).
+
+This new directive allows one to disable this behavior, and ensure the HTTP
+method is preserved through the internal redirect to the defined error_page.
+
+diff -r f7e79596baf2 -r af4366d9fec2 src/http/ngx_http_core_module.c
+--- a/src/http/ngx_http_core_module.c	Tue Jul 24 18:46:54 2018 +0300
++++ b/src/http/ngx_http_core_module.c	Sat Jul 28 16:51:49 2018 +0200
+@@ -654,6 +654,13 @@
+       0,
+       NULL },
+ 
++    { ngx_string("preserve_method_on_error_page"),
++      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_CONF_FLAG,
++      ngx_conf_set_flag_slot,
++      NGX_HTTP_LOC_CONF_OFFSET,
++      offsetof(ngx_http_core_loc_conf_t, preserve_method_on_error_page),
++      NULL },
++
+     { ngx_string("post_action"),
+       NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF
+                         |NGX_CONF_TAKE1,
+@@ -3410,6 +3417,7 @@
+     clcf->log_not_found = NGX_CONF_UNSET;
+     clcf->log_subrequest = NGX_CONF_UNSET;
+     clcf->recursive_error_pages = NGX_CONF_UNSET;
++    clcf->preserve_method_on_error_page = NGX_CONF_UNSET;
+     clcf->chunked_transfer_encoding = NGX_CONF_UNSET;
+     clcf->etag = NGX_CONF_UNSET;
+     clcf->server_tokens = NGX_CONF_UNSET_UINT;
+@@ -3679,6 +3687,8 @@
+     ngx_conf_merge_value(conf->log_subrequest, prev->log_subrequest, 0);
+     ngx_conf_merge_value(conf->recursive_error_pages,
+                               prev->recursive_error_pages, 0);
++    ngx_conf_merge_value(conf->preserve_method_on_error_page,
++                              prev->preserve_method_on_error_page, 0);
+     ngx_conf_merge_value(conf->chunked_transfer_encoding,
+                               prev->chunked_transfer_encoding, 1);
+     ngx_conf_merge_value(conf->etag, prev->etag, 1);
+diff -r f7e79596baf2 -r af4366d9fec2 src/http/ngx_http_core_module.h
+--- a/src/http/ngx_http_core_module.h	Tue Jul 24 18:46:54 2018 +0300
++++ b/src/http/ngx_http_core_module.h	Sat Jul 28 16:51:49 2018 +0200
+@@ -393,6 +393,8 @@
+     ngx_flag_t    log_not_found;           /* log_not_found */
+     ngx_flag_t    log_subrequest;          /* log_subrequest */
+     ngx_flag_t    recursive_error_pages;   /* recursive_error_pages */
++    ngx_flag_t    preserve_method_on_error_page;
++                                           /* preserve_method_on_error_page */
+     ngx_uint_t    server_tokens;           /* server_tokens */
+     ngx_flag_t    chunked_transfer_encoding; /* chunked_transfer_encoding */
+     ngx_flag_t    etag;                    /* etag */
+diff -r f7e79596baf2 -r af4366d9fec2 src/http/ngx_http_special_response.c
+--- a/src/http/ngx_http_special_response.c	Tue Jul 24 18:46:54 2018 +0300
++++ b/src/http/ngx_http_special_response.c	Sat Jul 28 16:51:49 2018 +0200
+@@ -602,6 +602,8 @@
+         return NGX_ERROR;
+     }
+ 
++    clcf = ngx_http_get_module_loc_conf(r, ngx_http_core_module);
++
+     if (uri.len && uri.data[0] == '/') {
+ 
+         if (err_page->value.lengths) {
+@@ -611,7 +613,9 @@
+             args = err_page->args;
+         }
+ 
+-        if (r->method != NGX_HTTP_HEAD) {
++        if (r->method != NGX_HTTP_HEAD
++            && !clcf->preserve_method_on_error_page)
++        {
+             r->method = NGX_HTTP_GET;
+             r->method_name = ngx_http_core_get_method;
+         }
+@@ -646,8 +650,6 @@
+ 
+     r->headers_out.location = location;
+ 
+-    clcf = ngx_http_get_module_loc_conf(r, ngx_http_core_module);
+-
+     if (clcf->msie_refresh && r->headers_in.msie) {
+         return ngx_http_send_refresh(r);
+     }

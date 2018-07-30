@@ -147,6 +147,10 @@ echo "$info_txt applying the no_error_pages patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-no_error_pages.patch || exit 1
 echo
 
+echo "$info_txt applying the preserve_method_on_error_page patch for nginx"
+patch -p1 < $root/patches/nginx-$main_ver-preserve_method_on_error_page.patch || exit 1
+echo
+
 echo "$info_txt applying the no_Werror patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-no_Werror.patch || exit 1
 echo
