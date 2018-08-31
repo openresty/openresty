@@ -1,0 +1,96 @@
+---
+ src/core/ngx_connection.c | 10 +++++++++-
+ src/core/ngx_cycle.c      |  7 ++++++-
+ src/core/ngx_inet.c       | 17 +++++++++++++++++
+ 3 files changed, 32 insertions(+), 2 deletions(-)
+
+diff --git a/src/core/ngx_connection.c b/src/core/ngx_connection.c
+index 33682532..b7b83225 100644
+--- a/src/core/ngx_connection.c
++++ b/src/core/ngx_connection.c
+@@ -625,7 +625,12 @@ ngx_open_listening_sockets(ngx_cycle_t *cycle)
+ 
+ #if (NGX_HAVE_UNIX_DOMAIN)
+ 
+-            if (ls[i].sockaddr->sa_family == AF_UNIX) {
++            if (ls[i].sockaddr->sa_family == AF_UNIX
++#if (NGX_LINUX)
++                && ls[i].addr_text.data[sizeof("unix:") - 1] != '@'
++#endif
++               )
++            {
+                 mode_t   mode;
+                 u_char  *name;
+ 
+@@ -1069,6 +1074,9 @@ ngx_close_listening_sockets(ngx_cycle_t *cycle)
+ #if (NGX_HAVE_UNIX_DOMAIN)
+ 
+         if (ls[i].sockaddr->sa_family == AF_UNIX
++#if (NGX_LINUX)
++            && ls[i].addr_text.data[sizeof("unix:") - 1] != '@'
++#endif
+             && ngx_process <= NGX_PROCESS_MASTER
+             && ngx_new_binary == 0)
+         {
+diff --git a/src/core/ngx_cycle.c b/src/core/ngx_cycle.c
+index f3ac24d7..143149fa 100644
+--- a/src/core/ngx_cycle.c
++++ b/src/core/ngx_cycle.c
+@@ -709,7 +709,12 @@ old_shm_zone_done:
+ 
+ #if (NGX_HAVE_UNIX_DOMAIN)
+ 
+-        if (ls[i].sockaddr->sa_family == AF_UNIX) {
++        if (ls[i].sockaddr->sa_family == AF_UNIX
++#if (NGX_LINUX)
++            && ls[i].addr_text.data[sizeof("unix:") - 1] != '@'
++#endif
++           )
++        {
+             u_char  *name;
+ 
+             name = ls[i].addr_text.data + sizeof("unix:") - 1;
+diff --git a/src/core/ngx_inet.c b/src/core/ngx_inet.c
+index db48b93c..52a2d62e 100644
+--- a/src/core/ngx_inet.c
++++ b/src/core/ngx_inet.c
+@@ -242,6 +242,9 @@ ngx_sock_ntop(struct sockaddr *sa, socklen_t socklen, u_char *text, size_t len,
+         if (socklen <= (socklen_t) offsetof(struct sockaddr_un, sun_path)) {
+             p = ngx_snprintf(text, len, "unix:%Z");
+ 
++        } else if (saun->sun_path[0] == '\0') {
++            p = ngx_snprintf(text, len, "unix:@%s%Z", &saun->sun_path[1]);
++
+         } else {
+             n = ngx_strnlen((u_char *) saun->sun_path,
+                             socklen - offsetof(struct sockaddr_un, sun_path));
+@@ -744,6 +747,13 @@ ngx_parse_unix_domain_url(ngx_pool_t *pool, ngx_url_t *u)
+     saun->sun_family = AF_UNIX;
+     (void) ngx_cpystrn((u_char *) saun->sun_path, path, len);
+ 
++#if (NGX_LINUX)
++    if (path[0] == '@') {
++        saun->sun_path[0] = '\0';
++        u->socklen = sizeof(sa_family_t) + strlen(path);
++    }
++#endif
++
+     u->addrs = ngx_pcalloc(pool, sizeof(ngx_addr_t));
+     if (u->addrs == NULL) {
+         return NGX_ERROR;
+@@ -765,6 +775,13 @@ ngx_parse_unix_domain_url(ngx_pool_t *pool, ngx_url_t *u)
+     u->addrs[0].name.len = len + 4;
+     u->addrs[0].name.data = u->url.data;
+ 
++#if (NGX_LINUX)
++    if (path[0] == '@') {
++        saun->sun_path[0] = '\0';
++        u->addrs[0].socklen = sizeof(sa_family_t) + strlen(path);
++    }
++#endif
++
+     return NGX_OK;
+ 
+ #else
+-- 
+2.17.1
