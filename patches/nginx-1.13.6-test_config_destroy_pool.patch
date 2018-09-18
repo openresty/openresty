@@ -1,0 +1,13 @@
+diff --git a/src/core/nginx.c b/src/core/nginx.c
+index abaa50d6..6369264e 100644
+--- a/src/core/nginx.c
++++ b/src/core/nginx.c
+@@ -314,6 +314,8 @@ main(int argc, char *const *argv)
+             }
+         }
+ 
++        /* just to make it ASAN or Valgrind clean */
++        ngx_destroy_pool(cycle->pool);
+         return 0;
+     }
+ 
