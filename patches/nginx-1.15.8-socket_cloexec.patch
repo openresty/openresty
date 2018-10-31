@@ -65,6 +65,20 @@ index cd55520c..438e0806 100644
      rev = c->read;
      wev = c->write;
  
+diff --git a/src/event/ngx_event.h b/src/event/ngx_event.h
+index 19fec68..8c2f01a 100644
+--- a/src/event/ngx_event.h
++++ b/src/event/ngx_event.h
+@@ -73,6 +73,9 @@ struct ngx_event_s {
+     /* to test on worker exit */
+     unsigned         channel:1;
+     unsigned         resolver:1;
++#if (HAVE_SOCKET_CLOEXEC_PATCH)
++    unsigned         skip_socket_leak_check:1;
++#endif
+ 
+     unsigned         cancelable:1;
+ 
 diff --git a/src/event/ngx_event_accept.c b/src/event/ngx_event_accept.c
 index 77563709..5827b9d0 100644
 --- a/src/event/ngx_event_accept.c
@@ -133,6 +147,20 @@ index c5bb8068..cf33b1d2 100644
      if (pc->local) {
  
  #if (NGX_HAVE_TRANSPARENT_PROXY)
+diff --git a/src/os/unix/ngx_process_cycle.c b/src/os/unix/ngx_process_cycle.c
+index c4376a5..48e8fa8 100644
+--- a/src/os/unix/ngx_process_cycle.c
++++ b/src/os/unix/ngx_process_cycle.c
+@@ -1032,6 +1032,9 @@ ngx_worker_process_exit(ngx_cycle_t *cycle)
+         for (i = 0; i < cycle->connection_n; i++) {
+             if (c[i].fd != -1
+                 && c[i].read
++#if (HAVE_SOCKET_CLOEXEC_PATCH)
++                && !c[i].read->skip_socket_leak_check
++#endif
+                 && !c[i].read->accept
+                 && !c[i].read->channel
+                 && !c[i].read->resolver)
 diff --git a/src/os/unix/ngx_socket.h b/src/os/unix/ngx_socket.h
 index fcc51533..d1eebf47 100644
 --- a/src/os/unix/ngx_socket.h
