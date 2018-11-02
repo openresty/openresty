@@ -69,35 +69,39 @@ sub write_config_file ($) {
 
 write_config_file "/tmp/nginx.conf";
 
-warn "\n=== Without FFI ===\n";
-$prefix = "/usr/local/openresty-noffi";
-cleanup();
-unless ($opts{f}) {
-    sh "./configure $cfg_opts --with-cc-opt='-DNGX_LUA_NO_FFI_API' --prefix=$prefix -j$jobs > /dev/null";
+if (0) {
+    warn "\n=== Without FFI ===\n";
+    $prefix = "/usr/local/openresty-noffi";
+    cleanup();
+    unless ($opts{f}) {
+        sh "./configure $cfg_opts --with-cc-opt='-DNGX_LUA_NO_FFI_API' --prefix=$prefix -j$jobs";
+    }
+    sh "$make -j$jobs";
+    sh "sudo $make install";
+    sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+    sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
+    system "sudo killall nginx > /dev/null 2>&1";
+    sh "sudo $prefix/nginx/sbin/nginx";
+    sh "curl -si localhost/lua|grep $lua";
+    sh "curl -si localhost/lua|grep $ver";
+    sh "curl -si localhost/cjson|grep 'json.safe: '";
+    #sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
+    sh "sudo $prefix/nginx/sbin/nginx -sstop";
 }
-sh "$make -j$jobs > /dev/null";
-sh "sudo $make install > /dev/null";
-sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
-sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
-system "sudo killall nginx > /dev/null 2>&1";
-sh "sudo $prefix/nginx/sbin/nginx";
-sh "curl -si localhost/lua|grep $lua";
-sh "curl -si localhost/lua|grep $ver";
-sh "curl -si localhost/cjson|grep 'json.safe: '";
-#sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
-sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
-warn "\n=== --with-stream ===\n";
-$prefix = "/usr/local/openresty-stream";
+if (1) {
+
+warn "\n=== --without-stream ===\n";
+$prefix = "/usr/local/openresty-nostream";
 cleanup();
 unless ($opts{f}) {
-    sh "./configure $cfg_opts --with-stream --prefix=$prefix -j$jobs > /dev/null";
+    sh "./configure $cfg_opts --without-stream --prefix=$prefix -j$jobs";
 }
-sh "$make -j$jobs > /dev/null";
-sh "sudo $make install > /dev/null";
+sh "$make -j$jobs";
+sh "sudo $make install";
 sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
-sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-stream'";
+sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep -v 'stream_proxy'";
 system "sudo killall nginx > /dev/null 2>&1";
 sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
@@ -106,18 +110,18 @@ sh "curl -si localhost/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
-warn "\n=== --with-stream + dtrace static probes ===\n";
-$prefix = "/usr/local/openresty-stream-usdt";
+warn "\n=== --without-stream + dtrace static probes ===\n";
+$prefix = "/usr/local/openresty-nostream-usdt";
 cleanup();
 unless ($opts{f}) {
-    sh "./configure $cfg_opts --with-dtrace-probes --with-stream --prefix=$prefix -j$jobs > /dev/null";
+    sh "./configure $cfg_opts --with-dtrace-probes --without-stream --prefix=$prefix -j$jobs";
 }
-sh "$make -j$jobs > /dev/null";
-sh "sudo $make install > /dev/null";
+sh "$make -j$jobs";
+sh "sudo $make install";
 sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
-sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
-sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-stream'";
-sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-dtrace-probes'";
+sh "$prefix/nginx/sbin/nginx -V 2>&1", $ver;
+sh "$prefix/nginx/sbin/nginx -V 2>&1", "--with-stream";
+sh "$prefix/nginx/sbin/nginx -V 2>&1", "--with-dtrace-probes";
 system "sudo killall nginx > /dev/null 2>&1";
 sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
@@ -125,27 +129,31 @@ sh "curl -si localhost/lua|grep $ver";
 sh "curl -si localhost/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
+
+}
 
 warn "\n=== Without Gzip/SSL/PCRE ===\n";
 $prefix = "/usr/local/openresty-nogzip";
 cleanup();
 unless ($opts{f}) {
-    sh "./configure $cfg_opts --without-http_rewrite_module --without-http_ssl_module --without-pcre --without-http_gzip_module --prefix=$prefix -j$jobs > /dev/null";
+    sh "./configure $cfg_opts --without-http_rewrite_module --without-http_ssl_module --without-pcre --without-http_gzip_module --prefix=$prefix -j$jobs";
 }
-sh "$make -j$jobs > /dev/null";
-sh "sudo $make install > /dev/null";
+sh "$make -j$jobs";
+sh "sudo $make install";
 sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--without-http_gzip_module'";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep -v -q '\\--with-http_ssl_module'";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--without-pcre'";
 system "sudo killall nginx > /dev/null 2>&1";
+if (0) {
 sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
 sh "curl -si localhost/cjson|grep 'json.safe: '";
 #sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
+}
 
 $cfg_opts .= " --with-http_iconv_module";
 
@@ -153,10 +161,10 @@ warn "\n=== --with-threads ===\n";
 $prefix = "/usr/local/openresty-threads";
 cleanup();
 unless ($opts{f}) {
-    sh "./configure $cfg_opts --with-threads --prefix=$prefix -j$jobs > /dev/null";
+    sh "./configure $cfg_opts --with-threads --prefix=$prefix -j$jobs";
 }
-sh "$make -j$jobs > /dev/null";
-sh "sudo $make install > /dev/null";
+sh "$make -j$jobs";
+sh "sudo $make install";
 sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-threads'";
@@ -192,10 +200,10 @@ warn "\n=== Normal Build ===\n";
 $prefix = "/usr/local/openresty";
 cleanup();
 unless ($opts{f}) {
-    sh "./configure $cfg_opts -j$jobs > /dev/null";
+    sh "./configure $cfg_opts -j$jobs";
 }
-sh "$make -j$jobs > /dev/null";
-sh "sudo $make install > /dev/null";
+sh "$make -j$jobs";
+sh "sudo $make install";
 sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 system "sudo killall nginx > /dev/null 2>&1";
@@ -216,10 +224,10 @@ unless ($opts{f}) {
     if ($lua eq 'LuaJIT') {
         $more_cfg_opts .= " --with-luajit-xcflags='-DLUA_USE_TRACE_LOGS'"
     }
-    sh "./configure --with-debug $cfg_opts $more_cfg_opts --prefix=$prefix -j$jobs > /dev/null";
+    sh "./configure --with-debug $cfg_opts $more_cfg_opts --prefix=$prefix -j$jobs";
 }
-sh "$make -j$jobs > /dev/null";
-sh "sudo $make install > /dev/null";
+sh "$make -j$jobs";
+sh "sudo $make install";
 sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-debug'";
@@ -235,10 +243,10 @@ warn "\n=== DTrace Build ===\n";
 $prefix = "/usr/local/openresty-dtrace";
 cleanup();
 unless ($opts{f}) {
-    sh "./configure $cfg_opts --with-dtrace-probes --prefix=$prefix -j$jobs > /dev/null";
+    sh "./configure $cfg_opts --with-dtrace-probes --prefix=$prefix -j$jobs";
 }
-sh "$make -j$jobs > /dev/null";
-sh "sudo $make install > /dev/null";
+sh "$make -j$jobs";
+sh "sudo $make install";
 sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-dtrace-probes'";
@@ -257,9 +265,27 @@ sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
-sub sh ($) {
+sub sh ($@) {
     my $cmd = shift;
-    system($cmd) == 0 or die "Command \"$cmd\" failed";
+    my $pat = shift;
+    open my $in, "$cmd|"
+        or die "Command \"$cmd\" failed";
+    my $out = '';
+    my $found;
+    while (<$in>) {
+        if (defined $pat && index($_, $pat) >= 0) {
+            $found = 1;
+        }
+        $out .= $_;
+    }
+    close $in
+        or die "Failed to run command \"$cmd\": $out";
+    if (!defined $found && defined $pat) {
+        die "failed find pattern '$pat' in the output of command \"$cmd\": $out";
+    }
+    if (length $out < 1024) {
+        print $out;
+    }
 }
 
 sub cleanup () {
