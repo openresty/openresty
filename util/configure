@@ -291,6 +291,16 @@ for my $opt (@ARGV) {
         $resty_opts{stream_ssl} = 1;
         push @ngx_opts, $opt;
 
+    } elsif ($opt eq '--with-stream_ssl_preread_module') {
+        $resty_opts{stream_ssl_preread} = 1;
+        push @ngx_opts, $opt;
+
+    } elsif ($opt eq '--without-stream') {
+        $resty_opts{no_stream} = 1;
+        $resty_opts{no_stream_ssl} = 1;
+        $resty_opts{no_stream_ssl_preread} = 1;
+        $resty_opts{no_stream_lua} = 1;
+
     } elsif ($opt eq '--without-stream_ssl_module') {
         $resty_opts{no_stream_ssl} = 1;
 
@@ -503,9 +513,20 @@ _END_
             "\n";
     }
 
-    if (! $opts->{no_stream_ssl} && ! $opts->{stream_ssl}) {
+    if (!$opts->{no_stream}
+        && ! $opts->{no_stream_ssl}
+        && ! $opts->{stream_ssl})
+    {
         $opts->{stream_ssl} = 1;
         push @ngx_opts, '--with-stream_ssl_module';
+    }
+
+    if (!$opts->{no_stream}
+        && ! $opts->{no_stream_ssl_preread}
+        && ! $opts->{stream_ssl_preead})
+    {
+        $opts->{stream_ssl_preread} = 1;
+        push @ngx_opts, '--with-stream_ssl_preread_module';
     }
 
     if (!$opts->{lua}
@@ -1397,9 +1418,12 @@ Options directly inherited from nginx
   --without-mail_imap_module         disable ngx_mail_imap_module
   --without-mail_smtp_module         disable ngx_mail_smtp_module
 
-  --with-stream                      enable TCP/UDP proxy module
+  --without-stream                   disable TCP/UDP proxy module
+  --without-stream_ssl_module        disable ngx_stream_ssl_module
+
+  --with-stream                      enable TCP/UDP proxy module (default on)
   --with-stream=dynamic              enable dynamic TCP/UDP proxy module
-  --with-stream_ssl_module           enable ngx_stream_ssl_module
+  --with-stream_ssl_module           enable ngx_stream_ssl_module (default on)
   --with-stream_realip_module        enable ngx_stream_realip_module
   --with-stream_geoip_module         enable ngx_stream_geoip_module
   --with-stream_geoip_module=dynamic enable dynamic ngx_stream_geoip_module

@@ -190,9 +190,12 @@ Options directly inherited from nginx
   --without-mail_imap_module         disable ngx_mail_imap_module
   --without-mail_smtp_module         disable ngx_mail_smtp_module
 
-  --with-stream                      enable TCP/UDP proxy module
+  --without-stream                   disable TCP/UDP proxy module
+  --without-stream_ssl_module        disable ngx_stream_ssl_module
+
+  --with-stream                      enable TCP/UDP proxy module (default on)
   --with-stream=dynamic              enable dynamic TCP/UDP proxy module
-  --with-stream_ssl_module           enable ngx_stream_ssl_module
+  --with-stream_ssl_module           enable ngx_stream_ssl_module (default on)
   --with-stream_realip_module        enable ngx_stream_realip_module
   --with-stream_geoip_module         enable ngx_stream_geoip_module
   --with-stream_geoip_module=dynamic enable dynamic ngx_stream_geoip_module
@@ -249,6 +252,7 @@ Options directly inherited from nginx
 
 
 
+
 === TEST 2: --with-http_ssl_module & --without-http_ssl_module
 --- cmd: ./configure --with-http_ssl_module --without-http_ssl_module
 --- out
@@ -296,7 +300,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -380,7 +384,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -464,7 +468,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -548,7 +552,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib -llua' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -631,7 +635,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -714,7 +718,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -942,9 +946,12 @@ Options directly inherited from nginx
   --without-mail_imap_module         disable ngx_mail_imap_module
   --without-mail_smtp_module         disable ngx_mail_smtp_module
 
-  --with-stream                      enable TCP/UDP proxy module
+  --without-stream                   disable TCP/UDP proxy module
+  --without-stream_ssl_module        disable ngx_stream_ssl_module
+
+  --with-stream                      enable TCP/UDP proxy module (default on)
   --with-stream=dynamic              enable dynamic TCP/UDP proxy module
-  --with-stream_ssl_module           enable ngx_stream_ssl_module
+  --with-stream_ssl_module           enable ngx_stream_ssl_module (default on)
   --with-stream_realip_module        enable ngx_stream_realip_module
   --with-stream_geoip_module         enable ngx_stream_geoip_module
   --with-stream_geoip_module=dynamic enable dynamic ngx_stream_geoip_module
@@ -1001,6 +1008,7 @@ Options directly inherited from nginx
 
 
 
+
 === TEST 10: --with-http_drizzle_module on solaris
 --- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
@@ -1038,7 +1046,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -1123,7 +1131,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -1221,7 +1229,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/opt/drizzle/lib:/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -1305,7 +1313,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-cc=gcc-4.2 --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-cc=gcc-4.2 --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -1351,8 +1359,8 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "gcc-4.2": No such file or directory at ./configure line 663.
-Can't exec "gcc-4.2": No such file or directory at ./configure line 701.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 684.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 722.
 
 
 
@@ -1393,7 +1401,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -1478,7 +1486,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-cc=cl --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-cc=cl --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -1524,8 +1532,8 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "cl": No such file or directory at ./configure line 663.
-Can't exec "cl": No such file or directory at ./configure line 701.
+Can't exec "cl": No such file or directory at ./configure line 684.
+Can't exec "cl": No such file or directory at ./configure line 722.
 
 
 
@@ -1579,7 +1587,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/opt/postgres/lib:/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -1664,7 +1672,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -1771,7 +1779,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/lib64:/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -1866,7 +1874,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     make
@@ -1950,7 +1958,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -2034,7 +2042,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -2118,7 +2126,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -2202,7 +2210,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -2286,7 +2294,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -2332,7 +2340,7 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 764.
+Can't exec "sw_vers": No such file or directory at ./configure line 785.
 
 
 
@@ -2372,7 +2380,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -2418,7 +2426,7 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 764.
+Can't exec "sw_vers": No such file or directory at ./configure line 785.
 
 
 
@@ -2459,7 +2467,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -2543,7 +2551,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -2625,7 +2633,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -2705,7 +2713,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -2782,7 +2790,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/tmp/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -2875,7 +2883,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -2959,7 +2967,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3043,7 +3051,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --add-module=/path/to/some/module --add-module=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --add-module=/path/to/some/module --add-module=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3127,7 +3135,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-openssl=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-openssl=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3211,7 +3219,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3294,7 +3302,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3377,7 +3385,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3462,7 +3470,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3546,7 +3554,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-pcre=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-pcre=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3630,7 +3638,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-zlib=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-zlib=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3714,7 +3722,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-md5=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-md5=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3798,7 +3806,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-sha1=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-sha1=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3882,7 +3890,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-libatomic=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-libatomic=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3966,7 +3974,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4049,7 +4057,7 @@ sh ./configure --prefix=./nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4135,7 +4143,7 @@ sh ./configure --prefix=./nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4221,7 +4229,7 @@ sh ./configure --prefix=./nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4309,7 +4317,7 @@ sh ./configure --prefix=. \
   --add-module=../rds-json-nginx-module-0.15 \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4394,7 +4402,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  '--with-pcre-opt=-foo -bar' $'--with-zlib-opt=hello, \'\\world' --with-stream --with-stream_ssl_module --with-http_ssl_module
+  '--with-pcre-opt=-foo -bar' $'--with-zlib-opt=hello, \'\\world' --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4478,7 +4486,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4562,7 +4570,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4646,7 +4654,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --sbin-path=/opt/blah/nginx --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --sbin-path=/opt/blah/nginx --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4730,7 +4738,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --sbin-path=../bin/nginx --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --sbin-path=../bin/nginx --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4813,7 +4821,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4887,7 +4895,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../redis-nginx-module-0.3.7 \
   --add-module=../rds-json-nginx-module-0.15 \
   --add-module=../rds-csv-nginx-module-0.09 \
-  --with-stream_ssl_module --with-http_ssl_module
+  --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4951,7 +4959,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --add-dynamic-module=/path/to/some/module --add-dynamic-module=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-http_ssl_module
+  --add-dynamic-module=/path/to/some/module --add-dynamic-module=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -5034,11 +5042,12 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.6rc1 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-stream
+  --with-stream --with-stream_ssl_preread_module
 cd ../..
 Type the following commands to build and install:
     gmake
     gmake install
+
 
 
 
@@ -5050,3 +5059,4 @@ platform: linux (linux)
 --- err
 --with-stream_ssl_module conflicts with --without-stream_ssl_module.
 --- exit: 2
+
