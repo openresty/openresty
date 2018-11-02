@@ -6,7 +6,7 @@ use warnings;
 use Getopt::Std qw(getopts);
 use Cwd qw/cwd/;
 
-sub sh ($);
+sub sh ($@);
 sub cleanup ();
 sub write_config_file ($);
 
@@ -110,6 +110,8 @@ sh "curl -si localhost/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
+}
+
 warn "\n=== --without-stream + dtrace static probes ===\n";
 $prefix = "/usr/local/openresty-nostream-usdt";
 cleanup();
@@ -119,18 +121,16 @@ unless ($opts{f}) {
 sh "$make -j$jobs";
 sh "sudo $make install";
 sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
-sh "$prefix/nginx/sbin/nginx -V 2>&1", $ver;
-sh "$prefix/nginx/sbin/nginx -V 2>&1", "--with-stream";
-sh "$prefix/nginx/sbin/nginx -V 2>&1", "--with-dtrace-probes";
+sh "$prefix/nginx/sbin/nginx -V 2>\&1", $ver;
+sh "$prefix/nginx/sbin/nginx -V 2>\&1", "--with-stream", 1;
+sh "$prefix/nginx/sbin/nginx -V 2>\&1", "--with-dtrace-probes";
 system "sudo killall nginx > /dev/null 2>&1";
 sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
 sh "curl -si localhost/cjson|grep 'json.safe: '";
-sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
+sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'}, 'Hello World';
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
-
-}
 
 warn "\n=== Without Gzip/SSL/PCRE ===\n";
 $prefix = "/usr/local/openresty-nogzip";
@@ -268,19 +268,27 @@ sh "sudo $prefix/nginx/sbin/nginx -sstop";
 sub sh ($@) {
     my $cmd = shift;
     my $pat = shift;
+    my $neg = shift;
     open my $in, "$cmd|"
         or die "Command \"$cmd\" failed";
     my $out = '';
     my $found;
     while (<$in>) {
-        if (defined $pat && index($_, $pat) >= 0) {
-            $found = 1;
+        if (defined $pat) {
+            if ($neg && index($_, $pat) < 0) {
+                $found = 1;
+            } elsif (!$neg && index($_, $pat) >= 0) {
+                $found = 1;
+            }
         }
         $out .= $_;
     }
     close $in
         or die "Failed to run command \"$cmd\": $out";
     if (!defined $found && defined $pat) {
+        if ($neg) {
+            die "unexpectedly found pattern '$pat' in the output of command \"$cmd\": $out";
+        }
         die "failed find pattern '$pat' in the output of command \"$cmd\": $out";
     }
     if (length $out < 1024) {
