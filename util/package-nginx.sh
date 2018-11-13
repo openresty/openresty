@@ -14,6 +14,8 @@ if [ ! -d nginx/.git ]; then
 fi
 
 cd nginx || exit 1
+git reset --hard || exit 1
+git checkout master || exit 1
 git pull --force || exit 1
 cd .. || exit 1
 
