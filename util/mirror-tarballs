@@ -851,6 +851,7 @@ cd ..
 #################################
 
 rm *.tar.gz
+rm *.tar.bz2
 
 cd ..
 cp $root/util/configure ./ || exit 1
