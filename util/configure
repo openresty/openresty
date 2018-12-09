@@ -228,7 +228,7 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--with-debug') {
         $resty_opts{debug} = 1;
 
-    } elsif ($opt eq '--help') {
+    } elsif ($opt eq '--help' || $opt eq '-h') {
         usage 0;
 
     } elsif ($opt =~ /^--with-cc-opt=(.*)/) {
