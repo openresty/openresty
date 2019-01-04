@@ -222,7 +222,7 @@ Copyright & License
 
 This module is licensed under the BSD license.
 
-Copyright (C) 2015-2018, by Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>, OpenResty Inc.
+Copyright (C) 2015-2019, by Yichun "agentzh" Zhang (章亦春) <agentzh@gmail.com>, OpenResty Inc.
 
 All rights reserved.
 
