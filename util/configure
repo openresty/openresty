@@ -11,6 +11,7 @@ sub shell ($@);
 sub env ($$);
 sub cd ($);
 sub auto_complete ($);
+sub add_lua_lib ($$$);
 sub usage ($);
 sub trim ($);
 
@@ -21,7 +22,7 @@ chomp $root_dir;
 
 my $OS = $^O;
 
-my $ngx_dir;
+my ($ngx_dir, $lualib_prefix);
 
 for my $opt (@ARGV) {
     if ($opt =~ /^--platform=(.*)/) {
@@ -182,6 +183,9 @@ for my $opt (@ARGV) {
 
     } elsif ($opt eq '--without-lua_cjson') {
         $resty_opts{no_lua_cjson} = 1;
+
+    } elsif ($opt eq '--without-lua_tablepool') {
+        $resty_opts{no_lua_tablepool} = 1;
 
     } elsif ($opt eq '--without-lua_redis_parser') {
         $resty_opts{no_lua_redis_parser} = 1;
@@ -913,7 +917,7 @@ int main(void) {
     {
         # build lua modules
 
-        my $lualib_prefix = File::Spec->catfile($prefix, "lualib");
+        $lualib_prefix = File::Spec->catfile($prefix, "lualib");
         my $site_lualib_prefix = File::Spec->catfile($prefix, "site/lualib");
 
         my $ngx_lua_dir = auto_complete 'ngx_lua';
@@ -1098,22 +1102,10 @@ _EOC_
         for my $key (qw(dns memcached redis mysql string upload websocket
                         lock lrucache core upstream_healthcheck limit_traffic))
         {
-            unless ($opts->{"no_lua_resty_$key"}) {
-                (my $key2 = $key) =~ s/_/-/g;
-                my $name = "lua-resty-$key2";
-                my $dir = auto_complete $name;
-                if (!defined $dir) {
-                    die "No $name found";
-                }
-
-                my $extra_opts =
-                    " DESTDIR=\$(DESTDIR) LUA_LIB_DIR=$lualib_prefix"
-                    ." INSTALL=$root_dir/build/install";
-
-                push @make_install_cmds, "cd $root_dir/build/$dir && " .
-                    "\$(MAKE) install$extra_opts";
-            }
+            add_lua_lib($opts, "lua_resty", $key);
         }
+
+        add_lua_lib($opts, "lua", "tablepool");
     }
 
     # configure opm:
@@ -1209,6 +1201,27 @@ _EOC_
     return $opts_line;
 }
 
+sub add_lua_lib ($$$) {
+    my ($opts, $prefix, $lib) = @_;
+
+    unless ($opts->{"no_${prefix}_$lib"}) {
+        (my $prefix2 = $prefix) =~ s/_/-/g;
+        (my $lib2 = $lib) =~ s/_/-/g;
+        my $name = "$prefix2-$lib2";
+        my $dir = auto_complete $name;
+        if (!defined $dir) {
+            die "No $name library found";
+        }
+
+        my $extra_opts =
+        " DESTDIR=\$(DESTDIR) LUA_LIB_DIR=$lualib_prefix"
+        ." INSTALL=$root_dir/build/install";
+
+        push @make_install_cmds, "cd $root_dir/build/$dir && " .
+        "\$(MAKE) install$extra_opts";
+    }
+}
+
 sub usage ($) {
     my $retval = shift;
     my $msg = <<'_EOC_';
@@ -1281,6 +1294,7 @@ _EOC_
     $msg .= <<'_EOC_';
 
   --without-lua_cjson                disable the lua-cjson library
+  --without-lua_tablepool            disable the lua-tablepool library
   --without-lua_redis_parser         disable the lua-redis-parser library
   --without-lua_rds_parser           disable the lua-rds-parser library
   --without-lua_resty_dns            disable the lua-resty-dns library
