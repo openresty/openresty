@@ -4,6 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 
+use Config;
 use File::Spec;
 use File::Temp qw( tempfile tmpnam );
 
@@ -129,6 +130,7 @@ my $cores;
 my $luajit_xcflags = '';
 my $user_luajit_xcflags;
 my $no_luajit_lua52;
+my $no_luajit_gc64;
 
 my (@ngx_opts, @ngx_cc_opts, @ngx_ld_opts);
 
@@ -262,6 +264,9 @@ for my $opt (@ARGV) {
 
     } elsif ($opt =~ /^--without-luajit-lua52/) {
         $no_luajit_lua52 = 1;
+
+    } elsif ($opt =~ /^--without-luajit-gc64/) {
+        $no_luajit_gc64 = 1;
 
     } elsif ($opt =~ /^--with-libdrizzle=(.*)/) {
         $resty_opts{libdrizzle} = $1;
@@ -699,6 +704,14 @@ _END_
                 || $user_luajit_xcflags !~ /-DLUAJIT_ENABLE_LUA52COMPAT\b/))
         {
             $luajit_xcflags .= " -DLUAJIT_ENABLE_LUA52COMPAT";
+        }
+
+        if (!$no_luajit_gc64
+            && $Config{"archname"} =~ /\bx86_64\b/
+            && (!$user_luajit_xcflags
+                || $user_luajit_xcflags !~ /-DLUAJIT_ENABLE_GC64\b/))
+        {
+            $luajit_xcflags .= " -DLUAJIT_ENABLE_GC64";
         }
 
         if (!$user_luajit_xcflags
@@ -1316,6 +1329,8 @@ _EOC_
   --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.1
   --without-luajit-lua52             Turns off the LuaJIT extensions from Lua 5.2 that may break
                                      backward compatibility.
+  --without-luajit-gc64              Turns off the LuaJIT GC64 mode (which is enabled by default
+                                     on x86_64)
 
   --with-libdrizzle=DIR              specify the libdrizzle 1.0 (or drizzle) installation prefix
   --with-libpq=DIR                   specify the libpq (or postgresql) installation prefix
