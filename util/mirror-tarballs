@@ -861,6 +861,28 @@ cd ..
 
 #################################
 
+ver=0.02
+$root/util/get-tarball "https://github.com/openresty/lua-resty-signal/tarball/v$ver" -O "lua-resty-signal-$ver.tar.gz" || exit 1
+tar -xzf lua-resty-signal-$ver.tar.gz || exit 1
+mv openresty-lua-resty-signal-* lua-resty-signal-$ver || exit 1
+cd lua-resty-signal-$ver || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
+
+#################################
+
+ver=0.01
+$root/util/get-tarball "https://github.com/openresty/lua-resty-shell/tarball/v$ver" -O "lua-resty-shell-$ver.tar.gz" || exit 1
+tar -xzf lua-resty-shell-$ver.tar.gz || exit 1
+mv openresty-lua-resty-shell-* lua-resty-shell-$ver || exit 1
+cd lua-resty-shell-$ver || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
+
+#################################
+
 rm *.tar.gz
 rm *.tar.bz2
 
