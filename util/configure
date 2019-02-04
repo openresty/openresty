@@ -1017,6 +1017,44 @@ _EOC_
                 "\$(MAKE) install$extra_opts";
         }
 
+        unless ($opts->{no_lua_resty_signal}) {
+            my $dir = auto_complete 'lua-resty-signal';
+
+            my $extra_opts =
+                " DESTDIR=\$(DESTDIR) LUA_INCLUDE_DIR=$ENV{LUAJIT_INC} " .
+                "LUA_LIB_DIR=$lualib_prefix";
+
+            if ($on_solaris) {
+                $extra_opts .= " INSTALL=$root_dir/build/install";
+            }
+
+            if ($opts->{debug}) {
+                $extra_opts .= " CFLAGS=\"-g -O -Wall -fpic\"";
+            }
+
+            if ($platform eq 'macosx') {
+                $extra_opts .=
+                    " LDFLAGS='-bundle -undefined dynamic_lookup'";
+
+            } elsif ($platform eq 'msys') {
+                my $luajit_root = File::Spec->rel2abs("luajit-root");
+                $extra_opts .= " LDFLAGS=\"-shared -L$luajit_root -llua51\"";
+            }
+
+            if (defined $cc) {
+                $extra_opts .= " CC='$cc'";
+
+            } else {
+                $extra_opts .= " CC=cc";
+            }
+
+            push @make_cmds, "cd $root_dir/build/$dir && " .
+                "\$(MAKE)$extra_opts";
+
+            push @make_install_cmds, "cd $root_dir/build/$dir && " .
+                "\$(MAKE) install$extra_opts";
+        }
+
         unless ($opts->{no_lua_redis_parser}) {
             my $dir = auto_complete 'lua-redis-parser';
             if (!defined $dir) {
@@ -1122,7 +1160,7 @@ _EOC_
 
         for my $key (qw(dns memcached redis mysql string upload websocket
                         lock lrucache core upstream_healthcheck limit_traffic
-                        signal shell))
+                        shell))
         {
             add_lua_lib($opts, "lua_resty", $key);
         }
