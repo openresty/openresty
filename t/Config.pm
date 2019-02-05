@@ -58,11 +58,19 @@ sub run_test ($) {
         $expected_err =~ s/\$OPENRESTY_DIR\b/$DistRoot/gs;
     }
 
-    my $expected_out = $block->out;
-    if (!defined $expected_out) {
-        $expected_out = '';
+    my ($expected_out, $expected_out_regex);
+
+    if (defined $block->out_like) {
+        $expected_out_regex = $block->out_like;
+        if (!ref $expected_out_regex) {
+            $expected_out_regex = qr~$expected_out_regex~s;
+        }
+
+    } elsif (defined $block->out) {
+        $expected_out = $block->out;
+
     } else {
-        #$expected_out =~ s/\$OPENRESTY_BUILD_DIR\b/$BuildRoot/gs;
+        $expected_out = '';
     }
 
     #die $BuildRoot;
@@ -70,7 +78,13 @@ sub run_test ($) {
     $stdout =~ s/\Q$BuildRoot\E/\$OPENRESTY_BUILD_DIR/g;
     $stdout =~ s/\Q$DistRoot\E/\$OPENRESTY_DIR/g;
 
-    is($stdout, $expected_out, "$name - stdout ok");
+    if (ref $expected_out_regex) {
+        like $stdout, $expected_out_regex, "$name - stdout like ok";
+
+    } else {
+        is $stdout, $expected_out, "$name - stdout ok";
+    }
+
     is($stderr, $expected_err, "$name - stderr ok");
     is($retval >> 8, $expected_exit, "$name - exit code ok");
 
