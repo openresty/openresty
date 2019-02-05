@@ -355,6 +355,11 @@ for my $opt (@ARGV) {
     }
 }
 
+if ($platform eq 'msys') {
+    $resty_opts{no_lua_resty_signal} = 1;
+    $resty_opts{no_lua_resty_shell} = 1;
+}
+
 print "platform: $platform ($OS)\n";
 
 my $ngx_prefix;
