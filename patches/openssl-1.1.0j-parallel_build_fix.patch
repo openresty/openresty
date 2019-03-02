@@ -1,0 +1,21 @@
+diff --git a/Configurations/unix-Makefile.tmpl b/Configurations/unix-Makefile.tmpl
+index 11fecc259b..50362d3812 100644
+--- a/Configurations/unix-Makefile.tmpl
++++ b/Configurations/unix-Makefile.tmpl
+@@ -77,8 +77,14 @@
+      # to. You're welcome.
+      sub dependmagic {
+          my $target = shift;
+-
+-         return "$target: build_generated\n\t\$(MAKE) depend && \$(MAKE) _$target\n_$target";
++         my $magic = <<"_____";
++$target: build_generated depend
++\t\$(MAKE) _$target
++_$target
++_____
++         # Remove line ending
++         $magic =~ s|\R$||;
++         return $magic;
+      }
+      '';
+ -}
