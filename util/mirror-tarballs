@@ -58,6 +58,10 @@ fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.13.6`
 if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying the remove_glibc_crypt_workaround patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-remove_glibc_crypt_workaround.patch || exit 1
+    echo
+
     echo "$info_txt applying the stream_ssl_preread_no_skip patch for nginx"
     patch -p1 < $root/patches/nginx-$main_ver-stream_ssl_preread_no_skip.patch || exit 1
     echo
