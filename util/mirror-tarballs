@@ -34,6 +34,10 @@ cd nginx-$ver || exit 1
 
 # patch the patch
 
+echo "$info_txt applying the nginx-$main_ver-win32_max_err_str.patch"
+patch -p1 < $root/patches/nginx-$main_ver-win32_max_err_str.patch || exit 1
+echo
+
 answer=`$root/util/ver-ge "$main_ver" 1.13.3`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the patch for nginx security advisory (CVE-2017-7529)"
