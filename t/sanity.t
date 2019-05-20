@@ -2,7 +2,7 @@
 
 use t::Config;
 
-plan tests => 269;
+plan tests => 273;
 
 #no_diff();
 
@@ -77,6 +77,7 @@ __DATA__
   --with-luajit                      enable and build the bundled LuaJIT 2.1 (the default)
   --with-luajit=DIR                  use the external LuaJIT 2.1 installation specified by DIR
   --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.1
+  --with-luajit-ldflags=FLAGS        Specify extra C linker flags for LuaJIT 2.1
   --without-luajit-lua52             Turns off the LuaJIT extensions from Lua 5.2 that may break
                                      backward compatibility.
   --without-luajit-gc64              Turns off the LuaJIT GC64 mode (which is enabled by default
@@ -256,6 +257,7 @@ Options directly inherited from nginx
 
   --dry-run                          dry running the configure, for testing only
   --platform=PLATFORM                forcibly specify a platform name, for testing only
+
 
 
 
@@ -863,6 +865,7 @@ clean:
   --with-luajit                      enable and build the bundled LuaJIT 2.1 (the default)
   --with-luajit=DIR                  use the external LuaJIT 2.1 installation specified by DIR
   --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.1
+  --with-luajit-ldflags=FLAGS        Specify extra C linker flags for LuaJIT 2.1
   --without-luajit-lua52             Turns off the LuaJIT extensions from Lua 5.2 that may break
                                      backward compatibility.
   --without-luajit-gc64              Turns off the LuaJIT GC64 mode (which is enabled by default
@@ -1042,6 +1045,7 @@ Options directly inherited from nginx
 
   --dry-run                          dry running the configure, for testing only
   --platform=PLATFORM                forcibly specify a platform name, for testing only
+
 
 
 
@@ -1411,8 +1415,8 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "gcc-4.2": No such file or directory at ./configure line 706.
-Can't exec "gcc-4.2": No such file or directory at ./configure line 752.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 710.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 756.
 
 
 
@@ -1592,8 +1596,8 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "cl": No such file or directory at ./configure line 706.
-Can't exec "cl": No such file or directory at ./configure line 752.
+Can't exec "cl": No such file or directory at ./configure line 710.
+Can't exec "cl": No such file or directory at ./configure line 756.
 
 
 
@@ -1810,43 +1814,43 @@ clean:
 
 === TEST 22: ngx_postgres enabled and --with-pg_config is specified
 --- cmd: ./configure --with-pg_config=pg_config --with-http_postgres_module --dry-run
---- out_like
-platform: linux \(linux\)
+--- out
+platform: linux (linux)
 cp -rp bundle/ build
 cd build
-export LIBPQ_LIB='(/usr/lib64|/usr/lib/x86_64-linux-gnu)'
-export LIBPQ_INC='(?:/usr/include|/usr/include/postgresql)'
+export LIBPQ_LIB='/usr/lib64'
+export LIBPQ_INC='/usr/include'
 cd LuaJIT-2.1-20190507
 INFO: found -msse4.2 in cc.
 gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
-gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=\$OPENRESTY_BUILD_DIR/luajit-root/
-export LUAJIT_LIB='\$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
-export LUAJIT_INC='\$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 patching the resty script with hard-coded nginx binary path...
 cd nginx-1.15.8
-sh ./configure --prefix=/usr/local/openresty/nginx \\
-  --with-cc-opt='-O2' \\
-  --add-module=../ngx_devel_kit-0.3.1rc1 \\
-  --add-module=../echo-nginx-module-0.61 \\
-  --add-module=../xss-nginx-module-0.06 \\
-  --add-module=../ngx_coolkit-0.2 \\
-  --add-module=../set-misc-nginx-module-0.32 \\
-  --add-module=../form-input-nginx-module-0.12 \\
-  --add-module=../encrypted-session-nginx-module-0.08 \\
-  --add-module=../ngx_postgres-1.0 \\
-  --add-module=../srcache-nginx-module-0.31 \\
-  --add-module=../ngx_lua-0.10.15 \\
-  --add-module=../ngx_lua_upstream-0.07 \\
-  --add-module=../headers-more-nginx-module-0.33 \\
-  --add-module=../array-var-nginx-module-0.05 \\
-  --add-module=../memc-nginx-module-0.19 \\
-  --add-module=../redis2-nginx-module-0.15 \\
-  --add-module=../redis-nginx-module-0.3.7 \\
-  --add-module=../rds-json-nginx-module-0.15 \\
-  --add-module=../rds-csv-nginx-module-0.09 \\
-  --add-module=../ngx_stream_lua-0.0.7 \\
-  --with-ld-opt='-Wl,-rpath,\1:/usr/local/openresty/luajit/lib' \\
+sh ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
+  --add-module=../ngx_devel_kit-0.3.1rc1 \
+  --add-module=../echo-nginx-module-0.61 \
+  --add-module=../xss-nginx-module-0.06 \
+  --add-module=../ngx_coolkit-0.2 \
+  --add-module=../set-misc-nginx-module-0.32 \
+  --add-module=../form-input-nginx-module-0.12 \
+  --add-module=../encrypted-session-nginx-module-0.08 \
+  --add-module=../ngx_postgres-1.0 \
+  --add-module=../srcache-nginx-module-0.31 \
+  --add-module=../ngx_lua-0.10.15 \
+  --add-module=../ngx_lua_upstream-0.07 \
+  --add-module=../headers-more-nginx-module-0.33 \
+  --add-module=../array-var-nginx-module-0.05 \
+  --add-module=../memc-nginx-module-0.19 \
+  --add-module=../redis2-nginx-module-0.15 \
+  --add-module=../redis-nginx-module-0.3.7 \
+  --add-module=../rds-json-nginx-module-0.15 \
+  --add-module=../rds-csv-nginx-module-0.09 \
+  --add-module=../ngx_stream_lua-0.0.7 \
+  --with-ld-opt='-Wl,-rpath,/usr/lib64:/usr/local/openresty/luajit/lib' \
   --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -2436,7 +2440,7 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 815.
+Can't exec "sw_vers": No such file or directory at ./configure line 824.
 
 
 
@@ -2526,7 +2530,7 @@ install: all
 clean:
 	rm -rf build
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 815.
+Can't exec "sw_vers": No such file or directory at ./configure line 824.
 
 
 
@@ -5118,6 +5122,7 @@ cd ../..
 Type the following commands to build and install:
     gmake
     gmake install
+
 --- makefile
 .PHONY: all install clean
 
@@ -5205,6 +5210,7 @@ cd ../..
 Type the following commands to build and install:
     gmake
     gmake install
+
 --- makefile
 .PHONY: all install clean
 
@@ -5292,6 +5298,7 @@ cd ../..
 Type the following commands to build and install:
     gmake
     gmake install
+
 --- makefile
 .PHONY: all install clean
 
@@ -5786,6 +5793,7 @@ Type the following commands to build and install:
 
 
 
+
 === TEST 70: --without-stream_ssl_module and --with-stream_ssl_module specified at the same time causes errors
 --- cmd: ./configure --with-stream_ssl_module --without-stream_ssl_module --dry-run
 --- out
@@ -5794,3 +5802,92 @@ platform: linux (linux)
 --- err
 --with-stream_ssl_module conflicts with --without-stream_ssl_module.
 --- exit: 2
+
+
+
+=== TEST 46: --with-luajit-xcflags
+--- cmd: ./configure --with-luajit --with-luajit-ldflags='-Wl,-rpath,/tmp/blah/foo' --dry-run
+--- out
+platform: linux (linux)
+cp -rp bundle/ build
+cd build
+cd LuaJIT-2.1-20190507
+INFO: found -msse4.2 in cc.
+gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' LDFLAGS='-Wl,-rpath,/tmp/blah/foo' CC=cc PREFIX=/usr/local/openresty/luajit
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' LDFLAGS='-Wl,-rpath,/tmp/blah/foo' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
+cd ..
+patching the resty script with hard-coded nginx binary path...
+cd nginx-1.15.8
+sh ./configure --prefix=/usr/local/openresty/nginx \
+  --with-cc-opt='-O2' \
+  --add-module=../ngx_devel_kit-0.3.1rc1 \
+  --add-module=../echo-nginx-module-0.61 \
+  --add-module=../xss-nginx-module-0.06 \
+  --add-module=../ngx_coolkit-0.2 \
+  --add-module=../set-misc-nginx-module-0.32 \
+  --add-module=../form-input-nginx-module-0.12 \
+  --add-module=../encrypted-session-nginx-module-0.08 \
+  --add-module=../srcache-nginx-module-0.31 \
+  --add-module=../ngx_lua-0.10.15 \
+  --add-module=../ngx_lua_upstream-0.07 \
+  --add-module=../headers-more-nginx-module-0.33 \
+  --add-module=../array-var-nginx-module-0.05 \
+  --add-module=../memc-nginx-module-0.19 \
+  --add-module=../redis2-nginx-module-0.15 \
+  --add-module=../redis-nginx-module-0.3.7 \
+  --add-module=../rds-json-nginx-module-0.15 \
+  --add-module=../rds-csv-nginx-module-0.09 \
+  --add-module=../ngx_stream_lua-0.0.7 \
+  --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
+  --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
+cd ../..
+Type the following commands to build and install:
+    gmake
+    gmake install
+
+--- makefile
+.PHONY: all install clean
+
+all:
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20190507 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' LDFLAGS='-Wl,-rpath,/tmp/blah/foo' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.7 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-resty-signal-0.02 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.13 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE)
+
+install: all
+	mkdir -p $(DESTDIR)/usr/local/openresty/
+	-cp $OPENRESTY_DIR/COPYRIGHT $(DESTDIR)/usr/local/openresty/
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20190507 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' LDFLAGS='-Wl,-rpath,/tmp/blah/foo' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.7 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-resty-signal-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.13 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-rds-parser-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
+	cd $OPENRESTY_BUILD_DIR/lua-resty-dns-0.21 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-memcached-0.14 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-redis-0.27 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-mysql-0.21 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-string-0.11 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-upload-0.10 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-websocket-0.07 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-lock-0.08 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-lrucache-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.17 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
+	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.24 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
+	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
+	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
+	mkdir -p $(DESTDIR)/usr/local/openresty/site/lualib $(DESTDIR)/usr/local/openresty/site/pod $(DESTDIR)/usr/local/openresty/site/manifest
+	ln -sf /usr/local/openresty/nginx/sbin/nginx $(DESTDIR)/usr/local/openresty/bin/openresty
+
+clean:
+	rm -rf build
+

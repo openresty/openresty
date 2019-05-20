@@ -129,6 +129,7 @@ my $cc;
 my $cores;
 my $luajit_xcflags = '';
 my $user_luajit_xcflags;
+my $user_luajit_ldflags;
 my $no_luajit_lua52;
 my $no_luajit_gc64;
 
@@ -269,6 +270,9 @@ for my $opt (@ARGV) {
 
     } elsif ($opt =~ /^--with-luajit-xcflags=(.*)/) {
         $user_luajit_xcflags .= " $1";
+
+    } elsif ($opt =~ /^--with-luajit-ldflags=(.*)/) {
+        $user_luajit_ldflags .= " $1";
 
     } elsif ($opt =~ /^--without-luajit-lua52/) {
         $no_luajit_lua52 = 1;
@@ -796,6 +800,11 @@ int main(void) {
         #if ($platform =~ /bsd/i) {
         #$extra_opts .= ' CFLAGS=-I..';
         #}
+
+        if ($user_luajit_ldflags) {
+            $user_luajit_ldflags =~ s/^ +//;
+            $extra_opts .= qq{ LDFLAGS='$user_luajit_ldflags'};
+        }
 
         if ($on_solaris) {
             $extra_opts .= " INSTALL_X='$root_dir/build/install -m 0755' " .
@@ -1383,6 +1392,7 @@ _EOC_
   --with-luajit                      enable and build the bundled LuaJIT 2.1 (the default)
   --with-luajit=DIR                  use the external LuaJIT 2.1 installation specified by DIR
   --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.1
+  --with-luajit-ldflags=FLAGS        Specify extra C linker flags for LuaJIT 2.1
   --without-luajit-lua52             Turns off the LuaJIT extensions from Lua 5.2 that may break
                                      backward compatibility.
   --without-luajit-gc64              Turns off the LuaJIT GC64 mode (which is enabled by default
