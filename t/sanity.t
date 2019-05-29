@@ -260,7 +260,6 @@ Options directly inherited from nginx
 
 
 
-
 === TEST 2: --with-http_ssl_module & --without-http_ssl_module
 --- cmd: ./configure --with-http_ssl_module --without-http_ssl_module
 --- out
@@ -1048,7 +1047,6 @@ Options directly inherited from nginx
 
 
 
-
 === TEST 10: --with-http_drizzle_module on solaris
 --- cmd: ./configure --with-http_drizzle_module --dry-run --platform=solaris
 --- out
@@ -1814,43 +1812,43 @@ clean:
 
 === TEST 22: ngx_postgres enabled and --with-pg_config is specified
 --- cmd: ./configure --with-pg_config=pg_config --with-http_postgres_module --dry-run
---- out
-platform: linux (linux)
+--- out_like
+platform: linux \(linux\)
 cp -rp bundle/ build
 cd build
-export LIBPQ_LIB='/usr/lib64'
-export LIBPQ_INC='/usr/include'
+export LIBPQ_LIB='(/usr/lib64|/usr/lib/x86_64-linux-gnu)'
+export LIBPQ_INC='(?:/usr/include|/usr/include/postgresql)'
 cd LuaJIT-2.1-20190507
 INFO: found -msse4.2 in cc.
 gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
-gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
-export LUAJIT_LIB='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
-export LUAJIT_INC='$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
+gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=\$OPENRESTY_BUILD_DIR/luajit-root/
+export LUAJIT_LIB='\$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/lib'
+export LUAJIT_INC='\$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1'
 cd ..
 patching the resty script with hard-coded nginx binary path...
 cd nginx-1.15.8
-sh ./configure --prefix=/usr/local/openresty/nginx \
-  --with-cc-opt='-O2' \
-  --add-module=../ngx_devel_kit-0.3.1rc1 \
-  --add-module=../echo-nginx-module-0.61 \
-  --add-module=../xss-nginx-module-0.06 \
-  --add-module=../ngx_coolkit-0.2 \
-  --add-module=../set-misc-nginx-module-0.32 \
-  --add-module=../form-input-nginx-module-0.12 \
-  --add-module=../encrypted-session-nginx-module-0.08 \
-  --add-module=../ngx_postgres-1.0 \
-  --add-module=../srcache-nginx-module-0.31 \
-  --add-module=../ngx_lua-0.10.15 \
-  --add-module=../ngx_lua_upstream-0.07 \
-  --add-module=../headers-more-nginx-module-0.33 \
-  --add-module=../array-var-nginx-module-0.05 \
-  --add-module=../memc-nginx-module-0.19 \
-  --add-module=../redis2-nginx-module-0.15 \
-  --add-module=../redis-nginx-module-0.3.7 \
-  --add-module=../rds-json-nginx-module-0.15 \
-  --add-module=../rds-csv-nginx-module-0.09 \
-  --add-module=../ngx_stream_lua-0.0.7 \
-  --with-ld-opt='-Wl,-rpath,/usr/lib64:/usr/local/openresty/luajit/lib' \
+sh ./configure --prefix=/usr/local/openresty/nginx \\
+  --with-cc-opt='-O2' \\
+  --add-module=../ngx_devel_kit-0.3.1rc1 \\
+  --add-module=../echo-nginx-module-0.61 \\
+  --add-module=../xss-nginx-module-0.06 \\
+  --add-module=../ngx_coolkit-0.2 \\
+  --add-module=../set-misc-nginx-module-0.32 \\
+  --add-module=../form-input-nginx-module-0.12 \\
+  --add-module=../encrypted-session-nginx-module-0.08 \\
+  --add-module=../ngx_postgres-1.0 \\
+  --add-module=../srcache-nginx-module-0.31 \\
+  --add-module=../ngx_lua-0.10.15 \\
+  --add-module=../ngx_lua_upstream-0.07 \\
+  --add-module=../headers-more-nginx-module-0.33 \\
+  --add-module=../array-var-nginx-module-0.05 \\
+  --add-module=../memc-nginx-module-0.19 \\
+  --add-module=../redis2-nginx-module-0.15 \\
+  --add-module=../redis-nginx-module-0.3.7 \\
+  --add-module=../rds-json-nginx-module-0.15 \\
+  --add-module=../rds-csv-nginx-module-0.09 \\
+  --add-module=../ngx_stream_lua-0.0.7 \\
+  --with-ld-opt='-Wl,-rpath,\1:/usr/local/openresty/luajit/lib' \\
   --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
@@ -5793,7 +5791,6 @@ Type the following commands to build and install:
 
 
 
-
 === TEST 70: --without-stream_ssl_module and --with-stream_ssl_module specified at the same time causes errors
 --- cmd: ./configure --with-stream_ssl_module --without-stream_ssl_module --dry-run
 --- out
@@ -5805,7 +5802,7 @@ platform: linux (linux)
 
 
 
-=== TEST 46: --with-luajit-xcflags
+=== TEST 71: --with-luajit-ldflags
 --- cmd: ./configure --with-luajit --with-luajit-ldflags='-Wl,-rpath,/tmp/blah/foo' --dry-run
 --- out
 platform: linux (linux)
@@ -5890,4 +5887,3 @@ install: all
 
 clean:
 	rm -rf build
-
