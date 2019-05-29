@@ -170,9 +170,14 @@ END {
         print $out <<"_EOC_";
 === $name
 --- cmd: $cmd
---- out
-$stdout
 _EOC_
+        if ($out) {
+            print $out "--- out\n$stdout";
+
+            if ($makefile || $err || $exit) {
+                print $out "\n";
+            }
+        }
 
         if ($makefile) {
             #$makefile =~ s/$BuildRoot\b/\$OPENRESTY_BUILD_DIR/g;
