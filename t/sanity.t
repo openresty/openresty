@@ -347,7 +347,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -435,7 +435,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -523,7 +523,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -611,7 +611,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -698,7 +698,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -785,7 +785,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -1124,7 +1124,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -1213,7 +1213,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -1315,7 +1315,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -1403,7 +1403,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -1495,7 +1495,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -1584,7 +1584,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -1689,7 +1689,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -1778,7 +1778,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -1889,7 +1889,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -1988,7 +1988,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -2076,7 +2076,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -2164,7 +2164,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -2252,7 +2252,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -2340,7 +2340,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -2428,7 +2428,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -2518,7 +2518,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -2609,7 +2609,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -2695,7 +2695,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -2781,7 +2781,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -2868,7 +2868,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -2953,7 +2953,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -3037,7 +3037,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -3123,7 +3123,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -3204,7 +3204,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -3303,7 +3303,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -3391,7 +3391,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -3479,7 +3479,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -3567,7 +3567,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -3654,7 +3654,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -3741,7 +3741,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -3829,7 +3829,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -3918,7 +3918,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -4006,7 +4006,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -4094,7 +4094,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -4182,7 +4182,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -4270,7 +4270,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -4358,7 +4358,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -4445,7 +4445,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -4535,7 +4535,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)./
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)./
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -4625,7 +4625,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)./
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)./
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -4715,7 +4715,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)./
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)./
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -4804,7 +4804,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.06 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)./
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)./
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)./
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -4891,7 +4891,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -4979,7 +4979,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -5067,7 +5067,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -5155,7 +5155,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -5243,7 +5243,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -5331,7 +5331,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -5419,7 +5419,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -5507,7 +5507,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -5594,7 +5594,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -5648,7 +5648,7 @@ install: all
 	mkdir -p $(DESTDIR)/usr/local/openresty/
 	-cp $OPENRESTY_DIR/COPYRIGHT $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -5736,7 +5736,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
@@ -5878,7 +5878,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.01 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL=$OPENRESTY_BUILD_DIR/install
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.5 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
-	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc1 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
+	cd $OPENRESTY_BUILD_DIR/resty-cli-0.25rc2 && $OPENRESTY_BUILD_DIR/install bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
 	cp -r $OPENRESTY_BUILD_DIR/pod $(DESTDIR)/usr/local/openresty/
 	cd $OPENRESTY_BUILD_DIR/nginx-1.15.8 && $(MAKE) install DESTDIR=$(DESTDIR)
