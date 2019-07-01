@@ -1,4 +1,4 @@
-.PHONY: all test try-luajit try-lua
+.PHONY: all test try-luajit try-lua clean
 
 all:
 	./util/mirror-tarballs
@@ -12,3 +12,5 @@ try-luajit: all
 try-lua: all
 	cd openresty-`./util/ver` && ./configure && $(MAKE)
 
+clean:
+	rm -rf openresty-*
