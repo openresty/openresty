@@ -1,6 +1,6 @@
 --- nginx-1.15.8/src/event/ngx_event_openssl.c	2016-07-17 19:20:30.411137606 -0700
 +++ nginx-1.15.8-patched/src/event/ngx_event_openssl.c	2016-07-19 16:53:35.539768477 -0700
-@@ -1581,7 +1581,15 @@ ngx_ssl_try_early_data(ngx_connection_t *c)
+@@ -1307,7 +1307,12 @@ ngx_ssl_handshake(ngx_connection_t *c)
      }
  
  #if OPENSSL_VERSION_NUMBER >= 0x10002000L
@@ -8,27 +8,9 @@
 +    if (sslerr == SSL_ERROR_WANT_X509_LOOKUP
 +#   ifdef SSL_ERROR_PENDING_SESSION
 +        || sslerr == SSL_ERROR_PENDING_SESSION
-+
-+#   elif defined(SSL_ERROR_WANT_CLIENT_HELLO_CB)
-+        || sslerr == SSL_ERROR_WANT_CLIENT_HELLO_CB
 +#   endif
 +       )
 +    {
          c->read->handler = ngx_ssl_handshake_handler;
          c->write->handler = ngx_ssl_handshake_handler;
  
-diff --git a/src/event/ngx_event_openssl.h b/src/event/ngx_event_openssl.h
---- a/src/event/ngx_event_openssl.h
-+++ b/src/event/ngx_event_openssl.h
-@@ -64,6 +64,11 @@
- #endif
- 
- 
-+#ifdef SSL_ERROR_WANT_CLIENT_HELLO_CB
-+#define HAVE_SSL_CLIENT_HELLO_CB_SUPPORT  1
-+#endif
-+
-+
- struct ngx_ssl_s {
-     SSL_CTX                    *ctx;
-     ngx_log_t                  *log;
