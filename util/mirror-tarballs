@@ -414,9 +414,16 @@ echo "$info_txt applying the ssl_cert_cb_yield.patch patch to nginx"
 patch -p1 < $root/patches/nginx-$main_ver-ssl_cert_cb_yield.patch
 echo
 
-echo "$info_txt applying the ssl_pending_session.patch patch to nginx"
-patch -p1 < $root/patches/nginx-$main_ver-ssl_pending_session.patch
-echo
+answer=`$root/util/ver-ge "$main_ver" 1.17.1`
+if [ "$answer" = "N" ]; then
+    echo "$info_txt applying the ssl_pending_session.patch patch to nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-ssl_pending_session.patch
+    echo
+else
+    echo "$info_txt applying the ssl_sess_cb_yield.patch patch to nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-ssl_sess_cb_yield.patch
+    echo
+fi
 
 echo "$info_txt applying the upstream_timeout_fields patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-upstream_timeout_fields.patch || exit 1
