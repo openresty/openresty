@@ -33,8 +33,9 @@ env:
     - OPENSSL_INC=$OPENSSL_PREFIX/include
     - OPENRESTY_PREFIX=/opt/openresty
   matrix:
-    - OPENSSL_VER=1.0.2q OPENSSL_OPT="" OPENSSL_PATCH_VER=1.0.2h
-    - OPENSSL_VER=1.1.0j OPENSSL_OPT="" OPENSSL_PATCH_VER=1.1.0d
+    - OPENSSL_VER=1.0.2q OPENSSL_PATCH_VER=1.0.2h
+    - OPENSSL_VER=1.1.0j OPENSSL_PATCH_VER=1.1.0d
+    - OPENSSL_VER=1.1.1c OPENSSL_PATCH_VER=1.1.1c
 
 install:
   - sudo cpanm --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
@@ -49,7 +50,7 @@ install:
   - tar zxf download-cache/openssl-$OPENSSL_VER.tar.gz
   - cd openssl-$OPENSSL_VER/
   - patch -p1 < ../patches/openssl-$OPENSSL_PATCH_VER-sess_set_get_cb_yield.patch
-  - ./config no-threads shared enable-ssl3 enable-ssl3-method $OPENSSL_OPT -g --prefix=$OPENSSL_PREFIX -DPURIFY > build.log 2>&1 || (cat build.log && exit 1)
+  - ./config no-threads shared enable-ssl3 enable-ssl3-method -g --prefix=$OPENSSL_PREFIX -DPURIFY > build.log 2>&1 || (cat build.log && exit 1)
   - make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
   - sudo make PATH=$PATH install_sw > build.log 2>&1 || (cat build.log && exit 1)
   - cd ..
