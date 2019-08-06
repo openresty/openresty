@@ -20,7 +20,7 @@ our $RootDir = `pwd`;
 chomp $RootDir;
 
 sub run_tests {
-    my $ver = `bash util/ver`;
+    my $ver = `bash -c '. util/ver && echo \$openresty_ver'`;
     chomp $ver;
 
     cd "openresty-$ver";

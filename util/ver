@@ -1,7 +1,48 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-main_ver=1.17.1
+nginx_ver=1.17.1
 minor_ver=1rc0
-version=$main_ver.$minor_ver
-echo $version
+openresty_ver=$nginx_ver.$minor_ver
 
+lua_nginx_module_ver=v0.10.15
+stream_lua_nginx_module_ver=v0.0.7
+lua_resty_core_ver=v0.1.17
+luajit2_ver=v2.1-20190912
+resty_cli_ver=v0.25rc2
+lua_cjson_ver=2.1.0.7
+lua_redis_parser_ver=v0.13
+lua_rds_parser_ver=v0.06
+lua_resty_dns_ver=v0.21
+lua_resty_memcached_ver=v0.14
+lua_resty_redis_ver=v0.27
+lua_resty_mysql_ver=v0.21
+lua_resty_limit_traffic_ver=v0.06
+lua_resty_upload_ver=v0.10
+lua_resty_string_ver=v0.12rc1
+lua_resty_websocket_ver=v0.07
+lua_resty_lock_ver=v0.08
+lua_resty_lrucache_ver=v0.09
+lua_resty_upstream_healthcheck_ver=v0.06
+lua_tablepool_ver=v0.01
+lua_resty_signal_ver=v0.02
+lua_resty_shell_ver=v0.02
+opm_ver=v0.0.5
+lua_upstream_nginx_module_ver=v0.07
+array_var_nginx_module_ver=v0.05
+memc_nginx_module_ver=v0.19
+srcache_nginx_module_ver=v0.31
+echo_nginx_module_ver=v0.61
+xss_nginx_module_ver=v0.06
+set_misc_nginx_module_ver=v0.32
+rds_json_nginx_module_ver=v0.15
+rds_csv_nginx_module_ver=v0.09
+headers_more_nginx_module_ver=v0.33
+drizzle_nginx_module_ver=v0.1.11
+encrypted_session_nginx_module_ver=v0.08
+ngx_postgres_ver=1.0
+redis2_nginx_module_ver=v0.15
+form_input_nginx_module_ver=v0.12
+iconv_nginx_module_ver=v0.14
+ngx_devel_kit_ver=v0.3.1rc1
+ngx_coolkit_ver=0.2
+ngx_http_redis_ver=0.3.7
