@@ -404,6 +404,23 @@ if [ "$main_ver" = "1.13.6" ]; then
     echo
 fi
 
+answer=`$root/util/ver-ge "$main_ver" 1.9.5`
+if [ "$answer" = "Y" ]; then
+    answer=`$root/util/ver-ge "$main_ver" 1.14.1`
+    if [ "$answer" = "N" ]; then
+        echo "$info_txt applying the patch for nginx security advisory (CVE-2018-16843 CVE-2018-16844)"
+        patch -p0 < $root/patches/patch.2018.h2.txt || exit 1
+        echo
+    else
+        answer=`$root/util/ver-ge "$main_ver" 1.15.6`
+        if [ "$answer" = "N" ]; then
+            echo "$info_txt applying the patch for nginx security advisory (CVE-2018-16843 CVE-2018-16844)"
+            patch -p0 < $root/patches/patch.2018.h2.txt || exit 1
+            echo
+        fi
+    fi
+fi
+
 answer=`$root/util/ver-ge "$main_ver" 1.14.1`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the patch for nginx security advisory (CVE-2018-16845)"
