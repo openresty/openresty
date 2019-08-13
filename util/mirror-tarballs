@@ -411,7 +411,7 @@ if [ "$answer" = "Y" ]; then
         echo "$info_txt applying the patch for nginx security advisory (CVE-2018-16843 CVE-2018-16844)"
         patch -p0 < $root/patches/patch.2018.h2.txt || exit 1
         echo
-    else
+    elif [ `$root/util/ver-ge "$main_ver" 1.15.0` = "Y" ]; then
         answer=`$root/util/ver-ge "$main_ver" 1.15.6`
         if [ "$answer" = "N" ]; then
             echo "$info_txt applying the patch for nginx security advisory (CVE-2018-16843 CVE-2018-16844)"
@@ -432,6 +432,23 @@ else
         echo "$info_txt applying the patch for nginx security advisory (CVE-2018-16845)"
         patch -p0 < $root/patches/patch.2018.mp4.txt || exit 1
         echo
+    fi
+fi
+
+answer=`$root/util/ver-ge "$main_ver" 1.9.5`
+if [ "$answer" = "Y" ]; then
+    answer=`$root/util/ver-ge "$main_ver" 1.16.1`
+    if [ "$answer" = "N" ]; then
+        echo "$info_txt applying the patch for nginx security advisory (CVE-2019-9511 CVE-2019-9513 CVE-2019-9516)"
+        patch -p0 < $root/patches/patch.2019.h2.txt || exit 1
+        echo
+    elif [ `$root/util/ver-ge "$main_ver" 1.17.0` = "Y" ]; then
+        answer=`$root/util/ver-ge "$main_ver" 1.17.3`
+        if [ "$answer" = "N" ]; then
+            echo "$info_txt applying the patch for nginx security advisory (CVE-2019-9511 CVE-2019-9513 CVE-2019-9516)"
+            patch -p0 < $root/patches/patch.2019.h2.txt || exit 1
+            echo
+        fi
     fi
 fi
 
