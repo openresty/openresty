@@ -337,14 +337,19 @@ for my $opt (@ARGV) {
 
     } elsif ($opt =~ /^--with-(openssl|pcre|zlib|libatomic|md5|sha1)=(.*)/) {
 
-        my ($lib, $path) = ($1, $2);
+        my ($lib, $path, $bundle) = ($1, $2, File::Spec->rel2abs('bundle'));
         if ($lib eq 'openssl' && $OS eq 'darwin') {
             if (`uname -a` =~ /\bx86_64\b/) {
                 $ENV{KERNEL_BITS} = 64;
                 push @extra_make_env, 'KERNEL_BITS=64';
             }
         }
+        
         $path = File::Spec->rel2abs($path);
+        if ($path =~ /^$bundle(.*)/) {
+            $path = '..'.$1;
+        }
+        
         push @ngx_opts, "--with-$lib=$path";
 
     } elsif ($opt =~ /^--sbin-path=(.*)/) {
