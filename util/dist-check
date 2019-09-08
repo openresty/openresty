@@ -10,6 +10,10 @@ sub sh ($@);
 sub cleanup ();
 sub write_config_file ($);
 
+BEGIN {
+    $ENV{LC_ALL} = 'C';
+}
+
 my %opts;
 getopts("lf:", \%opts) or die "Usage: $0 [-f] [-l] <cores>\n";
 
