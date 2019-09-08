@@ -1,8 +1,8 @@
 #!/bin/bash
 
-PCRE=pcre-8.42
+PCRE=pcre-8.43
 ZLIB=zlib-1.2.11
-OPENSSL=openssl-1.1.0j
+OPENSSL=openssl-1.1.0k
 JOBS=12
 
 # wget https://www.openssl.org/source/openssl-1.1.0h.tar.gz
