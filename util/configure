@@ -1607,7 +1607,7 @@ sub gen_makefile {
 
     print $out "install: all\n\t" . join("\n\t", @make_install_cmds) . "\n\n";
 
-    print $out "clean:\n\trm -rf build\n";
+    print $out "clean:\n\trm -rf build *.exe *.dll openresty-*\n";
 
     close $out;
 }
