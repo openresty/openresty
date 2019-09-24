@@ -1,5 +1,5 @@
 # vi:ft=
-
+use lib '.';
 use t::Config;
 
 plan tests => 273;
