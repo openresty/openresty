@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -e
 
 . ./util/ver
-ver=$main_ver
 
 cd ..
 if [ ! -d nginx ]; then
@@ -13,24 +14,24 @@ if [ ! -d nginx/.git ]; then
     exit 1
 fi
 
-cd nginx || exit 1
-git reset --hard || exit 1
-git checkout master || exit 1
-git pull --force || exit 1
-cd .. || exit 1
-
-rm -rf nginx-$ver
-rm -f nginx-$ver.tar.gz
-git clone nginx nginx-$ver || exit 1
-cd nginx-$ver/ || exit 1
-git co release-$ver || exit 1
-rm -rf .git || exit 1
-rm .hgtags || exit 1
-mv docs/text/README ./ || exit 1
-mv auto/configure ./ || exit 1
-rm -rf src/mysql || exit 1
+cd nginx
+git reset --hard
+git checkout master
+git pull --force
 cd ..
-tar czvf nginx-$ver.tar.gz nginx-$ver || exit 1
-ls -lh ./nginx-$ver.tar.gz
-#ls -lh ~/work/nginx-$ver.tar.gz
-scp nginx-$ver.tar.gz openresty.org:/home/agentz/www/agentzh/misc/nginx/
+
+rm -rf nginx-$nginx_ver
+rm -f nginx-$nginx_ver.tar.gz
+git clone nginx nginx-$nginx_ver
+cd nginx-$nginx_ver/
+git co release-$nginx_ver
+rm -rf .git
+rm .hgtags
+mv docs/text/README ./
+mv auto/configure ./
+rm -rf src/mysql
+cd ..
+tar czvf nginx-$nginx_ver.tar.gz nginx-$nginx_ver
+ls -lh ./nginx-$nginx_ver.tar.gz
+#ls -lh ~/work/nginx-$nginx_ver.tar.gz
+scp nginx-$nginx_ver.tar.gz openresty.org:/home/agentz/www/agentzh/misc/nginx/

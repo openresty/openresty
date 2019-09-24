@@ -1,0 +1,396 @@
+#!/usr/bin/env bash
+
+tarballs=(
+    "openresty/lua-nginx-module"
+    "openresty/stream-lua-nginx-module"
+    "openresty/lua-resty-core"
+    "openresty/luajit2"
+    "openresty/resty-cli"
+    "openresty/lua-cjson"
+    "openresty/lua-redis-parser"
+    "openresty/lua-rds-parser"
+    "openresty/lua-resty-dns"
+    "openresty/lua-resty-memcached"
+    "openresty/lua-resty-redis"
+    "openresty/lua-resty-mysql"
+    "openresty/lua-resty-limit-traffic"
+    "openresty/lua-resty-upload"
+    "openresty/lua-resty-string"
+    "openresty/lua-resty-websocket"
+    "openresty/lua-resty-lock"
+    "openresty/lua-resty-lrucache"
+    "openresty/lua-resty-upstream-healthcheck"
+    "openresty/lua-tablepool"
+    "openresty/lua-resty-signal"
+    "openresty/lua-resty-shell"
+    "openresty/opm"
+    "openresty/lua-upstream-nginx-module"
+    "openresty/array-var-nginx-module"
+    "openresty/memc-nginx-module"
+    "openresty/srcache-nginx-module"
+    "openresty/echo-nginx-module"
+    "openresty/xss-nginx-module"
+    "openresty/set-misc-nginx-module"
+    "openresty/rds-json-nginx-module"
+    "openresty/rds-csv-nginx-module"
+    "openresty/headers-more-nginx-module"
+    "openresty/drizzle-nginx-module"
+    "openresty/encrypted-session-nginx-module"
+    "openresty/ngx_postgres"
+    "openresty/redis2-nginx-module"
+    "calio/form-input-nginx-module"
+    "calio/iconv-nginx-module"
+    "simplresty/ngx_devel_kit"
+    "FRiCKLE/ngx_coolkit"
+)
+
+abs_path() {
+    if realpath -m -- $1 2>/dev/null >&2; then
+        realpath -m -- $1
+
+    else
+        readlink -f -- $1
+    fi
+}
+
+root_dir=$(dirname $(abs_path ${BASH_SOURCE[${#BASH_SOURCE[@]} - 1]}/..))
+
+apply_nginx_patches() {
+    local nginx_dir=$(abs_path $1)
+    local nginx_ver=$2
+    local prod_patches=$3
+
+    pushd $nginx_dir
+        apply_patch -p1 "nginx-$nginx_ver-upstream_pipelining.patch"
+        apply_patch -p1 "nginx-$nginx_ver-no_error_pages.patch"
+        apply_patch -p1 "nginx-$nginx_ver-log_escape_non_ascii.patch"
+        apply_patch -p1 "nginx-$nginx_ver-dtrace.patch"
+        apply_patch -p1 "nginx-$nginx_ver-gcc-maybe-uninitialized-warning.patch"
+        apply_patch -p1 "nginx-$nginx_ver-proxy_host_port_vars.patch"
+        apply_patch -p1 "nginx-$nginx_ver-cache_manager_exit.patch"
+        apply_patch -p1 "nginx-$nginx_ver-larger_max_error_str.patch"
+        apply_patch -p1 "nginx-$nginx_ver-pcre_conf_opt.patch"
+        apply_patch -p1 "nginx-$nginx_ver-always_enable_cc_feature_tests.patch"
+
+        # < 1.7.1
+
+        if version_lt $nginx_ver 1.7.1; then
+            apply_patch -p1 "nginx-$nginx_ver-setting_args_invalidates_uri.patch"
+        fi
+
+        # < 1.7.2
+
+        if version_lt $nginx_ver 1.7.2; then
+            apply_patch -p1 "nginx-$nginx_ver-slab_defrag.patch"
+        fi
+
+        # < 1.7.4
+
+        if version_lt $nginx_ver 1.7.4; then
+            apply_patch -p1 "nginx-$nginx_ver-proxy_ssl_handshake_timer.patch"
+            apply_patch -p1 "nginx-$nginx_ver-geoip_init_var_fields.patch"
+        fi
+
+        # < 1.7.7
+
+        if version_lt $nginx_ver 1.7.7; then
+            apply_patch -p1 "nginx-$nginx_ver-hash_overflow.patch"
+        fi
+
+        # < 1.7.8
+
+        if version_lt $nginx_ver 1.7.8; then
+            apply_patch -p1 "nginx-$nginx_ver-cache_lock_hang_in_subreq.patch"
+            apply_patch -p1 "nginx-$nginx_ver-resolver_del_event_invalid_read.patch"
+        fi
+
+        # < 1.7.9
+
+        if version_lt $nginx_ver 1.7.9; then
+            apply_patch -p1 "nginx-$nginx_ver-location_if_inherits_proxy.patch"
+        fi
+
+        # < 1.9.2
+
+        if version_lt $nginx_ver 1.9.2; then
+            apply_patch -p1 "nginx-$nginx_ver-upstream_filter_finalize.patch"
+        fi
+
+        # > 1.9.5 && < 1.14.1
+        # > 1.15.0 && < 1.15.6
+
+        if version_gte $nginx_ver 1.9.5 && version_lt $nginx_ver 1.14.1 \
+           || version_gte $nginx_ver 1.15.0 && version_lt $nginx_ver 1.15.6; then
+           apply_patch -p0 "patch.2018.h2.txt"
+        fi
+
+        # > 1.9.5 && < 1.16.1
+        # > 1.17.0 && < 1.17.3
+
+        if version_gte $nginx_ver 1.9.5 && version_lt $nginx_ver 1.16.1 \
+           || version_gte $nginx_ver 1.17.0 && version_lt $nginx_ver 1.17.3; then
+           apply_patch -p0 "patch.2019.h2.txt"
+        fi
+
+        # == 1.9.7
+
+        if version_eq $nginx_ver 1.9.7; then
+            apply_patch -p1 "nginx-$nginx_ver-resolver_security_fixes.patch"
+        fi
+
+        # >= 1.9.7
+
+        if version_gte $nginx_ver 1.9.7; then
+            apply_patch -p1 "nginx-$nginx_ver-ssl_cert_cb_yield.patch"
+        fi
+
+        # < 1.9.12
+
+        if version_lt $nginx_ver 1.9.12; then
+            apply_patch -p0 "patch.2016.write2.txt" \
+                "nginx security advisory patches (CVE-2016-4450)"
+
+        elif version_lt $nginx_ver 1.10.1; then
+            # < 1.10.1
+            apply_patch -p0 "patch.2016.write.txt" \
+                "nginx security advisory patches (CVE-2016-4450)"
+        fi
+
+        # >= 1.9.15
+
+        if version_gte $nginx_ver 1.9.15; then
+            apply_patch -p1 "nginx-$nginx_ver-upstream_timeout_fields.patch"
+        fi
+
+
+        # >= 1.9.15 && < 1.17.1
+
+        if version_gte $nginx_ver 1.9.15 && version_lt $nginx_ver 1.17.1; then
+            # renamed in 1.17.1 and above
+            apply_patch -p1 "nginx-$nginx_ver-ssl_pending_session.patch"
+        fi
+
+        # >= 1.11.2
+
+        if version_gte $nginx_ver 1.11.2; then
+            apply_patch -p1 "nginx-$nginx_ver-balancer_status_code.patch"
+            apply_patch -p1 "nginx-$nginx_ver-builtin_error_page_footer.patch"
+            apply_patch -p1 "nginx-$nginx_ver-delayed_posted_events.patch"
+            apply_patch -p1 "nginx-$nginx_ver-privileged_agent_process.patch"
+            apply_patch -p1 "nginx-$nginx_ver-single_process_graceful_exit.patch"
+            apply_patch -p1 "nginx-$nginx_ver-intercept_error_log.patch"
+            apply_patch -p1 "nginx-$nginx_ver-safe_resolver_ipv6_option.patch"
+        fi
+
+        # < 1.13.3
+
+        if version_lt $nginx_ver 1.13.3; then
+            apply_patch -p0 "patch.2017.ranges.txt" \
+                "nginx security advisory patches (CVE-2017-7529)"
+        fi
+
+        # >= 1.13.3
+
+        if version_gte $nginx_ver 1.13.3; then
+            apply_patch -p1 "nginx-$nginx_ver-stream_balancer_export.patch"
+            apply_patch -p1 "nginx-$nginx_ver-stream_proxy_get_next_upstream_tries.patch"
+            apply_patch -p1 "nginx-$nginx_ver-stream_proxy_timeout_fields.patch"
+        fi
+
+        # >= 1.13.6
+
+        if version_gte $nginx_ver 1.13.6; then
+            apply_patch -p1 "nginx-$nginx_ver-stream_ssl_preread_no_skip.patch"
+            apply_patch -p1 "nginx-$nginx_ver-init_cycle_pool_release.patch"
+            apply_patch -p1 "nginx-$nginx_ver-resolver_conf_parsing.patch"
+            apply_patch -p1 "nginx-$nginx_ver-daemon_destroy_pool.patch"
+            apply_patch -p1 "nginx-$nginx_ver-socket_cloexec.patch"
+        fi
+
+        # < 1.14.1
+        # > 1.15.0 && < 1.15.6
+
+        if version_lt $nginx_ver 1.14.1 \
+           || (version_gte $nginx_ver 1.15.0 && version_lt $nginx_ver 1.15.6); then
+           apply_patch -p0 "patch.2018.mp4.txt"
+        fi
+
+        # >= 1.17.1
+
+        if version_gte $nginx_ver 1.17.1; then
+            apply_patch -p1 "nginx-$nginx_ver-ssl_sess_cb_yield.patch"
+            apply_patch -p1 "nginx-$nginx_ver-reuseport_close_unused_fds.patch"
+        fi
+
+        # Production patches for release tarballs
+
+        if [ -n "$prod_patches" ]; then
+            sed $"s/NGINX_VERSION \"\.unknown\"/NGINX_VERSION \".$minor_ver\"/" \
+                $root_dir/patches/nginx-$nginx_ver-server_header.patch > server_header.patch.tmp
+
+            apply_patch -p1 $(abs_path server_header.patch.tmp)
+
+            rm -f server_header.patch.tmp
+
+            apply_patch -p1 "nginx-$nginx_ver-no_Werror.patch"
+
+            # >= 1.15.8
+
+            if version_gte $nginx_ver 1.15.8; then
+                apply_patch -p1 "nginx-$nginx_ver-win32_max_err_str.patch"
+            fi
+        fi
+    popd
+}
+
+apply_patch() {
+    local p=$1
+    local patch=$2
+    local patch_name
+    local patch_path
+
+    if [ ! -z "$3" ]; then
+        patch_name=$3
+
+    else
+        patch_name="$(basename $patch .patch) patch"
+    fi
+
+    if [[ "$patch" = /* ]]; then
+        patch_path=$patch
+
+    else
+        patch_path=$root_dir/patches/$patch
+    fi
+
+    info "applying the $patch_name"
+    patch $p < $patch_path
+}
+
+download() {
+    local url=$1
+    local out=$2
+
+    if [ -s $out ]; then
+        return 0
+    fi
+
+    if [ -s $work_dir/$out ]; then
+        cp $work_dir/$out $out
+        return 0
+    fi
+
+    if axel --version 2>/dev/null >&2; then
+        axel -o $out $url || rm -f $out
+    fi
+
+    if [ ! -s $out ]; then
+        wget -O $out $url || (rm -f $out; fatal "failed to download $url")
+    fi
+
+    if [ -s $out ]; then
+        cp $out $work_dir
+    fi
+}
+
+parse_version() {
+    [[ -z $1 ]] && fatal 'missing arg $1 when invoking parse_version()'
+    [[ -z $2 ]] && fatal 'missing arg $2 when invoking parse_version()'
+
+    local ver
+    local subj=$1
+
+    if [[ $subj =~ ^[^0-9]*(.*) ]]; then
+        subj=${BASH_REMATCH[1]}
+
+        local re='^(-rc[0-9]+$)?[.]?([0-9]+|[a-zA-Z]+)?(.*)$'
+
+        while [[ $subj =~ $re ]]; do
+            if [[ ${BASH_REMATCH[1]} != "" ]]; then
+                ver="$ver.${BASH_REMATCH[1]}"
+            fi
+
+            if [[ ${BASH_REMATCH[2]} != "" ]]; then
+                ver="$ver.${BASH_REMATCH[2]}"
+            fi
+
+            subj="${BASH_REMATCH[3]}"
+            if [[ $subj == "" ]]; then
+                break
+            fi
+        done
+
+        ver="${ver:1}"
+
+        IFS='.' read -r -a $2 <<< "$ver"
+    fi
+}
+
+version_eq() {
+    local version_a version_b
+
+    parse_version $1 version_a
+    parse_version $2 version_b
+
+  # Note that we are indexing on the b components, ie: 1.11.100 == 1.11
+  for index in "${!version_b[@]}"; do
+      [[ "${version_a[index]}" != "${version_b[index]}" ]] && return 1
+  done
+
+  return 0
+}
+
+version_lt() {
+    local version_a version_b
+
+    parse_version $1 version_a
+    parse_version $2 version_b
+
+    for index in "${!version_a[@]}"; do
+        if [[ ${version_a[index]} =~ ^[0-9]+$ ]]; then
+            [[ "${version_a[index]}" -lt "${version_b[index]}" ]] && return 0
+            [[ "${version_a[index]}" -gt "${version_b[index]}" ]] && return 1
+
+        else
+            [[ "${version_a[index]}" < "${version_b[index]}" ]] && return 0
+            [[ "${version_a[index]}" > "${version_b[index]}" ]] && return 1
+        fi
+    done
+
+    return 1
+}
+
+version_gt() {
+    (version_eq $1 $2 || version_lt $1 $2) && return 1
+    return 0
+}
+
+version_lte() {
+    (version_lt $1 $2 || version_eq $1 $2) && return 0
+    return 1
+}
+
+version_gte() {
+    (version_gt $1 $2 || version_eq $1 $2) && return 0
+    return 1
+}
+
+info() {
+    builtin echo -en "\033[33m"
+    builtin echo -en "[INFO] "
+    builtin echo -en "\033[0m"
+    builtin echo "$@"
+}
+
+fatal() {
+    builtin echo -en "\033[1;31m"
+    builtin echo -en "[FATAL] "
+    builtin echo -en "\033[0m"
+    builtin echo "$@"
+    exit 1
+}
+
+pushd() { builtin pushd $1 > /dev/null; }
+popd() { builtin popd > /dev/null; }
+
+# vim:set ft=sh ts=4 sts=4 sw=4 et:

@@ -5,7 +5,7 @@ use warnings;
 
 sub cd ($);
 
-my $ver = `bash util/ver`;
+my $ver = `bash -c '. util/ver && echo \$openresty_ver'`;
 chomp $ver;
 
 cd "openresty-$ver/bundle";

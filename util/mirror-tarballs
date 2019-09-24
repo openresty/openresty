@@ -1,1024 +1,213 @@
 #!/usr/bin/env bash
 
-#root=$(readlink -f -- "$(dirname -- "$0")/..")
-root=`perl -MCwd -e'print Cwd::abs_path(shift)' $(dirname -- "$0")/..`
+set -e
 
-info_txt=`perl -e 'print "\033[33m[INFO]\033[0m"'`
-
-echo -n "openresty "
-. ./util/ver
-echo
-
-name=openresty-$version
-work=$root/work
-
-if [ -z $debug ]; then
-    rm -rf $name || exit 1
-    mkdir -p $name/bundle || exit 1
+if ! unix2dos -V 2>/dev/null >&2; then
+    fatal "missing command required: unix2dos"
 fi
 
-bundle_dir=$root/$name/bundle
-
-cd $name/bundle || exit 1
-
-if [ ! -d $work ]; then
-    mkdir $work || exit 1
+if ! hg version 2>/dev/null >&2; then
+    fatal "missing command required: hg (mercurial)"
 fi
 
-#################################
-
-ver="$main_ver"
-$root/util/get-tarball "https://openresty.org/download/nginx-$ver.tar.gz" -O nginx-$ver.tar.gz || exit 1
-tar -xzf nginx-$ver.tar.gz || exit 1
-cd nginx-$ver || exit 1
-
-# patch the patch
-
-echo "$info_txt applying the nginx-$main_ver-win32_max_err_str.patch"
-patch -p1 < $root/patches/nginx-$main_ver-win32_max_err_str.patch || exit 1
-echo
-
-answer=`$root/util/ver-ge "$main_ver" 1.13.3`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the patch for nginx security advisory (CVE-2017-7529)"
-    patch -p0 < $root/patches/patch.2017.ranges.txt || exit 1
-    echo
+if ! axel --version 2>/dev/null >&2 && ! wget --version 2>/dev/null >&2; then
+    fatal "missing command required: wget"
 fi
 
-answer=`$root/util/ver-ge "$main_ver" 1.13.3`
-if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying the stream_balancer_export patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-stream_balancer_export.patch || exit 1
-    echo
-
-    echo "$info_txt applying the stream_proxy_get_next_upstream_tries patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-stream_proxy_get_next_upstream_tries.patch || exit 1
-    echo
-
-    echo "$info_txt applying the stream_proxy_timeout_fields patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-stream_proxy_timeout_fields.patch || exit 1
-    echo
+if ! tar --version 2>/dev/null >&2 && ! gzip --version 2>/dev/null >&2; then
+    fatal "missing commands required: tar, gzip"
 fi
 
-answer=`$root/util/ver-ge "$main_ver" 1.13.6`
-if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying the stream_ssl_preread_no_skip patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-stream_ssl_preread_no_skip.patch || exit 1
-    echo
+abs_path() {
+    if realpath -m -- $1 2>/dev/null >&2; then
+        realpath -m -- $1
 
-    echo "$info_txt applying the resolver_conf_parsing patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-resolver_conf_parsing.patch || exit 1
-    echo
-
-    echo "$info_txt applying the daemon_destroy_pool patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-daemon_destroy_pool.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.5.12`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the patch for nginx security advisory (CVE-2014-0133)"
-    patch -p0 < $root/patches/patch.2014.spdy2.txt || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.9.12`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the patch for nginx security advisory (CVE-2016-4450)"
-    patch -p0 < $root/patches/patch.2016.write2.txt || exit 1
-    echo
-else
-    answer=`$root/util/ver-ge "$main_ver" 1.10.1`
-    if [ "$answer" = "N" ]; then
-        echo "$info_txt applying the patch for nginx security advisory (CVE-2016-4450)"
-        patch -p0 < $root/patches/patch.2016.write.txt || exit 1
-        echo
+    else
+        readlink -f -- $1
     fi
-fi
+}
 
-answer=`$root/util/ver-ge "$main_ver" 1.11.2`
-if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying the balancer_status_code patch"
-    patch -p1 < $root/patches/nginx-$main_ver-balancer_status_code.patch || exit 1
-    echo
-fi
+root_dir=$(dirname $(abs_path $0/..))
 
-answer=`$root/util/ver-ge "$main_ver" 1.11.2`
-if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying the builtin_error_page_footer patch"
-    patch -p1 < $root/patches/nginx-$main_ver-builtin_error_page_footer.patch || exit 1
-    echo
-fi
+. $root_dir/util/base
+. $root_dir/util/ver
 
-answer=`$root/util/ver-ge "$main_ver" 1.11.2`
-if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying the delayed-posted-events patch"
-    patch -p1 < $root/patches/nginx-$main_ver-delayed_posted_events.patch || exit 1
-    echo
-fi
+name=openresty-$openresty_ver
+bundle_dir=$root_dir/$name/bundle
+work_dir=$root_dir/work
 
-answer=`$root/util/ver-ge "$main_ver" 1.11.2`
-if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying the privileged-agent-process patch"
-    patch -p1 < $root/patches/nginx-$main_ver-privileged_agent_process.patch || exit 1
-    echo
-fi
+echo "openresty $openresty_ver"
 
-answer=`$root/util/ver-ge "$main_ver" 1.11.2`
-if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying the single-process-graceful-exit patch"
-    patch -p1 < $root/patches/nginx-$main_ver-single_process_graceful_exit.patch || exit 1
-    echo
-fi
+rm -rf $name *.tar.gz
+mkdir -p $work_dir $bundle_dir
 
-answer=`$root/util/ver-ge "$main_ver" 1.11.2`
-if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying the intercept-error-log patch"
-    patch -p1 < $root/patches/nginx-$main_ver-intercept_error_log.patch || exit 1
-    echo
-fi
+cd $bundle_dir
 
-echo "$info_txt applying the upstream-pipelining patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-upstream_pipelining.patch || exit 1
-echo
+download "https://openresty.org/download/nginx-$nginx_ver.tar.gz" \
+    nginx-$nginx_ver.tar.gz
+tar -xzf nginx-$nginx_ver.tar.gz
 
-echo "$info_txt applying the server_header patch for nginx"
-cp $root/patches/nginx-$main_ver-server_header.patch server_header.patch || exit 1
-sed $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" server_header.patch \
-    > server_header.patch.tmp && mv -f server_header.patch.tmp server_header.patch || exit 1
-patch -p1 < server_header.patch || exit 1
-echo
+apply_nginx_patches \
+    nginx-$nginx_ver \
+    $nginx_ver \
+    "with-prod-patches"
 
-#patch -p1 < $root/patches/nginx-$main_ver-redirect_memcpy_overlap.patch || exit 1
+# download archives (parallel)
 
-echo "$info_txt applying the no_error_pages patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-no_error_pages.patch || exit 1
-echo
+for tarball in ${tarballs[@]}; do
+    tarball_name=$(echo $tarball | cut -d'/' -f2)
+    tarball_ver_name="$(sed s/-/_/g <<<$tarball_name)_ver"
+    tarball_ver="${!tarball_ver_name}"
 
-echo "$info_txt applying the no_Werror patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-no_Werror.patch || exit 1
-echo
+    if [ -z $tarball_ver ]; then
+        fatal "no version specified for $tarball_name tarball"
+    fi
 
-#patch -p1 < $root/patches/nginx-$main_ver-epoll_check_stale_wev.patch || exit 1
+    download "https://github.com/$tarball/tarball/$tarball_ver" \
+        $tarball_name-$tarball_ver.tar.gz &
+done
 
-#patch -p1 < $root/patches/nginx-$main_ver-request_body_in_single_buf.patch || exit 1
+download "https://people.freebsd.org/~osa/ngx_http_redis-$ngx_http_redis_ver.tar.gz" \
+    redis-nginx-module-$ngx_http_redis_ver.tar.gz
 
-#echo "INFO: applying the max_subrequests patch...";
-#patch -p1 < $root/patches/nginx-$main_ver-max_subrequests.patch || exit 1
+wait
 
-#echo "INFO: applying the subrequst_loop patch...";
-#patch -p1 -l < $root/patches/nginx-$main_ver-subrequest_loop.patch || exit 1
+# extract archives
 
-#echo "INFO: applying the gzip_empty_flush_buf patch...";
-#patch -p1 -l < $root/patches/nginx-$main_ver-gzip_empty_flush_buf.patch || exit 1
+for tarball in ${tarballs[@]}; do
+    tarball_org=$(echo $tarball | cut -d'/' -f1)
+    tarball_name=$(echo $tarball | cut -d'/' -f2)
+    tarball_ver_name="$(sed s/-/_/g <<<$tarball_name)_ver"
+    tarball_ver="${!tarball_ver_name}"
 
-#patch -p1 < $root/patches/nginx-$main_ver-variable_header_ignore_no_hash.patch || exit 1
+    tar -xzf $tarball_name-$tarball_ver.tar.gz
+    mv $tarball_org-$tarball_name-* $tarball_name-${tarball_ver/#v}
 
-#echo "applying the named_location_clear_mods_ctx patch"
-#patch -p1 < $root/patches/nginx-$main_ver-named_location_clear_mods_ctx.patch || exit 1
-
-#echo "$info_txt applying the allow_request_body_updating patch for nginx"
-#patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || exit 1
-#echo
-
-echo "$info_txt applying the log_escape_non_ascii patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
-echo
-
-#echo applying reset_wev_handler_in_named_locations.patch ...
-#patch -p1 < $root/patches/nginx-$main_ver-reset_wev_handler_in_named_locations.patch || exit 1
-
-#echo applying filter_finalize_hang.patch ...
-#patch -p1 < $root/patches/nginx-$main_ver-filter_finalize_hang.patch || exit 1
-
-answer=`$root/util/ver-ge "$main_ver" 1.2.3`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the add_core_vars_polluting_globals patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-add_core_vars_polluting_globals.patch || exit 1
-    echo
-
-    echo "$info_txt applying the resolver_debug_log_overflow patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-resolver_debug_log_overflow.patch || exit 1
-    echo
-
-    echo "$info_txt applying the poll_del_event_at_exit patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-poll_del_event_at_exit.patch || exit 1
-    echo
-fi
-
-#echo "INFO: applying null-character-fixes patch"
-#patch -p0 < $root/patches/nginx-$main_ver-null_character_fixes.patch || exit 1
-
-#patch -p1 < $root/patches/nginx-$main_ver-gzip_ok_invalid_read_fix.patch || exit 1
-
-answer=`$root/util/ver-ge "$main_ver" 1.7.9`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the location_if_inherits_proxy patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-location_if_inherits_proxy.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.5.3`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the upstream_truncation patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-upstream_truncation.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.5.3`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the channel-uninit-params patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-channel-uninit-params.patch || exit 1
-    echo
-fi
-
-echo "$info_txt applying the dtrace patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-dtrace.patch || exit 1
-echo
-
-answer=`$root/util/ver-ge "$main_ver" 1.2.6`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the upstream_test_connect_kqueue patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-upstream_test_connect_kqueue.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.5.13`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the slab_alloc_no_memory_as_info patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-slab_alloc_no_memory_as_info.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.2.7`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the resolver_wev_handler_segfault_with_poll patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-resolver_wev_handler_segfault_with_poll.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.2.8`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the run_posted_requests_in_resolver patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-run_posted_requests_in_resolver.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.4.1`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying patches/nginx-$main_ver-cve-2013-2070.patch for nginx"
-    patch -p0 < $root/patches/nginx-$main_ver-cve-2013-2070.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.5.3`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying patches/nginx-$main_ver-invalid_referer_hash.patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-invalid_referer_hash.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.4.1`
-if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying patches/nginx-$main_ver-gcc-maybe-uninitialized-warning.patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-gcc-maybe-uninitialized-warning.patch
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.5.3`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the unix_socket_accept_over_read patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-unix_socket_accept_over_read.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.5.3`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the gzip_buffered_bug patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-gzip_buffered_bug.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.5.7`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the gzip_flush_bug patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-gzip_flush_bug.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.7.8`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the cache_lock_hang_in_subreq patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-cache_lock_hang_in_subreq.patch || exit 1
-    echo
-fi
-
-echo "$info_txt applying the proxy_host_port_vars patch for nginx $ver"
-patch -p1 < $root/patches/nginx-$ver-proxy_host_port_vars.patch || exit 1
-echo
-
-echo "$info_txt applying the cache_manager_exit patch for nginx $ver"
-patch -p1 < $root/patches/nginx-$ver-cache_manager_exit.patch || exit 1
-echo
-
-answer=`$root/util/ver-ge "$main_ver" 1.7.4`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the proxy_ssl_handshake_timer patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-proxy_ssl_handshake_timer.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.7.4`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the geoip_init_var_fields patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-geoip_init_var_fields.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.4.4`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the CVE-2013-4547 patch for nginx $ver"
-    patch -p0 < $root/patches/patch.2013.space.txt || exit 1
-    echo
-fi
-
-echo "$info_txt applying the larger_max_error_str patch for nginx $ver"
-patch -p1 < $root/patches/nginx-$ver-larger_max_error_str.patch || exit 1
-echo
-
-echo "$info_txt applying the pcre_conf_opt patch for nginx $ver"
-patch -p1 < $root/patches/nginx-$ver-pcre_conf_opt.patch || exit 1
-echo
-
-answer=`$root/util/ver-ge "$main_ver" 1.9.2`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the upstream_filter_finalize patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-upstream_filter_finalize.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.5.9`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the resolve-names-with-a-trailing-dot patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-resolve-names-with-a-trailing-dot.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.7.1`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the setting_args_invalidates_uri patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-setting_args_invalidates_uri.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.7.2`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the slab_defrag patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-slab_defrag.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.7.8`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the resolver_del_event_invalid_read patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-resolver_del_event_invalid_read.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.7.7`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the hash_overflow patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-hash_overflow.patch || exit 1
-    echo
-fi
-
-if [ "$main_ver" = "1.9.7" ]; then
-    echo "$info_txt applying the resolver_security_fixes patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-resolver_security_fixes.patch || exit 1
-    echo
-fi
-
-if [ "$main_ver" = "1.13.6" ]; then
-    echo "$info_txt applying the init_cycle_pool_release patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-init_cycle_pool_release.patch || exit 1
-    echo
-fi
-
-answer=`$root/util/ver-ge "$main_ver" 1.9.5`
-if [ "$answer" = "Y" ]; then
-    answer=`$root/util/ver-ge "$main_ver" 1.14.1`
-    if [ "$answer" = "N" ]; then
-        echo "$info_txt applying the patch for nginx security advisory (CVE-2018-16843 CVE-2018-16844)"
-        patch -p0 < $root/patches/patch.2018.h2.txt || exit 1
-        echo
-    elif [ `$root/util/ver-ge "$main_ver" 1.15.0` = "Y" ]; then
-        answer=`$root/util/ver-ge "$main_ver" 1.15.6`
-        if [ "$answer" = "N" ]; then
-            echo "$info_txt applying the patch for nginx security advisory (CVE-2018-16843 CVE-2018-16844)"
-            patch -p0 < $root/patches/patch.2018.h2.txt || exit 1
-            echo
+    pushd $tarball_name-${tarball_ver/#v}
+        if [ -f Makefile ]; then
+            sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > Makefile.tmp
+            mv Makefile.tmp Makefile
         fi
-    fi
-fi
+    popd
+done
 
-answer=`$root/util/ver-ge "$main_ver" 1.14.1`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the patch for nginx security advisory (CVE-2018-16845)"
-    patch -p0 < $root/patches/patch.2018.mp4.txt || exit 1
-    echo
-else
-    answer=`$root/util/ver-ge "$main_ver" 1.15.6`
-    if [ "$answer" = "N" ]; then
-        echo "$info_txt applying the patch for nginx security advisory (CVE-2018-16845)"
-        patch -p0 < $root/patches/patch.2018.mp4.txt || exit 1
-        echo
-    fi
-fi
+tar -xzf redis-nginx-module-$ngx_http_redis_ver.tar.gz
 
-answer=`$root/util/ver-ge "$main_ver" 1.9.5`
-if [ "$answer" = "Y" ]; then
-    answer=`$root/util/ver-ge "$main_ver" 1.16.1`
-    if [ "$answer" = "N" ]; then
-        echo "$info_txt applying the patch for nginx security advisory (CVE-2019-9511 CVE-2019-9513 CVE-2019-9516)"
-        patch -p0 < $root/patches/patch.2019.h2.txt || exit 1
-        echo
-    elif [ `$root/util/ver-ge "$main_ver" 1.17.0` = "Y" ]; then
-        answer=`$root/util/ver-ge "$main_ver" 1.17.3`
-        if [ "$answer" = "N" ]; then
-            echo "$info_txt applying the patch for nginx security advisory (CVE-2019-9511 CVE-2019-9513 CVE-2019-9516)"
-            patch -p0 < $root/patches/patch.2019.h2.txt || exit 1
-            echo
-        fi
-    fi
-fi
+rm -f *.tar.*
 
-rm -f *.patch || exit 1
+mv ngx_http_redis-* redis-nginx-module-${ngx_http_redis_ver/#v}
+mv luajit2-* LuaJIT-${luajit2_ver/#v}
+mv lua-nginx-module-* ngx_lua-${lua_nginx_module_ver/#v}
+mv stream-lua-nginx-module-* ngx_stream_lua-${stream_lua_nginx_module_ver/#v}
+mv lua-upstream-nginx-module-* ngx_lua_upstream-${lua_upstream_nginx_module_ver/#v}
 
-echo "$info_txt applying the always_enable_cc_feature_tests patch to nginx"
-patch -p1 < $root/patches/nginx-$main_ver-always_enable_cc_feature_tests.patch
-echo
+pushd LuaJIT-*
+    apply_patch -p1 "luajit-win32-default-paths.patch"
+popd
 
-echo "$info_txt applying the ssl_cert_cb_yield.patch patch to nginx"
-patch -p1 < $root/patches/nginx-$main_ver-ssl_cert_cb_yield.patch
-echo
+pushd redis-nginx-module-*
+    apply_patch -p1 "ngx_http_redis-$ngx_http_redis_ver-variables_in_redis_pass.patch"
+    apply_patch -p1 "ngx_http_redis-$ngx_http_redis_ver-default_port_fix.patch"
+    apply_patch -p1 "ngx_http_redis-$ngx_http_redis_ver-without_gzip.patch"
+popd
 
-answer=`$root/util/ver-ge "$main_ver" 1.17.1`
-if [ "$answer" = "N" ]; then
-    echo "$info_txt applying the ssl_pending_session.patch patch to nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-ssl_pending_session.patch
-    echo
-else
-    echo "$info_txt applying the ssl_sess_cb_yield.patch patch to nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-ssl_sess_cb_yield.patch
-    echo
-fi
-
-echo "$info_txt applying the upstream_timeout_fields patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-upstream_timeout_fields.patch || exit 1
-echo
-
-echo "$info_txt applying the safe_resolver_ipv6_option patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-safe_resolver_ipv6_option.patch || exit 1
-echo
-
-echo "$info_txt applying the socket_cloexec patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-socket_cloexec.patch || exit 1
-echo
-
-echo "$info_txt applying the reuseport_close_unused_fds patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-reuseport_close_unused_fds.patch || exit 1
-echo
-
-cp $root/html/index.html docs/html/ || exit 1
-cp $root/html/50x.html docs/html/ || exit 1
-
-cd .. || exit 1
-
-cp $root/patches/nginx-$main_ver-no_pool.patch ./nginx-no_pool.patch || exit 1
-sed $"s/NGINX_VERSION \".unknown/NGINX_VERSION \".$minor_ver/" \
-    ./nginx-no_pool.patch > ./nginx-no_pool.patch.tmp && \
-    mv ./nginx-no_pool.patch.tmp ./nginx-no_pool.patch \
-    || exit 1
-rm -rf no-pool-nginx-$ver
-
-#################################
-
-ver=0.61
-$root/util/get-tarball "https://github.com/openresty/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
-tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
-mv openresty-echo-nginx-module-* echo-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.06
-$root/util/get-tarball "https://github.com/openresty/xss-nginx-module/tarball/v$ver" -O xss-nginx-module-$ver.tar.gz || exit 1
-tar -xzf xss-nginx-module-$ver.tar.gz || exit 1
-mv openresty-xss-nginx-module-* xss-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.3.1rc1
-$root/util/get-tarball "https://github.com/simplresty/ngx_devel_kit/tarball/v$ver" -O ngx_devel_kit-$ver.tar.gz
-tar -xzf ngx_devel_kit-$ver.tar.gz || exit 1
-mv simplresty-ngx_devel_kit-* ngx_devel_kit-$ver || exit 1
-
-#################################
-
-ver=0.32
-$root/util/get-tarball "https://github.com/openresty/set-misc-nginx-module/tarball/v$ver" -O set-misc-nginx-module-$ver.tar.gz || exit 1
-tar -xzf set-misc-nginx-module-$ver.tar.gz || exit 1
-mv openresty-set-misc-nginx-module-* set-misc-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.15
-$root/util/get-tarball "https://github.com/openresty/rds-json-nginx-module/tarball/v$ver" -O rds-json-nginx-module-$ver.tar.gz || exit 1
-tar -xzf rds-json-nginx-module-$ver.tar.gz || exit 1
-mv openresty-rds-json-nginx-module-* rds-json-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.09
-$root/util/get-tarball "https://github.com/openresty/rds-csv-nginx-module/tarball/v$ver" -O rds-csv-nginx-module-$ver.tar.gz || exit 1
-tar -xzf rds-csv-nginx-module-$ver.tar.gz || exit 1
-mv openresty-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.33
-$root/util/get-tarball "https://github.com/openresty/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
-tar -xzf headers-more-nginx-module-$ver.tar.gz || exit 1
-mv openresty-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.1.11
-$root/util/get-tarball "https://github.com/openresty/drizzle-nginx-module/tarball/v$ver" -O drizzle-nginx-module-$ver.tar.gz || exit 1
-tar -xzf drizzle-nginx-module-$ver.tar.gz || exit 1
-mv openresty-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.10.15
-$root/util/get-tarball "https://github.com/openresty/lua-nginx-module/archive/v$ver.tar.gz" -O lua-nginx-module-$ver.tar.gz || exit 1
-tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
-mv lua-nginx-module-$ver ngx_lua-$ver || exit 1
-
-#################################
-
-ver=0.07
-$root/util/get-tarball "https://github.com/openresty/lua-upstream-nginx-module/tarball/v$ver" -O lua-upstream-nginx-module-$ver.tar.gz || exit 1
-tar -xzf lua-upstream-nginx-module-$ver.tar.gz || exit 1
-mv openresty-lua-upstream-nginx-module-* ngx_lua_upstream-$ver || exit 1
-
-#################################
-
-ver=0.0.7
-$root/util/get-tarball "https://github.com/openresty/stream-lua-nginx-module/tarball/v$ver" -O stream-lua-nginx-module-$ver.tar.gz || exit 1
-tar -xzf stream-lua-nginx-module-$ver.tar.gz || exit 1
-mv openresty-stream-lua-nginx-module-* ngx_stream_lua-$ver || exit 1
-
-#################################
-
-ver=0.05
-$root/util/get-tarball "https://github.com/openresty/array-var-nginx-module/tarball/v$ver" -O array-var-nginx-module-$ver.tar.gz || exit 1
-tar -xzf array-var-nginx-module-$ver.tar.gz || exit 1
-mv openresty-array-var-nginx-module-* array-var-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.19
-$root/util/get-tarball "https://github.com/openresty/memc-nginx-module/tarball/v$ver" -O memc-nginx-module-$ver.tar.gz || exit 1
-tar -xzf memc-nginx-module-$ver.tar.gz || exit 1
-mv openresty-memc-nginx-module-* memc-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.31
-$root/util/get-tarball "https://github.com/openresty/srcache-nginx-module/tarball/v$ver" -O srcache-nginx-module-$ver.tar.gz || exit 1
-tar -xzf srcache-nginx-module-$ver.tar.gz || exit 1
-mv openresty-srcache-nginx-module-* srcache-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.12
-$root/util/get-tarball "https://github.com/calio/form-input-nginx-module/tarball/v$ver" -O form-input-nginx-module-$ver.tar.gz || exit 1
-tar -xzf form-input-nginx-module-$ver.tar.gz || exit 1
-mv calio-form-input-nginx-module-* form-input-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.14
-$root/util/get-tarball "https://github.com/calio/iconv-nginx-module/tarball/v$ver" -O iconv-nginx-module-$ver.tar.gz || exit 1
-tar -xzf iconv-nginx-module-$ver.tar.gz || exit 1
-mv calio-iconv-nginx-module-* iconv-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.08
-$root/util/get-tarball "https://github.com/openresty/encrypted-session-nginx-module/tarball/v$ver" -O encrypted-session-nginx-module-$ver.tar.gz || exit 1
-tar -xzf encrypted-session-nginx-module-$ver.tar.gz || exit 1
-mv openresty-encrypted-session-nginx-module-* encrypted-session-nginx-module-$ver || exit 1
-
-#################################
-
-
-#ver=0.7
-#$root/util/get-tarball "http://mdounin.ru/files/ngx_http_upstream_keepalive-$ver.tar.gz" -O upstream_keepalive-$ver.tar.gz || exit 1
-#tar -xzf upstream_keepalive-$ver.tar.gz || exit 1
-#mv ngx_http_upstream_keepalive-* upstream-keepalive-nginx-module-$ver || exit 1
-
-#################################
-
-ver=0.3.7
-$root/util/get-tarball "https://people.freebsd.org/~osa/ngx_http_redis-$ver.tar.gz" -O redis-nginx-module-$ver.tar.gz || exit 1
-tar -xzf redis-nginx-module-$ver.tar.gz || exit 1
-mv ngx_http_redis-* redis-nginx-module-$ver || exit 1
-
-cd redis-nginx-module-$ver
-echo "applying ngx_http_redis-$ver-variables_in_redis_pass.patch"
-patch -p1 < $root/patches/ngx_http_redis-$ver-variables_in_redis_pass.patch || exit 1
-
-echo
-echo "applying ngx_http_redis-$ver-default_port_fix.patch"
-patch -p1 < $root/patches/ngx_http_redis-$ver-default_port_fix.patch || exit 1
-echo
-
-echo "applying ngx_http_redis-$ver-without_gzip.patch"
-patch -p1 < $root/patches/ngx_http_redis-$ver-without_gzip.patch || exit 1
-echo
 cd ..
 
-#################################
+resty_cli_dir=$bundle_dir/resty-cli-${resty_cli_ver/#v}
 
-ver=1.0
-$root/util/get-tarball "https://github.com/openresty/ngx_postgres/tarball/$ver" -O ngx_postgres-$ver.tar.gz || exit 1
-tar -xzf ngx_postgres-$ver.tar.gz || exit 1
-mv openresty-ngx_postgres-* ngx_postgres-$ver || exit 1
+mkdir -p util patches
 
-#################################
+# openresty-$ver
 
-ver=0.2
-$root/util/get-tarball "https://github.com/FRiCKLE/ngx_coolkit/tarball/$ver" -O ngx_coolkit-$ver.tar.gz || exit 1
-tar -xzf ngx_coolkit-$ver.tar.gz || exit 1
-mv FRiCKLE-ngx_coolkit-* ngx_coolkit-$ver || exit 1
+cp $root_dir/COPYRIGHT .
+cp $root_dir/util/configure .
+cp $root_dir/README.markdown .
 
-#################################
+perl $resty_cli_dir/bin/md2pod.pl $root_dir/doc/README-windows.md | pod2text > README-windows.txt
+unix2dos README-windows.txt
 
-ver=0.15
-$root/util/get-tarball "https://github.com/openresty/redis2-nginx-module/tarball/v$ver" -O redis2-nginx-module-$ver.tar.gz || exit 1
-tar -xzf redis2-nginx-module-$ver.tar.gz || exit 1
-mv openresty-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
+# openresty-$ver/bundle
 
-#################################
+cp $root_dir/util/install bundle
 
-ver=0.25rc2
-$root/util/get-tarball "https://github.com/openresty/resty-cli/tarball/v$ver" -O resty-cli-$ver.tar.gz || exit 1
-tar -xzf resty-cli-$ver.tar.gz || exit 1
-mv openresty-resty-cli-* resty-cli-$ver || exit 1
-resty_cli=resty-cli-$ver
+# openresty-$ver/util
 
-#################################
+cp $root_dir/util/package-win32.sh util
+cp $root_dir/util/build-win32.sh util
 
-ver=0.0.5
-$root/util/get-tarball "https://github.com/openresty/opm/tarball/v$ver" -O opm-$ver.tar.gz || exit 1
-tar -xzf opm-$ver.tar.gz || exit 1
-mv openresty-opm-* opm-$ver || exit 1
+# openresty-$ver/patches
 
-#################################
+cp $root_dir/patches/openssl-*.patch patches/
 
-#ver=5.1.5
-#$root/util/get-tarball "http://www.lua.org/ftp/lua-$ver.tar.gz" -O "lua-$ver.tar.gz" || exit 1
-#tar -xzf lua-$ver.tar.gz || exit 1
+sed $"s/NGINX_VERSION \"\.unknown/NGINX_VERSION \".$minor_ver/" \
+    $root_dir/patches/nginx-$nginx_ver-no_pool.patch > patches/nginx-no_pool.patch
 
-#$root/util/get-tarball "http://agentzh.org/misc/nginx/patch-lua-$ver-4" -O "patch-lua-$ver-4" || exit 1
+# generate restydoc index from nginx docs
+# openresty-$ver/bundle/resty.index
 
-#cd lua-$ver/src || exit 1
-#patch -p0 < ../../patch-lua-$ver-4 || exit 1
-#cd ../.. || exit 1
+cp $root_dir/html/index.html $bundle_dir/nginx-$nginx_ver/docs/html/
+cp $root_dir/html/50x.html $bundle_dir/nginx-$nginx_ver/docs/html/
 
-#rm "patch-lua-$ver-4" || exit 1
-
-#echo "$info_txt applying the makefile_install_fix patch for lua $ver"
-#patch -p0 < $root/patches/lua-$ver-makefile_install_fix.patch || exit 1
-#echo
-
-#echo "$info_txt applying the disable_lua50_compat patch for lua $ver"
-#patch -p0 < $root/patches/lua-$ver-disable_lua50_compat.patch || exit 1
-#echo
-
-#echo "$info_txt applying the enable_debug_info patch for lua $ver"
-#patch -p0 < $root/patches/lua-$ver-enable_debug_info.patch || exit 1
-#echo
-
-#################################
-
-ver=2.1-20190912
-$root/util/get-tarball "https://github.com/openresty/luajit2/archive/v$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
-tar -xzf LuaJIT-$ver.tar.gz || exit 1
-mv luajit2-* LuaJIT-$ver || exit 1
-
-#$root/util/get-tarball http://luajit.org/download/v2.0.1_hotfix1.patch -O hotfix.patch
-cd LuaJIT-$ver || exit 1;
-echo "$info_txt applying the luajit-win32-default-paths patch for luajit $ver"
-patch -p1 < $root/patches/luajit-win32-default-paths.patch || exit 1
-#rm ../hotfix.patch
-cd .. || exit 1
-
-#$root/util/get-tarball http://luajit.org/download/beta11_hotfix1.patch -O beta11_hotfix1.patch
-#patch -p1 < beta11_hotfix1.patch || exit 1
-#rm beta11_hotfix1.patch || exit 1
-
-#################################
-
-ver=2.1.0.7
-$root/util/get-tarball "https://github.com/openresty/lua-cjson/archive/$ver.tar.gz" -O "lua-cjson-$ver.tar.gz" || exit 1
-tar -xzf lua-cjson-$ver.tar.gz || exit 1
-#cd lua-cjson-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-#sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-#mv mk Makefile || exit 1
-#cd ..
-
-#################################
-
-ver=0.13
-$root/util/get-tarball "https://github.com/openresty/lua-redis-parser/archive/v$ver.tar.gz" -O "lua-redis-parser-$ver.tar.gz" || exit 1
-tar -xzf lua-redis-parser-$ver.tar.gz || exit 1
-#mv lua-redis-parser-* lua-redis-parser-$ver || exit 1
-#cd lua-redis-parser-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-#sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-#mv mk Makefile || exit 1
-#cd ..
-
-#################################
-
-ver=0.06
-$root/util/get-tarball "https://github.com/openresty/lua-rds-parser/tarball/v$ver" -O "lua-rds-parser-$ver.tar.gz" || exit 1
-tar -xzf lua-rds-parser-$ver.tar.gz || exit 1
-mv openresty-lua-rds-parser-* lua-rds-parser-$ver || exit 1
-cd lua-rds-parser-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.21
-$root/util/get-tarball "https://github.com/openresty/lua-resty-dns/tarball/v$ver" -O "lua-resty-dns-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-dns-$ver.tar.gz || exit 1
-mv openresty-lua-resty-dns-* lua-resty-dns-$ver || exit 1
-cd lua-resty-dns-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.14
-$root/util/get-tarball "https://github.com/openresty/lua-resty-memcached/tarball/v$ver" -O "lua-resty-memcached-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-memcached-$ver.tar.gz || exit 1
-mv openresty-lua-resty-memcached-* lua-resty-memcached-$ver || exit 1
-cd lua-resty-memcached-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.27
-$root/util/get-tarball "https://github.com/openresty/lua-resty-redis/tarball/v$ver" -O "lua-resty-redis-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-redis-$ver.tar.gz || exit 1
-mv openresty-lua-resty-redis-* lua-resty-redis-$ver || exit 1
-#cd lua-resty-redis-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-#sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-#mv mk Makefile || exit 1
-#cd ..
-
-#################################
-
-ver=0.21
-$root/util/get-tarball "https://github.com/openresty/lua-resty-mysql/tarball/v$ver" -O "lua-resty-mysql-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-mysql-$ver.tar.gz || exit 1
-mv openresty-lua-resty-mysql-* lua-resty-mysql-$ver || exit 1
-cd lua-resty-mysql-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.06
-$root/util/get-tarball "https://github.com/openresty/lua-resty-limit-traffic/tarball/v$ver" -O "lua-resty-limit-traffic-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-limit-traffic-$ver.tar.gz || exit 1
-mv openresty-lua-resty-limit-traffic-* lua-resty-limit-traffic-$ver || exit 1
-cd lua-resty-limit-traffic-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.10
-$root/util/get-tarball "https://github.com/openresty/lua-resty-upload/tarball/v$ver" -O "lua-resty-upload-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-upload-$ver.tar.gz || exit 1
-mv openresty-lua-resty-upload-* lua-resty-upload-$ver || exit 1
-cd lua-resty-upload-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.12rc1
-$root/util/get-tarball "https://github.com/openresty/lua-resty-string/tarball/v$ver" -O "lua-resty-string-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-string-$ver.tar.gz || exit 1
-mv openresty-lua-resty-string-* lua-resty-string-$ver || exit 1
-cd lua-resty-string-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.07
-$root/util/get-tarball "https://github.com/openresty/lua-resty-websocket/tarball/v$ver" -O "lua-resty-websocket-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-websocket-$ver.tar.gz || exit 1
-mv openresty-lua-resty-websocket-* lua-resty-websocket-$ver || exit 1
-cd lua-resty-websocket-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.08
-$root/util/get-tarball "https://github.com/openresty/lua-resty-lock/tarball/v$ver" -O "lua-resty-lock-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-lock-$ver.tar.gz || exit 1
-mv openresty-lua-resty-lock-* lua-resty-lock-$ver || exit 1
-cd lua-resty-lock-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.09
-$root/util/get-tarball "https://github.com/openresty/lua-resty-lrucache/tarball/v$ver" -O "lua-resty-lrucache-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-lrucache-$ver.tar.gz || exit 1
-mv openresty-lua-resty-lrucache-* lua-resty-lrucache-$ver || exit 1
-cd lua-resty-lrucache-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.1.17
-$root/util/get-tarball "https://github.com/openresty/lua-resty-core/tarball/v$ver" -O "lua-resty-core-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-core-$ver.tar.gz || exit 1
-mv openresty-lua-resty-core-* lua-resty-core-$ver || exit 1
-#cd lua-resty-core-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-#sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-#mv mk Makefile || exit 1
-#cd ..
-
-#################################
-
-ver=0.06
-$root/util/get-tarball "https://github.com/openresty/lua-resty-upstream-healthcheck/tarball/v$ver" -O "lua-resty-upstream-healthcheck-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-upstream-healthcheck-$ver.tar.gz || exit 1
-mv openresty-lua-resty-upstream-healthcheck-* lua-resty-upstream-healthcheck-$ver || exit 1
-cd lua-resty-upstream-healthcheck-$ver || exit 1
-#patch -p1 < $root/patches/lua_cjson-$ver-array_detection_fix.patch || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.01
-$root/util/get-tarball "https://github.com/openresty/lua-tablepool/tarball/v$ver" -O "lua-tablepool-$ver.tar.gz" || exit 1
-tar -xzf lua-tablepool-$ver.tar.gz || exit 1
-mv openresty-lua-tablepool-* lua-tablepool-$ver || exit 1
-cd lua-tablepool-$ver || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.02
-$root/util/get-tarball "https://github.com/openresty/lua-resty-signal/tarball/v$ver" -O "lua-resty-signal-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-signal-$ver.tar.gz || exit 1
-mv openresty-lua-resty-signal-* lua-resty-signal-$ver || exit 1
-cd lua-resty-signal-$ver || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-ver=0.02
-$root/util/get-tarball "https://github.com/openresty/lua-resty-shell/tarball/v$ver" -O "lua-resty-shell-$ver.tar.gz" || exit 1
-tar -xzf lua-resty-shell-$ver.tar.gz || exit 1
-mv openresty-lua-resty-shell-* lua-resty-shell-$ver || exit 1
-cd lua-resty-shell-$ver || exit 1
-sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
-mv mk Makefile || exit 1
-cd ..
-
-#################################
-
-rm *.tar.gz
-rm *.tar.bz2
-
-cd ..
-cp $root/util/configure ./ || exit 1
-cp $root/README.markdown ./ || exit 1
-cp $root/util/install bundle/ || exit 1
-mkdir util || exit 1
-cp $root/util/package-win32.sh util/ || exit 1
-cp $root/util/build-win32.sh util/ || exit 1
-cp $root/COPYRIGHT ./ || exit 1
-perl bundle/$resty_cli/bin/md2pod.pl $root/doc/README-windows.md | pod2text > README-windows.txt || exit 1
-unix2dos README-windows.txt || exit 1
-mkdir patches/ || exit 1
-cp $root/patches/openssl-1.1.0j-parallel_build_fix.patch patches/ || exit 1
-cp $root/patches/openssl-1.0.2h-sess_set_get_cb_yield.patch patches/ || exit 1
-cp $root/patches/openssl-1.1.0c-sess_set_get_cb_yield.patch patches/ || exit 1
-cp $root/patches/openssl-1.1.0d-sess_set_get_cb_yield.patch patches/ || exit 1
-
-restydoc_index=$bundle_dir/$resty_cli/bin/restydoc-index
+restydoc_index=$resty_cli_dir/bin/restydoc-index
 #restydoc_index=echo
 #restydoc_index=$HOME/git/resty-cli/bin/restydoc-index
-
-nginx_xml2pod=$bundle_dir/$resty_cli/bin/nginx-xml2pod
+nginx_xml2pod=$resty_cli_dir/bin/nginx-xml2pod
 #nginx_xml2pod=echo
 #nginx_xml2pod=$HOME/git/resty-cli/bin/nginx-xml2pod
 
-# generate restydoc index from nginx docs
+pushd $work_dir
+    if [ -d nginx.org ]; then
+        pushd nginx.org
+            hg pull
+            hg update --clean
+        popd
 
-curdir=$PWD
-cd $root/work/ || exit 1
-if [ -d nginx.org ]; then
-    cd nginx.org/ || exit 1
-    hg pull || exit 1
-    hg update || exit 1
-    cd ..
-else
-    hg clone http://hg.nginx.org/nginx.org || exit 1
-fi
-cd nginx.org/ || exit 1
-hg purge --config extensions.purge= || exit 1
-find xml/en/docs -name 'ngx_http_api_module.xml' -delete
-rm xml/en/docs/njs/*
-$nginx_xml2pod xml/en/docs || exit 1
-cd $curdir || exit 1
+    else
+        hg clone http://hg.nginx.org/nginx.org
+    fi
 
-echo "restydoc-index $root/work/nginx.org"
-$restydoc_index --outdir bundle $root/work/nginx.org || exit 1
+    pushd nginx.org
+        hg purge --config extensions.purge=
+        find xml/en/docs -name 'ngx_http_api_module.xml' -delete
+        rm -f xml/en/docs/njs/*
+        $nginx_xml2pod xml/en/docs
+    popd
+popd
 
-echo "restydoc-index $root/doc/lua-5.1.5"
-$restydoc_index --outdir bundle $root/doc/lua-5.1.5 || exit 1
+echo "restydoc-index $work_dir/nginx.org"
+$restydoc_index --outdir bundle $work_dir/nginx.org
 
-echo "restydoc-index $root/doc/LuaJIT-2.1"
-$restydoc_index --outdir bundle $root/doc/LuaJIT-2.1 || exit 1
+echo "restydoc-index $root_dir/doc/lua-5.1.5"
+$restydoc_index --outdir bundle $root_dir/doc/lua-5.1.5
+
+echo "restydoc-index $root_dir/doc/LuaJIT-2.1"
+$restydoc_index --outdir bundle $root_dir/doc/LuaJIT-2.1
 
 # generate restydoc index from openresty docs
 
 for indir in bundle/*/; do
     #echo "processing directory $indir ..."
+
     if [ "$indir" == "bundle/pod/" ]; then
         continue
     fi
-    if [ "$indir" == "bundle/nginx-$main_ver/" ]; then
+
+    if [ "$indir" == "bundle/nginx-$nginx_ver/" ]; then
         continue
     fi
+
     echo "restydoc-index --outdir bundle $indir"
-    $restydoc_index --outdir $curdir/bundle $indir || exit 1
+    $restydoc_index --outdir bundle $indir
 done
 
-cd $curdir || exit 1
 find bundle -name '*.md' -delete
 find bundle -name '*.markdown' -delete
 find bundle -name '*.wiki' -delete
 find bundle -name '*~' -delete
+find bundle -name '*.orig' -delete
 
-cd $root || exit 1
+cd $root_dir
 
-tar cf $name.tar $name || exit 1
-gzip -f --best $name.tar || exit 1
+tar cf $name.tar $name
+gzip -f --best $name.tar
+
