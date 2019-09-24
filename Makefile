@@ -4,7 +4,7 @@ all:
 	./util/mirror-tarballs
 
 test:
-	prove -I. -I../test-nginx/lib -r t
+	prove -I../test-nginx/lib -r t
 
 try-luajit: all
 	cd openresty-`./util/ver` && ./configure --with-luajit
