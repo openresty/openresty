@@ -975,7 +975,7 @@ cd $root/work/ || exit 1
 if [ -d nginx.org ]; then
     cd nginx.org/ || exit 1
     hg pull || exit 1
-    hg update || exit 1
+    hg update --clean || exit 1
     cd ..
 else
     hg clone http://hg.nginx.org/nginx.org || exit 1
