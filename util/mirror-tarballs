@@ -956,10 +956,7 @@ cp $root/COPYRIGHT ./ || exit 1
 perl bundle/$resty_cli/bin/md2pod.pl $root/doc/README-windows.md | pod2text > README-windows.txt || exit 1
 unix2dos README-windows.txt || exit 1
 mkdir patches/ || exit 1
-cp $root/patches/openssl-1.1.0j-parallel_build_fix.patch patches/ || exit 1
-cp $root/patches/openssl-1.0.2h-sess_set_get_cb_yield.patch patches/ || exit 1
-cp $root/patches/openssl-1.1.0c-sess_set_get_cb_yield.patch patches/ || exit 1
-cp $root/patches/openssl-1.1.0d-sess_set_get_cb_yield.patch patches/ || exit 1
+cp $root/patches/openssl-*.patch patches/ || exit 1
 
 restydoc_index=$bundle_dir/$resty_cli/bin/restydoc-index
 #restydoc_index=echo
