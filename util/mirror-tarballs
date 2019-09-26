@@ -73,6 +73,10 @@ if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the daemon_destroy_pool patch for nginx"
     patch -p1 < $root/patches/nginx-$main_ver-daemon_destroy_pool.patch || exit 1
     echo
+
+    echo "$info_txt applying the init_cycle_pool_release patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-init_cycle_pool_release.patch || exit 1
+    echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.5.12`
@@ -395,12 +399,6 @@ fi
 if [ "$main_ver" = "1.9.7" ]; then
     echo "$info_txt applying the resolver_security_fixes patch for nginx"
     patch -p1 < $root/patches/nginx-$main_ver-resolver_security_fixes.patch || exit 1
-    echo
-fi
-
-if [ "$main_ver" = "1.13.6" ]; then
-    echo "$info_txt applying the init_cycle_pool_release patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-init_cycle_pool_release.patch || exit 1
     echo
 fi
 
