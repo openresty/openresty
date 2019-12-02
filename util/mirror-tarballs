@@ -146,7 +146,7 @@ echo
 
 echo "$info_txt applying the server_header patch for nginx"
 cp $root/patches/nginx-$main_ver-server_header.patch server_header.patch || exit 1
-sed $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" server_header.patch \
+sed "s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" server_header.patch \
     > server_header.patch.tmp && mv -f server_header.patch.tmp server_header.patch || exit 1
 patch -p1 < server_header.patch || exit 1
 echo
@@ -455,7 +455,7 @@ patch -p1 < $root/patches/nginx-$main_ver-always_enable_cc_feature_tests.patch
 echo
 
 echo "$info_txt applying the ssl_cert_cb_yield.patch patch to nginx"
-patch -p1 < $root/patches/nginx-$main_ver-ssl_cert_cb_yield.patch
+patch -p1 < $root/patches/nginx-$main_ver-ssl_cert_cb_yield.patch || exit 1
 echo
 
 answer=`$root/util/ver-ge "$main_ver" 1.17.1`
@@ -465,7 +465,7 @@ if [ "$answer" = "N" ]; then
     echo
 else
     echo "$info_txt applying the ssl_sess_cb_yield.patch patch to nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-ssl_sess_cb_yield.patch
+    patch -p1 < $root/patches/nginx-$main_ver-ssl_sess_cb_yield.patch || exit 1
     echo
 fi
 
@@ -491,7 +491,7 @@ cp $root/html/50x.html docs/html/ || exit 1
 cd .. || exit 1
 
 cp $root/patches/nginx-$main_ver-no_pool.patch ./nginx-no_pool.patch || exit 1
-sed $"s/NGINX_VERSION \".unknown/NGINX_VERSION \".$minor_ver/" \
+sed "s/NGINX_VERSION \".unknown/NGINX_VERSION \".$minor_ver/g" \
     ./nginx-no_pool.patch > ./nginx-no_pool.patch.tmp && \
     mv ./nginx-no_pool.patch.tmp ./nginx-no_pool.patch \
     || exit 1
@@ -876,8 +876,8 @@ cd ..
 
 #################################
 
-rm *.tar.gz
-rm *.tar.bz2
+rm -f *.tar.gz
+rm -f *.tar.bz2
 
 cd ..
 cp $root/util/configure ./ || exit 1

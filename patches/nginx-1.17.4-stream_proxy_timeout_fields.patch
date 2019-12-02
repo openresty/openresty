@@ -1,5 +1,5 @@
 diff --git a/src/stream/ngx_stream.h b/src/stream/ngx_stream.h
-index 57e73e04..9a95ef99 100644
+index 57e73e04..e87d0215 100644
 --- a/src/stream/ngx_stream.h
 +++ b/src/stream/ngx_stream.h
 @@ -242,6 +242,15 @@ typedef struct {
@@ -27,7 +27,7 @@ index 57e73e04..9a95ef99 100644
  
  typedef ngx_int_t (*ngx_stream_filter_pt)(ngx_stream_session_t *s,
 diff --git a/src/stream/ngx_stream_proxy_module.c b/src/stream/ngx_stream_proxy_module.c
-index 7484a728..7b50b427 100644
+index 7484a728..e9da1898 100644
 --- a/src/stream/ngx_stream_proxy_module.c
 +++ b/src/stream/ngx_stream_proxy_module.c
 @@ -378,6 +378,7 @@ ngx_stream_proxy_handler(ngx_stream_session_t *s)

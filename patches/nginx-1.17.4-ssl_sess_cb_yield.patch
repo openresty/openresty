@@ -1,7 +1,8 @@
 diff --git a/src/event/ngx_event_openssl.c b/src/event/ngx_event_openssl.c
+index 3737839d..70bbcedb 100644
 --- a/src/event/ngx_event_openssl.c
 +++ b/src/event/ngx_event_openssl.c
-@@ -1446,7 +1446,12 @@ ngx_ssl_handshake(ngx_connection_t *c)
+@@ -1681,7 +1681,12 @@ ngx_ssl_handshake(ngx_connection_t *c)
      }
  
  #if OPENSSL_VERSION_NUMBER >= 0x10002000L
@@ -15,7 +16,7 @@ diff --git a/src/event/ngx_event_openssl.c b/src/event/ngx_event_openssl.c
          c->read->handler = ngx_ssl_handshake_handler;
          c->write->handler = ngx_ssl_handshake_handler;
  
-@@ -1575,6 +1580,23 @@ ngx_ssl_try_early_data(ngx_connection_t *c)
+@@ -1825,6 +1830,23 @@ ngx_ssl_try_early_data(ngx_connection_t *c)
          return NGX_AGAIN;
      }
  

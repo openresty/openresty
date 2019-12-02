@@ -1,5 +1,5 @@
 diff --git a/src/stream/ngx_stream_upstream_round_robin.c b/src/stream/ngx_stream_upstream_round_robin.c
-index 526de3a..b531ce1 100644
+index c207667..7e02c0f 100644
 --- a/src/stream/ngx_stream_upstream_round_robin.c
 +++ b/src/stream/ngx_stream_upstream_round_robin.c
 @@ -21,10 +21,6 @@ static void ngx_stream_upstream_notify_round_robin_peer(
@@ -22,7 +22,7 @@ index 526de3a..b531ce1 100644
  ngx_stream_upstream_set_round_robin_peer_session(ngx_peer_connection_t *pc,
      void *data)
  {
-@@ -756,7 +752,7 @@ ngx_stream_upstream_set_round_robin_peer_session(ngx_peer_connection_t *pc,
+@@ -753,7 +749,7 @@ ngx_stream_upstream_set_round_robin_peer_session(ngx_peer_connection_t *pc,
  }
  
  

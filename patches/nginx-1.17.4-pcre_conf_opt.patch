@@ -5,10 +5,11 @@
 # Parent  30e806b8636af5fd3f03ec17df24801f390f7511
 Configure: added new option --with-pcre-conf-opt=OPTIONS.
 
-diff -r 30e806b8636a -r 9ba6b149669f auto/options
---- a/auto/options	Mon Dec 09 10:16:44 2013 +0400
-+++ b/auto/options	Tue Dec 10 09:02:35 2013 -0800
-@@ -286,6 +286,7 @@
+diff --git a/auto/options b/auto/options
+index 521c9768..2feaa835 100644
+--- a/auto/options
++++ b/auto/options
+@@ -363,6 +363,7 @@ use the \"--with-mail_ssl_module\" option instead"
          --with-pcre)                     USE_PCRE=YES               ;;
          --with-pcre=*)                   PCRE="$value"              ;;
          --with-pcre-opt=*)               PCRE_OPT="$value"          ;;
@@ -16,11 +17,11 @@ diff -r 30e806b8636a -r 9ba6b149669f auto/options
          --with-pcre-jit)                 PCRE_JIT=YES               ;;
  
          --with-openssl=*)                OPENSSL="$value"           ;;
-@@ -441,6 +442,7 @@
+@@ -580,6 +581,7 @@ cat << END
    --with-pcre                        force PCRE library usage
    --with-pcre=DIR                    set path to PCRE library sources
    --with-pcre-opt=OPTIONS            set additional build options for PCRE
 +  --with-pcre-conf-opt=OPTIONS       set additional configure options for PCRE
    --with-pcre-jit                    build PCRE with JIT compilation support
  
-   --with-md5=DIR                     set path to md5 library sources
+   --with-zlib=DIR                    set path to zlib library sources

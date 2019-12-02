@@ -19,10 +19,10 @@ to assume "ipv6=off" to be safe regardless of ipv6 support in the current
 build.
 
 diff --git a/src/core/ngx_resolver.c b/src/core/ngx_resolver.c
-index dade1846..5a3f0aa4 100644
+index e51712c0..b526725b 100644
 --- a/src/core/ngx_resolver.c
 +++ b/src/core/ngx_resolver.c
-@@ -426,14 +426,22 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
+@@ -425,14 +425,22 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
              continue;
          }
  
@@ -46,7 +46,7 @@ index dade1846..5a3f0aa4 100644
  
              } else {
                  ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
-@@ -443,7 +451,6 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
+@@ -442,7 +450,6 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
  
              continue;
          }

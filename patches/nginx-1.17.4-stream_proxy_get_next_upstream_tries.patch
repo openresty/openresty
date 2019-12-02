@@ -1,8 +1,8 @@
 diff --git a/src/stream/ngx_stream.h b/src/stream/ngx_stream.h
-index 09d2459..de92724 100644
+index 57e73e04..85c8678f 100644
 --- a/src/stream/ngx_stream.h
 +++ b/src/stream/ngx_stream.h
-@@ -303,4 +303,7 @@ typedef ngx_int_t (*ngx_stream_filter_pt)(ngx_stream_session_t *s,
+@@ -304,4 +304,7 @@ typedef ngx_int_t (*ngx_stream_filter_pt)(ngx_stream_session_t *s,
  extern ngx_stream_filter_pt  ngx_stream_top_filter;
  
  
@@ -11,10 +11,10 @@ index 09d2459..de92724 100644
 +
  #endif /* _NGX_STREAM_H_INCLUDED_ */
 diff --git a/src/stream/ngx_stream_proxy_module.c b/src/stream/ngx_stream_proxy_module.c
-index 0afde1c..3254ce1 100644
+index 7484a728..3d5bb3e4 100644
 --- a/src/stream/ngx_stream_proxy_module.c
 +++ b/src/stream/ngx_stream_proxy_module.c
-@@ -2156,3 +2156,14 @@ ngx_stream_proxy_bind(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
+@@ -2315,3 +2315,14 @@ ngx_stream_proxy_bind(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
  
      return NGX_CONF_OK;
  }

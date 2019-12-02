@@ -1,5 +1,5 @@
 diff --git a/src/core/nginx.h b/src/core/nginx.h
-index a3c0ef8..1263881 100644
+index 0ebc50af..d17de58a 100644
 --- a/src/core/nginx.h
 +++ b/src/core/nginx.h
 @@ -11,7 +11,7 @@
@@ -12,7 +12,7 @@ index a3c0ef8..1263881 100644
  #ifdef NGX_BUILD
  #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
 diff --git a/src/http/ngx_http_header_filter_module.c b/src/http/ngx_http_header_filter_module.c
-index 9b89405..ca13f2a 100644
+index 9b894059..ca13f2a3 100644
 --- a/src/http/ngx_http_header_filter_module.c
 +++ b/src/http/ngx_http_header_filter_module.c
 @@ -46,7 +46,7 @@ ngx_module_t  ngx_http_header_filter_module = {
@@ -25,10 +25,10 @@ index 9b89405..ca13f2a 100644
  static u_char ngx_http_server_build_string[] = "Server: " NGINX_VER_BUILD CRLF;
  
 diff --git a/src/http/v2/ngx_http_v2_filter_module.c b/src/http/v2/ngx_http_v2_filter_module.c
-index 8621e7a..a76c677 100644
+index a6e5e7d4..3b9a5bd7 100644
 --- a/src/http/v2/ngx_http_v2_filter_module.c
 +++ b/src/http/v2/ngx_http_v2_filter_module.c
-@@ -143,7 +143,7 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
+@@ -148,7 +148,7 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
      ngx_http_core_srv_conf_t  *cscf;
      u_char                     addr[NGX_SOCKADDR_STRLEN];
  

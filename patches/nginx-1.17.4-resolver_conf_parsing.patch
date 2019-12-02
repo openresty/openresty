@@ -1,5 +1,5 @@
 diff --git a/src/core/ngx_resolver.c b/src/core/ngx_resolver.c
-index cd55520c..dade1846 100644
+index e51712c0..2a8f3942 100644
 --- a/src/core/ngx_resolver.c
 +++ b/src/core/ngx_resolver.c
 @@ -9,12 +9,26 @@
@@ -221,7 +221,7 @@ index cd55520c..dade1846 100644
  ngx_resolver_t *
  ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
  {
-@@ -246,6 +445,39 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
+@@ -245,6 +444,39 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
          }
  #endif
  
