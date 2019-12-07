@@ -150,7 +150,7 @@ index 7cee1c5..c4f70d6 100644
              ngx_log_error(NGX_LOG_EMERG, cycle->log, ngx_errno,
                            "setgid(%d) failed", ccf->group);
 @@ -1144,6 +1184,47 @@ ngx_cache_manager_process_cycle(ngx_cycle_t *cycle, void *data)
-}
+ }
  
  
 +static void
@@ -197,7 +197,6 @@ index 7cee1c5..c4f70d6 100644
  static void
  ngx_cache_manager_process_handler(ngx_event_t *ev)
  {
-     time_t        next, n;
 diff --git a/src/os/unix/ngx_process_cycle.h b/src/os/unix/ngx_process_cycle.h
 index 69495d5..5149396 100644
 --- a/src/os/unix/ngx_process_cycle.h
