@@ -3,7 +3,7 @@ index c51b7ff..4c335b9 100644
 --- a/src/core/ngx_cycle.h
 +++ b/src/core/ngx_cycle.h
 @@ -22,9 +22,14 @@
- #define NGX_DEBUG_POINTS_ABORT  2
+ #define HAVE_PRIVILEGED_PROCESS_PATCH   1
  
  
 +#define HAVE_INTERCEPT_ERROR_LOG_PATCH
