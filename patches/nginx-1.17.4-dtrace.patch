@@ -1074,16 +1074,8 @@ index de1b2027..887cf6cd 100644
  
  
  static void ngx_http_wait_request_handler(ngx_event_t *ev);
-@@ -1091,7 +1092,6 @@ ngx_http_process_request_line(ngx_event_t *rev)
-     }
- }
- 
--
- ngx_int_t
- ngx_http_process_request_uri(ngx_http_request_t *r)
- {
 @@ -1348,6 +1348,8 @@ ngx_http_process_request_headers(ngx_event_t *rev)
-                 return;
+                 break;
              }
  
 +            ngx_http_probe_read_req_header_done(r, h);
