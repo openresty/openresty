@@ -7,5 +7,5 @@
 -    ngx_http_core_srv_conf_t  *cscf;
 +    ngx_http_core_srv_conf_t  *cscf = NULL;
  
-     hc = r->http_connection;
- 
+ #if (NGX_SUPPRESS_WARN)
+     cscf = NULL;
