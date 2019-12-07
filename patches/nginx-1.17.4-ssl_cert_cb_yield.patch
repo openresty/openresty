@@ -14,8 +14,8 @@ Here we added support for such usage in NGINX 3rd-party modules
 connections.
 
 diff -r 78b4e10b4367 -r 449f0461859c src/event/ngx_event_openssl.c
---- a/src/event/ngx_event_openssl.c Thu Dec 17 16:39:15 2015 +0300
-+++ b/src/event/ngx_event_openssl.c Sat Jan 02 11:14:44 2016 -0800
+--- a/src/event/ngx_event_openssl.c	Thu Dec 17 16:39:15 2015 +0300
++++ b/src/event/ngx_event_openssl.c	Sat Jan 02 11:14:44 2016 -0800
 @@ -1445,6 +1445,23 @@ ngx_ssl_handshake(ngx_connection_t *c)
          return NGX_AGAIN;
      }
