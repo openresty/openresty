@@ -16,11 +16,11 @@ diff -r 30e806b8636a -r 9ba6b149669f auto/options
          --with-pcre-jit)                 PCRE_JIT=YES               ;;
  
          --with-openssl=*)                OPENSSL="$value"           ;;
-@@ -441,6 +442,7 @@
+@@ -580,6 +581,7 @@
    --with-pcre                        force PCRE library usage
    --with-pcre=DIR                    set path to PCRE library sources
    --with-pcre-opt=OPTIONS            set additional build options for PCRE
 +  --with-pcre-conf-opt=OPTIONS       set additional configure options for PCRE
    --with-pcre-jit                    build PCRE with JIT compilation support
  
-   --with-md5=DIR                     set path to md5 library sources
+   --with-zlib=DIR                    set path to zlib library sources
