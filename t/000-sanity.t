@@ -1816,7 +1816,7 @@ clean:
 platform: linux \(linux\)
 cp -rp bundle/ build
 cd build
-export LIBPQ_LIB='(/usr/lib64|/usr/lib/x86_64-linux-gnu)'
+export LIBPQ_LIB='(/usr/lib64|/usr/lib/x86_64-linux-gnu|/usr/lib)'
 export LIBPQ_INC='(?:/usr/include|/usr/include/postgresql)'
 cd LuaJIT-2.1-20190912
 INFO: found -msse4.2 in cc.
