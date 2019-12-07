@@ -8,16 +8,16 @@ index 60f8fe7..4bd244b 100644
      ccf->master = NGX_CONF_UNSET;
 +    ccf->privileged_agent = NGX_CONF_UNSET;
      ccf->timer_resolution = NGX_CONF_UNSET_MSEC;
+     ccf->shutdown_timeout = NGX_CONF_UNSET_MSEC;
  
-     ccf->worker_processes = NGX_CONF_UNSET;
 @@ -1009,6 +1010,7 @@ ngx_core_module_init_conf(ngx_cycle_t *cycle, void *conf)
  
      ngx_conf_init_value(ccf->daemon, 1);
      ngx_conf_init_value(ccf->master, 1);
 +    ngx_conf_init_value(ccf->privileged_agent, 0);
      ngx_conf_init_msec_value(ccf->timer_resolution, 0);
+     ngx_conf_init_msec_value(ccf->shutdown_timeout, 0);
  
-     ngx_conf_init_value(ccf->worker_processes, 1);
 diff --git a/src/core/ngx_cycle.h b/src/core/ngx_cycle.h
 index c51b7ff..3261f90 100644
 --- a/src/core/ngx_cycle.h
@@ -39,7 +39,7 @@ index c51b7ff..3261f90 100644
 +    ngx_flag_t                privileged_agent;
  
      ngx_msec_t                timer_resolution;
- 
+     ngx_msec_t                shutdown_timeout;
 diff --git a/src/os/unix/ngx_process_cycle.c b/src/os/unix/ngx_process_cycle.c
 index 7cee1c5..c4f70d6 100644
 --- a/src/os/unix/ngx_process_cycle.c
@@ -150,9 +150,10 @@ index 7cee1c5..c4f70d6 100644
              ngx_log_error(NGX_LOG_EMERG, cycle->log, ngx_errno,
                            "setgid(%d) failed", ccf->group);
 @@ -1144,6 +1184,47 @@ ngx_cache_manager_process_cycle(ngx_cycle_t *cycle, void *data)
+}
  
  
- static void
++static void
 +ngx_privileged_agent_process_cycle(ngx_cycle_t *cycle, void *data)
 +{
 +    char   *name = data;
@@ -193,7 +194,7 @@ index 7cee1c5..c4f70d6 100644
 +}
 +
 +
-+static void
+ static void
  ngx_cache_manager_process_handler(ngx_event_t *ev)
  {
      time_t        next, n;
