@@ -1,8 +1,8 @@
 diff -urp nginx-1.17.4/auto/cc/clang nginx-1.17.4-patched/auto/cc/clang
 --- nginx-1.17.4/auto/cc/clang	2014-03-04 03:39:24.000000000 -0800
 +++ nginx-1.17.4-patched/auto/cc/clang	2014-03-13 20:54:26.241413360 -0700
-@@ -89,7 +89,7 @@ CFLAGS="$CFLAGS -Wconditional-uninitiali
- CFLAGS="$CFLAGS -Wno-unused-parameter"
+@@ -89,7 +89,7 @@ if [ "$NGX_SYSTEM" = "Darwin" ]; then
+ fi
  
  # stop on warning
 -CFLAGS="$CFLAGS -Werror"
