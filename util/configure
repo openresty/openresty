@@ -1408,8 +1408,6 @@ Options directly inherited from nginx
   --error-log-path=PATH              set error log pathname
   --pid-path=PATH                    set nginx.pid pathname
   --lock-path=PATH                   set nginx.lock pathname
-  --tapset-prefix=PATH               set systemtap tapset directory prefix
-  --stap-nginx-path=PATH             set stap-nginx pathname
 
   --user=USER                        set non-privileged user for
                                      worker processes
@@ -1427,7 +1425,6 @@ Options directly inherited from nginx
   --with-threads                     enable thread pool support
 
   --with-file-aio                    enable file AIO support
-  --with-ipv6                        enable IPv6 support
 
   --with-http_v2_module              enable ngx_http_v2_module
   --with-http_realip_module          enable ngx_http_realip_module
@@ -1540,6 +1537,8 @@ Options directly inherited from nginx
 
   --add-module=PATH                  enable external module
   --add-dynamic-module=PATH          enable dynamic external module
+
+  --with-compat                      dynamic modules compatibility
 
   --with-cc=PATH                     set C compiler pathname
   --with-cpp=PATH                    set C preprocessor pathname
