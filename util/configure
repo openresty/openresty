@@ -1304,8 +1304,6 @@ sub usage ($) {
   --prefix=PATH                      set the installation prefix (default to /usr/local/openresty)
 
   --with-debug                       enable debug logging
-  --with-dtrace-probes               enable dtrace USDT probes
-  --with-dtrace=PATH                 set dtrace utility pathname
 
   --with-no-pool-patch               enable the no-pool patch for debugging memory issues
 

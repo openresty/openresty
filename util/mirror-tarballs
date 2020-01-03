@@ -234,9 +234,9 @@ if [ "$answer" = "N" ]; then
     echo
 fi
 
-echo "$info_txt applying the dtrace patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-dtrace.patch || exit 1
-echo
+#echo "$info_txt applying the dtrace patch for nginx"
+#patch -p1 < $root/patches/nginx-$main_ver-dtrace.patch || exit 1
+#echo
 
 answer=`$root/util/ver-ge "$main_ver" 1.2.6`
 if [ "$answer" = "N" ]; then
