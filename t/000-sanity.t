@@ -5896,7 +5896,7 @@ patching file nginx-1.17.4/src/core/ngx_array.c
 patching file nginx-1.17.4/src/core/ngx_array.h
 patching file nginx-1.17.4/src/core/ngx_palloc.c
 patching file nginx-1.17.4/src/core/ngx_palloc.h
-cd LuaJIT-2.1-20190912
+cd LuaJIT-2.1-20200102
 INFO: found -msse4.2 in cc.
 gmake TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
 gmake install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$OPENRESTY_BUILD_DIR/luajit-root/
@@ -5908,13 +5908,13 @@ cd nginx-1.17.4
 sh ./configure --prefix=/usr/local/openresty/nginx \
   --with-cc-opt='-O2' \
   --add-module=../ngx_devel_kit-0.3.1rc1 \
-  --add-module=../echo-nginx-module-0.61 \
+  --add-module=../echo-nginx-module-0.62rc1 \
   --add-module=../xss-nginx-module-0.06 \
   --add-module=../ngx_coolkit-0.2 \
   --add-module=../set-misc-nginx-module-0.32 \
   --add-module=../form-input-nginx-module-0.12 \
   --add-module=../encrypted-session-nginx-module-0.08 \
-  --add-module=../srcache-nginx-module-0.31 \
+  --add-module=../srcache-nginx-module-0.32rc1 \
   --add-module=../ngx_lua-0.10.15 \
   --add-module=../ngx_lua_upstream-0.07 \
   --add-module=../headers-more-nginx-module-0.33 \
@@ -5936,7 +5936,7 @@ Type the following commands to build and install:
 .PHONY: all install clean
 
 all:
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20190912 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20200102 && $(MAKE) TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.7 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-signal-0.02 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.13 && $(MAKE) DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
@@ -5946,7 +5946,7 @@ all:
 install: all
 	mkdir -p $(DESTDIR)/usr/local/openresty/
 	-cp $OPENRESTY_DIR/COPYRIGHT $(DESTDIR)/usr/local/openresty/
-	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20190912 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
+	cd $OPENRESTY_BUILD_DIR/LuaJIT-2.1-20200102 && $(MAKE) install TARGET_STRIP=@: CCDEBUG=-g XCFLAGS='-DLUAJIT_ENABLE_LUA52COMPAT -DLUAJIT_ENABLE_GC64 -msse4.2' CC=cc PREFIX=/usr/local/openresty/luajit DESTDIR=$(DESTDIR)
 	cd $OPENRESTY_BUILD_DIR/lua-cjson-2.1.0.7 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_CMODULE_DIR=/usr/local/openresty/lualib LUA_MODULE_DIR=/usr/local/openresty/lualib CJSON_CFLAGS="-g -fpic" CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-resty-signal-0.02 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc
 	cd $OPENRESTY_BUILD_DIR/lua-redis-parser-0.13 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_INCLUDE_DIR=$OPENRESTY_BUILD_DIR/luajit-root/usr/local/openresty/luajit/include/luajit-2.1 LUA_LIB_DIR=/usr/local/openresty/lualib CC=cc

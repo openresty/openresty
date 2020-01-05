@@ -198,8 +198,8 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.17.4/src/core/ngx_ar
 diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.17.4/src/core/ngx_palloc.c nginx-1.17.4/src/core/ngx_palloc.c
 --- nginx-1.17.4/src/core/ngx_palloc.c	2016-04-19 09:02:38.000000000 -0700
 +++ nginx-1.17.4/src/core/ngx_palloc.c	2016-04-21 16:25:45.912282685 -0700
-@@ -10,34 +10,26 @@
- #include <ngx_core_probe.h>
+@@ -9,34 +9,26 @@
+ #include <ngx_core.h>
  
  
 -static ngx_inline void *ngx_palloc_small(ngx_pool_t *pool, size_t size,
@@ -237,8 +237,8 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.17.4/src/core/ngx_pa
 -    p->cleanup = NULL;
      p->log = log;
  
-     ngx_core_probe_create_pool_done(p, size);
-@@ -49,8 +41,7 @@ ngx_create_pool(size_t size, ngx_log_t *
+     return p;
+@@ -46,8 +38,7 @@ ngx_create_pool(size_t size, ngx_log_t *
  void
  ngx_destroy_pool(ngx_pool_t *pool)
  {
@@ -248,7 +248,7 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.17.4/src/core/ngx_pa
      ngx_pool_cleanup_t  *c;
  
      for (c = pool->cleanup; c; c = c->next) {
-@@ -61,6 +52,11 @@ ngx_destroy_pool(ngx_pool_t *pool)
+@@ -58,6 +49,11 @@ ngx_destroy_pool(ngx_pool_t *pool)
          }
      }
  
@@ -260,7 +260,7 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.17.4/src/core/ngx_pa
  #if (NGX_DEBUG)
  
      /*
-@@ -68,13 +64,9 @@ ngx_destroy_pool(ngx_pool_t *pool)
+@@ -65,13 +61,9 @@ ngx_destroy_pool(ngx_pool_t *pool)
       * so we cannot use this log while free()ing the pool
       */
  
@@ -276,7 +276,7 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.17.4/src/core/ngx_pa
  
          if (n == NULL) {
              break;
-@@ -83,171 +75,82 @@ ngx_destroy_pool(ngx_pool_t *pool)
+@@ -80,171 +72,82 @@ ngx_destroy_pool(ngx_pool_t *pool)
  
  #endif
  
@@ -482,7 +482,7 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.17.4/src/core/ngx_pa
      return p;
  }
  
-@@ -256,38 +159,48 @@ void *
+@@ -253,38 +156,48 @@ void *
  ngx_pmemalign(ngx_pool_t *pool, size_t size, size_t alignment)
  {
      void              *p;
