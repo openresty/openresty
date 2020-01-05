@@ -96,25 +96,25 @@ sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 }
 
-warn "\n=== --without-stream + dtrace static probes ===\n";
-$prefix = "/usr/local/openresty-nostream-usdt";
-cleanup();
-unless ($opts{f}) {
-    sh "./configure $cfg_opts --with-dtrace-probes --without-stream --prefix=$prefix -j$jobs";
-}
-sh "$make -j$jobs";
-sh "sudo $make install";
-sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
-sh "$prefix/nginx/sbin/nginx -V 2>\&1", $ver;
-sh "$prefix/nginx/sbin/nginx -V 2>\&1", "--with-stream", 1;
-sh "$prefix/nginx/sbin/nginx -V 2>\&1", "--with-dtrace-probes";
-system "sudo killall nginx > /dev/null 2>&1";
-sh "sudo $prefix/nginx/sbin/nginx";
-sh "curl -si localhost/lua|grep $lua";
-sh "curl -si localhost/lua|grep $ver";
-sh "curl -si localhost/cjson|grep 'json.safe: '";
-sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'}, 'Hello World';
-sh "sudo $prefix/nginx/sbin/nginx -sstop";
+#warn "\n=== --without-stream + dtrace static probes ===\n";
+#$prefix = "/usr/local/openresty-nostream-usdt";
+#cleanup();
+#unless ($opts{f}) {
+#sh "./configure $cfg_opts --with-dtrace-probes --without-stream --prefix=$prefix -j$jobs";
+#}
+#sh "$make -j$jobs";
+#sh "sudo $make install";
+#sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+#sh "$prefix/nginx/sbin/nginx -V 2>\&1", $ver;
+#sh "$prefix/nginx/sbin/nginx -V 2>\&1", "--with-stream", 1;
+#sh "$prefix/nginx/sbin/nginx -V 2>\&1", "--with-dtrace-probes";
+#system "sudo killall nginx > /dev/null 2>&1";
+#sh "sudo $prefix/nginx/sbin/nginx";
+#sh "curl -si localhost/lua|grep $lua";
+#sh "curl -si localhost/lua|grep $ver";
+#sh "curl -si localhost/cjson|grep 'json.safe: '";
+#sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'}, 'Hello World';
+#sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Without Gzip/SSL/PCRE ===\n";
 $prefix = "/usr/local/openresty-nogzip";
@@ -223,31 +223,31 @@ sh "curl -si localhost/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
-warn "\n=== DTrace Build ===\n";
-$prefix = "/usr/local/openresty-dtrace";
-cleanup();
-unless ($opts{f}) {
-    sh "./configure $cfg_opts --with-dtrace-probes --prefix=$prefix -j$jobs";
-}
-sh "$make -j$jobs";
-sh "sudo $make install";
-sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
-sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
-sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-dtrace-probes'";
-system "sudo killall nginx > /dev/null 2>&1";
-sh "sudo $prefix/nginx/sbin/nginx";
-sh "curl -si localhost/lua|grep $lua";
-sh "curl -si localhost/lua|grep $ver";
-sh "curl -si localhost/cjson|grep 'json.safe: '";
-if ($^O eq 'linux') {
-    sh "stap -L 'process(\"$prefix/nginx/sbin/nginx\").mark(\"*\")'|grep http__lua__coroutine__done";
+#warn "\n=== DTrace Build ===\n";
+#$prefix = "/usr/local/openresty-dtrace";
+#cleanup();
+#unless ($opts{f}) {
+#sh "./configure $cfg_opts --with-dtrace-probes --prefix=$prefix -j$jobs";
+#}
+#sh "$make -j$jobs";
+#sh "sudo $make install";
+#sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+#sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
+#sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-dtrace-probes'";
+#system "sudo killall nginx > /dev/null 2>&1";
+#sh "sudo $prefix/nginx/sbin/nginx";
+#sh "curl -si localhost/lua|grep $lua";
+#sh "curl -si localhost/lua|grep $ver";
+#sh "curl -si localhost/cjson|grep 'json.safe: '";
+#if ($^O eq 'linux') {
+#sh "stap -L 'process(\"$prefix/nginx/sbin/nginx\").mark(\"*\")'|grep http__lua__coroutine__done";
+#
+#} elsif ($^O eq 'freebsd' || $^O eq 'darwin' || $^O eq 'solaris') {
+#sh "sudo dtrace -l|grep http-lua-coroutine-done";
+#}
+#sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 
-} elsif ($^O eq 'freebsd' || $^O eq 'darwin' || $^O eq 'solaris') {
-    sh "sudo dtrace -l|grep http-lua-coroutine-done";
-}
-sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
-
-sh "sudo $prefix/nginx/sbin/nginx -sstop";
+#sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 sub sh ($@) {
     my $cmd = shift;

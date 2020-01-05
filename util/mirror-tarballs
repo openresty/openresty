@@ -234,9 +234,9 @@ if [ "$answer" = "N" ]; then
     echo
 fi
 
-echo "$info_txt applying the dtrace patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-dtrace.patch || exit 1
-echo
+#echo "$info_txt applying the dtrace patch for nginx"
+#patch -p1 < $root/patches/nginx-$main_ver-dtrace.patch || exit 1
+#echo
 
 answer=`$root/util/ver-ge "$main_ver" 1.2.6`
 if [ "$answer" = "N" ]; then
@@ -499,7 +499,7 @@ rm -rf no-pool-nginx-$ver
 
 #################################
 
-ver=0.61
+ver=0.62rc1
 $root/util/get-tarball "https://github.com/openresty/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv openresty-echo-nginx-module-* echo-nginx-module-$ver || exit 1
@@ -590,7 +590,7 @@ mv openresty-memc-nginx-module-* memc-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.31
+ver=0.32rc1
 $root/util/get-tarball "https://github.com/openresty/srcache-nginx-module/tarball/v$ver" -O srcache-nginx-module-$ver.tar.gz || exit 1
 tar -xzf srcache-nginx-module-$ver.tar.gz || exit 1
 mv openresty-srcache-nginx-module-* srcache-nginx-module-$ver || exit 1
@@ -683,7 +683,7 @@ mv openresty-opm-* opm-$ver || exit 1
 
 #################################
 
-ver=2.1-20190912
+ver=2.1-20200102
 $root/util/get-tarball "https://github.com/openresty/luajit2/archive/v$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 mv luajit2-* LuaJIT-$ver || exit 1
