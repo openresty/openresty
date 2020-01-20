@@ -723,12 +723,11 @@ _END_
             $luajit_xcflags .= " -DLUAJIT_ENABLE_LUA52COMPAT";
         }
 
-        if (!$no_luajit_gc64
-            && $Config{"archname"} =~ /\bx86_64\b/
+        if ($no_luajit_gc64
             && (!$user_luajit_xcflags
-                || $user_luajit_xcflags !~ /-DLUAJIT_ENABLE_GC64\b/))
+                || $user_luajit_xcflags !~ /-DLUAJIT_DISABLE_GC64/))
         {
-            $luajit_xcflags .= " -DLUAJIT_ENABLE_GC64";
+            $luajit_xcflags .= " -DLUAJIT_DISABLE_GC64";
         }
 
         if (!$user_luajit_xcflags
