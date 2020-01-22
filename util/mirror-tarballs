@@ -280,13 +280,6 @@ if [ "$answer" = "N" ]; then
     echo
 fi
 
-answer=`$root/util/ver-ge "$main_ver" 1.4.1`
-if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying patches/nginx-$main_ver-gcc-maybe-uninitialized-warning.patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-gcc-maybe-uninitialized-warning.patch
-    echo
-fi
-
 answer=`$root/util/ver-ge "$main_ver" 1.5.3`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the unix_socket_accept_over_read patch for nginx $ver"
