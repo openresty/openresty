@@ -507,9 +507,9 @@ mv openresty-xss-nginx-module-* xss-nginx-module-$ver || exit 1
 #################################
 
 ver=0.3.1rc1
-$root/util/get-tarball "https://github.com/simplresty/ngx_devel_kit/tarball/v$ver" -O ngx_devel_kit-$ver.tar.gz
+$root/util/get-tarball "https://github.com/vision5/ngx_devel_kit/tarball/v$ver" -O ngx_devel_kit-$ver.tar.gz
 tar -xzf ngx_devel_kit-$ver.tar.gz || exit 1
-mv simplresty-ngx_devel_kit-* ngx_devel_kit-$ver || exit 1
+mv vision5-ngx_devel_kit-* ngx_devel_kit-$ver || exit 1
 
 #################################
 
