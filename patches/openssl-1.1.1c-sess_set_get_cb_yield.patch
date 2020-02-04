@@ -142,7 +142,7 @@ diff --git a/ssl/ssl_sess.c b/ssl/ssl_sess.c
 diff --git a/ssl/statem/statem_srvr.c b/ssl/statem/statem_srvr.c
 --- a/ssl/statem/statem_srvr.c
 +++ b/ssl/statem/statem_srvr.c
-@@ -1600,6 +1600,7 @@ static int tls_early_post_process_client_hello(SSL *s)
+@@ -1604,6 +1604,7 @@ static int tls_early_post_process_client_hello(SSL *s)
      STACK_OF(SSL_CIPHER) *scsvs = NULL;
      CLIENTHELLO_MSG *clienthello = s->clienthello;
      DOWNGRADE dgrd = DOWNGRADE_NONE;
@@ -150,7 +150,7 @@ diff --git a/ssl/statem/statem_srvr.c b/ssl/statem/statem_srvr.c
  
      /* Finished parsing the ClientHello, now we can start processing it */
      /* Give the ClientHello callback a crack at things */
-@@ -1707,6 +1708,7 @@ static int tls_early_post_process_client_hello(SSL *s)
+@@ -1711,6 +1712,7 @@ static int tls_early_post_process_client_hello(SSL *s)
      }
  
      s->hit = 0;
@@ -158,18 +158,18 @@ diff --git a/ssl/statem/statem_srvr.c b/ssl/statem/statem_srvr.c
  
      if (!ssl_cache_cipherlist(s, &clienthello->ciphersuites,
                                clienthello->isv2) ||
-@@ -1812,6 +1814,10 @@ static int tls_early_post_process_client_hello(SSL *s)
+@@ -1816,6 +1818,10 @@ static int tls_early_post_process_client_hello(SSL *s)
          } else if (i == -1) {
              /* SSLfatal() already called */
              goto err;
 +        } else if (i == -2) {
 +            clienthello->ciphersuites = saved_ciphers;
 +            s->rwstate = SSL_SESS_LOOKUP;
-+            return -1;
++            goto retry;
          } else {
              /* i == 0 */
              if (!ssl_get_new_session(s, 1)) {
-@@ -1819,6 +1825,7 @@ static int tls_early_post_process_client_hello(SSL *s)
+@@ -1823,6 +1829,7 @@ static int tls_early_post_process_client_hello(SSL *s)
                  goto err;
              }
          }
@@ -177,6 +177,17 @@ diff --git a/ssl/statem/statem_srvr.c b/ssl/statem/statem_srvr.c
      }
  
      if (SSL_IS_TLS13(s)) {
+@@ -2084,6 +2091,10 @@ static int tls_early_post_process_client_hello(SSL *s)
+     s->clienthello = NULL;
+ 
+     return 0;
++retry:
++    sk_SSL_CIPHER_free(ciphers);
++    sk_SSL_CIPHER_free(scsvs);
++    return -1;
+ }
+ 
+ /*
 diff --git a/util/libssl.num b/util/libssl.num
 --- a/util/libssl.num
 +++ b/util/libssl.num
