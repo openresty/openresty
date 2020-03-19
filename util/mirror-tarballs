@@ -505,6 +505,13 @@ $root/util/get-tarball "https://github.com/openresty/lua-nginx-module/archive/v$
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv lua-nginx-module-$ver ngx_lua-$ver || exit 1
 
+cd ngx_lua-$ver || exit 1
+
+echo "applying ngx_http_lua-$ver-check-uri-and-headers-safety patch"
+patch -p1 < $root/patches/ngx_http_lua-$ver-check-uri-and-headers-safety.patch || exit 1
+
+cd .. || exit 1
+
 #################################
 
 ver=0.07
