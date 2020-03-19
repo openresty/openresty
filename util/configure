@@ -775,6 +775,12 @@ int main(void) {
             }
         }
 
+        if ($platform eq 'macosx') {
+            # to work around a bug in the Xcode toolchain in macOS 11.15:
+            # https://github.com/openresty/homebrew-brew/issues/10
+            $luajit_xcflags .= " -fno-stack-check";
+        }
+
         if ($opts->{debug}) {
             $luajit_xcflags .= " -DLUA_USE_APICHECK -DLUA_USE_ASSERT";
 
@@ -819,12 +825,17 @@ int main(void) {
 
         if ($platform eq 'macosx') {
             my $v = $ENV{MACOSX_DEPLOYMENT_TARGET};
-            if (!defined $v || $v !~ /^\d+\.\d+$/) {
+            if (!defined($v) || $v !~ /^\d+\.\d+$/) {
                 $v = `sw_vers -productVersion`;
-                if (defined $v && $v =~ /^\s*(\d+\.\d+)/) {
-                    $ENV{MACOSX_DEPLOYMENT_TARGET} = $1;
+                chomp $v;
+                if (defined($v) && $v =~ /^\s*(\d+\.\d+)/) {
+                    $v = $1;
+                    $ENV{MACOSX_DEPLOYMENT_TARGET} = $v;
                     #warn "MACOSX_DEPLOYMENT_TARGET = $1";
                 }
+            }
+            if ($v) {
+                $extra_opts .= " MACOSX_DEPLOYMENT_TARGET='$v'";
             }
         }
 
