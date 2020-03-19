@@ -965,21 +965,57 @@ int main(void) {
         $lualib_prefix = File::Spec->catfile($prefix, "lualib");
         my $site_lualib_prefix = File::Spec->catfile($prefix, "site/lualib");
 
-        my $ngx_lua_dir = auto_complete 'ngx_lua';
-
-        open my $in, ">>$ngx_lua_dir/config" or
-            die "Cannot open $ngx_lua_dir/config for appending: $!\n";
-
         {
-            print $in <<"_EOC_";
+            my $ngx_lua_dir = auto_complete 'ngx_lua';
 
-ngx_lua_dquote='"'
-CFLAGS="\$CFLAGS -DLUA_DEFAULT_PATH='\${ngx_lua_dquote}$site_lualib_prefix/?.ljbc;$site_lualib_prefix/?/init.ljbc;$lualib_prefix/?.ljbc;$lualib_prefix/?/init.ljbc;$site_lualib_prefix/?.lua;$site_lualib_prefix/?/init.lua;$lualib_prefix/?.lua;$lualib_prefix/?/init.lua\$ngx_lua_dquote'"
-CFLAGS="\$CFLAGS -DLUA_DEFAULT_CPATH='\${ngx_lua_dquote}$site_lualib_prefix/?.so;$lualib_prefix/?.so\$ngx_lua_dquote'"
+            my $outfile = "$ngx_lua_dir/config";
+
+            open my $in, ">>$outfile" or
+                die "Cannot open $outfile for appending: $!\n";
+
+            {
+                print $in <<"_EOC_";
+
+echo '
+#ifndef LUA_DEFAULT_PATH
+#define LUA_DEFAULT_PATH "$site_lualib_prefix/?.ljbc;$site_lualib_prefix/?/init.ljbc;$lualib_prefix/?.ljbc;$lualib_prefix/?/init.ljbc;$site_lualib_prefix/?.lua;$site_lualib_prefix/?/init.lua;$lualib_prefix/?.lua;$lualib_prefix/?/init.lua"
+#endif
+
+#ifndef LUA_DEFAULT_CPATH
+#define LUA_DEFAULT_CPATH "$site_lualib_prefix/?.so;$lualib_prefix/?.so"
+#endif
+' >> "\$ngx_addon_dir/src/ngx_http_lua_autoconf.h"
 _EOC_
+            }
+
+            close $in;
         }
 
-        close $in;
+        {
+            my $ngx_stream_lua_dir = auto_complete 'ngx_stream_lua';
+
+            my $outfile = "$ngx_stream_lua_dir/config";
+
+            open my $in, ">>$outfile" or
+                die "Cannot open $outfile for appending: $!\n";
+
+            {
+                print $in <<"_EOC_";
+
+echo '
+#ifndef LUA_DEFAULT_PATH
+#define LUA_DEFAULT_PATH "$site_lualib_prefix/?.ljbc;$site_lualib_prefix/?/init.ljbc;$lualib_prefix/?.ljbc;$lualib_prefix/?/init.ljbc;$site_lualib_prefix/?.lua;$site_lualib_prefix/?/init.lua;$lualib_prefix/?.lua;$lualib_prefix/?/init.lua"
+#endif
+
+#ifndef LUA_DEFAULT_CPATH
+#define LUA_DEFAULT_CPATH "$site_lualib_prefix/?.so;$lualib_prefix/?.so"
+#endif
+' >> "\$ngx_addon_dir/src/ngx_stream_lua_autoconf.h"
+_EOC_
+            }
+
+            close $in;
+        }
 
         unless ($opts->{no_lua_cjson}) {
             my $dir = auto_complete 'lua-cjson';
