@@ -1,0 +1,11 @@
+--- openssl-1.1.1d/crypto/threads_none.c	2019-09-10 06:13:07.000000000 -0700
++++ openssl-1.1.1d-patched/crypto/threads_none.c	2020-03-19 19:58:56.093255300 -0700
+@@ -143,7 +143,7 @@ int openssl_get_fork_id(void)
+ # if defined(OPENSSL_SYS_UNIX)
+     return getpid();
+ # else
+-    return return 0;
++    return 0;
+ # endif
+ }
+ #endif
