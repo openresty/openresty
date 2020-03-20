@@ -2,10 +2,10 @@
 
 PCRE=pcre-8.44
 ZLIB=zlib-1.2.11
-OPENSSL=openssl-1.1.1e
+OPENSSL=openssl-1.1.1d
 JOBS=12
 
-# wget https://www.openssl.org/source/openssl-1.1.1e.tar.gz
+# wget https://www.openssl.org/source/openssl-1.1.1d.tar.gz
 # wget http://zlib.net/zlib-1.2.11.tar.gz
 # wget https://ftp.pcre.org/pub/pcre/pcre-8.44.tar.gz
 
@@ -20,7 +20,8 @@ cd ../..
 
 cd objs/lib/$OPENSSL || exit 1
 #patch -p1 < ../../../patches/openssl-1.1.0j-parallel_build_fix.patch || exit 1
-patch -p1 < ../../../patches/openssl-1.1.1e-sess_set_get_cb_yield.patch \
+patch -p1 < ../../../patches/openssl-1.1.1c-sess_set_get_cb_yield.patch \
+#patch -p1 < ../../../patches/openssl-1.1.1e-sess_set_get_cb_yield.patch \
     || exit 1
 cd ../../..
 
