@@ -689,7 +689,7 @@ cd .. || exit 1
 
 #################################
 
-ver=2.1.0.7
+ver=2.1.0.8rc1
 $root/util/get-tarball "https://github.com/openresty/lua-cjson/archive/$ver.tar.gz" -O "lua-cjson-$ver.tar.gz" || exit 1
 tar -xzf lua-cjson-$ver.tar.gz || exit 1
 
