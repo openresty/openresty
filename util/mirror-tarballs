@@ -529,8 +529,13 @@ mv lua-nginx-module-$ver ngx_lua-$ver || exit 1
 
 cd ngx_lua-$ver || exit 1
 
-echo "applying ngx_http_lua-$ver-check-uri-and-headers-safety patch"
+echo "$info_txt applying ngx_http_lua-$ver-check-uri-and-headers-safety patch"
 patch -p1 < $root/patches/ngx_http_lua-$ver-check-uri-and-headers-safety.patch || exit 1
+echo
+
+echo "$info_txt applying ngx_http_lua-$ver-fix_location_capture_content_length_chunked patch"
+patch -p1 < $root/patches/ngx_http_lua-$ver-fix_location_capture_content_length_chunked.patch || exit 1
+echo
 
 cd .. || exit 1
 
