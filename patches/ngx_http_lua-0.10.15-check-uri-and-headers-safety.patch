@@ -1,112 +1,30 @@
-From 881bf91da6853446398cebc1b2d6a01f8d7939d6 Mon Sep 17 00:00:00 2001
-From: doujiang24 <doujiang24@gmail.com>
-Date: Sat, 13 Jul 2019 13:06:33 +0800
-Subject: [PATCH] bugfix: ensured arguments of APIs mutating response headers
- do not contain '\r' and '\n' characters.
-
-Signed-off-by: Thibault Charbonnier <thibaultcha@me.com>
----
- src/ngx_http_lua_control.c     |  2 ++
- src/ngx_http_lua_headers_out.c |  4 ++++
- src/ngx_http_lua_util.h        | 15 +++++++++++++++
- 3 files changed, 21 insertions(+)
-
 diff --git a/src/ngx_http_lua_control.c b/src/ngx_http_lua_control.c
-index 5cd1d64c..9c523015 100644
+index 5cd1d64c..d8022cc5 100644
 --- a/src/ngx_http_lua_control.c
 +++ b/src/ngx_http_lua_control.c
-@@ -248,6 +248,8 @@ ngx_http_lua_ngx_redirect(lua_State *L)
+@@ -248,6 +248,10 @@ ngx_http_lua_ngx_redirect(lua_State *L)
                            "the headers");
      }
-
-+    len = ngx_http_lua_safe_header_value_len(p, len);
+ 
++    if (ngx_http_lua_check_unsafe_string(r, p, len, "redirect uri") != NGX_OK) {
++        return luaL_error(L, "attempt to set unsafe redirect uri");
++    }
 +
      uri = ngx_palloc(r->pool, len);
      if (uri == NULL) {
          return luaL_error(L, "no memory");
-diff --git a/src/ngx_http_lua_headers_out.c b/src/ngx_http_lua_headers_out.c
-index cf94bd04..4b59721e 100644
---- a/src/ngx_http_lua_headers_out.c
-+++ b/src/ngx_http_lua_headers_out.c
-@@ -491,6 +491,10 @@ ngx_http_lua_set_output_header(ngx_http_request_t *r, ngx_http_lua_ctx_t *ctx,
-
-     dd("set header value: %.*s", (int) value.len, value.data);
-
-+    key.len = ngx_http_lua_safe_header_value_len(key.data, key.len);
-+
-+    value.len = ngx_http_lua_safe_header_value_len(value.data, value.len);
-+
-     hv.hash = ngx_hash_key_lc(key.data, key.len);
-     hv.key = key;
-
-diff --git a/src/ngx_http_lua_util.h b/src/ngx_http_lua_util.h
-index f08f4815..179ff3aa 100644
---- a/src/ngx_http_lua_util.h
-+++ b/src/ngx_http_lua_util.h
-@@ -260,6 +260,21 @@ void ngx_http_lua_set_sa_restart(ngx_log_t *log);
-     }
-
-
-+static ngx_inline size_t
-+ngx_http_lua_safe_header_value_len(u_char *str, size_t len)
-+{
-+    size_t i;
-+
-+    for (i = 0; i < len; i++, str++) {
-+        if (*str == '\r' || *str == '\n') {
-+            return i;
-+        }
-+    }
-+
-+    return len;
-+}
-+
-+
- static ngx_inline void
- ngx_http_lua_init_ctx(ngx_http_request_t *r, ngx_http_lua_ctx_t *ctx)
- {
-
-From 38f587a35ef72b8cbb50114797fa875307ff0bfe Mon Sep 17 00:00:00 2001
-From: doujiang <doujiang24@gmail.com>
-Date: Fri, 20 Mar 2020 05:17:20 +0800
-Subject: [PATCH] bugfix: ensured arguments of APIs mutating uri or
- request/response headers do not contain unsafe characters. (#1654)
-
-Signed-off-by: Thibault Charbonnier <thibaultcha@me.com>
----
- src/ngx_http_lua_control.c     |   4 +-
- src/ngx_http_lua_headers_in.c  |   6 ++
- src/ngx_http_lua_headers_out.c |   8 ++-
- src/ngx_http_lua_uri.c         |  59 ++++++++++++++++
- src/ngx_http_lua_util.c        | 119 +++++++++++++++++++++++++++++++++
- src/ngx_http_lua_util.h        |  17 +----
- 6 files changed, 195 insertions(+), 18 deletions(-)
-
-diff --git a/src/ngx_http_lua_control.c b/src/ngx_http_lua_control.c
-index 5ace1763..2fd3d174 100644
---- a/src/ngx_http_lua_control.c
-+++ b/src/ngx_http_lua_control.c
-@@ -239,7 +239,9 @@ ngx_http_lua_ngx_redirect(lua_State *L)
-                           "the headers");
-     }
- 
--    len = ngx_http_lua_safe_header_value_len(p, len);
-+    if (ngx_http_lua_check_header_safe(r, p, len) != NGX_OK) {
-+        return luaL_error(L, "attempt to use unsafe uri");
-+    }
- 
-     uri = ngx_palloc(r->pool, len);
-     if (uri == NULL) {
 diff --git a/src/ngx_http_lua_headers_in.c b/src/ngx_http_lua_headers_in.c
-index 26739fa3..a284f028 100644
+index c52cd13d..b8befc34 100644
 --- a/src/ngx_http_lua_headers_in.c
 +++ b/src/ngx_http_lua_headers_in.c
-@@ -658,6 +658,12 @@ ngx_http_lua_set_input_header(ngx_http_request_t *r, ngx_str_t key,
+@@ -664,6 +664,14 @@ ngx_http_lua_set_input_header(ngx_http_request_t *r, ngx_str_t key,
  
      dd("set header value: %.*s", (int) value.len, value.data);
  
-+    if (ngx_http_lua_check_header_safe(r, key.data, key.len) != NGX_OK
-+        || ngx_http_lua_check_header_safe(r, value.data, value.len) != NGX_OK)
++    if (ngx_http_lua_check_unsafe_string(r, key.data, key.len,
++                                         "header name") != NGX_OK
++        || ngx_http_lua_check_unsafe_string(r, value.data, value.len,
++                                            "header value") != NGX_OK)
 +    {
 +        return NGX_ERROR;
 +    }
@@ -115,111 +33,50 @@ index 26739fa3..a284f028 100644
      hv.key = key;
  
 diff --git a/src/ngx_http_lua_headers_out.c b/src/ngx_http_lua_headers_out.c
-index 659a89f4..87f114b8 100644
+index cf94bd04..8cd36841 100644
 --- a/src/ngx_http_lua_headers_out.c
 +++ b/src/ngx_http_lua_headers_out.c
-@@ -491,9 +491,11 @@ ngx_http_lua_set_output_header(ngx_http_request_t *r, ngx_http_lua_ctx_t *ctx,
+@@ -491,6 +491,14 @@ ngx_http_lua_set_output_header(ngx_http_request_t *r, ngx_http_lua_ctx_t *ctx,
  
      dd("set header value: %.*s", (int) value.len, value.data);
  
--    key.len = ngx_http_lua_safe_header_value_len(key.data, key.len);
--
--    value.len = ngx_http_lua_safe_header_value_len(value.data, value.len);
-+    if (ngx_http_lua_check_header_safe(r, key.data, key.len) != NGX_OK
-+        || ngx_http_lua_check_header_safe(r, value.data, value.len) != NGX_OK)
++    if (ngx_http_lua_check_unsafe_string(r, key.data, key.len,
++                                         "header name") != NGX_OK
++        || ngx_http_lua_check_unsafe_string(r, value.data, value.len,
++                                            "header value") != NGX_OK)
 +    {
 +        return NGX_ERROR;
 +    }
- 
++
      hv.hash = ngx_hash_key_lc(key.data, key.len);
      hv.key = key;
+ 
 diff --git a/src/ngx_http_lua_uri.c b/src/ngx_http_lua_uri.c
-index 3559b5c0..6818ba85 100644
+index 3559b5c0..569cb502 100644
 --- a/src/ngx_http_lua_uri.c
 +++ b/src/ngx_http_lua_uri.c
-@@ -16,6 +16,8 @@
- 
- 
- static int ngx_http_lua_ngx_req_set_uri(lua_State *L);
-+static ngx_int_t ngx_http_lua_check_uri_safe(ngx_http_request_t *r,
-+    u_char *str, size_t len);
- 
- 
- void
-@@ -55,6 +57,10 @@ ngx_http_lua_ngx_req_set_uri(lua_State *L)
+@@ -55,6 +55,10 @@ ngx_http_lua_ngx_req_set_uri(lua_State *L)
          return luaL_error(L, "attempt to use zero-length uri");
      }
  
-+    if (ngx_http_lua_check_uri_safe(r, p, len) != NGX_OK) {
-+        return luaL_error(L, "attempt to use unsafe uri");
++    if (ngx_http_lua_check_unsafe_string(r, p, len, "uri") != NGX_OK) {
++        return luaL_error(L, "attempt to set unsafe uri");
 +    }
 +
      if (n == 2) {
  
          luaL_checktype(L, 2, LUA_TBOOLEAN);
-@@ -107,4 +113,57 @@ ngx_http_lua_ngx_req_set_uri(lua_State *L)
+@@ -107,4 +111,5 @@ ngx_http_lua_ngx_req_set_uri(lua_State *L)
      return 0;
  }
  
 +
-+static ngx_inline ngx_int_t
-+ngx_http_lua_check_uri_safe(ngx_http_request_t *r, u_char *str, size_t len)
-+{
-+    size_t           i, buf_len;
-+    u_char           c;
-+    u_char          *buf, *src = str;
-+
-+                     /* %00-%1F, " ", %7F */
-+
-+    static uint32_t  unsafe[] = {
-+        0xffffffff, /* 1111 1111 1111 1111  1111 1111 1111 1111 */
-+
-+                    /* ?>=< ;:98 7654 3210  /.-, +*)( '&%$ #"!  */
-+        0x00000001, /* 0000 0000 0000 0000  0000 0000 0000 0001 */
-+
-+                    /* _^]\ [ZYX WVUT SRQP  ONML KJIH GFED CBA@ */
-+        0x00000000, /* 0000 0000 0000 0000  0000 0000 0000 0000 */
-+
-+                    /*  ~}| {zyx wvut srqp  onml kjih gfed cba` */
-+        0x80000000, /* 1000 0000 0000 0000  0000 0000 0000 0000 */
-+
-+        0x00000000, /* 0000 0000 0000 0000  0000 0000 0000 0000 */
-+        0x00000000, /* 0000 0000 0000 0000  0000 0000 0000 0000 */
-+        0x00000000, /* 0000 0000 0000 0000  0000 0000 0000 0000 */
-+        0x00000000  /* 0000 0000 0000 0000  0000 0000 0000 0000 */
-+    };
-+
-+    for (i = 0; i < len; i++, str++) {
-+        c = *str;
-+        if (unsafe[c >> 5] & (1 << (c & 0x1f))) {
-+            buf_len = ngx_http_lua_escape_log(NULL, src, len);
-+            buf = ngx_palloc(r->pool, buf_len);
-+            if (buf == NULL) {
-+                return NGX_ERROR;
-+            }
-+
-+            ngx_http_lua_escape_log(buf, src, len);
-+
-+            ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
-+                          "unsafe byte \"0x%uxd\" in uri \"%*s\"",
-+                          (unsigned) c, buf_len, buf);
-+
-+            ngx_pfree(r->pool, buf);
-+
-+            return NGX_ERROR;
-+        }
-+    }
-+
-+    return NGX_OK;
-+}
-+
-+
  /* vi:set ft=c ts=4 sw=4 et fdm=marker: */
 diff --git a/src/ngx_http_lua_util.c b/src/ngx_http_lua_util.c
-index 074957b6..42bfb91e 100644
+index c12262e8..515e14ad 100644
 --- a/src/ngx_http_lua_util.c
 +++ b/src/ngx_http_lua_util.c
-@@ -4261,4 +4261,123 @@ ngx_http_lua_set_sa_restart(ngx_log_t *log)
+@@ -4267,4 +4267,71 @@ ngx_http_lua_set_sa_restart(ngx_log_t *log)
  #endif
  
  
@@ -290,8 +147,43 @@ index 074957b6..42bfb91e 100644
 +}
 +
 +
-+ngx_inline ngx_int_t
-+ngx_http_lua_check_header_safe(ngx_http_request_t *r, u_char *str, size_t len)
+ /* vi:set ft=c ts=4 sw=4 et fdm=marker: */
+diff --git a/src/ngx_http_lua_util.h b/src/ngx_http_lua_util.h
+index f08f4815..e1f4d75d 100644
+--- a/src/ngx_http_lua_util.h
++++ b/src/ngx_http_lua_util.h
+@@ -132,6 +132,12 @@ ngx_http_lua_ffi_check_context(ngx_http_lua_ctx_t *ctx, unsigned flags,
+     }
+ 
+ 
++#define ngx_http_lua_check_if_abortable(L, ctx)                              \
++    if ((ctx)->no_abort) {                                                   \
++        return luaL_error(L, "attempt to abort with pending subrequests");   \
++    }
++
++
+ #define ngx_http_lua_ssl_get_ctx(ssl_conn)                                   \
+     SSL_get_ex_data(ssl_conn, ngx_http_lua_ssl_ctx_index)
+ 
+@@ -254,10 +260,7 @@ void ngx_http_lua_cleanup_free(ngx_http_request_t *r,
+ void ngx_http_lua_set_sa_restart(ngx_log_t *log);
+ #endif
+ 
+-#define ngx_http_lua_check_if_abortable(L, ctx)                              \
+-    if ((ctx)->no_abort) {                                                   \
+-        return luaL_error(L, "attempt to abort with pending subrequests");   \
+-    }
++size_t ngx_http_lua_escape_log(u_char *dst, u_char *src, size_t size);
+ 
+ 
+ static ngx_inline void
+@@ -485,6 +488,59 @@ ngx_inet_get_port(struct sockaddr *sa)
+ #endif
+ 
+ 
++static ngx_inline ngx_int_t
++ngx_http_lua_check_unsafe_string(ngx_http_request_t *r, u_char *str, size_t len,
++    const char *name)
 +{
 +    size_t           i, buf_len;
 +    u_char           c;
@@ -329,8 +221,8 @@ index 074957b6..42bfb91e 100644
 +            ngx_http_lua_escape_log(buf, src, len);
 +
 +            ngx_log_error(NGX_LOG_ERR, r->connection->log, 0,
-+                          "unsafe byte \"0x%uxd\" in header \"%*s\"",
-+                          (unsigned) c, buf_len, buf);
++                          "unsafe byte \"0x%uxd\" in %s \"%*s\"",
++                          (unsigned) c, name, buf_len, buf);
 +
 +            ngx_pfree(r->pool, buf);
 +
@@ -342,33 +234,6 @@ index 074957b6..42bfb91e 100644
 +}
 +
 +
- /* vi:set ft=c ts=4 sw=4 et fdm=marker: */
-diff --git a/src/ngx_http_lua_util.h b/src/ngx_http_lua_util.h
-index 13bfd273..7e62dccb 100644
---- a/src/ngx_http_lua_util.h
-+++ b/src/ngx_http_lua_util.h
-@@ -241,20 +241,9 @@ void ngx_http_lua_cleanup_free(ngx_http_request_t *r,
- void ngx_http_lua_set_sa_restart(ngx_log_t *log);
- #endif
+ extern ngx_uint_t  ngx_http_lua_location_hash;
+ extern ngx_uint_t  ngx_http_lua_content_length_hash;
  
--
--static ngx_inline size_t
--ngx_http_lua_safe_header_value_len(u_char *str, size_t len)
--{
--    size_t i;
--
--    for (i = 0; i < len; i++, str++) {
--        if (*str == '\r' || *str == '\n') {
--            return i;
--        }
--    }
--
--    return len;
--}
-+size_t ngx_http_lua_escape_log(u_char *dst, u_char *src, size_t size);
-+ngx_int_t ngx_http_lua_check_header_safe(ngx_http_request_t *r, u_char *str,
-+    size_t len);
- 
- 
- static ngx_inline void
-
