@@ -263,7 +263,7 @@ for my $opt (@ARGV) {
         $resty_opts{"$1"} = 1;
 
     } elsif ($opt eq '--with-luajit') {
-        $resty_opts{luajit} = 1;
+        # NOP for backwards-compatibility (the default)
 
     } elsif ($opt =~ /^--with-luajit=(.*)/) {
         $resty_opts{luajit_path} = $1;
@@ -563,10 +563,6 @@ _END_
     }
 
     #die "luajit: ", $opts->{luajit};
-
-    if ($opts->{luajit} && $opts->{luajit_path}) {
-        die "--with-luajit and --with-luajit=DIR are mutually exclusive.\n";
-    }
 
     if ($opts->{no_http_ssl} && $opts->{http_ssl}) {
         die "--with-http_ssl_module conflicts with --without-http_ssl_module.",
@@ -1296,8 +1292,7 @@ sub usage ($) {
 
   --with-no-pool-patch               enable the no-pool patch for debugging memory issues
 
-  -jN                                pass -jN option to make while building the bundled
-                                     Lua 5.1 interpreter or LuaJIT 2.1
+  -jN                                pass -jN option to make while building LuaJIT 2.1
 
 _EOC_
 
@@ -1377,12 +1372,11 @@ _EOC_
   --without-lua_resty_shell          disable the lua-resty-shell library
   --without-lua_resty_core           disable the lua-resty-core library
 
-  --with-luajit                      enable and build the bundled LuaJIT 2.1 (the default)
   --with-luajit=DIR                  use the external LuaJIT 2.1 installation specified by DIR
   --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.1
   --with-luajit-ldflags=FLAGS        Specify extra C linker flags for LuaJIT 2.1
   --without-luajit-lua52             Turns off the LuaJIT extensions from Lua 5.2 that may break
-                                     backward compatibility.
+                                     backward compatibility
   --without-luajit-gc64              Turns off the LuaJIT GC64 mode (which is enabled by default
                                      on x86_64)
 
