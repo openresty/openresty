@@ -1416,8 +1416,8 @@ install: all
 clean:
 	rm -rf build *.exe *.dll openresty-*
 --- err
-Can't exec "gcc-4.2": No such file or directory at ./configure line 710.
-Can't exec "gcc-4.2": No such file or directory at ./configure line 755.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 708.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 753.
 
 
 
@@ -1597,8 +1597,8 @@ install: all
 clean:
 	rm -rf build *.exe *.dll openresty-*
 --- err
-Can't exec "cl": No such file or directory at ./configure line 710.
-Can't exec "cl": No such file or directory at ./configure line 755.
+Can't exec "cl": No such file or directory at ./configure line 708.
+Can't exec "cl": No such file or directory at ./configure line 753.
 
 
 
@@ -2441,8 +2441,8 @@ install: all
 clean:
 	rm -rf build *.exe *.dll openresty-*
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 829.
-Use of uninitialized value $v in scalar chomp at ./configure line 830.
+Can't exec "sw_vers": No such file or directory at ./configure line 827.
+Use of uninitialized value $v in scalar chomp at ./configure line 828.
 
 
 
@@ -2532,8 +2532,8 @@ install: all
 clean:
 	rm -rf build *.exe *.dll openresty-*
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 829.
-Use of uninitialized value $v in scalar chomp at ./configure line 830.
+Can't exec "sw_vers": No such file or directory at ./configure line 827.
+Use of uninitialized value $v in scalar chomp at ./configure line 828.
 
 
 
