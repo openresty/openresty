@@ -43,6 +43,7 @@ __DATA__
   --without-http_rds_csv_module      disable ngx_http_rds_csv_module
   --without-stream_lua_module        disable ngx_stream_lua_module
   --without-ngx_devel_kit_module     disable ngx_devel_kit_module
+  --without-stream                   disable TCP/UDP proxy module
   --without-http_ssl_module          disable ngx_http_ssl_module
   --without-stream_ssl_module        disable ngx_stream_ssl_module
 
@@ -100,7 +101,7 @@ Options directly inherited from nginx
                                      worker processes
 
   --build=NAME                       set build name
-  --builddir=DIR                     set the build directory
+  --builddir=DIR                     set build directory
 
   --with-select_module               enable select module
   --without-select_module            disable select module
@@ -111,6 +112,7 @@ Options directly inherited from nginx
 
   --with-file-aio                    enable file AIO support
 
+  --with-http_ssl_module             enable ngx_http_ssl_module (default on)
   --with-http_v2_module              enable ngx_http_v2_module
   --with-http_realip_module          enable ngx_http_realip_module
   --with-http_addition_module        enable ngx_http_addition_module
@@ -140,6 +142,7 @@ Options directly inherited from nginx
   --without-http_userid_module       disable ngx_http_userid_module
   --without-http_access_module       disable ngx_http_access_module
   --without-http_auth_basic_module   disable ngx_http_auth_basic_module
+  --without-http_mirror_module       disable ngx_http_mirror_module
   --without-http_autoindex_module    disable ngx_http_autoindex_module
   --without-http_geo_module          disable ngx_http_geo_module
   --without-http_map_module          disable ngx_http_map_module
@@ -150,6 +153,7 @@ Options directly inherited from nginx
   --without-http_fastcgi_module      disable ngx_http_fastcgi_module
   --without-http_uwsgi_module        disable ngx_http_uwsgi_module
   --without-http_scgi_module         disable ngx_http_scgi_module
+  --without-http_grpc_module         disable ngx_http_grpc_module
   --without-http_memcached_module    disable ngx_http_memcached_module
   --without-http_limit_conn_module   disable ngx_http_limit_conn_module
   --without-http_limit_req_module    disable ngx_http_limit_req_module
@@ -161,11 +165,13 @@ Options directly inherited from nginx
                                      disable ngx_http_upstream_ip_hash_module
   --without-http_upstream_least_conn_module
                                      disable ngx_http_upstream_least_conn_module
+  --without-http_upstream_random_module
+                                     disable ngx_http_upstream_random_module
   --without-http_upstream_keepalive_module
                                      disable ngx_http_upstream_keepalive_module
-
   --without-http_upstream_zone_module
                                      disable ngx_http_upstream_zone_module
+
   --with-http_perl_module            enable ngx_http_perl_module
   --with-http_perl_module=dynamic    enable dynamic ngx_http_perl_module
   --with-perl_modules_path=PATH      set Perl modules path
@@ -193,9 +199,6 @@ Options directly inherited from nginx
   --without-mail_imap_module         disable ngx_mail_imap_module
   --without-mail_smtp_module         disable ngx_mail_smtp_module
 
-  --without-stream                   disable TCP/UDP proxy module
-  --without-stream_ssl_module        disable ngx_stream_ssl_module
-
   --with-stream                      enable TCP/UDP proxy module (default on)
   --with-stream=dynamic              enable dynamic TCP/UDP proxy module
   --with-stream_ssl_module           enable ngx_stream_ssl_module (default on)
@@ -214,6 +217,8 @@ Options directly inherited from nginx
                                      disable ngx_stream_upstream_hash_module
   --without-stream_upstream_least_conn_module
                                      disable ngx_stream_upstream_least_conn_module
+  --without-stream_upstream_random_module
+                                     disable ngx_stream_upstream_random_module
   --without-stream_upstream_zone_module
                                      disable ngx_stream_upstream_zone_module
 
@@ -236,8 +241,7 @@ Options directly inherited from nginx
   --without-pcre                     disable PCRE library usage
   --with-pcre                        force PCRE library usage
   --with-pcre=DIR                    set path to PCRE library sources
-  --with-pcre-opt=OPTIONS            set additional make options for PCRE
-  --with-pcre-conf-opt=OPTIONS       set additional configure options for PCRE
+  --with-pcre-opt=OPTIONS            set additional build options for PCRE
   --with-pcre-jit                    build PCRE with JIT compilation support
 
   --with-zlib=DIR                    set path to zlib library sources
@@ -827,6 +831,7 @@ clean:
   --without-http_rds_csv_module      disable ngx_http_rds_csv_module
   --without-stream_lua_module        disable ngx_stream_lua_module
   --without-ngx_devel_kit_module     disable ngx_devel_kit_module
+  --without-stream                   disable TCP/UDP proxy module
   --without-http_ssl_module          disable ngx_http_ssl_module
   --without-stream_ssl_module        disable ngx_stream_ssl_module
 
@@ -884,7 +889,7 @@ Options directly inherited from nginx
                                      worker processes
 
   --build=NAME                       set build name
-  --builddir=DIR                     set the build directory
+  --builddir=DIR                     set build directory
 
   --with-select_module               enable select module
   --without-select_module            disable select module
@@ -895,6 +900,7 @@ Options directly inherited from nginx
 
   --with-file-aio                    enable file AIO support
 
+  --with-http_ssl_module             enable ngx_http_ssl_module (default on)
   --with-http_v2_module              enable ngx_http_v2_module
   --with-http_realip_module          enable ngx_http_realip_module
   --with-http_addition_module        enable ngx_http_addition_module
@@ -924,6 +930,7 @@ Options directly inherited from nginx
   --without-http_userid_module       disable ngx_http_userid_module
   --without-http_access_module       disable ngx_http_access_module
   --without-http_auth_basic_module   disable ngx_http_auth_basic_module
+  --without-http_mirror_module       disable ngx_http_mirror_module
   --without-http_autoindex_module    disable ngx_http_autoindex_module
   --without-http_geo_module          disable ngx_http_geo_module
   --without-http_map_module          disable ngx_http_map_module
@@ -934,6 +941,7 @@ Options directly inherited from nginx
   --without-http_fastcgi_module      disable ngx_http_fastcgi_module
   --without-http_uwsgi_module        disable ngx_http_uwsgi_module
   --without-http_scgi_module         disable ngx_http_scgi_module
+  --without-http_grpc_module         disable ngx_http_grpc_module
   --without-http_memcached_module    disable ngx_http_memcached_module
   --without-http_limit_conn_module   disable ngx_http_limit_conn_module
   --without-http_limit_req_module    disable ngx_http_limit_req_module
@@ -945,11 +953,13 @@ Options directly inherited from nginx
                                      disable ngx_http_upstream_ip_hash_module
   --without-http_upstream_least_conn_module
                                      disable ngx_http_upstream_least_conn_module
+  --without-http_upstream_random_module
+                                     disable ngx_http_upstream_random_module
   --without-http_upstream_keepalive_module
                                      disable ngx_http_upstream_keepalive_module
-
   --without-http_upstream_zone_module
                                      disable ngx_http_upstream_zone_module
+
   --with-http_perl_module            enable ngx_http_perl_module
   --with-http_perl_module=dynamic    enable dynamic ngx_http_perl_module
   --with-perl_modules_path=PATH      set Perl modules path
@@ -977,9 +987,6 @@ Options directly inherited from nginx
   --without-mail_imap_module         disable ngx_mail_imap_module
   --without-mail_smtp_module         disable ngx_mail_smtp_module
 
-  --without-stream                   disable TCP/UDP proxy module
-  --without-stream_ssl_module        disable ngx_stream_ssl_module
-
   --with-stream                      enable TCP/UDP proxy module (default on)
   --with-stream=dynamic              enable dynamic TCP/UDP proxy module
   --with-stream_ssl_module           enable ngx_stream_ssl_module (default on)
@@ -998,6 +1005,8 @@ Options directly inherited from nginx
                                      disable ngx_stream_upstream_hash_module
   --without-stream_upstream_least_conn_module
                                      disable ngx_stream_upstream_least_conn_module
+  --without-stream_upstream_random_module
+                                     disable ngx_stream_upstream_random_module
   --without-stream_upstream_zone_module
                                      disable ngx_stream_upstream_zone_module
 
@@ -1020,8 +1029,7 @@ Options directly inherited from nginx
   --without-pcre                     disable PCRE library usage
   --with-pcre                        force PCRE library usage
   --with-pcre=DIR                    set path to PCRE library sources
-  --with-pcre-opt=OPTIONS            set additional make options for PCRE
-  --with-pcre-conf-opt=OPTIONS       set additional configure options for PCRE
+  --with-pcre-opt=OPTIONS            set additional build options for PCRE
   --with-pcre-jit                    build PCRE with JIT compilation support
 
   --with-zlib=DIR                    set path to zlib library sources
@@ -1038,6 +1046,7 @@ Options directly inherited from nginx
 
   --dry-run                          dry running the configure, for testing only
   --platform=PLATFORM                forcibly specify a platform name, for testing only
+
 
 
 
