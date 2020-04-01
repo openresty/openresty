@@ -570,9 +570,7 @@ _END_
         push @ngx_opts, '--with-stream_ssl_preread_module';
     }
 
-    if (!$opts->{lua}
-        && !$opts->{lua_path}
-        && (!$opts->{no_http_lua} || !$opts->{no_stream_lua})
+    if ((!$opts->{no_http_lua} || !$opts->{no_stream_lua})
         && !$opts->{luajit_path})
     {
         #warn "HIT!";
@@ -917,64 +915,9 @@ int main(void) {
         }
 
         cd '..';
-
-    } elsif ($opts->{lua_path}) {
-        my $lua_prefix = $opts->{lua_path};
-        env LUA_LIB => File::Spec->catfile($lua_prefix, "lib");
-        env LUA_INC => File::Spec->catfile($lua_prefix, "include");
-
-        push @ngx_rpaths, File::Spec->catfile($lua_prefix, "lib");
-
-    } elsif ($opts->{lua}) {
-        # build stdandard lua
-
-        my $lua_src = auto_complete 'lua';
-
-        if (!defined $lua_src) {
-            die "No lua5 found";
-        }
-
-        my $lua_prefix = File::Spec->catfile($prefix, "lua");
-        my $lua_root = File::Spec->rel2abs("lua-root");
-
-        if (-d $lua_root) {
-            shell "rm -rf $lua_root";
-        }
-
-        mkdir $lua_root or
-            die "create create directory lua-root: $!\n";
-
-        cd $lua_src;
-
-        my $extra_opts = '';
-        if (defined $cc) {
-            $extra_opts .= " CC='$cc'";
-        }
-
-        if (defined $cores) {
-            shell "${make} -j$cores$extra_opts $platform", $dry_run;
-        } else {
-            shell "${make}$extra_opts $platform", $dry_run;
-        }
-
-        my $install_top = File::Spec->catfile($lua_root, $lua_prefix);
-        shell "${make} install$extra_opts INSTALL_TOP=$install_top/", $dry_run;
-
-        env LUA_LIB => File::Spec->catfile($lua_root, $lua_prefix, "lib");
-        env LUA_INC => File::Spec->catfile($lua_root, $lua_prefix, "include");
-
-        push @make_cmds,
-            "cd $root_dir/build/$lua_src && \$(MAKE)$extra_opts $platform";
-
-        push @make_install_cmds, "cd $root_dir/build/$lua_src && "
-            . "\$(MAKE) install$extra_opts INSTALL_TOP=\$(DESTDIR)$lua_prefix";
-
-        cd '..';
     }
 
-    if ($opts->{lua} || $opts->{lua_path}
-        || $opts->{luajit} || $opts->{luajit_path})
-    {
+    if ($opts->{luajit} || $opts->{luajit_path}) {
         # build lua modules
 
         $lualib_prefix = File::Spec->catfile($prefix, "lualib");
