@@ -16,7 +16,7 @@ addons:
     - dos2unix
     - cpanminus
     - libgd-dev
-    
+
 linux-s390x: &linux-s390x
   os: linux
   arch: s390x
@@ -55,7 +55,7 @@ linux-s390x: &linux-s390x
     - export PATH=$OPENRESTY_PREFIX/bin:$OPENRESTY_PREFIX/nginx/sbin:$PATH
     - nginx -V
     - ldd `which nginx`|grep -E 'luajit|ssl|pcre'
-           
+
 cache:
   directories:
   - download-cache
@@ -63,7 +63,7 @@ cache:
 env:
   global:
     - JOBS=3
-    - PCRE_VER=8.41
+    - PCRE_VER=8.44
     - PCRE_PREFIX=/opt/pcre
     - PCRE_LIB=$PCRE_PREFIX/lib
     - PCRE_INC=$PCRE_PREFIX/include
@@ -87,7 +87,7 @@ jobs:
 
 install:
   - sudo cpanm --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
-  - if [ ! -f download-cache/pcre-$PCRE_VER.tar.gz ]; then wget -P download-cache http://ftp.cs.stanford.edu/pub/exim/pcre/pcre-$PCRE_VER.tar.gz; fi
+  - if [ ! -f download-cache/pcre-$PCRE_VER.tar.gz ]; then wget -P download-cache https://ftp.pcre.org/pub/pcre/pcre-$PCRE_VER.tar.gz; fi
   - if [ ! -f download-cache/openssl-$OPENSSL_VER.tar.gz ]; then wget -P download-cache https://www.openssl.org/source/openssl-$OPENSSL_VER.tar.gz || wget -P download-cache https://www.openssl.org/source/old/${OPENSSL_VER//[a-z]/}/openssl-$OPENSSL_VER.tar.gz; fi
   - tar zxf download-cache/pcre-$PCRE_VER.tar.gz
   - cd pcre-$PCRE_VER/
