@@ -36,7 +36,7 @@ linux-s390x: &linux-s390x
             - libpq-dev
   install:
     - sudo cpanm --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
-    - if [ ! -f download-cache/openssl-$OPENSSL_VER.tar.gz ]; then wget -P download-cache https://www.openssl.org/source/openssl-$OPENSSL_VER.tar.gz; fi
+    - if [ ! -f download-cache/openssl-$OPENSSL_VER.tar.gz ]; then wget -P download-cache https://www.openssl.org/source/openssl-$OPENSSL_VER.tar.gz || wget -P download-cache https://www.openssl.org/source/old/${OPENSSL_VER//[a-z]/}/openssl-$OPENSSL_VER.tar.gz; fi
     - tar zxf download-cache/openssl-$OPENSSL_VER.tar.gz
     - cd openssl-$OPENSSL_VER/
     - patch -p1 < ../patches/openssl-$OPENSSL_PATCH_VER-sess_set_get_cb_yield.patch
@@ -72,23 +72,23 @@ env:
     - OPENSSL_INC=$OPENSSL_PREFIX/include
     - OPENRESTY_PREFIX=/opt/openresty
   matrix:
-    - OPENSSL_VER=1.0.2q OPENSSL_PATCH_VER=1.0.2h
-    - OPENSSL_VER=1.1.0j OPENSSL_PATCH_VER=1.1.0d
-    - OPENSSL_VER=1.1.1c OPENSSL_PATCH_VER=1.1.1c
+    - OPENSSL_VER=1.0.2u OPENSSL_PATCH_VER=1.0.2h
+    - OPENSSL_VER=1.1.0l OPENSSL_PATCH_VER=1.1.0d
+    - OPENSSL_VER=1.1.1f OPENSSL_PATCH_VER=1.1.1f
 
 jobs:
     include:
         - <<: *linux-s390x
-          env: OPENSSL_VER=1.0.2q OPENSSL_PATCH_VER=1.0.2h
+          env: OPENSSL_VER=1.0.2u OPENSSL_PATCH_VER=1.0.2h
         - <<: *linux-s390x
-          env: OPENSSL_VER=1.1.0j OPENSSL_PATCH_VER=1.1.0d
+          env: OPENSSL_VER=1.1.0l OPENSSL_PATCH_VER=1.1.0d
         - <<: *linux-s390x
-          env: OPENSSL_VER=1.1.1c OPENSSL_PATCH_VER=1.1.1c       
-          
+          env: OPENSSL_VER=1.1.1f OPENSSL_PATCH_VER=1.1.1f
+
 install:
   - sudo cpanm --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
   - if [ ! -f download-cache/pcre-$PCRE_VER.tar.gz ]; then wget -P download-cache http://ftp.cs.stanford.edu/pub/exim/pcre/pcre-$PCRE_VER.tar.gz; fi
-  - if [ ! -f download-cache/openssl-$OPENSSL_VER.tar.gz ]; then wget -P download-cache https://www.openssl.org/source/openssl-$OPENSSL_VER.tar.gz; fi
+  - if [ ! -f download-cache/openssl-$OPENSSL_VER.tar.gz ]; then wget -P download-cache https://www.openssl.org/source/openssl-$OPENSSL_VER.tar.gz || wget -P download-cache https://www.openssl.org/source/old/${OPENSSL_VER//[a-z]/}/openssl-$OPENSSL_VER.tar.gz; fi
   - tar zxf download-cache/pcre-$PCRE_VER.tar.gz
   - cd pcre-$PCRE_VER/
   - ./configure --prefix=$PCRE_PREFIX --enable-jit --enable-utf --enable-unicode-properties > build.log 2>&1 || (cat build.log && exit 1)
