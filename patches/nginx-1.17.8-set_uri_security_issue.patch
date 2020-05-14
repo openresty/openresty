@@ -1,0 +1,39 @@
+diff --git a/src/http/modules/ngx_http_static_module.c b/src/http/modules/ngx_http_static_module.c
+index 282d6ee..cb5b6c1 100644
+--- a/src/http/modules/ngx_http_static_module.c
++++ b/src/http/modules/ngx_http_static_module.c
+@@ -44,6 +44,20 @@ ngx_module_t  ngx_http_static_module = {
+     NGX_MODULE_V1_PADDING
+ };
+ 
++static ngx_int_t
++ngx_http_check_safe_location(u_char *str, size_t len)
++{
++    u_char ch;
++    size_t i;
++
++    for (i = 0; i < len; i++) {
++        ch = str[i];
++        if (ch <= 31 || ch == 127) {
++            return NGX_ERROR;
++        }
++    }
++    return NGX_OK;
++}
+ 
+ static ngx_int_t
+ ngx_http_static_handler(ngx_http_request_t *r)
+@@ -183,6 +197,13 @@ ngx_http_static_handler(ngx_http_request_t *r)
+             }
+         }
+ 
++        if (ngx_http_check_safe_location(location, len) != NGX_OK) {
++            ngx_http_clear_location(r);
++            ngx_log_error(NGX_LOG_ERR, log, NGX_HTTP_INTERNAL_SERVER_ERROR,
++                          "bad uri, control characters are not allowed");
++            return NGX_HTTP_INTERNAL_SERVER_ERROR;
++        }
++         
+         r->headers_out.location->hash = 1;
+         ngx_str_set(&r->headers_out.location->key, "Location");
+         r->headers_out.location->value.len = len;
