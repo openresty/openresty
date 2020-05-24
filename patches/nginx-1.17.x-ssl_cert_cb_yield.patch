@@ -16,7 +16,7 @@ connections.
 diff -r 78b4e10b4367 -r 449f0461859c src/event/ngx_event_openssl.c
 --- a/src/event/ngx_event_openssl.c Thu Dec 17 16:39:15 2015 +0300
 +++ b/src/event/ngx_event_openssl.c Sat Jan 02 11:14:44 2016 -0800
-@@ -1445,6 +1445,23 @@ ngx_ssl_handshake(ngx_connection_t *c)
+@@ -1593,6 +1593,23 @@ ngx_ssl_handshake(ngx_connection_t *c)
          return NGX_AGAIN;
      }
  
@@ -40,7 +40,7 @@ diff -r 78b4e10b4367 -r 449f0461859c src/event/ngx_event_openssl.c
      err = (sslerr == SSL_ERROR_SYSCALL) ? ngx_errno : 0;
  
      c->ssl->no_wait_shutdown = 1;
-@@ -1558,6 +1575,21 @@ ngx_ssl_try_early_data(ngx_connection_t *c)
+@@ -1707,6 +1724,21 @@ ngx_ssl_try_early_data(ngx_connection_t *c)
          return NGX_AGAIN;
      }
  
