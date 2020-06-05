@@ -1,39 +1,48 @@
 diff --git a/src/http/modules/ngx_http_static_module.c b/src/http/modules/ngx_http_static_module.c
-index 282d6ee..cb5b6c1 100644
+index 282d6ee9..e889540d 100644
 --- a/src/http/modules/ngx_http_static_module.c
 +++ b/src/http/modules/ngx_http_static_module.c
-@@ -44,6 +44,20 @@ ngx_module_t  ngx_http_static_module = {
-     NGX_MODULE_V1_PADDING
- };
+@@ -58,6 +58,8 @@ ngx_http_static_handler(ngx_http_request_t *r)
+     ngx_chain_t                out;
+     ngx_open_file_info_t       of;
+     ngx_http_core_loc_conf_t  *clcf;
++    u_char                    *uri;
++    uintptr_t                  escape;
  
-+static ngx_int_t
-+ngx_http_check_safe_location(u_char *str, size_t len)
-+{
-+    u_char ch;
-+    size_t i;
-+
-+    for (i = 0; i < len; i++) {
-+        ch = str[i];
-+        if (ch <= 31 || ch == 127) {
-+            return NGX_ERROR;
-+        }
-+    }
-+    return NGX_OK;
-+}
+     if (!(r->method & (NGX_HTTP_GET|NGX_HTTP_HEAD|NGX_HTTP_POST))) {
+         return NGX_HTTP_NOT_ALLOWED;
+@@ -162,9 +164,20 @@ ngx_http_static_handler(ngx_http_request_t *r)
  
- static ngx_int_t
- ngx_http_static_handler(ngx_http_request_t *r)
-@@ -183,6 +197,13 @@ ngx_http_static_handler(ngx_http_request_t *r)
+             *last = '/';
+ 
++            escape = 2 * ngx_escape_uri(NULL, location, len, NGX_ESCAPE_URI);
++            if (escape > 0) {
++                uri = ngx_pnalloc(r->pool, len + 2 * escape);
++                if (uri == NULL) {
++                   return NGX_ERROR;
++                }
++                ngx_escape_uri(uri, location, len, NGX_ESCAPE_URI);
++                location = uri;
++                len += 2 * escape;
++            }
+         } else {
++            escape = 2 * ngx_escape_uri(NULL, r->uri.data, r->uri.len, NGX_ESCAPE_URI);
+             if (r->args.len) {
+-                len += r->args.len + 1;
++                len += r->args.len + 1 + escape;
              }
-         }
  
-+        if (ngx_http_check_safe_location(location, len) != NGX_OK) {
-+            ngx_http_clear_location(r);
-+            ngx_log_error(NGX_LOG_ERR, log, NGX_HTTP_INTERNAL_SERVER_ERROR,
-+                          "bad uri, control characters are not allowed");
-+            return NGX_HTTP_INTERNAL_SERVER_ERROR;
-+        }
-+         
-         r->headers_out.location->hash = 1;
-         ngx_str_set(&r->headers_out.location->key, "Location");
-         r->headers_out.location->value.len = len;
+             location = ngx_pnalloc(r->pool, len);
+@@ -173,7 +186,11 @@ ngx_http_static_handler(ngx_http_request_t *r)
+                 return NGX_HTTP_INTERNAL_SERVER_ERROR;
+             }
+ 
+-            last = ngx_copy(location, r->uri.data, r->uri.len);
++            if (escape > 0) {
++                last = (u_char *)ngx_escape_uri(location, r->uri.data, r->uri.len, NGX_ESCAPE_URI);
++            } else {
++                last = ngx_copy(location, r->uri.data, r->uri.len);
++            }
+ 
+             *last = '/';
+ 
