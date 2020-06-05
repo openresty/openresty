@@ -25,6 +25,9 @@ my $OS = $^O;
 
 my ($ngx_dir, $lualib_prefix);
 
+my %with_ext_lib;
+my %with_ext_lib_opts;
+
 for my $opt (@ARGV) {
     if ($opt =~ /^--platform=(.*)/) {
         $OS = $1;
@@ -346,6 +349,12 @@ for my $opt (@ARGV) {
         }
         $path = File::Spec->rel2abs($path);
         push @ngx_opts, "--with-$lib=$path";
+        $with_ext_lib{$lib} = 1;
+
+    } elsif ($opt =~ /^--with-(openssl|pcre|zlib)-opt=(.*)/) {
+        my ($lib, $opt) = ($1, $2);
+        push @ngx_opts, "--with-$lib-opt=-g $opt";
+        $with_ext_lib_opts{$lib} = 1;
 
     } elsif ($opt =~ /^--sbin-path=(.*)/) {
         $ngx_sbin = $1;
@@ -356,6 +365,12 @@ for my $opt (@ARGV) {
 
     } else {
         die "Invalid option $opt\n";
+    }
+}
+
+for my $lib (qw/openssl pcre zlib/) {
+    if ($with_ext_lib{$lib} && !$with_ext_lib_opts{$lib}) {
+        push @ngx_opts, "--with-$lib-opt=-g";
     }
 }
 

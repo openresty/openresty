@@ -1407,8 +1407,8 @@ install: all
 clean:
 	rm -rf build *.exe *.dll openresty-*
 --- err
-Can't exec "gcc-4.2": No such file or directory at ./configure line 710.
-Can't exec "gcc-4.2": No such file or directory at ./configure line 755.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 725.
+Can't exec "gcc-4.2": No such file or directory at ./configure line 770.
 
 
 
@@ -1588,8 +1588,8 @@ install: all
 clean:
 	rm -rf build *.exe *.dll openresty-*
 --- err
-Can't exec "cl": No such file or directory at ./configure line 710.
-Can't exec "cl": No such file or directory at ./configure line 755.
+Can't exec "cl": No such file or directory at ./configure line 725.
+Can't exec "cl": No such file or directory at ./configure line 770.
 
 
 
@@ -2432,8 +2432,8 @@ install: all
 clean:
 	rm -rf build *.exe *.dll openresty-*
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 829.
-Use of uninitialized value $v in scalar chomp at ./configure line 830.
+Can't exec "sw_vers": No such file or directory at ./configure line 844.
+Use of uninitialized value $v in scalar chomp at ./configure line 845.
 
 
 
@@ -2523,8 +2523,8 @@ install: all
 clean:
 	rm -rf build *.exe *.dll openresty-*
 --- err
-Can't exec "sw_vers": No such file or directory at ./configure line 829.
-Use of uninitialized value $v in scalar chomp at ./configure line 830.
+Can't exec "sw_vers": No such file or directory at ./configure line 844.
+Use of uninitialized value $v in scalar chomp at ./configure line 845.
 
 
 
@@ -3523,7 +3523,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.8rc3 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-openssl=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
+  --with-openssl=$OPENRESTY_DIR/../some/module --with-openssl-opt=-g --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -3962,7 +3962,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.8rc3 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-pcre=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
+  --with-pcre=$OPENRESTY_DIR/../some/module --with-pcre-opt=-g --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4050,7 +4050,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.8rc3 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  --with-zlib=$OPENRESTY_DIR/../some/module --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
+  --with-zlib=$OPENRESTY_DIR/../some/module --with-zlib-opt=-g --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
@@ -4847,7 +4847,7 @@ sh ./configure --prefix=/usr/local/openresty/nginx \
   --add-module=../rds-csv-nginx-module-0.09 \
   --add-module=../ngx_stream_lua-0.0.8rc3 \
   --with-ld-opt='-Wl,-rpath,/usr/local/openresty/luajit/lib' \
-  '--with-pcre-opt=-foo -bar' $'--with-zlib-opt=hello, \'\\world' --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
+  '--with-pcre-opt=-g -foo -bar' $'--with-zlib-opt=-g hello, \'\\world' --with-stream --with-stream_ssl_module --with-stream_ssl_preread_module --with-http_ssl_module
 cd ../..
 Type the following commands to build and install:
     gmake
