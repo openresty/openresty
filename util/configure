@@ -354,7 +354,7 @@ for my $opt (@ARGV) {
     } elsif ($opt =~ /^--with-(openssl|pcre|zlib)-opt=(.*)/) {
         my ($lib, $opt) = ($1, $2);
         push @ngx_opts, "--with-$lib-opt=-g $opt";
-        $with_ext_lib_opts{"$lib-opt"} = 1;
+        $with_ext_lib_opts{$lib} = 1;
 
     } elsif ($opt =~ /^--sbin-path=(.*)/) {
         $ngx_sbin = $1;
@@ -369,7 +369,7 @@ for my $opt (@ARGV) {
 }
 
 for my $lib (qw/openssl pcre zlib/) {
-    if ($with_ext_lib{$lib} && !$with_ext_lib_opts{"$lib-opt"}) {
+    if ($with_ext_lib{$lib} && !$with_ext_lib_opts{$lib}) {
         push @ngx_opts, "--with-$lib-opt=-g";
     }
 }
