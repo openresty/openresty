@@ -443,6 +443,13 @@ fi
 
 rm -f *.patch || exit 1
 
+answer=`$root/util/ver-ge "$main_ver" 1.17.8`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying the patch for nginx security issue https://hackerone.com/reports/513236"
+    patch -p1 < $root/patches/nginx-$main_ver-static_mod_escape_loc_hdr.patch
+    echo
+fi
+
 echo "$info_txt applying the always_enable_cc_feature_tests patch to nginx"
 patch -p1 < $root/patches/nginx-$main_ver-always_enable_cc_feature_tests.patch
 echo
