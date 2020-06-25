@@ -2,7 +2,7 @@
 use lib '.';
 use t::Config;
 
-plan tests => 270;
+plan tests => 266;
 
 #no_diff();
 
@@ -1809,6 +1809,7 @@ clean:
 
 
 === TEST 22: ngx_postgres enabled and --with-pg_config is specified
+--- SKIP
 --- cmd: ./configure --with-pg_config=pg_config --with-http_postgres_module --dry-run
 --- out
 platform: linux (linux)
