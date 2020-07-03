@@ -499,7 +499,7 @@ rm -rf no-pool-nginx-$ver
 
 #################################
 
-ver=0.62rc1
+ver=0.62
 $root/util/get-tarball "https://github.com/openresty/echo-nginx-module/tarball/v$ver" -O echo-nginx-module-$ver.tar.gz || exit 1
 tar -xzf echo-nginx-module-$ver.tar.gz || exit 1
 mv openresty-echo-nginx-module-* echo-nginx-module-$ver || exit 1
@@ -513,7 +513,7 @@ mv openresty-xss-nginx-module-* xss-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.3.1rc1
+ver=0.3.1
 $root/util/get-tarball "https://github.com/simplresty/ngx_devel_kit/tarball/v$ver" -O ngx_devel_kit-$ver.tar.gz
 tar -xzf ngx_devel_kit-$ver.tar.gz || exit 1
 mv vision5-ngx_devel_kit-* ngx_devel_kit-$ver || exit 1
@@ -555,7 +555,7 @@ mv openresty-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.10.16rc5
+ver=0.10.16
 $root/util/get-tarball "https://github.com/openresty/lua-nginx-module/archive/v$ver.tar.gz" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv lua-nginx-module-$ver ngx_lua-$ver || exit 1
@@ -569,7 +569,7 @@ mv openresty-lua-upstream-nginx-module-* ngx_lua_upstream-$ver || exit 1
 
 #################################
 
-ver=0.0.8rc3
+ver=0.0.8
 $root/util/get-tarball "https://github.com/openresty/stream-lua-nginx-module/tarball/v$ver" -O stream-lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf stream-lua-nginx-module-$ver.tar.gz || exit 1
 mv openresty-stream-lua-nginx-module-* ngx_stream_lua-$ver || exit 1
@@ -590,7 +590,7 @@ mv openresty-memc-nginx-module-* memc-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.32rc1
+ver=0.32
 $root/util/get-tarball "https://github.com/openresty/srcache-nginx-module/tarball/v$ver" -O srcache-nginx-module-$ver.tar.gz || exit 1
 tar -xzf srcache-nginx-module-$ver.tar.gz || exit 1
 mv openresty-srcache-nginx-module-* srcache-nginx-module-$ver || exit 1
@@ -668,7 +668,7 @@ mv openresty-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.25rc3
+ver=0.25
 $root/util/get-tarball "https://github.com/openresty/resty-cli/tarball/v$ver" -O resty-cli-$ver.tar.gz || exit 1
 tar -xzf resty-cli-$ver.tar.gz || exit 1
 mv openresty-resty-cli-* resty-cli-$ver || exit 1
@@ -696,7 +696,7 @@ cd .. || exit 1
 
 #################################
 
-ver=2.1.0.8rc1
+ver=2.1.0.8
 $root/util/get-tarball "https://github.com/openresty/lua-cjson/archive/$ver.tar.gz" -O "lua-cjson-$ver.tar.gz" || exit 1
 tar -xzf lua-cjson-$ver.tar.gz || exit 1
 
@@ -741,7 +741,7 @@ cd ..
 
 #################################
 
-ver=0.28rc1
+ver=0.28
 $root/util/get-tarball "https://github.com/openresty/lua-resty-redis/tarball/v$ver" -O "lua-resty-redis-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-redis-$ver.tar.gz || exit 1
 mv openresty-lua-resty-redis-* lua-resty-redis-$ver || exit 1
@@ -781,7 +781,7 @@ cd ..
 
 #################################
 
-ver=0.12rc1
+ver=0.12
 $root/util/get-tarball "https://github.com/openresty/lua-resty-string/tarball/v$ver" -O "lua-resty-string-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-string-$ver.tar.gz || exit 1
 mv openresty-lua-resty-string-* lua-resty-string-$ver || exit 1
@@ -814,7 +814,7 @@ cd ..
 
 #################################
 
-ver=0.10rc1
+ver=0.10
 $root/util/get-tarball "https://github.com/openresty/lua-resty-lrucache/tarball/v$ver" -O "lua-resty-lrucache-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-lrucache-$ver.tar.gz || exit 1
 mv openresty-lua-resty-lrucache-* lua-resty-lrucache-$ver || exit 1
@@ -825,7 +825,7 @@ cd ..
 
 #################################
 
-ver=0.1.18rc4
+ver=0.1.18
 $root/util/get-tarball "https://github.com/openresty/lua-resty-core/tarball/v$ver" -O "lua-resty-core-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-core-$ver.tar.gz || exit 1
 mv openresty-lua-resty-core-* lua-resty-core-$ver || exit 1
@@ -865,7 +865,7 @@ cd ..
 
 #################################
 
-ver=0.03rc1
+ver=0.03
 $root/util/get-tarball "https://github.com/openresty/lua-resty-shell/tarball/v$ver" -O "lua-resty-shell-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-shell-$ver.tar.gz || exit 1
 mv openresty-lua-resty-shell-* lua-resty-shell-$ver || exit 1
