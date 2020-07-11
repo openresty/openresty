@@ -943,8 +943,8 @@ for indir in bundle/*/; do
 done
 
 cd $curdir || exit 1
-find bundle -name '*.md' -delete
-find bundle -name '*.markdown' -delete
+#find bundle -name '*.md' -delete
+#find bundle -name '*.markdown' -delete
 find bundle -name '*.wiki' -delete
 find bundle -name '*~' -delete
 find bundle -name '.*' -delete
@@ -956,7 +956,7 @@ find bundle -name '*.suppress' -delete
 find bundle -name '*.rockspec' -delete
 find bundle -name '*.spec' -delete
 find bundle -name '*.json' -delete
-find bundle -name '*.pm' -delete
+#find bundle -name '*.pm' -delete
 find bundle -name '*.stp' -delete
 find bundle -type d -name 't' -exec rm -r {} +
 find bundle -type d -name 'web' -exec rm -r {} + # opm web/ dir
