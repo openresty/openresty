@@ -124,6 +124,7 @@ my $with_resty_mods_regex;
 }
 
 my $prefix = '/usr/local/openresty';
+my $ngx_prefix;
 my $ngx_sbin;
 my %resty_opts;
 my $dry_run;
@@ -171,6 +172,9 @@ for my $opt (@ARGV) {
         if ($prefix eq '') {
             $prefix = '.';
         }
+
+    } elsif ($opt =~ /^--ngx-prefix=(.*)/) {
+        $ngx_prefix = $1;
 
     } elsif ($opt eq '--without-lua51') {
         die "ERROR: --without-lua51 is no longer supported.\n";
@@ -381,11 +385,12 @@ if ($platform eq 'msys') {
 
 print "platform: $platform ($OS)\n";
 
-my $ngx_prefix;
-if ($platform eq 'msys') {
-    $ngx_prefix = "$prefix";
-} else {
-    $ngx_prefix = "$prefix/nginx";
+if (!$ngx_prefix) {
+    if ($platform eq 'msys') {
+        $ngx_prefix = "$prefix";
+    } else {
+        $ngx_prefix = "$prefix/nginx";
+    }
 }
 
 my $postamble = '';
