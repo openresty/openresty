@@ -564,7 +564,7 @@ _END_
 
     if (!$opts->{no_stream}
         && ! $opts->{no_stream_ssl_preread}
-        && ! $opts->{stream_ssl_preead})
+        && ! $opts->{stream_ssl_preread})
     {
         $opts->{stream_ssl_preread} = 1;
         push @ngx_opts, '--with-stream_ssl_preread_module';
