@@ -1,0 +1,54 @@
+diff --git a/nginx-1.17.8/src/core/nginx.c b/nginx-1.17.8-new/src/core/nginx.c
+index cba4ca5..d5ea0bc 100644
+--- a/nginx-1.17.8/src/core/nginx.c
++++ b/nginx-1.17.8-new/src/core/nginx.c
+@@ -1031,6 +1031,7 @@ ngx_core_module_create_conf(ngx_cycle_t *cycle)
+     ccf->daemon = NGX_CONF_UNSET;
+     ccf->master = NGX_CONF_UNSET;
+     ccf->privileged_agent = NGX_CONF_UNSET;
++    ccf->connection_n = NGX_CONF_UNSET_UINT;
+     ccf->timer_resolution = NGX_CONF_UNSET_MSEC;
+     ccf->shutdown_timeout = NGX_CONF_UNSET_MSEC;
+ 
+@@ -1061,6 +1062,7 @@ ngx_core_module_init_conf(ngx_cycle_t *cycle, void *conf)
+     ngx_conf_init_value(ccf->daemon, 1);
+     ngx_conf_init_value(ccf->master, 1);
+     ngx_conf_init_value(ccf->privileged_agent, 0);
++    ngx_conf_init_value(ccf->connection_n, 512);
+     ngx_conf_init_msec_value(ccf->timer_resolution, 0);
+     ngx_conf_init_msec_value(ccf->shutdown_timeout, 0);
+ 
+diff --git a/nginx-1.17.8/src/core/ngx_cycle.h b/nginx-1.17.8-new/src/core/ngx_cycle.h
+index ce90017..d8bd20e 100644
+--- a/nginx-1.17.8/src/core/ngx_cycle.h
++++ b/nginx-1.17.8-new/src/core/ngx_cycle.h
+@@ -106,6 +106,7 @@ typedef struct {
+ 
+     ngx_int_t                 worker_processes;
+     ngx_int_t                 debug_points;
++    ngx_uint_t                connection_n;
+ 
+     ngx_int_t                 rlimit_nofile;
+     off_t                     rlimit_core;
+diff --git a/nginx-1.17.8/src/os/unix/ngx_process_cycle.c b/nginx-1.17.8-new/src/os/unix/ngx_process_cycle.c
+index da265ae..f842a11 100644
+--- a/nginx-1.17.8/src/os/unix/ngx_process_cycle.c
++++ b/nginx-1.17.8-new/src/os/unix/ngx_process_cycle.c
+@@ -1255,6 +1255,7 @@ static void
+ ngx_privileged_agent_process_cycle(ngx_cycle_t *cycle, void *data)
+ {
+     char   *name = data;
++    ngx_core_conf_t  *ccf
+ 
+     /*
+      * Set correct process type since closing listening Unix domain socket
+@@ -1266,7 +1267,8 @@ ngx_privileged_agent_process_cycle(ngx_cycle_t *cycle, void *data)
+     ngx_close_listening_sockets(cycle);
+ 
+     /* Set a moderate number of connections for a helper process. */
+-    cycle->connection_n = 512;
++    ccf = (ngx_core_conf_t *) ngx_get_conf(cycle->conf_ctx, ngx_core_module);
++    cycle->connection_n = ccf->connection_n;
+ 
+     ngx_worker_process_init(cycle, -1);
+ 

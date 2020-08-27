@@ -450,6 +450,13 @@ if [ "$answer" = "Y" ]; then
     echo
 fi
 
+answer=`$root/util/ver-ge "$main_ver" 1.17.8`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying the add_connection_param_to_enable_privileged_agent_api patch for nginx $ver"
+    patch -p2 < $root/patches/nginx-$main_ver-add_connection_param_to_enable_privileged_agent_api.patch
+    echo
+fi
+
 echo "$info_txt applying the always_enable_cc_feature_tests patch to nginx"
 patch -p1 < $root/patches/nginx-$main_ver-always_enable_cc_feature_tests.patch
 echo
