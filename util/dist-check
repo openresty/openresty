@@ -91,7 +91,7 @@ sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
 sh "curl -si localhost/cjson|grep 'json.safe: '";
-sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
+sh qq{$prefix/bin/resty --no-stream -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 }
