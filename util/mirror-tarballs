@@ -748,7 +748,7 @@ mv openresty-lua-resty-redis-* lua-resty-redis-$ver || exit 1
 
 #################################
 
-ver=0.21
+ver=0.23rc1
 $root/util/get-tarball "https://github.com/openresty/lua-resty-mysql/tarball/v$ver" -O "lua-resty-mysql-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-mysql-$ver.tar.gz || exit 1
 mv openresty-lua-resty-mysql-* lua-resty-mysql-$ver || exit 1
