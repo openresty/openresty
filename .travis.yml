@@ -30,9 +30,9 @@ linux-s390x: &linux-s390x
             - dos2unix
             - cpanminus
             - libgd-dev
-            - libpcre3 
-            - libpcre3-dev 
-            - mercurial 
+            - libpcre3
+            - libpcre3-dev
+            - mercurial
             - libpq-dev
   install:
     - sudo cpanm --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
