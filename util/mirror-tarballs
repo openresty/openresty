@@ -28,9 +28,15 @@ fi
 #################################
 
 ver="$main_ver"
-$root/util/get-tarball "https://openresty.org/download/nginx-$ver.tar.gz" -O nginx-$ver.tar.gz || exit 1
-tar -xzf nginx-$ver.tar.gz || exit 1
+git clone https://github.com/arvancloud/arvannginx 
+cd arvannginx
+git checkout $ver.$arvannginx_ver
+cd ..
+mv arvannginx nginx-$ver
+# mv arvannginx-release-$ver.$arvannginx_ver nginx-$ver 
 cd nginx-$ver || exit 1
+mv docs/text/README .
+mv auto/configure .
 
 echo "$info_txt applying the nginx-$main_ver-win32_max_err_str.patch"
 patch -p1 < $root/patches/nginx-$main_ver-win32_max_err_str.patch || exit 1
@@ -144,12 +150,12 @@ echo "$info_txt applying the upstream-pipelining patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-upstream_pipelining.patch || exit 1
 echo
 
-echo "$info_txt applying the server_header patch for nginx"
-cp $root/patches/nginx-$main_ver-server_header.patch server_header.patch || exit 1
-sed $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" server_header.patch \
-    > server_header.patch.tmp && mv -f server_header.patch.tmp server_header.patch || exit 1
-patch -p1 < server_header.patch || exit 1
-echo
+# echo "$info_txt applying the server_header patch for nginx"
+# cp $root/patches/nginx-$main_ver-server_header.patch server_header.patch || exit 1
+# sed $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" server_header.patch \
+#     > server_header.patch.tmp && mv -f server_header.patch.tmp server_header.patch || exit 1
+# patch -p1 < server_header.patch || exit 1
+# echo
 
 #patch -p1 < $root/patches/nginx-$main_ver-redirect_memcpy_overlap.patch || exit 1
 
@@ -916,17 +922,17 @@ cd nginx.org/ || exit 1
 hg purge --config extensions.purge= || exit 1
 find xml/en/docs -name 'ngx_http_api_module.xml' -delete
 rm xml/en/docs/njs/*
-$nginx_xml2pod xml/en/docs || exit 1
+# $nginx_xml2pod xml/en/docs || exit 1
 cd $curdir || exit 1
 
-echo "restydoc-index $root/work/nginx.org"
-$restydoc_index --outdir bundle $root/work/nginx.org || exit 1
+# echo "restydoc-index $root/work/nginx.org"
+# $restydoc_index --outdir bundle $root/work/nginx.org || exit 1
 
-echo "restydoc-index $root/doc/lua-5.1.5"
-$restydoc_index --outdir bundle $root/doc/lua-5.1.5 || exit 1
+# echo "restydoc-index $root/doc/lua-5.1.5"
+# $restydoc_index --outdir bundle $root/doc/lua-5.1.5 || exit 1
 
-echo "restydoc-index $root/doc/LuaJIT-2.1"
-$restydoc_index --outdir bundle $root/doc/LuaJIT-2.1 || exit 1
+# echo "restydoc-index $root/doc/LuaJIT-2.1"
+# $restydoc_index --outdir bundle $root/doc/LuaJIT-2.1 || exit 1
 
 # generate restydoc index from openresty docs
 

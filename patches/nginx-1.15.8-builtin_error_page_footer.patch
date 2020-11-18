@@ -7,7 +7,7 @@ index 64e5acd..f5374f6 100644
  
  static u_char ngx_http_error_tail[] =
 -"<hr><center>nginx</center>" CRLF
-+"<hr><center>openresty</center>" CRLF
++"<hr><center>Arvan Cloud</center>" CRLF
  "</body>" CRLF
  "</html>" CRLF
  ;
