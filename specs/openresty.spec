@@ -23,7 +23,7 @@ BuildRequires:	gcc >= 3.0, openssl-devel, pcre-devel, readline-devel
 Requires:	openssl, pcre, readline
 
 %description
-OpenResty is a full-fledged web application server by bundling the standard Nginx core, lots of 3rd-party Nginx modules, as well as most of their external dependencie
+OpenResty is a full-fledged web application server by bundling the standard Nginx core, lots of 3rd-party Nginx modules, as well as most of their external dependencies
 
 %prep
 #%setup -q -n openresty-%{version}

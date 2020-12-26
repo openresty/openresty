@@ -227,7 +227,7 @@ of an C<__index> table (if any) may be modified afterwards. The
 associated metatable automatically applies to all uses of this type, no
 matter how the objects are created or where they originate from. Note
 that pre-defined operations on types have precedence (e.g. declared
-field names cannot be overriden).
+field names cannot be overridden).
 
 All standard Lua metamethods are implemented. These are called
 directly, without shortcuts and on any mix of types. For binary
