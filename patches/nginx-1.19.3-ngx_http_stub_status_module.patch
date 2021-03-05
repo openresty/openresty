@@ -1,0 +1,39 @@
+diff --git a/src/http/modules/ngx_http_stub_status_module.c b/src/http/modules/ngx_http_stub_status_module.c
+index db68b76..82689fb 100644
+--- a/src/http/modules/ngx_http_stub_status_module.c
++++ b/src/http/modules/ngx_http_stub_status_module.c
+@@ -76,6 +76,15 @@ static ngx_http_variable_t  ngx_http_stub_status_vars[] = {
+     { ngx_string("connections_waiting"), NULL, ngx_http_stub_status_variable,
+       3, NGX_HTTP_VAR_NOCACHEABLE, 0 },
+ 
++    { ngx_string("connections_accepted"), NULL, ngx_http_stub_status_variable,
++     4, NGX_HTTP_VAR_NOCACHEABLE, 0 },
++
++    { ngx_string("connections_handled"), NULL, ngx_http_stub_status_variable,
++     5, NGX_HTTP_VAR_NOCACHEABLE, 0 },
++
++    { ngx_string("http_requests_total"), NULL, ngx_http_stub_status_variable,
++     6, NGX_HTTP_VAR_NOCACHEABLE, 0 },
++
+       ngx_http_null_variable
+ };
+ 
+@@ -179,6 +188,18 @@ ngx_http_stub_status_variable(ngx_http_request_t *r,
+         value = *ngx_stat_waiting;
+         break;
+ 
++    case 4:
++        value = *ngx_stat_accepted;
++        break;
++
++    case 5:
++        value = *ngx_stat_handled;
++        break;
++
++    case 6:
++        value = *ngx_stat_requests;
++        break;
++
+     /* suppress warning */
+     default:
+         value = 0;
