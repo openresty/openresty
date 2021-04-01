@@ -31,7 +31,7 @@ diff -rup nginx-1.19.9/src/core/ngx_core.h nginx-1.19.9-patched/src/core/ngx_cor
 diff -rup nginx-1.19.9/src/core/ngx_cycle.c nginx-1.19.9-patched/src/core/ngx_cycle.c
 --- nginx-1.19.9/src/core/ngx_cycle.c	2017-10-10 08:22:51.000000000 -0700
 +++ nginx-1.19.9-patched/src/core/ngx_cycle.c	2017-12-16 23:59:51.678958419 -0800
-@@ -687,6 +748,10 @@ old_shm_zone_done:
+@@ -748,6 +748,10 @@ old_shm_zone_done:
  
      if (ngx_process == NGX_PROCESS_MASTER || ngx_is_init_cycle(old_cycle)) {
  
@@ -45,7 +45,7 @@ diff -rup nginx-1.19.9/src/core/ngx_cycle.c nginx-1.19.9-patched/src/core/ngx_cy
 diff -rup nginx-1.19.9/src/os/unix/ngx_process_cycle.c nginx-1.19.9-patched/src/os/unix/ngx_process_cycle.c
 --- nginx-1.19.9/src/os/unix/ngx_process_cycle.c	2017-12-17 00:00:38.142469762 -0800
 +++ nginx-1.19.9-patched/src/os/unix/ngx_process_cycle.c	2017-12-16 23:59:51.691957791 -0800
-@@ -783,6 +783,11 @@ ngx_master_process_exit(ngx_cycle_t *cyc
+@@ -687,6 +692,11 @@ ngx_master_process_exit(ngx_cycle_t *cyc
      ngx_exit_cycle.files_n = ngx_cycle->files_n;
      ngx_cycle = &ngx_exit_cycle;
  
