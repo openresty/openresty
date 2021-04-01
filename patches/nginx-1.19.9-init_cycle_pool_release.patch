@@ -31,12 +31,11 @@ diff -rup nginx-1.19.9/src/core/ngx_core.h nginx-1.19.9-patched/src/core/ngx_cor
 diff -rup nginx-1.19.9/src/core/ngx_cycle.c nginx-1.19.9-patched/src/core/ngx_cycle.c
 --- nginx-1.19.9/src/core/ngx_cycle.c	2017-10-10 08:22:51.000000000 -0700
 +++ nginx-1.19.9-patched/src/core/ngx_cycle.c	2017-12-16 23:59:51.678958419 -0800
-@@ -687,6 +748,11 @@ old_shm_zone_done:
+@@ -687,6 +748,10 @@ old_shm_zone_done:
  
      if (ngx_process == NGX_PROCESS_MASTER || ngx_is_init_cycle(old_cycle)) {
  
 +        if (ngx_is_init_cycle(old_cycle)) {
-+            ngx_destroy_pool(saved_init_cycle_pool);
 +            saved_init_cycle_pool = NULL;
 +        }
 +
