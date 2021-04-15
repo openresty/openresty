@@ -215,6 +215,4 @@
    fun:ngx_write_channel
    fun:ngx_pass_open_channel
    fun:ngx_start_worker_processes
-   fun:ngx_master_process_cycle
-   fun:main
 }
