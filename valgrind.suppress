@@ -207,3 +207,14 @@
    fun:ngx_epoll_init
    fun:ngx_event_process_init
 }
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Param
+   sendmsg(msg.msg_iov[0])
+   fun:__sendmsg_nocancel
+   fun:ngx_write_channel
+   fun:ngx_pass_open_channel
+   fun:ngx_start_worker_processes
+   fun:ngx_master_process_cycle
+   fun:main
+}
