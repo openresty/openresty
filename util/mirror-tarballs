@@ -730,7 +730,7 @@ cd ..
 
 #################################
 
-ver=0.15
+ver=0.16rc1
 $root/util/get-tarball "https://github.com/openresty/lua-resty-memcached/tarball/v$ver" -O "lua-resty-memcached-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-memcached-$ver.tar.gz || exit 1
 mv openresty-lua-resty-memcached-* lua-resty-memcached-$ver || exit 1
