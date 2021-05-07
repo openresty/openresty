@@ -847,7 +847,7 @@ through unions is explicitly detected and allowed.
 =item * B<Constructor>: a ctype object can be called and used as a
 constructor. This is equivalent to C<ffi.new(ct, ...)>, unless a
 C<__new> metamethod is defined. The C<__new> metamethod is called with
-the ctype object plus any other arguments passed to the contructor.
+the ctype object plus any other arguments passed to the constructor.
 Note that you have to use C<ffi.new> inside of it, since calling
 C<ct(...)> would cause infinite recursion.
 
