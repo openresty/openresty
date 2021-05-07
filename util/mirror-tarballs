@@ -843,7 +843,7 @@ cd ..
 
 #################################
 
-ver=0.01
+ver=0.02
 $root/util/get-tarball "https://github.com/openresty/lua-tablepool/tarball/v$ver" -O "lua-tablepool-$ver.tar.gz" || exit 1
 tar -xzf lua-tablepool-$ver.tar.gz || exit 1
 mv openresty-lua-tablepool-* lua-tablepool-$ver || exit 1
