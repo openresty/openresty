@@ -142,10 +142,10 @@ $ClientP._post_by_form = function (url, content, args) {
         reqId: reqId
     };
     _post_forms[reqId] = obj;
-    var submited = false;
+    var submitted = false;
     // var onloadCount = 0;
     obj.onload = function() {
-        if (!submited) return;
+        if (!submitted) return;
         
         // alert('contentLoad ' + (++onloadCount) + ' times\n' + this);
         
@@ -237,7 +237,7 @@ $ClientP._post_by_form = function (url, content, args) {
     _ipt = null;
     
     _form.submit();
-    submited = true;
+    submitted = true;
 };
 
 $ClientP.post = function (url) {
