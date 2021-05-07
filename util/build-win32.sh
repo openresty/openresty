@@ -29,7 +29,6 @@ cd ../../..
 
 ./configure \
     --with-cc=gcc \
-    --with-ipv6 \
     --prefix= \
     --with-cc-opt='-DFD_SETSIZE=1024' \
     --sbin-path=nginx.exe \
