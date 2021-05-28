@@ -469,6 +469,16 @@ else
     echo
 fi
 
+answer=`$root/util/ver-ge "$main_ver" 0.6.18`
+if [ "$answer" = "Y" ]; then
+    answer=`$root/util/ver-ge "$main_ver" 1.20.1`
+    if [ "$answer" = "N" ]; then
+        echo "$info_txt applying the patch for nginx security advisory (CVE-2021-23017)"
+        patch -p0 < $root/patches/patch.2021.resolver.txt || exit 1
+        echo
+    fi
+fi
+
 echo "$info_txt applying the upstream_timeout_fields patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-upstream_timeout_fields.patch || exit 1
 echo
