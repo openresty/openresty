@@ -864,7 +864,7 @@ cd ..
 
 #################################
 
-ver=0.03rc1
+ver=0.03
 $root/util/get-tarball "https://github.com/openresty/lua-resty-signal/tarball/v$ver" -O "lua-resty-signal-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-signal-$ver.tar.gz || exit 1
 mv openresty-lua-resty-signal-* lua-resty-signal-$ver || exit 1
