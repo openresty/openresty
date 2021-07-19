@@ -126,6 +126,13 @@ if [ "$answer" = "Y" ]; then
     echo
 fi
 
+answer=`$root/util/ver-ge "$main_ver" 1.19.3`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying the privileged-agent-process-connections patch"
+    patch -p1 < $root/patches/nginx-$main_ver-privileged_agent_process_connections.patch || exit 1
+    echo
+fi
+
 answer=`$root/util/ver-ge "$main_ver" 1.11.2`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the single-process-graceful-exit patch"
