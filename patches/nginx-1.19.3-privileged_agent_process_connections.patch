@@ -1,0 +1,53 @@
+diff --git a/src/core/nginx.c b/src/core/nginx.c
+index 2e8b692..104d96e 100644
+--- a/src/core/nginx.c
++++ b/src/core/nginx.c
+@@ -1029,6 +1029,7 @@ ngx_core_module_create_conf(ngx_cycle_t *cycle)
+     ccf->daemon = NGX_CONF_UNSET;
+     ccf->master = NGX_CONF_UNSET;
+     ccf->privileged_agent = NGX_CONF_UNSET;
++    ccf->privileged_agent_connections = NGX_CONF_UNSET_UINT;
+     ccf->timer_resolution = NGX_CONF_UNSET_MSEC;
+     ccf->shutdown_timeout = NGX_CONF_UNSET_MSEC;
+ 
+@@ -1059,6 +1060,7 @@ ngx_core_module_init_conf(ngx_cycle_t *cycle, void *conf)
+     ngx_conf_init_value(ccf->daemon, 1);
+     ngx_conf_init_value(ccf->master, 1);
+     ngx_conf_init_value(ccf->privileged_agent, 0);
++    ngx_conf_init_uint_value(ccf->privileged_agent_connections, 512);
+     ngx_conf_init_msec_value(ccf->timer_resolution, 0);
+     ngx_conf_init_msec_value(ccf->shutdown_timeout, 0);
+ 
+diff --git a/src/core/ngx_cycle.h b/src/core/ngx_cycle.h
+index e9239ae..af9406e 100644
+--- a/src/core/ngx_cycle.h
++++ b/src/core/ngx_cycle.h
+@@ -92,6 +92,7 @@ typedef struct {
+     ngx_flag_t                daemon;
+     ngx_flag_t                master;
+     ngx_flag_t                privileged_agent;
++    ngx_uint_t                privileged_agent_connections;
+ 
+     ngx_msec_t                timer_resolution;
+     ngx_msec_t                shutdown_timeout;
+diff --git a/src/os/unix/ngx_process_cycle.c b/src/os/unix/ngx_process_cycle.c
+index b1eb322..8e03696 100644
+--- a/src/os/unix/ngx_process_cycle.c
++++ b/src/os/unix/ngx_process_cycle.c
+@@ -1208,6 +1208,7 @@ static void
+ ngx_privileged_agent_process_cycle(ngx_cycle_t *cycle, void *data)
+ {
+     char   *name = data;
++    ngx_core_conf_t *ccf = (ngx_core_conf_t *) ngx_get_conf(cycle->conf_ctx, ngx_core_module);
+ 
+     /*
+      * Set correct process type since closing listening Unix domain socket
+@@ -1219,7 +1220,7 @@ ngx_privileged_agent_process_cycle(ngx_cycle_t *cycle, void *data)
+     ngx_close_listening_sockets(cycle);
+ 
+     /* Set a moderate number of connections for a helper process. */
+-    cycle->connection_n = 512;
++    cycle->connection_n = ccf->privileged_agent_connections;
+ 
+     ngx_worker_process_init(cycle, -1);
+ 

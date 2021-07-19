@@ -1,27 +1,25 @@
 diff --git a/src/core/nginx.c b/src/core/nginx.c
-index 48a20e9..48329bd 100644
+index 60f8fe7..4bd244b 100644
 --- a/src/core/nginx.c
 +++ b/src/core/nginx.c
-@@ -1061,6 +1061,8 @@ ngx_core_module_create_conf(ngx_cycle_t *cycle)
+@@ -981,6 +981,7 @@ ngx_core_module_create_conf(ngx_cycle_t *cycle)
  
      ccf->daemon = NGX_CONF_UNSET;
      ccf->master = NGX_CONF_UNSET;
 +    ccf->privileged_agent = NGX_CONF_UNSET;
-+    ccf->privileged_agent_connections = NGX_CONF_UNSET_UINT;
      ccf->timer_resolution = NGX_CONF_UNSET_MSEC;
-     ccf->shutdown_timeout = NGX_CONF_UNSET_MSEC;
  
-@@ -1090,6 +1092,8 @@ ngx_core_module_init_conf(ngx_cycle_t *cycle, void *conf)
+     ccf->worker_processes = NGX_CONF_UNSET;
+@@ -1009,6 +1010,7 @@ ngx_core_module_init_conf(ngx_cycle_t *cycle, void *conf)
  
      ngx_conf_init_value(ccf->daemon, 1);
      ngx_conf_init_value(ccf->master, 1);
 +    ngx_conf_init_value(ccf->privileged_agent, 0);
-+    ngx_conf_init_uint_value(ccf->privileged_agent_connections, 512);
      ngx_conf_init_msec_value(ccf->timer_resolution, 0);
-     ngx_conf_init_msec_value(ccf->shutdown_timeout, 0);
  
+     ngx_conf_init_value(ccf->worker_processes, 1);
 diff --git a/src/core/ngx_cycle.h b/src/core/ngx_cycle.h
-index 0c47f25..4469390 100644
+index c51b7ff..3261f90 100644
 --- a/src/core/ngx_cycle.h
 +++ b/src/core/ngx_cycle.h
 @@ -22,6 +22,9 @@
@@ -34,17 +32,16 @@ index 0c47f25..4469390 100644
  typedef struct ngx_shm_zone_s  ngx_shm_zone_t;
  
  typedef ngx_int_t (*ngx_shm_zone_init_pt) (ngx_shm_zone_t *zone, void *data);
-@@ -89,6 +92,8 @@ struct ngx_cycle_s {
+@@ -81,6 +84,7 @@ struct ngx_cycle_s {
  typedef struct {
      ngx_flag_t                daemon;
      ngx_flag_t                master;
 +    ngx_flag_t                privileged_agent;
-+    ngx_uint_t                privileged_agent_connections;
  
      ngx_msec_t                timer_resolution;
-     ngx_msec_t                shutdown_timeout;
+ 
 diff --git a/src/os/unix/ngx_process_cycle.c b/src/os/unix/ngx_process_cycle.c
-index b31485f..bd259c1 100644
+index 7cee1c5..c4f70d6 100644
 --- a/src/os/unix/ngx_process_cycle.c
 +++ b/src/os/unix/ngx_process_cycle.c
 @@ -15,6 +15,8 @@ static void ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n,
@@ -64,7 +61,7 @@ index b31485f..bd259c1 100644
  static void ngx_cache_manager_process_handler(ngx_event_t *ev);
  static void ngx_cache_loader_process_handler(ngx_event_t *ev);
  
-@@ -52,6 +55,8 @@ sig_atomic_t  ngx_noaccept;
+@@ -51,6 +54,8 @@ sig_atomic_t  ngx_noaccept;
  ngx_uint_t    ngx_noaccepting;
  ngx_uint_t    ngx_restart;
  
@@ -105,7 +102,7 @@ index b31485f..bd259c1 100644
              live = 1;
          }
  
-@@ -393,6 +402,26 @@ ngx_start_cache_manager_processes(ngx_cycle_t *cycle, ngx_uint_t respawn)
+@@ -393,6 +431,26 @@ ngx_start_cache_manager_processes(ngx_cycle_t *cycle, ngx_uint_t respawn)
  
  
  static void
@@ -131,8 +128,8 @@ index b31485f..bd259c1 100644
 +static void
  ngx_pass_open_channel(ngx_cycle_t *cycle)
  {
-     ngx_int_t      i;
-@@ -794,7 +823,10 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
+     ngx_int_t  i;
+@@ -794,7 +860,10 @@ ngx_worker_process_init(ngx_cycle_t *cycle, ngx_int_t worker)
          }
      }
  
@@ -144,14 +141,13 @@ index b31485f..bd259c1 100644
          if (setgid(ccf->group) == -1) {
              ngx_log_error(NGX_LOG_EMERG, cycle->log, ngx_errno,
                            "setgid(%d) failed", ccf->group);
-@@ -1144,6 +1176,48 @@ ngx_cache_manager_process_cycle(ngx_cycle_t *cycle, void *data)
+@@ -1149,6 +1216,47 @@ ngx_cache_manager_process_cycle(ngx_cycle_t *cycle, void *data)
  
  
  static void
 +ngx_privileged_agent_process_cycle(ngx_cycle_t *cycle, void *data)
 +{
 +    char   *name = data;
-+    ngx_core_conf_t *ccf = (ngx_core_conf_t *) ngx_get_conf(cycle->conf_ctx, ngx_core_module);
 +
 +    /*
 +     * Set correct process type since closing listening Unix domain socket
@@ -163,7 +159,7 @@ index b31485f..bd259c1 100644
 +    ngx_close_listening_sockets(cycle);
 +
 +    /* Set a moderate number of connections for a helper process. */
-+    cycle->connection_n = ccf->privileged_agent_connections;
++    cycle->connection_n = 512;
 +
 +    ngx_worker_process_init(cycle, -1);
 +
@@ -192,7 +188,7 @@ index b31485f..bd259c1 100644
 +static void
  ngx_cache_manager_process_handler(ngx_event_t *ev)
  {
-     ngx_uint_t    i;
+     time_t        next, n;
 diff --git a/src/os/unix/ngx_process_cycle.h b/src/os/unix/ngx_process_cycle.h
 index 69495d5..5149396 100644
 --- a/src/os/unix/ngx_process_cycle.h
