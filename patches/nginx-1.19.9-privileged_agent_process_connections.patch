@@ -31,18 +31,9 @@ index 6a9583e..4469390 100644
      ngx_msec_t                timer_resolution;
      ngx_msec_t                shutdown_timeout;
 diff --git a/src/os/unix/ngx_process_cycle.c b/src/os/unix/ngx_process_cycle.c
-index df25f9d..70067ed 100644
+index df25f9d..bd259c1 100644
 --- a/src/os/unix/ngx_process_cycle.c
 +++ b/src/os/unix/ngx_process_cycle.c
-@@ -15,7 +15,7 @@ static void ngx_start_worker_processes(ngx_cycle_t *cycle, ngx_int_t n,
-     ngx_int_t type);
- static void ngx_start_cache_manager_processes(ngx_cycle_t *cycle,
-     ngx_uint_t respawn);
--static void ngx_start_privileged_agent_processes(ngx_cycle_t *cycle,
-+static void ngx_start_privileged_agent_processes(ngx_cycle_t *cycleycle->connection_n = 512;
-     ngx_uint_t respawn);
- static void ngx_pass_open_channel(ngx_cycle_t *cycle);
- static void ngx_signal_worker_processes(ngx_cycle_t *cycle, int signo);
 @@ -1179,6 +1179,7 @@ static void
  ngx_privileged_agent_process_cycle(ngx_cycle_t *cycle, void *data)
  {
