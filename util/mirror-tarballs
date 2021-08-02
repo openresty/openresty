@@ -657,9 +657,6 @@ echo "applying ngx_http_redis-$ver-default_port_fix.patch"
 patch -p1 < $root/patches/ngx_http_redis-$ver-default_port_fix.patch || exit 1
 echo
 
-# echo "applying ngx_http_redis-$ver-without_gzip.patch"
-# patch -p1 < $root/patches/ngx_http_redis-$ver-without_gzip.patch || exit 1
-# echo
 cd ..
 
 #################################
