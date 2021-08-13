@@ -643,7 +643,7 @@ mv openresty-encrypted-session-nginx-module-* encrypted-session-nginx-module-$ve
 
 #################################
 
-ver=0.3.7
+ver=0.3.9
 $root/util/get-tarball "https://people.freebsd.org/~osa/ngx_http_redis-$ver.tar.gz" -O redis-nginx-module-$ver.tar.gz || exit 1
 tar -xzf redis-nginx-module-$ver.tar.gz || exit 1
 mv ngx_http_redis-* redis-nginx-module-$ver || exit 1
@@ -657,9 +657,6 @@ echo "applying ngx_http_redis-$ver-default_port_fix.patch"
 patch -p1 < $root/patches/ngx_http_redis-$ver-default_port_fix.patch || exit 1
 echo
 
-echo "applying ngx_http_redis-$ver-without_gzip.patch"
-patch -p1 < $root/patches/ngx_http_redis-$ver-without_gzip.patch || exit 1
-echo
 cd ..
 
 #################################
