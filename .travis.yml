@@ -96,6 +96,45 @@ linux-ppc64le: &linux-ppc64le
     - nginx -V
     - ldd `which nginx`|grep -E 'luajit|ssl|pcre'
 
+linux-ppc64le: &linux-ppc64le
+  os: linux
+  arch: ppc64le
+  dist: xenial
+  compiler: gcc
+  addons:
+      apt:
+          update: true
+          packages:
+            - axel
+            - dos2unix
+            - cpanminus
+            - libgd-dev
+            - libpcre3
+            - libpcre3-dev
+            - mercurial
+            - libpq-dev
+  install:
+    - sudo cpanm --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
+    - if [ ! -f download-cache/openssl-$OPENSSL_VER.tar.gz ]; then wget -P download-cache https://www.openssl.org/source/openssl-$OPENSSL_VER.tar.gz || wget -P download-cache https://www.openssl.org/source/old/${OPENSSL_VER//[a-z]/}/openssl-$OPENSSL_VER.tar.gz; fi
+    - tar zxf download-cache/openssl-$OPENSSL_VER.tar.gz
+    - cd openssl-$OPENSSL_VER/
+    - patch -p1 < ../patches/openssl-$OPENSSL_PATCH_VER-sess_set_get_cb_yield.patch
+    - ./config no-threads shared enable-ssl3 enable-ssl3-method -g --prefix=$OPENSSL_PREFIX -DPURIFY > build.log 2>&1 || (cat build.log && exit 1)
+    - make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
+    - sudo make PATH=$PATH install_sw > build.log 2>&1 || (cat build.log && exit 1)
+    - cd ..
+    - sudo ln -s /usr/bin/make /usr/bin/gmake
+  script:
+    - util/mirror-tarballs > build.log 2>&1 || (cat build.log && exit 1)
+    - cd openresty-*
+    - ./configure --prefix=$OPENRESTY_PREFIX --with-cc-opt="-I$PCRE_INC -I$OPENSSL_INC" --with-ld-opt="-L$PCRE_LIB -L$OPENSSL_LIB -Wl,-rpath,$PCRE_LIB:$OPENSSL_LIB" --with-pcre-jit --with-http_ssl_module --with-debug -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
+    - make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
+    - sudo make install > build.log 2>&1 || (cat build.log && exit 1)
+    - cd ..
+    - export PATH=$OPENRESTY_PREFIX/bin:$OPENRESTY_PREFIX/nginx/sbin:$PATH
+    - nginx -V
+    - ldd `which nginx`|grep -E 'luajit|ssl|pcre'
+
 cache:
   directories:
   - download-cache
