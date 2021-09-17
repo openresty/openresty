@@ -1,0 +1,17 @@
+--- redis-nginx-module-0.3.9/ngx_http_redis_module.c	2021-08-02 23:01:47.810190756 +0800
++++ redis-nginx-module-0.3.9-patched/ngx_http_redis_module.c	2021-08-02 23:02:06.861317611 +0800
+@@ -1021,12 +1021,14 @@
+             continue;
+         }
+ 
++#if (nginx_version < 1011006)
+         if (uscfp[i]->default_port
+             && url->default_port
+             && uscfp[i]->default_port != url->default_port)
+         {
+             continue;
+         }
++#endif
+ 
+         return uscfp[i];
+     }

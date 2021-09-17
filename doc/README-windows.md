@@ -136,7 +136,7 @@ side. But if you do, please read on.
 
 The Win32/Win64 build of OpenResty is currently built via the MSYS2/MinGW toolchain, including
 MinGW gcc 7.2.3, MSYS2 perl 5.24.4, MSYS2 bash, MSYS2 make, and etc. Basically, it is currently built via
- the following cmmands:
+ the following commands:
 
 ```bash
 PCRE=pcre-8.42
