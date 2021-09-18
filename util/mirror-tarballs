@@ -971,7 +971,7 @@ cd $curdir || exit 1
 #find bundle -name '*.markdown' -delete
 #find bundle -name '*.wiki' -delete
 find bundle -name '*~' -delete
-find bundle -name '.*' -delete
+find bundle -name '.*' -exec rm -rv {} +
 find bundle -name '*.orig' -delete
 #find bundle -name '*.yml' -delete
 #find bundle -name '*.ini' -delete
