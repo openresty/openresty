@@ -1,5 +1,5 @@
 sudo: required
-dist: xenial
+dist: bionic
 
 os: linux
 
@@ -20,7 +20,7 @@ addons:
 linux-s390x: &linux-s390x
   os: linux
   arch: s390x
-  dist: xenial
+  dist: bionic
   compiler: gcc
   addons:
       apt:
@@ -59,7 +59,7 @@ linux-s390x: &linux-s390x
 linux-ppc64le: &linux-ppc64le
   os: linux
   arch: ppc64le
-  dist: xenial
+  dist: bionic
   compiler: gcc
   addons:
       apt:
@@ -155,4 +155,4 @@ script:
   - export PATH=$OPENRESTY_PREFIX/bin:$OPENRESTY_PREFIX/nginx/sbin:$PATH
   - nginx -V
   - ldd `which nginx`|grep -E 'luajit|ssl|pcre'
-  - prove -r t/
+  - prove -I. -r t/
