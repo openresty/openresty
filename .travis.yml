@@ -1,4 +1,3 @@
-sudo: required
 dist: bionic
 
 os: linux
@@ -7,7 +6,6 @@ language: c
 
 compiler:
   - gcc
-  - clang
 
 addons:
   apt:
@@ -17,7 +15,7 @@ addons:
     - cpanminus
     - libgd-dev
 
-linux-s390x: &linux-s390x
+_linux-s390x: &linux-s390x
   os: linux
   arch: s390x
   dist: bionic
@@ -56,7 +54,7 @@ linux-s390x: &linux-s390x
     - nginx -V
     - ldd `which nginx`|grep -E 'luajit|ssl|pcre'
 
-linux-ppc64le: &linux-ppc64le
+_linux-ppc64le: &linux-ppc64le
   os: linux
   arch: ppc64le
   dist: bionic
@@ -110,7 +108,7 @@ env:
     - OPENSSL_LIB=$OPENSSL_PREFIX/lib
     - OPENSSL_INC=$OPENSSL_PREFIX/include
     - OPENRESTY_PREFIX=/opt/openresty
-  matrix:
+  jobs:
     - OPENSSL_VER=1.1.0l OPENSSL_PATCH_VER=1.1.0d
     - OPENSSL_VER=1.1.1k OPENSSL_PATCH_VER=1.1.1f
 
