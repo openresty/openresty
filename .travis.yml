@@ -111,20 +111,17 @@ env:
     - OPENSSL_INC=$OPENSSL_PREFIX/include
     - OPENRESTY_PREFIX=/opt/openresty
   matrix:
-    - OPENSSL_VER=1.0.2u OPENSSL_PATCH_VER=1.0.2h
     - OPENSSL_VER=1.1.0l OPENSSL_PATCH_VER=1.1.0d
     - OPENSSL_VER=1.1.1k OPENSSL_PATCH_VER=1.1.1f
 
 jobs:
     include:
         - <<: *linux-s390x
-          env: OPENSSL_VER=1.0.2u OPENSSL_PATCH_VER=1.0.2h
-        - <<: *linux-s390x
           env: OPENSSL_VER=1.1.0l OPENSSL_PATCH_VER=1.1.0d
         - <<: *linux-s390x
-          env: OPENSSL_VER=1.1.1k OPENSSL_PATCH_VER=1.1.1f
+          env: OPENSSL_VER=1.1.1l OPENSSL_PATCH_VER=1.1.1f
         - <<: *linux-ppc64le
-          env: OPENSSL_VER=1.1.1k OPENSSL_PATCH_VER=1.1.1f
+          env: OPENSSL_VER=1.1.1l OPENSSL_PATCH_VER=1.1.1f
 
 install:
   - sudo cpanm --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
