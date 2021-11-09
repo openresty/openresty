@@ -62,7 +62,7 @@ index df25f9d..bd259c1 100644
 +    /* 0 is an illegal value and may result in a core dump later */
 +    if (ccf->privileged_agent_connections == 0) {
 +        ngx_log_error(NGX_LOG_ALERT, cycle->log, 0,
-+                      "%ui worker_connections are not enough, "
++                      "%ui worker_connection is not enough, "
 +                      "privileged agent process cannot be spawned",
 +                      ccf->privileged_agent_connections);
 +        return;
