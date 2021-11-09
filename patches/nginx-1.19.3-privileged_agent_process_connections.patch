@@ -51,3 +51,23 @@ index b1eb322..8e03696 100644
  
      ngx_worker_process_init(cycle, -1);
  
+diff --git a/src/os/unix/ngx_process_cycle.c b/src/os/unix/ngx_process_cycle.c
+index df25f9d..bd259c1 100644
+--- a/src/os/unix/ngx_process_cycle.c
++++ b/src/os/unix/ngx_process_cycle.c
+@@ -442,6 +442,15 @@
+         return;
+     }
+ 
++    /* 0 is an illegal value and may result in a core dump later */
++    if (ccf->privileged_agent_connections == 0) {
++        ngx_log_error(NGX_LOG_ALERT, cycle->log, 0,
++                      "%ui worker_connections are not enough, "
++                      "privileged agent process cannot be spawned",
++                      ccf->privileged_agent_connections);
++        return;
++    }
++
+     ngx_spawn_process(cycle, ngx_privileged_agent_process_cycle,
+                       "privileged agent process", "privileged agent process",
+                       respawn ? NGX_PROCESS_JUST_RESPAWN : NGX_PROCESS_RESPAWN);
