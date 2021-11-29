@@ -481,7 +481,7 @@ fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.19.9`
 if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying the ssl_sess_cb_yield.patch patch to nginx"
+    echo "$info_txt applying the ssl_client_hello_cb_yield.patch patch to nginx"
     patch -p1 < $root/patches/nginx-$main_ver-ssl_client_hello_cb_yield.patch
     echo
 fi
