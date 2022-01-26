@@ -2,7 +2,7 @@
 
 PCRE=pcre-8.44
 ZLIB=zlib-1.2.11
-OPENSSL=openssl-1.1.1l
+OPENSSL=openssl-1.1.1m
 JOBS=12
 
 # wget https://www.openssl.org/source/openssl-1.1.1l.tar.gz
