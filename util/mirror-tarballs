@@ -707,7 +707,7 @@ mv openresty-opm-* opm-$ver || exit 1
 
 #################################
 
-ver=2.1-20220111
+ver=2.1-20220310
 $root/util/get-tarball "https://github.com/openresty/luajit2/archive/v$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 mv luajit2-* LuaJIT-$ver || exit 1
