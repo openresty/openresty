@@ -58,10 +58,13 @@ GET /t
 [error]
 --- grep_error_log eval: qr/\[debug\] .*? closing unused fd:\d+ listening on 127\.0\.0\.\d+:12345/
 --- grep_error_log_out eval
-qr/\[debug\] .*? closing unused fd:\d+ listening on 127\.0\.0\.1:12345
+qr/(\[debug\] .*? closing unused fd:\d+ listening on 127\.0\.0\.1:12345
 \[debug\] .*? closing unused fd:\d+ listening on 127\.0\.0\.2:12345
 \[debug\] .*? closing unused fd:\d+ listening on 127\.0\.0\.1:12345
+\[debug\] .*? closing unused fd:\d+ listening on 127\.0\.0\.2:12345)|(\[debug\] .*? closing unused fd:\d+ listening on 127\.0\.0\.1:12345
+\[debug\] .*? closing unused fd:\d+ listening on 127\.0\.0\.1:12345
 \[debug\] .*? closing unused fd:\d+ listening on 127\.0\.0\.2:12345
+\[debug\] .*? closing unused fd:\d+ listening on 127\.0\.0\.2:12345)
 /
 
 
