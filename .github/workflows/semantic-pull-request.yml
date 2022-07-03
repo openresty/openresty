@@ -1,0 +1,30 @@
+name: "Lint PR"
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+
+jobs:
+  main:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    steps:
+      - uses: amannn/action-semantic-pull-request@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Configure which types are allowed.
+          # Default: https://github.com/commitizen/conventional-commit-types
+          types: |
+            bugfix # bug fixes
+            change # backward incompatible changes
+            doc # documentation changes including code comments
+            editor # code editor related configurations
+            feature # implementing a new feature
+            optimize # performance optimizations
+            refactor # code refactoring and other code rearrangement
+            style # coding style changes
+            tests # test suite changes
