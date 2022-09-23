@@ -7,7 +7,6 @@ DLUAJIT
 exe
 flv
 gcc
-github
 gmail
 gunzip
 gzip
