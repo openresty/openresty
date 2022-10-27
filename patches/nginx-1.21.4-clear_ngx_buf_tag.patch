@@ -1,0 +1,11 @@
+diff -aNur nginx-1.21.4/src/core/ngx_buf.c nginx-1.21.4-patched/src/core/ngx_buf.c
+--- nginx-1.21.4/src/core/ngx_buf.c	2021-11-05 13:06:14.000000000 +0800
++++ nginx-1.21.4-patched/src/core/ngx_buf.c	2022-10-27 21:45:48.943152558 +0800
+@@ -213,6 +213,8 @@
+             break;
+         }
+ 
++        cl->buf->tag = 0;
++
+         cl->buf->pos = cl->buf->start;
+         cl->buf->last = cl->buf->start;
