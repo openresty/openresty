@@ -610,7 +610,7 @@ mv openresty-stream-lua-nginx-module-* ngx_stream_lua-$ver || exit 1
 
 #################################
 
-ver=0.05
+ver=0.06
 $root/util/get-tarball "https://github.com/openresty/array-var-nginx-module/tarball/v$ver" -O array-var-nginx-module-$ver.tar.gz || exit 1
 tar -xzf array-var-nginx-module-$ver.tar.gz || exit 1
 mv openresty-array-var-nginx-module-* array-var-nginx-module-$ver || exit 1
