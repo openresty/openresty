@@ -12,7 +12,6 @@ addons:
     packages:
     - axel
     - dos2unix
-    - cpanminus
     - libgd-dev
 
 _linux-s390x: &linux-s390x
@@ -26,14 +25,13 @@ _linux-s390x: &linux-s390x
           packages:
             - axel
             - dos2unix
-            - cpanminus
             - libgd-dev
             - libpcre3
             - libpcre3-dev
             - mercurial
             - libpq-dev
   install:
-    - sudo cpanm --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
+    - cpanm --sudo --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
     - if [ ! -f download-cache/openssl-$OPENSSL_VER.tar.gz ]; then wget -P download-cache https://www.openssl.org/source/openssl-$OPENSSL_VER.tar.gz || wget -P download-cache https://www.openssl.org/source/old/${OPENSSL_VER//[a-z]/}/openssl-$OPENSSL_VER.tar.gz; fi
     - tar zxf download-cache/openssl-$OPENSSL_VER.tar.gz
     - cd openssl-$OPENSSL_VER/
@@ -66,14 +64,13 @@ _linux-ppc64le: &linux-ppc64le
           packages:
             - axel
             - dos2unix
-            - cpanminus
             - libgd-dev
             - libpcre3
             - libpcre3-dev
             - mercurial
             - libpq-dev
   install:
-    - sudo cpanm --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
+    - cpanm --sudo --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
     - if [ ! -f download-cache/openssl-$OPENSSL_VER.tar.gz ]; then wget -P download-cache https://www.openssl.org/source/openssl-$OPENSSL_VER.tar.gz || wget -P download-cache https://www.openssl.org/source/old/${OPENSSL_VER//[a-z]/}/openssl-$OPENSSL_VER.tar.gz; fi
     - tar zxf download-cache/openssl-$OPENSSL_VER.tar.gz
     - cd openssl-$OPENSSL_VER/
@@ -123,7 +120,7 @@ jobs:
           env: OPENSSL_VER=1.1.1s OPENSSL_PATCH_VER=1.1.1f
 
 install:
-  - sudo cpanm --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
+  - cpanm --sudo --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
   - if [ ! -f download-cache/pcre-$PCRE_VER.tar.gz ]; then wget -P download-cache https://downloads.sourceforge.net/project/pcre/pcre/${PCRE_VER}/pcre-${PCRE_VER}.tar.gz; fi
   - if [ ! -f download-cache/openssl-$OPENSSL_VER.tar.gz ]; then wget -P download-cache https://www.openssl.org/source/openssl-$OPENSSL_VER.tar.gz || wget -P download-cache https://www.openssl.org/source/old/${OPENSSL_VER//[a-z]/}/openssl-$OPENSSL_VER.tar.gz; fi
   - tar zxf download-cache/pcre-$PCRE_VER.tar.gz
