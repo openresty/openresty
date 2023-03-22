@@ -30,6 +30,8 @@ _linux-s390x: &linux-s390x
             - libpcre3-dev
             - mercurial
             - libpq-dev
+  before_install:
+    - sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
   install:
     - cpanm --sudo --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
     - if [ ! -f download-cache/openssl-$OPENSSL_VER.tar.gz ]; then wget -P download-cache https://www.openssl.org/source/openssl-$OPENSSL_VER.tar.gz || wget -P download-cache https://www.openssl.org/source/old/${OPENSSL_VER//[a-z]/}/openssl-$OPENSSL_VER.tar.gz; fi
