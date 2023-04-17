@@ -86,7 +86,7 @@ sh "sudo $make install";
 sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep -v 'stream_proxy'";
-system "sudo killall nginx > /dev/null 2>&1";
+#system "sudo killall nginx > /dev/null 2>&1";
 sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
 sh "curl -si localhost/lua|grep $ver";
