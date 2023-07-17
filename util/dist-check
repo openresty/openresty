@@ -129,7 +129,7 @@ sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--without-http_gzip_module'";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep -v -q '\\--with-http_ssl_module'";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--without-pcre'";
-#system "[ -f '$prefix/nginx/logs/nginx.pid' ] && sudo kill \$(cat $prefix/nginx/logs/nginx.pid) > /dev/null 2>&1";
+system "[ -f '$prefix/nginx/logs/nginx.pid' ] && sudo kill \$(cat $prefix/nginx/logs/nginx.pid) > /dev/null 2>&1";
 if (0) {
 sh "sudo $prefix/nginx/sbin/nginx";
 sh "curl -si localhost/lua|grep $lua";
