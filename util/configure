@@ -554,6 +554,9 @@ _END_
             "\n";
     }
 
+    # disable pcre2 by default
+    push @ngx_opts, '--without-pcre2';
+
     if (!$opts->{no_stream}
         && ! $opts->{no_stream_ssl}
         && ! $opts->{stream_ssl})
@@ -1382,6 +1385,7 @@ Options directly inherited from nginx
 
   --with-http_ssl_module             enable ngx_http_ssl_module (default on)
   --with-http_v2_module              enable ngx_http_v2_module
+  --with-http_v3_module              enable ngx_http_v3_module
   --with-http_realip_module          enable ngx_http_realip_module
   --with-http_addition_module        enable ngx_http_addition_module
   --with-http_xslt_module            enable ngx_http_xslt_module
@@ -1511,6 +1515,7 @@ Options directly inherited from nginx
   --with-pcre=DIR                    set path to PCRE library sources
   --with-pcre-opt=OPTIONS            set additional build options for PCRE
   --with-pcre-jit                    build PCRE with JIT compilation support
+  --without-pcre2                    do not use PCRE2 library
 
   --with-zlib=DIR                    set path to zlib library sources
   --with-zlib-opt=OPTIONS            set additional build options for zlib

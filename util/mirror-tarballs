@@ -674,6 +674,14 @@ echo "applying ngx_http_redis-$ver-default_port_fix.patch"
 patch -p1 < $root/patches/ngx_http_redis-$ver-default_port_fix.patch || exit 1
 echo
 
+answer=`$root/util/ver-ge "$main_ver" 1.23.0`
+if [ "$answer" = "Y" ]; then
+echo
+echo "applying ngx_http_redis-$ver-remove_content_encoding.patch"
+patch -p1 < $root/patches/ngx_http_redis-$ver-remove_content_encoding.patch || exit 1
+echo
+fi
+
 cd ..
 
 #################################
