@@ -46,7 +46,7 @@ _linux-s390x: &linux-s390x
   script:
     - util/mirror-tarballs > build.log 2>&1 || (cat build.log && exit 1)
     - cd "openresty-$(./util/ver)"
-    - ./configure --prefix=$OPENRESTY_PREFIX --with-cc-opt="-I$PCRE_INC -I$OPENSSL_INC" --with-ld-opt="-L$PCRE_LIB -L$OPENSSL_LIB -Wl,-rpath,$PCRE_LIB:$OPENSSL_LIB" --with-pcre-jit --with-http_ssl_module --with-debug -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
+    - ./configure $ENABLE_HTTP3_OPTION --prefix=$OPENRESTY_PREFIX --with-cc-opt="-I$PCRE_INC -I$OPENSSL_INC" --with-ld-opt="-L$PCRE_LIB -L$OPENSSL_LIB -Wl,-rpath,$PCRE_LIB:$OPENSSL_LIB" --with-pcre-jit --with-http_ssl_module --with-debug -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
     - make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
     - sudo make install > build.log 2>&1 || (cat build.log && exit 1)
     - cd ..
@@ -85,7 +85,7 @@ _linux-ppc64le: &linux-ppc64le
   script:
     - util/mirror-tarballs > build.log 2>&1 || (cat build.log && exit 1)
     - cd "openresty-$(./util/ver)"
-    - ./configure --prefix=$OPENRESTY_PREFIX --with-cc-opt="-I$PCRE_INC -I$OPENSSL_INC" --with-ld-opt="-L$PCRE_LIB -L$OPENSSL_LIB -Wl,-rpath,$PCRE_LIB:$OPENSSL_LIB" --with-pcre-jit --with-http_ssl_module --with-debug -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
+    - ./configure $ENABLE_HTTP3_OPTION --prefix=$OPENRESTY_PREFIX --with-cc-opt="-I$PCRE_INC -I$OPENSSL_INC" --with-ld-opt="-L$PCRE_LIB -L$OPENSSL_LIB -Wl,-rpath,$PCRE_LIB:$OPENSSL_LIB" --with-pcre-jit --with-http_ssl_module --with-debug -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
     - make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
     - sudo make install > build.log 2>&1 || (cat build.log && exit 1)
     - cd ..
@@ -110,16 +110,16 @@ env:
     - OPENRESTY_PREFIX=/opt/openresty
   jobs:
     - OPENSSL_VER=1.1.0l OPENSSL_PATCH_VER=1.1.0d
-    - OPENSSL_VER=1.1.1s OPENSSL_PATCH_VER=1.1.1f
+    - OPENSSL_VER=1.1.1s OPENSSL_PATCH_VER=1.1.1f ENABLE_HTTP3_OPTION=--with-http_v3_module
 
 jobs:
     include:
         - <<: *linux-s390x
           env: OPENSSL_VER=1.1.0l OPENSSL_PATCH_VER=1.1.0d
         - <<: *linux-s390x
-          env: OPENSSL_VER=1.1.1l OPENSSL_PATCH_VER=1.1.1f
+          env: OPENSSL_VER=1.1.1l OPENSSL_PATCH_VER=1.1.1f ENABLE_HTTP3_OPTION=--with-http_v3_module
         - <<: *linux-ppc64le
-          env: OPENSSL_VER=1.1.1s OPENSSL_PATCH_VER=1.1.1f
+          env: OPENSSL_VER=1.1.1s OPENSSL_PATCH_VER=1.1.1f ENABLE_HTTP3_OPTION=--with-http_v3_module
 
 install:
   - cpanm --sudo --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
@@ -143,7 +143,7 @@ install:
 script:
   - util/mirror-tarballs > build.log 2>&1 || (cat build.log && exit 1)
   - cd "openresty-$(./util/ver)"
-  - ./configure --prefix=$OPENRESTY_PREFIX --with-cc-opt="-I$PCRE_INC -I$OPENSSL_INC" --with-ld-opt="-L$PCRE_LIB -L$OPENSSL_LIB -Wl,-rpath,$PCRE_LIB:$OPENSSL_LIB" --with-pcre-jit --with-http_ssl_module --with-debug -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
+  - ./configure $ENABLE_HTTP3_OPTION --prefix=$OPENRESTY_PREFIX --with-cc-opt="-I$PCRE_INC -I$OPENSSL_INC" --with-ld-opt="-L$PCRE_LIB -L$OPENSSL_LIB -Wl,-rpath,$PCRE_LIB:$OPENSSL_LIB" --with-pcre-jit --with-http_ssl_module --with-debug -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
   - make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
   - sudo make install > build.log 2>&1 || (cat build.log && exit 1)
   - cd ..
