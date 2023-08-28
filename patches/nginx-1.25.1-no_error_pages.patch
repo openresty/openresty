@@ -1,7 +1,7 @@
 diff -upr nginx-1.25.1/src/http/ngx_http_core_module.c nginx-1.25.1-patched/src/http/ngx_http_core_module.c
 --- nginx-1.25.1/src/http/ngx_http_core_module.c	2017-08-31 18:14:41.000000000 -0700
 +++ nginx-1.25.1-patched/src/http/ngx_http_core_module.c	2017-08-31 18:21:31.638098196 -0700
-@@ -61,6 +61,8 @@ static char *ngx_http_core_directio(ngx_
+@@ -64,6 +64,8 @@ static char *ngx_http_core_directio(ngx_conf_t *cf, ngx_command_t *cmd,
      void *conf);
  static char *ngx_http_core_error_page(ngx_conf_t *cf, ngx_command_t *cmd,
      void *conf);
@@ -10,10 +10,10 @@ diff -upr nginx-1.25.1/src/http/ngx_http_core_module.c nginx-1.25.1-patched/src/
  static char *ngx_http_core_open_file_cache(ngx_conf_t *cf, ngx_command_t *cmd,
      void *conf);
  static char *ngx_http_core_error_log(ngx_conf_t *cf, ngx_command_t *cmd,
-@@ -647,6 +649,14 @@ static ngx_command_t  ngx_http_core_comm
+@@ -671,6 +673,14 @@ static ngx_command_t  ngx_http_core_commands[] = {
        0,
        NULL },
- 
+
 +    { ngx_string("no_error_pages"),
 +      NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF
 +                        |NGX_CONF_NOARGS,
@@ -25,7 +25,7 @@ diff -upr nginx-1.25.1/src/http/ngx_http_core_module.c nginx-1.25.1-patched/src/
      { ngx_string("post_action"),
        NGX_HTTP_MAIN_CONF|NGX_HTTP_SRV_CONF|NGX_HTTP_LOC_CONF|NGX_HTTP_LIF_CONF
                          |NGX_CONF_TAKE1,
-@@ -3334,7 +3344,6 @@ ngx_http_core_create_loc_conf(ngx_conf_t
+@@ -3564,7 +3574,6 @@ ngx_http_core_create_loc_conf(ngx_conf_t *cf)
       *     clcf->types = NULL;
       *     clcf->default_type = { 0, NULL };
       *     clcf->error_log = NULL;
@@ -33,28 +33,28 @@ diff -upr nginx-1.25.1/src/http/ngx_http_core_module.c nginx-1.25.1-patched/src/
       *     clcf->client_body_path = NULL;
       *     clcf->regex = NULL;
       *     clcf->exact_match = 0;
-@@ -3344,6 +3353,7 @@ ngx_http_core_create_loc_conf(ngx_conf_t
+@@ -3574,6 +3583,7 @@ ngx_http_core_create_loc_conf(ngx_conf_t *cf)
       *     clcf->keepalive_disable = 0;
       */
- 
+
 +    clcf->error_pages = NGX_CONF_UNSET_PTR;
      clcf->client_max_body_size = NGX_CONF_UNSET;
      clcf->client_body_buffer_size = NGX_CONF_UNSET_SIZE;
      clcf->client_body_timeout = NGX_CONF_UNSET_MSEC;
-@@ -3543,9 +3553,7 @@ ngx_http_core_merge_loc_conf(ngx_conf_t
+@@ -3776,9 +3786,7 @@ ngx_http_core_merge_loc_conf(ngx_conf_t *cf, void *parent, void *child)
          }
      }
- 
+
 -    if (conf->error_pages == NULL && prev->error_pages) {
 -        conf->error_pages = prev->error_pages;
 -    }
 +    ngx_conf_merge_ptr_value(conf->error_pages, prev->error_pages, NULL);
- 
+
      ngx_conf_merge_str_value(conf->default_type,
                                prev->default_type, "text/plain");
-@@ -4553,6 +4561,10 @@ ngx_http_core_error_page(ngx_conf_t *cf,
+@@ -4815,6 +4823,10 @@ ngx_http_core_error_page(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
      ngx_http_compile_complex_value_t   ccv;
- 
+
      if (clcf->error_pages == NULL) {
 +        return "conflicts with \"no_error_pages\"";
 +    }
@@ -63,12 +63,10 @@ diff -upr nginx-1.25.1/src/http/ngx_http_core_module.c nginx-1.25.1-patched/src/
          clcf->error_pages = ngx_array_create(cf->pool, 4,
                                               sizeof(ngx_http_err_page_t));
          if (clcf->error_pages == NULL) {
-@@ -4655,6 +4667,25 @@ ngx_http_core_error_page(ngx_conf_t *cf,
- 
-     return NGX_CONF_OK;
+@@ -4920,6 +4932,25 @@ ngx_http_core_error_page(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
  }
-+
-+
+
+
 +static char *
 +ngx_http_core_no_error_pages(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 +{
@@ -86,6 +84,8 @@ diff -upr nginx-1.25.1/src/http/ngx_http_core_module.c nginx-1.25.1-patched/src/
 +
 +    return NGX_CONF_OK;
 +}
- 
- 
++
++
  static char *
+ ngx_http_core_open_file_cache(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
+ {
