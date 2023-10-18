@@ -503,6 +503,16 @@ if [ "$answer" = "Y" ]; then
     fi
 fi
 
+answer=`$root/util/ver-ge "$main_ver" 1.9.5`
+if [ "$answer" = "Y" ]; then
+    answer=`$root/util/ver-ge "$main_ver" 1.25.2`
+    if [ "$answer" = "N" ]; then
+        echo "$info_txt applying the patch for nginx security advisory (CVE-2023-44487)"
+        patch -p1 < $root/patches/patch.2023.h2.txt || exit 1
+        echo
+    fi
+fi
+
 echo "$info_txt applying the upstream_timeout_fields patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-upstream_timeout_fields.patch || exit 1
 echo
