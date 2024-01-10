@@ -779,8 +779,8 @@ _END_
         }
 
         if ($on_solaris) {
-            $extra_opts .= " INSTALL_X='$root_dir/build/install -m 0755' " .
-                    "INSTALL_F='$root_dir/build/install -m 0644'";
+            $extra_opts .= " INSTALL_X='\$(INSTALL) -m 0755' " .
+                    "INSTALL_F='\$(INSTALL) -m 0644'";
         }
 
         if (defined $cc) {
@@ -953,7 +953,7 @@ _EOC_
             }
 
             if ($on_solaris) {
-                #$extra_opts .= " INSTALL=$root_dir/build/install";
+                #$extra_opts .= " INSTALL='\$(INSTALL)'";
                 if ($opts->{debug}) {
                     $extra_opts .=
                         " CJSON_CFLAGS=\"-g -O -fpic -DUSE_INTERNAL_ISINF\"";
@@ -997,7 +997,7 @@ _EOC_
                 "LUA_LIB_DIR=$lualib_prefix";
 
             if ($on_solaris) {
-                $extra_opts .= " INSTALL=$root_dir/build/install";
+                $extra_opts .= " INSTALL='\$(INSTALL)'";
             }
 
             if ($opts->{debug}) {
@@ -1050,7 +1050,7 @@ _EOC_
             }
 
             if ($on_solaris) {
-                $extra_opts .= " INSTALL=$root_dir/build/install";
+                $extra_opts .= " INSTALL='\$(INSTALL)'";
                 if ($opts->{debug}) {
                     $extra_opts .= " CFLAGS=\"-g -O -Wall\"";
                 }
@@ -1101,7 +1101,7 @@ _EOC_
             }
 
             if ($on_solaris) {
-                $extra_opts .= " INSTALL=$root_dir/build/install";
+                $extra_opts .= " INSTALL='\$(INSTALL)'";
                 if ($opts->{debug}) {
                     $extra_opts .= " CFLAGS=\"-g -O -Wall\"";
 
@@ -1149,8 +1149,10 @@ _EOC_
         } else {
             $target_dir = "\$(DESTDIR)$prefix/bin/";
         }
-        push @make_install_cmds, "cd $root_dir/build/$opm_dir && "
-             . "$root_dir/build/install bin/* $target_dir";
+        push @make_install_cmds,
+            "mkdir '$target_dir'",
+            "cd $root_dir/build/$opm_dir && "
+                . "\$(INSTALL) bin/* '$target_dir'";
     }
 
     # configure resty-cli:
@@ -1164,7 +1166,7 @@ _EOC_
             $target_dir = "\$(DESTDIR)$prefix/bin/";
         }
         push @make_install_cmds, "cd $root_dir/build/$resty_cli_dir && "
-             . "$root_dir/build/install bin/* $target_dir";
+             . "\$(INSTALL) bin/* $target_dir";
 
         if ($platform ne 'msys') {
             # patch the resty script:
@@ -1247,7 +1249,7 @@ sub add_lua_lib ($$$) {
 
         my $extra_opts =
         " DESTDIR=\$(DESTDIR) LUA_LIB_DIR=$lualib_prefix"
-        ." INSTALL=$root_dir/build/install";
+        ." INSTALL='\$(INSTALL)'";
 
         push @make_install_cmds, "cd $root_dir/build/$dir && " .
         "\$(MAKE) install$extra_opts";
@@ -1560,7 +1562,12 @@ sub gen_makefile {
         print $out "DESTDIR ?= $root_dir/\n\n";
     }
 
-    print $out ".PHONY: all install clean\n\n";
+    print $out <<_EOC_;
+INSTALL := $root_dir/build/install
+
+.PHONY: all install clean
+
+_EOC_
 
     print $out "all:\n\t" . join("\n\t", @make_cmds) . "\n\n";
 
