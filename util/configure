@@ -554,9 +554,6 @@ _END_
             "\n";
     }
 
-    # disable pcre2 by default
-    push @ngx_opts, '--without-pcre2';
-
     if (!$opts->{no_stream}
         && ! $opts->{no_stream_ssl}
         && ! $opts->{stream_ssl})
