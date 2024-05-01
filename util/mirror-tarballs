@@ -401,6 +401,13 @@ if [ "$answer" = "N" ]; then
     echo
 fi
 
+answer=`$root/util/ver-ge "$main_ver" 1.17.1`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying the linux_abstract_sockets patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-linux_abstract_sockets.patch || exit 1
+    echo
+fi
+
 if [ "$main_ver" = "1.9.7" ]; then
     echo "$info_txt applying the resolver_security_fixes patch for nginx"
     patch -p1 < $root/patches/nginx-$main_ver-resolver_security_fixes.patch || exit 1
