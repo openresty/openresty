@@ -1,0 +1,174 @@
+diff --git a/src/core/ngx_connection.h b/src/core/ngx_connection.h
+index 9d8ac46..6eb51bb 100644
+--- a/src/core/ngx_connection.h
++++ b/src/core/ngx_connection.h
+@@ -145,6 +145,8 @@ struct ngx_connection_s {
+     socklen_t           socklen;
+     ngx_str_t           addr_text;
+ 
++    struct toa_nat64_peer *toaddr;
++
+     ngx_proxy_protocol_t  *proxy_protocol;
+ 
+ #if (NGX_SSL || NGX_COMPAT)
+diff --git a/src/core/ngx_inet.h b/src/core/ngx_inet.h
+index 19050fc..66425de 100644
+--- a/src/core/ngx_inet.h
++++ b/src/core/ngx_inet.h
+@@ -105,6 +105,21 @@ typedef struct {
+     char                     *err;
+ } ngx_url_t;
+ 
++/* toa socket options, now only for nat64 */
++enum {
++    TOA_BASE_CTL            = 4096,
++    /* set */
++    TOA_SO_SET_MAX          = TOA_BASE_CTL,
++    /* get */
++    TOA_SO_GET_LOOKUP       = TOA_BASE_CTL,
++    TOA_SO_GET_MAX          = TOA_SO_GET_LOOKUP,
++};
++
++struct toa_nat64_peer {
++    struct in6_addr saddr;
++    uint16_t sport;
++};
++
+ 
+ in_addr_t ngx_inet_addr(u_char *text, size_t len);
+ #if (NGX_HAVE_INET6)
+diff --git a/src/event/ngx_event_accept.c b/src/event/ngx_event_accept.c
+index e98368c..ac808ce 100644
+--- a/src/event/ngx_event_accept.c
++++ b/src/event/ngx_event_accept.c
+@@ -17,7 +17,7 @@ static void ngx_close_accepted_connection(ngx_connection_t *c);
+ void
+ ngx_event_accept(ngx_event_t *ev)
+ {
+-    socklen_t          socklen;
++    socklen_t          socklen, len;
+     ngx_err_t          err;
+     ngx_log_t         *log;
+     ngx_uint_t         level;
+@@ -31,6 +31,8 @@ ngx_event_accept(ngx_event_t *ev)
+     static ngx_uint_t  use_accept4 = 1;
+ #endif
+ 
++    struct toa_nat64_peer uaddr;
++
+     if (ev->timedout) {
+         if (ngx_enable_accept_events((ngx_cycle_t *) ngx_cycle) != NGX_OK) {
+             return;
+@@ -173,6 +175,21 @@ ngx_event_accept(ngx_event_t *ev)
+ 
+         ngx_memcpy(c->sockaddr, &sa, socklen);
+ 
++        /* get NAT64 remote addr/port */
++        len = sizeof(struct toa_nat64_peer);
++        if (getsockopt(s, IPPROTO_IP, TOA_SO_GET_LOOKUP, &uaddr, &len)
++            == NGX_OK) {
++            c->toaddr = ngx_palloc(c->pool, len);
++            if (c->toaddr == NULL) {
++                ngx_close_accepted_connection(c);
++                return;
++            }
++
++            ngx_memcpy(c->toaddr, &uaddr, len);
++        } else {
++            c->toaddr = NULL;
++        }
++
+         log = ngx_palloc(c->pool, sizeof(ngx_log_t));
+         if (log == NULL) {
+             ngx_close_accepted_connection(c);
+diff --git a/src/http/ngx_http_variables.c b/src/http/ngx_http_variables.c
+index c2113c8..634b8b7 100644
+--- a/src/http/ngx_http_variables.c
++++ b/src/http/ngx_http_variables.c
+@@ -142,6 +142,10 @@ static ngx_int_t ngx_http_variable_time_iso8601(ngx_http_request_t *r,
+     ngx_http_variable_value_t *v, uintptr_t data);
+ static ngx_int_t ngx_http_variable_time_local(ngx_http_request_t *r,
+     ngx_http_variable_value_t *v, uintptr_t data);
++static ngx_int_t ngx_http_variable_toa_remote_addr(ngx_http_request_t *r,
++    ngx_http_variable_value_t *v, uintptr_t data);
++static ngx_int_t ngx_http_variable_toa_remote_port(ngx_http_request_t *r,
++    ngx_http_variable_value_t *v, uintptr_t data);
+ 
+ /*
+  * TODO:
+@@ -389,6 +393,10 @@ static ngx_http_variable_t  ngx_http_core_variables[] = {
+     { ngx_string("arg_"), NULL, ngx_http_variable_argument,
+       0, NGX_HTTP_VAR_NOCACHEABLE|NGX_HTTP_VAR_PREFIX, 0 },
+ 
++    { ngx_string("toa_remote_addr"), NULL, ngx_http_variable_toa_remote_addr, 0, 0, 0 },
++
++    { ngx_string("toa_remote_port"), NULL, ngx_http_variable_toa_remote_port, 0, 0, 0 },
++
+       ngx_http_null_variable
+ };
+ 
+@@ -1299,6 +1307,64 @@ ngx_http_variable_remote_port(ngx_http_request_t *r,
+ }
+ 
+ 
++static ngx_int_t
++ngx_http_variable_toa_remote_addr(ngx_http_request_t *r,
++    ngx_http_variable_value_t *v, uintptr_t data)
++{
++    v->len = 0;
++    v->valid = 1;
++    v->no_cacheable = 0;
++    v->not_found = 0;
++
++    if (r->connection->toaddr) {
++        v->data = ngx_pnalloc(r->pool, NGX_INET6_ADDRSTRLEN - 1);
++        if (v->data == NULL) {
++            return NGX_ERROR;
++        }
++
++        inet_ntop(AF_INET6, &(r->connection->toaddr->saddr), (char *)v->data, NGX_INET6_ADDRSTRLEN);
++        v->len = ngx_strlen(v->data);
++    } else {
++        v->data = ngx_pnalloc(r->pool, 1);
++        ngx_memcpy(v->data, "-", 1);
++        v->len = 1;
++    }
++
++    return NGX_OK;
++}
++
++
++static ngx_int_t
++ngx_http_variable_toa_remote_port(ngx_http_request_t *r,
++    ngx_http_variable_value_t *v, uintptr_t data)
++{
++    ngx_uint_t port;
++
++    v->len = 0;
++    v->valid = 1;
++    v->no_cacheable = 0;
++    v->not_found = 0;
++
++    v->data = ngx_pnalloc(r->pool, sizeof("65535") - 1);
++    if (v->data == NULL) {
++        return NGX_ERROR;
++    }
++
++    if (r->connection->toaddr) {
++        port = r->connection->toaddr->sport;
++        if (port > 0 && port < 65536) {
++            v->len = ngx_sprintf(v->data, "%ui", port) - v->data;
++        }
++    } else {
++        v->data = ngx_pnalloc(r->pool, 1);
++        ngx_memcpy(v->data, "-", 1);
++        v->len = 1;
++    }
++
++    return NGX_OK;
++}
++
++
+ static ngx_int_t
+ ngx_http_variable_proxy_protocol_addr(ngx_http_request_t *r,
+     ngx_http_variable_value_t *v, uintptr_t data)
