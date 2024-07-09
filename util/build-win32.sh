@@ -1,12 +1,12 @@
 #!/bin/bash
 
 PCRE=pcre-8.45
-ZLIB=zlib-1.3
+ZLIB=zlib-1.3.1
 OPENSSL=openssl-1.1.1w
 JOBS=12
 
 # wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
-# wget http://zlib.net/zlib-1.3.tar.gz
+# wget http://zlib.net/zlib-1.3.1.tar.gz
 # wget https://ftp.pcre.org/pub/pcre/pcre-8.45.tar.gz
 
 rm -rf objs || exit 1
