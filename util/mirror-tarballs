@@ -583,7 +583,7 @@ mv openresty-set-misc-nginx-module-* set-misc-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.17rc1
+ver=0.17
 $root/util/get-tarball "https://github.com/openresty/rds-json-nginx-module/tarball/v$ver" -O rds-json-nginx-module-$ver.tar.gz || exit 1
 tar -xzf rds-json-nginx-module-$ver.tar.gz || exit 1
 mv openresty-rds-json-nginx-module-* rds-json-nginx-module-$ver || exit 1
@@ -611,7 +611,7 @@ mv openresty-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.10.27rc1
+ver=0.10.27
 $root/util/get-tarball "https://github.com/openresty/lua-nginx-module/archive/v$ver.tar.gz" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv lua-nginx-module-$ver ngx_lua-$ver || exit 1
@@ -625,7 +625,7 @@ mv openresty-lua-upstream-nginx-module-* ngx_lua_upstream-$ver || exit 1
 
 #################################
 
-ver=0.0.15rc1
+ver=0.0.15
 $root/util/get-tarball "https://github.com/openresty/stream-lua-nginx-module/tarball/v$ver" -O stream-lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf stream-lua-nginx-module-$ver.tar.gz || exit 1
 mv openresty-stream-lua-nginx-module-* ngx_stream_lua-$ver || exit 1
@@ -842,7 +842,7 @@ cd ..
 
 #################################
 
-ver=0.16rc1
+ver=0.16
 $root/util/get-tarball "https://github.com/openresty/lua-resty-string/tarball/v$ver" -O "lua-resty-string-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-string-$ver.tar.gz || exit 1
 mv openresty-lua-resty-string-* lua-resty-string-$ver || exit 1
@@ -853,7 +853,7 @@ cd ..
 
 #################################
 
-ver=0.12rc1
+ver=0.12
 $root/util/get-tarball "https://github.com/openresty/lua-resty-websocket/tarball/v$ver" -O "lua-resty-websocket-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-websocket-$ver.tar.gz || exit 1
 mv openresty-lua-resty-websocket-* lua-resty-websocket-$ver || exit 1
@@ -875,7 +875,7 @@ cd ..
 
 #################################
 
-ver=0.14rc1
+ver=0.14
 $root/util/get-tarball "https://github.com/openresty/lua-resty-lrucache/tarball/v$ver" -O "lua-resty-lrucache-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-lrucache-$ver.tar.gz || exit 1
 mv openresty-lua-resty-lrucache-* lua-resty-lrucache-$ver || exit 1
@@ -915,7 +915,7 @@ cd ..
 
 #################################
 
-ver=0.04rc1
+ver=0.04
 $root/util/get-tarball "https://github.com/openresty/lua-resty-signal/tarball/v$ver" -O "lua-resty-signal-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-signal-$ver.tar.gz || exit 1
 mv openresty-lua-resty-signal-* lua-resty-signal-$ver || exit 1
