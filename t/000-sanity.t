@@ -348,7 +348,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -438,7 +438,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -528,7 +528,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -618,7 +618,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -707,7 +707,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -796,7 +796,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -1138,7 +1138,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -1229,7 +1229,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -1333,7 +1333,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -1423,7 +1423,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -1516,7 +1516,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -1607,7 +1607,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -1713,7 +1713,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -1804,7 +1804,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -1925,7 +1925,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -2015,7 +2015,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -2105,7 +2105,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -2195,7 +2195,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -2285,7 +2285,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -2375,7 +2375,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -2468,7 +2468,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -2562,7 +2562,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -2650,7 +2650,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -2738,7 +2738,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-core-0.1.29 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.08 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -2827,7 +2827,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.08 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -2914,7 +2914,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.08 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -3000,7 +3000,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -3088,7 +3088,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -3172,7 +3172,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -3262,7 +3262,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -3352,7 +3352,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -3442,7 +3442,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -3532,7 +3532,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -3621,7 +3621,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -3710,7 +3710,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -3800,7 +3800,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -3891,7 +3891,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -3981,7 +3981,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -4071,7 +4071,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -4161,7 +4161,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -4251,7 +4251,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -4341,7 +4341,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -4430,7 +4430,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -4522,7 +4522,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)./bin/'
+	mkdir -p '$(DESTDIR)./bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)./bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)./bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)./
@@ -4614,7 +4614,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)./bin/'
+	mkdir -p '$(DESTDIR)./bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)./bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)./bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)./
@@ -4706,7 +4706,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)./bin/'
+	mkdir -p '$(DESTDIR)./bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)./bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)./bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)./
@@ -4797,7 +4797,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-upstream-healthcheck-0.08 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=./lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)./'
+	mkdir -p '$(DESTDIR)./'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)./'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)./
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)./
@@ -4886,7 +4886,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -4976,7 +4976,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -5066,7 +5066,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -5156,7 +5156,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -5246,7 +5246,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -5336,7 +5336,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -5426,7 +5426,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -5516,7 +5516,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -5605,7 +5605,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -5662,7 +5662,7 @@ all:
 install: all
 	mkdir -p $(DESTDIR)/usr/local/openresty/
 	-cp $OPENRESTY_DIR/COPYRIGHT $(DESTDIR)/usr/local/openresty/
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -5752,7 +5752,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
@@ -5895,7 +5895,7 @@ install: all
 	cd $OPENRESTY_BUILD_DIR/lua-resty-limit-traffic-0.09 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-resty-shell-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
 	cd $OPENRESTY_BUILD_DIR/lua-tablepool-0.03 && $(MAKE) install DESTDIR=$(DESTDIR) LUA_LIB_DIR=/usr/local/openresty/lualib INSTALL='$(INSTALL)'
-	mkdir '$(DESTDIR)/usr/local/openresty/bin/'
+	mkdir -p '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/opm-0.0.8 && $(INSTALL) bin/* '$(DESTDIR)/usr/local/openresty/bin/'
 	cd $OPENRESTY_BUILD_DIR/resty-cli-0.30 && $(INSTALL) bin/* $(DESTDIR)/usr/local/openresty/bin/
 	cp $OPENRESTY_BUILD_DIR/resty.index $(DESTDIR)/usr/local/openresty/
