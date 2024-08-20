@@ -1147,7 +1147,7 @@ _EOC_
             $target_dir = "\$(DESTDIR)$prefix/bin/";
         }
         push @make_install_cmds,
-            "mkdir '$target_dir'",
+            "mkdir -p '$target_dir'",
             "cd $root_dir/build/$opm_dir && "
                 . "\$(INSTALL) bin/* '$target_dir'";
     }
