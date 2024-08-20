@@ -541,6 +541,13 @@ echo "$info_txt applying the reuseport_close_unused_fds patch for nginx"
 patch -p1 < $root/patches/nginx-$main_ver-reuseport_close_unused_fds.patch || exit 1
 echo
 
+
+answer=`$root/util/ver-ge "$main_ver" 1.19.9`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying nginx-$main_ver-proc_exit_handler patch for nginx"
+    patch -p1 < $root/patches/nginx-$main_ver-proc_exit_handler.patch || exit 1
+fi
+
 cp $root/html/index.html docs/html/ || exit 1
 cp $root/html/50x.html docs/html/ || exit 1
 
