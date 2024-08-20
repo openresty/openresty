@@ -1,6 +1,6 @@
 #!/bin/bash
 
-PCRE=pcre-8.45
+PCRE=pcre2-10.44
 ZLIB=zlib-1.3.1
 OPENSSL=openssl-1.1.1w
 JOBS=12
