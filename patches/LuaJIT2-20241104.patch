@@ -1,0 +1,547 @@
+diff --git a/bundle/LuaJIT-2.1-20240815/src/Makefile b/bundle/LuaJIT-2.1-20240815/src/Makefile
+index 71857ed..44a7395 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/Makefile
++++ b/bundle/LuaJIT-2.1-20240815/src/Makefile
+@@ -327,13 +327,13 @@ ifeq (Darwin,$(TARGET_SYS))
+   endif
+   TARGET_STRIP+= -x
+   TARGET_XCFLAGS+= -DLUAJIT_UNWIND_EXTERNAL
+-  TARGET_XSHLDFLAGS= -dynamiclib -single_module -undefined dynamic_lookup -fPIC
++  TARGET_XSHLDFLAGS= -dynamiclib -undefined dynamic_lookup -fPIC
+   TARGET_DYNXLDOPTS=
+   TARGET_XSHLDFLAGS+= -install_name $(TARGET_DYLIBPATH) -compatibility_version $(MAJVER).$(MINVER) -current_version $(MAJVER).$(MINVER).255
+ else
+ ifeq (iOS,$(TARGET_SYS))
+   TARGET_STRIP+= -x
+-  TARGET_XSHLDFLAGS= -dynamiclib -single_module -undefined dynamic_lookup -fPIC
++  TARGET_XSHLDFLAGS= -dynamiclib -undefined dynamic_lookup -fPIC
+   TARGET_DYNXLDOPTS=
+   TARGET_XSHLDFLAGS+= -install_name $(TARGET_DYLIBPATH) -compatibility_version $(MAJVER).$(MINVER) -current_version $(MAJVER).$(MINVER).255
+   ifeq (arm64,$(TARGET_LJARCH))
+diff --git a/bundle/LuaJIT-2.1-20240815/src/Makefile.dep b/bundle/LuaJIT-2.1-20240815/src/Makefile.dep
+index e9f8339..7b534b0 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/Makefile.dep
++++ b/bundle/LuaJIT-2.1-20240815/src/Makefile.dep
+@@ -98,7 +98,7 @@ lj_crecord.o: lj_crecord.c lj_obj.h lua.h luaconf.h lj_def.h lj_arch.h \
+  lj_cdata.h lj_cparse.h lj_cconv.h lj_carith.h lj_clib.h lj_ccall.h \
+  lj_ff.h lj_ffdef.h lj_ir.h lj_jit.h lj_ircall.h lj_iropt.h lj_trace.h \
+  lj_dispatch.h lj_traceerr.h lj_record.h lj_ffrecord.h lj_snap.h \
+- lj_crecord.h lj_strfmt.h
++ lj_crecord.h lj_strfmt.h lj_strscan.h
+ lj_ctype.o: lj_ctype.c lj_obj.h lua.h luaconf.h lj_def.h lj_arch.h \
+  lj_gc.h lj_err.h lj_errmsg.h lj_str.h lj_tab.h lj_strfmt.h lj_ctype.h \
+  lj_ccallback.h lj_buf.h
+diff --git a/bundle/LuaJIT-2.1-20240815/src/host/buildvm_asm.c b/bundle/LuaJIT-2.1-20240815/src/host/buildvm_asm.c
+index 5e25de9..c0b0594 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/host/buildvm_asm.c
++++ b/bundle/LuaJIT-2.1-20240815/src/host/buildvm_asm.c
+@@ -399,6 +399,10 @@ void emit_asm(BuildCtx *ctx)
+     fprintf(ctx->fp, "\t.ident \"%s\"\n", ctx->dasm_ident);
+     break;
+   case BUILD_machasm:
++#if defined(__apple_build_version__) && __apple_build_version__ >= 15000000 && __apple_build_version__ < 15000300
++    /* Workaround for XCode 15.0 - 15.2. */
++    fprintf(ctx->fp, "\t.subsections_via_symbols\n");
++#endif
+     fprintf(ctx->fp,
+       "\t.cstring\n"
+       "\t.ascii \"%s\\0\"\n", ctx->dasm_ident);
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_asm_mips.h b/bundle/LuaJIT-2.1-20240815/src/lj_asm_mips.h
+index 5b83e34..2f64f49 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_asm_mips.h
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_asm_mips.h
+@@ -456,7 +456,7 @@ static void asm_retf(ASMState *as, IRIns *ir)
+   emit_addptr(as, base, -8*delta);
+   asm_guard(as, MIPSI_BNE, RID_TMP,
+ 	    ra_allock(as, igcptr(pc), rset_exclude(RSET_GPR, base)));
+-  emit_tsi(as, MIPSI_AL, RID_TMP, base, -8);
++  emit_tsi(as, MIPSI_AL, RID_TMP, base, (LJ_BE || LJ_FR2) ? -8 : -4);
+ }
+ 
+ /* -- Buffer operations --------------------------------------------------- */
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_carith.c b/bundle/LuaJIT-2.1-20240815/src/lj_carith.c
+index 9bea0a3..ffda626 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_carith.c
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_carith.c
+@@ -349,9 +349,7 @@ uint64_t lj_carith_check64(lua_State *L, int narg, CTypeID *id)
+   if (LJ_LIKELY(tvisint(o))) {
+     return (uint32_t)intV(o);
+   } else {
+-    int32_t i = lj_num2bit(numV(o));
+-    if (LJ_DUALNUM) setintV(o, i);
+-    return (uint32_t)i;
++    return (uint32_t)lj_num2bit(numV(o));
+   }
+ }
+ 
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_crecord.c b/bundle/LuaJIT-2.1-20240815/src/lj_crecord.c
+index 7915945..e8ae426 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_crecord.c
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_crecord.c
+@@ -32,6 +32,7 @@
+ #include "lj_crecord.h"
+ #include "lj_dispatch.h"
+ #include "lj_strfmt.h"
++#include "lj_strscan.h"
+ 
+ /* Some local macros to save typing. Undef'd at the end. */
+ #define IR(ref)			(&J->cur.ir[(ref)])
+@@ -1807,11 +1808,21 @@ static CTypeID crec_bit64_type(CTState *cts, cTValue *tv)
+   return 0;  /* Use regular 32 bit ops. */
+ }
+ 
++static TRef crec_bit64_arg(jit_State *J, CType *d, TRef sp, TValue *sval)
++{
++  if (LJ_UNLIKELY(tref_isstr(sp))) {
++    if (lj_strscan_num(strV(sval), sval)) {
++      sp = emitir(IRTG(IR_STRTO, IRT_NUM), sp, 0);
++    }  /* else: interpreter will throw. */
++  }
++  return crec_ct_tv(J, d, 0, sp, sval);
++}
++
+ void LJ_FASTCALL recff_bit64_tobit(jit_State *J, RecordFFData *rd)
+ {
+   CTState *cts = ctype_ctsG(J2G(J));
+-  TRef tr = crec_ct_tv(J, ctype_get(cts, CTID_INT64), 0,
+-		       J->base[0], &rd->argv[0]);
++  TRef tr = crec_bit64_arg(J, ctype_get(cts, CTID_INT64),
++			   J->base[0], &rd->argv[0]);
+   if (!tref_isinteger(tr))
+     tr = emitconv(tr, IRT_INT, tref_type(tr), 0);
+   J->base[0] = tr;
+@@ -1822,7 +1833,7 @@ int LJ_FASTCALL recff_bit64_unary(jit_State *J, RecordFFData *rd)
+   CTState *cts = ctype_ctsG(J2G(J));
+   CTypeID id = crec_bit64_type(cts, &rd->argv[0]);
+   if (id) {
+-    TRef tr = crec_ct_tv(J, ctype_get(cts, id), 0, J->base[0], &rd->argv[0]);
++    TRef tr = crec_bit64_arg(J, ctype_get(cts, id), J->base[0], &rd->argv[0]);
+     tr = emitir(IRT(rd->data, id-CTID_INT64+IRT_I64), tr, 0);
+     J->base[0] = emitir(IRTG(IR_CNEWI, IRT_CDATA), lj_ir_kint(J, id), tr);
+     return 1;
+@@ -1842,9 +1853,9 @@ int LJ_FASTCALL recff_bit64_nary(jit_State *J, RecordFFData *rd)
+   if (id) {
+     CType *ct = ctype_get(cts, id);
+     uint32_t ot = IRT(rd->data, id-CTID_INT64+IRT_I64);
+-    TRef tr = crec_ct_tv(J, ct, 0, J->base[0], &rd->argv[0]);
++    TRef tr = crec_bit64_arg(J, ct, J->base[0], &rd->argv[0]);
+     for (i = 1; J->base[i] != 0; i++) {
+-      TRef tr2 = crec_ct_tv(J, ct, 0, J->base[i], &rd->argv[i]);
++      TRef tr2 = crec_bit64_arg(J, ct, J->base[i], &rd->argv[i]);
+       tr = emitir(ot, tr, tr2);
+     }
+     J->base[0] = emitir(IRTG(IR_CNEWI, IRT_CDATA), lj_ir_kint(J, id), tr);
+@@ -1859,15 +1870,15 @@ int LJ_FASTCALL recff_bit64_shift(jit_State *J, RecordFFData *rd)
+   CTypeID id;
+   TRef tsh = 0;
+   if (J->base[0] && tref_iscdata(J->base[1])) {
+-    tsh = crec_ct_tv(J, ctype_get(cts, CTID_INT64), 0,
+-		     J->base[1], &rd->argv[1]);
++    tsh = crec_bit64_arg(J, ctype_get(cts, CTID_INT64),
++			 J->base[1], &rd->argv[1]);
+     if (!tref_isinteger(tsh))
+       tsh = emitconv(tsh, IRT_INT, tref_type(tsh), 0);
+     J->base[1] = tsh;
+   }
+   id = crec_bit64_type(cts, &rd->argv[0]);
+   if (id) {
+-    TRef tr = crec_ct_tv(J, ctype_get(cts, id), 0, J->base[0], &rd->argv[0]);
++    TRef tr = crec_bit64_arg(J, ctype_get(cts, id), J->base[0], &rd->argv[0]);
+     uint32_t op = rd->data;
+     if (!tsh) tsh = lj_opt_narrow_tobit(J, J->base[1]);
+     if (!(op < IR_BROL ? LJ_TARGET_MASKSHIFT : LJ_TARGET_MASKROT) &&
+@@ -1897,7 +1908,7 @@ TRef recff_bit64_tohex(jit_State *J, RecordFFData *rd, TRef hdr)
+     CTypeID id2 = 0;
+     n = (int32_t)lj_carith_check64(J->L, 2, &id2);
+     if (id2)
+-      trsf = crec_ct_tv(J, ctype_get(cts, CTID_INT32), 0, trsf, &rd->argv[1]);
++      trsf = crec_bit64_arg(J, ctype_get(cts, CTID_INT32), trsf, &rd->argv[1]);
+     else
+       trsf = lj_opt_narrow_tobit(J, trsf);
+     emitir(IRTGI(IR_EQ), trsf, lj_ir_kint(J, n));  /* Specialize to n. */
+@@ -1908,7 +1919,7 @@ TRef recff_bit64_tohex(jit_State *J, RecordFFData *rd, TRef hdr)
+   if ((uint32_t)n > 254) n = 254;
+   sf |= ((SFormat)((n+1)&255) << STRFMT_SH_PREC);
+   if (id) {
+-    tr = crec_ct_tv(J, ctype_get(cts, id), 0, J->base[0], &rd->argv[0]);
++    tr = crec_bit64_arg(J, ctype_get(cts, id), J->base[0], &rd->argv[0]);
+     if (n < 16)
+       tr = emitir(IRT(IR_BAND, IRT_U64), tr,
+ 		  lj_ir_kint64(J, ((uint64_t)1 << 4*n)-1));
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_emit_arm64.h b/bundle/LuaJIT-2.1-20240815/src/lj_emit_arm64.h
+index 0967f6e..6838693 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_emit_arm64.h
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_emit_arm64.h
+@@ -109,6 +109,11 @@ static void emit_d(ASMState *as, A64Ins ai, Reg rd)
+   *--as->mcp = ai | A64F_D(rd);
+ }
+ 
++static void emit_dl(ASMState *as, A64Ins ai, Reg rd, uint32_t l)
++{
++  *--as->mcp = ai | A64F_D(rd) | A64F_S19(l >> 2);
++}
++
+ static void emit_n(ASMState *as, A64Ins ai, Reg rn)
+ {
+   *--as->mcp = ai | A64F_N(rn);
+@@ -226,7 +231,7 @@ static int emit_kadrp(ASMState *as, Reg rd, uint64_t k)
+       emit_dn(as, (A64I_ADDx^A64I_K12)|A64F_U12(k - kpage), rd, rd);
+     ai = A64I_ADRP;
+   }
+-  emit_d(as, ai|(((uint32_t)ofs&3)<<29)|A64F_S19(ofs>>2), rd);
++  emit_dl(as, ai|(((uint32_t)ofs&3)<<29), rd, ofs);
+   return 1;
+ }
+ 
+@@ -291,7 +296,7 @@ static void emit_lsptr(ASMState *as, A64Ins ai, Reg r, void *p)
+     /* GL + offset, might subsequently fuse to LDP/STP. */
+   } else if (ai == A64I_LDRx && checkmcpofs(as, p)) {
+     /* IP + offset is cheaper than allock, but address must be in range. */
+-    emit_d(as, A64I_LDRLx | A64F_S19(mcpofs(as, p)>>2), r);
++    emit_dl(as, A64I_LDRLx, r, mcpofs(as, p));
+     return;
+   } else {  /* Split up into base reg + offset. */
+     int64_t i64 = i64ptr(p);
+@@ -320,15 +325,15 @@ static void emit_loadk64(ASMState *as, Reg r, IRIns *ir)
+   if (emit_checkofs(A64I_LDRx, ofs)) {
+     emit_lso(as, r >= RID_MAX_GPR ? A64I_LDRd : A64I_LDRx,
+ 	     (r & 31), RID_GL, ofs);
++  } else if (checkmcpofs(as, k)) {
++    emit_dl(as, r >= RID_MAX_GPR ? A64I_LDRLd : A64I_LDRLx,
++	    (r & 31), mcpofs(as, k));
+   } else {
+     if (r >= RID_MAX_GPR) {
+       emit_dn(as, A64I_FMOV_D_R, (r & 31), RID_TMP);
+       r = RID_TMP;
+     }
+-    if (checkmcpofs(as, k))
+-      emit_d(as, A64I_LDRLx | A64F_S19(mcpofs(as, k)>>2), r);
+-    else
+-      emit_loadu64(as, r, *k);
++    emit_loadu64(as, r, *k);
+   }
+ }
+ 
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_err.c b/bundle/LuaJIT-2.1-20240815/src/lj_err.c
+index 413cc6b..1efeb49 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_err.c
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_err.c
+@@ -239,12 +239,6 @@ typedef struct UndocumentedDispatcherContext {
+ /* Another wild guess. */
+ extern void __DestructExceptionObject(EXCEPTION_RECORD *rec, int nothrow);
+ 
+-#if LJ_TARGET_X64 && defined(MINGW_SDK_INIT)
+-/* Workaround for broken MinGW64 declaration. */
+-VOID RtlUnwindEx_FIXED(PVOID,PVOID,PVOID,PVOID,PVOID,PVOID) asm("RtlUnwindEx");
+-#define RtlUnwindEx RtlUnwindEx_FIXED
+-#endif
+-
+ #define LJ_MSVC_EXCODE		((DWORD)0xe06d7363)
+ #define LJ_GCC_EXCODE		((DWORD)0x20474343)
+ 
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_ffrecord.c b/bundle/LuaJIT-2.1-20240815/src/lj_ffrecord.c
+index 2ad6e15..f5ba7dc 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_ffrecord.c
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_ffrecord.c
+@@ -260,7 +260,7 @@ static void LJ_FASTCALL recff_setmetatable(jit_State *J, RecordFFData *rd)
+     mtref = tref_isnil(mt) ? lj_ir_knull(J, IRT_TAB) : mt;
+     emitir(IRT(IR_FSTORE, IRT_TAB), fref, mtref);
+     if (!tref_isnil(mt))
+-      emitir(IRT(IR_TBAR, IRT_TAB), tr, 0);
++      emitir(IRT(IR_TBAR, IRT_NIL), tr, 0);
+     J->base[0] = tr;
+     J->needsnap = 1;
+   }  /* else: Interpreter will throw. */
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_gc.c b/bundle/LuaJIT-2.1-20240815/src/lj_gc.c
+index 9cabdef..bfa4daa 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_gc.c
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_gc.c
+@@ -554,7 +554,6 @@ static void gc_finalize(lua_State *L)
+     setcdataV(L, &tmp, gco2cd(o));
+     tv = lj_tab_set(L, tabref(g->gcroot[GCROOT_FFI_FIN]), &tmp);
+     if (!tvisnil(tv)) {
+-      g->gc.nocdatafin = 0;
+       copyTV(L, &tmp, tv);
+       setnilV(tv);  /* Clear entry in finalizer table. */
+       gc_call_finalizer(g, L, &tmp, o);
+@@ -604,12 +603,11 @@ void lj_gc_finalize_cdata(lua_State *L)
+ /* Free all remaining GC objects. */
+ void lj_gc_freeall(global_State *g)
+ {
+-  MSize i, strmask;
++  MSize i;
+   /* Free everything, except super-fixed objects (the main thread). */
+   g->gc.currentwhite = LJ_GC_WHITES | LJ_GC_SFIXED;
+   gc_fullsweep(g, &g->gc.root);
+-  strmask = g->str.mask;
+-  for (i = 0; i <= strmask; i++)  /* Free all string hash chains. */
++  for (i = g->str.mask; i != ~(MSize)0; i--)  /* Free all string hash chains. */
+     gc_sweepstr(g, &g->str.tab[i]);
+ }
+ 
+@@ -690,9 +688,6 @@ static size_t gc_onestep(lua_State *L)
+ 	lj_str_resize(L, g->str.mask >> 1);  /* Shrink string table. */
+       if (gcref(g->gc.mmudata)) {  /* Need any finalizations? */
+ 	g->gc.state = GCSfinalize;
+-#if LJ_HASFFI
+-	g->gc.nocdatafin = 1;
+-#endif
+       } else {  /* Otherwise skip this phase to help the JIT. */
+ 	g->gc.state = GCSpause;  /* End of GC cycle. */
+ 	g->gc.debt = 0;
+@@ -712,9 +707,6 @@ static size_t gc_onestep(lua_State *L)
+ 	g->gc.estimate -= GCFINALIZECOST;
+       return GCFINALIZECOST;
+     }
+-#if LJ_HASFFI
+-    if (!g->gc.nocdatafin) lj_tab_rehash(L, tabref(g->gcroot[GCROOT_FFI_FIN]));
+-#endif
+     g->gc.state = GCSpause;  /* End of GC cycle. */
+     g->gc.debt = 0;
+     return 0;
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_load.c b/bundle/LuaJIT-2.1-20240815/src/lj_load.c
+index 152ef6d..5bb10b5 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_load.c
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_load.c
+@@ -101,29 +101,30 @@ LUALIB_API int luaL_loadfilex(lua_State *L, const char *filename,
+   FileReaderCtx ctx;
+   int status;
+   const char *chunkname;
++  int err = 0;
+   if (filename) {
++    chunkname = lua_pushfstring(L, "@%s", filename);
+     ctx.fp = fopen(filename, "rb");
+     if (ctx.fp == NULL) {
++      L->top--;
+       lua_pushfstring(L, "cannot open %s: %s", filename, strerror(errno));
+       return LUA_ERRFILE;
+     }
+-    chunkname = lua_pushfstring(L, "@%s", filename);
+   } else {
+     ctx.fp = stdin;
+     chunkname = "=stdin";
+   }
+   status = lua_loadx(L, reader_file, &ctx, chunkname, mode);
+-  if (ferror(ctx.fp)) {
+-    L->top -= filename ? 2 : 1;
+-    lua_pushfstring(L, "cannot read %s: %s", chunkname+1, strerror(errno));
+-    if (filename)
+-      fclose(ctx.fp);
+-    return LUA_ERRFILE;
+-  }
++  if (ferror(ctx.fp)) err = errno;
+   if (filename) {
++    fclose(ctx.fp);
+     L->top--;
+     copyTV(L, L->top-1, L->top);
+-    fclose(ctx.fp);
++  }
++  if (err) {
++    L->top--;
++    lua_pushfstring(L, "cannot read %s: %s", chunkname+1, strerror(err));
++    return LUA_ERRFILE;
+   }
+   return status;
+ }
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_obj.h b/bundle/LuaJIT-2.1-20240815/src/lj_obj.h
+index d927a4b..0652376 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_obj.h
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_obj.h
+@@ -595,7 +595,7 @@ typedef struct GCState {
+   GCSize threshold;	/* Memory threshold. */
+   uint8_t currentwhite;	/* Current white color. */
+   uint8_t state;	/* GC state. */
+-  uint8_t nocdatafin;	/* No cdata finalizer called. */
++  uint8_t unused0;
+ #if LJ_64
+   uint8_t lightudnum;	/* Number of lightuserdata segments - 1. */
+ #else
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_opt_narrow.c b/bundle/LuaJIT-2.1-20240815/src/lj_opt_narrow.c
+index 1172df2..02fb9e6 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_opt_narrow.c
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_opt_narrow.c
+@@ -341,7 +341,8 @@ static int narrow_conv_backprop(NarrowConv *nc, IRRef ref, int depth)
+       NarrowIns *savesp = nc->sp;
+       int count = narrow_conv_backprop(nc, ir->op1, depth);
+       count += narrow_conv_backprop(nc, ir->op2, depth);
+-      if (count <= 1) {  /* Limit total number of conversions. */
++      /* Limit total number of conversions. */
++      if (count <= 1 && nc->sp < nc->maxsp) {
+ 	*nc->sp++ = NARROWINS(IRT(ir->o, nc->t), ref);
+ 	return count;
+       }
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_record.c b/bundle/LuaJIT-2.1-20240815/src/lj_record.c
+index d27509e..16caa88 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_record.c
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_record.c
+@@ -1074,6 +1074,7 @@ int lj_record_mm_lookup(jit_State *J, RecordIndex *ix, MMS mm)
+   } else if (tref_isudata(ix->tab)) {
+     int udtype = udataV(&ix->tabv)->udtype;
+     mt = tabref(udataV(&ix->tabv)->metatable);
++    mix.tab = emitir(IRT(IR_FLOAD, IRT_TAB), ix->tab, IRFL_UDATA_META);
+     /* The metatables of special userdata objects are treated as immutable. */
+     if (udtype != UDTYPE_USERDATA) {
+       cTValue *mo;
+@@ -1087,6 +1088,8 @@ int lj_record_mm_lookup(jit_State *J, RecordIndex *ix, MMS mm)
+       }
+   immutable_mt:
+       mo = lj_tab_getstr(mt, mmname_str(J2G(J), mm));
++      ix->mt = mix.tab;
++      ix->mtv = mt;
+       if (!mo || tvisnil(mo))
+ 	return 0;  /* No metamethod. */
+       /* Treat metamethod or index table as immutable, too. */
+@@ -1094,11 +1097,8 @@ int lj_record_mm_lookup(jit_State *J, RecordIndex *ix, MMS mm)
+ 	lj_trace_err(J, LJ_TRERR_BADTYPE);
+       copyTV(J->L, &ix->mobjv, mo);
+       ix->mobj = lj_ir_kgc(J, gcV(mo), tvisfunc(mo) ? IRT_FUNC : IRT_TAB);
+-      ix->mtv = mt;
+-      ix->mt = TREF_NIL;  /* Dummy value for comparison semantics. */
+       return 1;  /* Got metamethod or index table. */
+     }
+-    mix.tab = emitir(IRT(IR_FLOAD, IRT_TAB), ix->tab, IRFL_UDATA_META);
+   } else {
+     /* Specialize to base metatable. Must flush mcode in lua_setmetatable(). */
+     mt = tabref(basemt_obj(J2G(J), &ix->tabv));
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_tab.c b/bundle/LuaJIT-2.1-20240815/src/lj_tab.c
+index db0a5e8..47f5d4c 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_tab.c
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_tab.c
+@@ -369,13 +369,6 @@ static void rehashtab(lua_State *L, GCtab *t, cTValue *ek)
+   lj_tab_resize(L, t, asize, hsize2hbits(total));
+ }
+ 
+-#if LJ_HASFFI
+-void lj_tab_rehash(lua_State *L, GCtab *t)
+-{
+-  rehashtab(L, t, niltv(L));
+-}
+-#endif
+-
+ void lj_tab_reasize(lua_State *L, GCtab *t, uint32_t nasize)
+ {
+   lj_tab_resize(L, t, nasize+1, t->hmask > 0 ? lj_fls(t->hmask)+1 : 0);
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_tab.h b/bundle/LuaJIT-2.1-20240815/src/lj_tab.h
+index 2d03d61..9746dc7 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_tab.h
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_tab.h
+@@ -60,9 +60,6 @@ LJ_FUNC GCtab * LJ_FASTCALL lj_tab_new1(lua_State *L, uint32_t ahsize);
+ LJ_FUNCA GCtab * LJ_FASTCALL lj_tab_dup(lua_State *L, const GCtab *kt);
+ LJ_FUNC void LJ_FASTCALL lj_tab_clear(GCtab *t);
+ LJ_FUNC void LJ_FASTCALL lj_tab_free(global_State *g, GCtab *t);
+-#if LJ_HASFFI
+-LJ_FUNC void lj_tab_rehash(lua_State *L, GCtab *t);
+-#endif
+ LJ_FUNC void lj_tab_resize(lua_State *L, GCtab *t, uint32_t asize, uint32_t hbits);
+ LJ_FUNCA void lj_tab_reasize(lua_State *L, GCtab *t, uint32_t nasize);
+ 
+diff --git a/bundle/LuaJIT-2.1-20240815/src/lj_target_arm64.h b/bundle/LuaJIT-2.1-20240815/src/lj_target_arm64.h
+index 8ed8851..7d11395 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/lj_target_arm64.h
++++ b/bundle/LuaJIT-2.1-20240815/src/lj_target_arm64.h
+@@ -281,6 +281,7 @@ typedef enum A64Ins {
+   A64I_FSQRTd = 0x1e61c000,
+   A64I_LDRs = 0xbd400000,
+   A64I_LDRd = 0xfd400000,
++  A64I_LDRLd = 0x5c000000,
+   A64I_STRs = 0xbd000000,
+   A64I_STRd = 0xfd000000,
+   A64I_LDPs = 0x2d400000,
+diff --git a/bundle/LuaJIT-2.1-20240815/src/vm_arm.dasc b/bundle/LuaJIT-2.1-20240815/src/vm_arm.dasc
+index fc08c65..4cad5d8 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/vm_arm.dasc
++++ b/bundle/LuaJIT-2.1-20240815/src/vm_arm.dasc
+@@ -1823,9 +1823,19 @@ static void build_subroutines(BuildCtx *ctx)
+   |
+   |//-- Bit library --------------------------------------------------------
+   |
+-  |// FP number to bit conversion for soft-float. Clobbers r0-r3.
+   |->vm_tobit_fb:
+   |  bhi ->fff_fallback
++  |.if FPU
++  |// FP number to bit conversion for hard-float. Clobbers r0, d0-d1.
++  |  vldr d1, >9
++  |  vmov d0, CARG1, CARG2
++  |  vadd.f64 d0, d0, d1
++  |  vmov CARG1, s0
++  |  bx lr
++  |9:
++  |  .long 0, 0x43380000		// (double)(2^52 + 2^51).
++  |.else
++  |// FP number to bit conversion for soft-float. Clobbers r0-r3.
+   |->vm_tobit:
+   |  lsl RB, CARG2, #1
+   |  adds RB, RB, #0x00200000
+@@ -1850,6 +1860,7 @@ static void build_subroutines(BuildCtx *ctx)
+   |  orr CARG1, CARG4, CARG1, lsl RB
+   |   rsblt CARG1, CARG1, #0
+   |  bx lr
++  |.endif
+   |
+   |.macro .ffunc_bit, name
+   |  .ffunc_1 bit_..name
+diff --git a/bundle/LuaJIT-2.1-20240815/src/vm_arm64.dasc b/bundle/LuaJIT-2.1-20240815/src/vm_arm64.dasc
+index a6ce050..696affc 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/vm_arm64.dasc
++++ b/bundle/LuaJIT-2.1-20240815/src/vm_arm64.dasc
+@@ -1658,22 +1658,14 @@ static void build_subroutines(BuildCtx *ctx)
+   |
+   |//-- Bit library --------------------------------------------------------
+   |
+-  |// FP number to bit conversion for soft-float. Clobbers CARG1-CARG3
++  |// FP number to bit conversion. Clobbers CARG1-CARG2, FARG1-FARG2.
+   |->vm_tobit_fb:
+   |  bls ->fff_fallback
+-  |  add CARG2, CARG1, CARG1
+-  |  mov CARG3, #1076
+-  |  sub CARG3, CARG3, CARG2, lsr #53
+-  |  cmp CARG3, #53
+-  |  bhi >1
+-  |  and CARG2, CARG2, #U64x(001fffff,ffffffff)
+-  |  orr CARG2, CARG2, #U64x(00200000,00000000)
+-  |   cmp CARG1, #0
+-  |  lsr CARG2, CARG2, CARG3
+-  |   cneg CARG1w, CARG2w, mi
+-  |  br lr
+-  |1:
+-  |  mov CARG1w, #0
++  |  fmov FARG1, CARG1
++  |  movz CARG2, #0x4338, lsl #48
++  |  fmov FARG2, CARG2
++  |  fadd FARG1, FARG1, FARG2
++  |  fmov CARG1w, s0
+   |  br lr
+   |
+   |.macro .ffunc_bit, name
+@@ -4220,7 +4212,6 @@ static void emit_asm_debug(BuildCtx *ctx)
+ 	"LEFDEY:\n\n", fcsize);
+     }
+ #endif
+-    fprintf(ctx->fp, ".subsections_via_symbols\n");
+     }
+     break;
+ #endif
+diff --git a/bundle/LuaJIT-2.1-20240815/src/vm_x64.dasc b/bundle/LuaJIT-2.1-20240815/src/vm_x64.dasc
+index 48d6b61..d12ad77 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/vm_x64.dasc
++++ b/bundle/LuaJIT-2.1-20240815/src/vm_x64.dasc
+@@ -4967,7 +4967,6 @@ static void emit_asm_debug(BuildCtx *ctx)
+ 	  "LEFDEY:\n\n", fcsize);
+     }
+ #endif
+-    fprintf(ctx->fp, ".subsections_via_symbols\n");
+     }
+     break;
+ #endif
+diff --git a/bundle/LuaJIT-2.1-20240815/src/vm_x86.dasc b/bundle/LuaJIT-2.1-20240815/src/vm_x86.dasc
+index d3d3d16..be01ae5 100644
+--- a/bundle/LuaJIT-2.1-20240815/src/vm_x86.dasc
++++ b/bundle/LuaJIT-2.1-20240815/src/vm_x86.dasc
+@@ -5869,7 +5869,6 @@ static void emit_asm_debug(BuildCtx *ctx)
+ 	  fprintf(ctx->fp, "L_%s$stub:\n\t.indirect_symbol _%s\n\t.ascii \"\\364\\364\\364\\364\\364\"\n", *xn, *xn);
+     }
+ #endif
+-    fprintf(ctx->fp, ".subsections_via_symbols\n");
+     }
+     break;
+ #endif
