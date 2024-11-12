@@ -51,14 +51,17 @@ env:
 
 install:
   - cpanm --sudo --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
-  - if [ ! -f download-cache/pcre-$PCRE_VER.tar.gz ]; then wget -P download-cache https://downloads.sourceforge.net/project/pcre/pcre/${PCRE_VER}/pcre-${PCRE_VER}.tar.gz; fi
+  - |
+    if [ "$TRAVIS_CPU_ARCH" != "s390x" ]; then
+      if [ ! -f download-cache/pcre-$PCRE_VER.tar.gz ]; then wget -P download-cache https://downloads.sourceforge.net/project/pcre/pcre/${PCRE_VER}/pcre-${PCRE_VER}.tar.gz; fi
+      tar zxf download-cache/pcre-$PCRE_VER.tar.gz
+      cd pcre-$PCRE_VER/
+      ./configure --prefix=$PCRE_PREFIX --enable-jit --enable-utf --enable-unicode-properties > build.log 2>&1 || (cat build.log && exit 1)
+      make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
+      sudo PATH=$PATH make install > build.log 2>&1 || (cat build.log && exit 1)
+      cd ..
+    fi  
   - if [ ! -f download-cache/openssl-$OPENSSL_VER.tar.gz ]; then wget -P download-cache https://www.openssl.org/source/openssl-$OPENSSL_VER.tar.gz || wget -P download-cache https://www.openssl.org/source/old/${OPENSSL_VER//[a-z]/}/openssl-$OPENSSL_VER.tar.gz; fi
-  - tar zxf download-cache/pcre-$PCRE_VER.tar.gz
-  - cd pcre-$PCRE_VER/
-  - ./configure --prefix=$PCRE_PREFIX --enable-jit --enable-utf --enable-unicode-properties > build.log 2>&1 || (cat build.log && exit 1)
-  - make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
-  - sudo PATH=$PATH make install > build.log 2>&1 || (cat build.log && exit 1)
-  - cd ..
   - tar zxf download-cache/openssl-$OPENSSL_VER.tar.gz
   - cd openssl-$OPENSSL_VER/
   - patch -p1 < ../patches/openssl-$OPENSSL_PATCH_VER-sess_set_get_cb_yield.patch
