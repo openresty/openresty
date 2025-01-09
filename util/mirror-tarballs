@@ -973,15 +973,20 @@ nginx_xml2pod=$bundle_dir/$resty_cli/bin/nginx-xml2pod
 curdir=$PWD
 cd $root/work/ || exit 1
 if [ -d nginx.org ]; then
-    cd nginx.org/ || exit 1
-    hg pull || exit 1
-    hg update --clean || exit 1
-    cd ..
+    if [ -f nginx.org/.git/config ];then
+        cd nginx.org/ || exit 1
+        git pull || exit 1
+        git checkout -f || exit 1
+        cd ..
+    else
+        rm -rf nginx.org || exit 1
+        git clone https://github.com/nginx/nginx.org || exit 1
+    fi
 else
-    hg clone http://hg.nginx.org/nginx.org || exit 1
+    git clone https://github.com/nginx/nginx.org || exit 1
 fi
 cd nginx.org/ || exit 1
-hg purge --config extensions.purge= || exit 1
+git clean -f || exit 1
 find xml/en/docs -name 'ngx_http_api_module.xml' -delete
 rm xml/en/docs/njs/*
 $nginx_xml2pod xml/en/docs || exit 1
