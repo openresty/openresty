@@ -983,7 +983,7 @@ if [ -d nginx.org ]; then
         git clone https://github.com/nginx/nginx.org || exit 1
     fi
 else
-    hg clone http://hg.nginx.org/nginx.org || exit 1
+    git clone https://github.com/nginx/nginx.org || exit 1
 fi
 cd nginx.org/ || exit 1
 git clean -f || exit 1
