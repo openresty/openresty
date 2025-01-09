@@ -37,3 +37,30 @@ index 8621e7a..a76c677 100644
  #if (NGX_HTTP_GZIP)
      static const u_char accept_encoding[12] =
          "\x8b\x84\x84\x2d\x69\x5b\x05\x44\x3c\x86\xaa\x6f";
+diff --git a/src/http/v3/ngx_http_v3_filter_module.c b/src/http/v3/ngx_http_v3_filter_module.c
+--- a/src/http/v3/ngx_http_v3_filter_module.c
++++ b/src/http/v3/ngx_http_v3_filter_module.c
+@@ -165,9 +165,9 @@
+         } else if (clcf->server_tokens == NGX_HTTP_SERVER_TOKENS_BUILD) {
+             n = sizeof(NGINX_VER_BUILD) - 1;
+ 
+         } else {
+-            n = sizeof("nginx") - 1;
++            n = sizeof("openresty") - 1;
+         }
+ 
+         len += ngx_http_v3_encode_field_lri(NULL, 0,
+                                             NGX_HTTP_V3_HEADER_SERVER,
+@@ -348,10 +348,10 @@
+             p = (u_char *) NGINX_VER_BUILD;
+             n = sizeof(NGINX_VER_BUILD) - 1;
+ 
+         } else {
+-            p = (u_char *) "nginx";
+-            n = sizeof("nginx") - 1;
++            p = (u_char *) "openresty";
++            n = sizeof("openresty") - 1;
+         }
+ 
+         ngx_log_debug2(NGX_LOG_DEBUG_HTTP, c->log, 0,
+                        "http3 output header: \"server: %*s\"", n, p);
