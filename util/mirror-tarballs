@@ -618,7 +618,7 @@ mv openresty-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.10.27
+ver=0.10.28
 $root/util/get-tarball "https://github.com/openresty/lua-nginx-module/archive/v$ver.tar.gz" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv lua-nginx-module-$ver ngx_lua-$ver || exit 1
@@ -632,7 +632,7 @@ mv openresty-lua-upstream-nginx-module-* ngx_lua_upstream-$ver || exit 1
 
 #################################
 
-ver=0.0.15
+ver=0.0.16
 $root/util/get-tarball "https://github.com/openresty/stream-lua-nginx-module/tarball/v$ver" -O stream-lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf stream-lua-nginx-module-$ver.tar.gz || exit 1
 mv openresty-stream-lua-nginx-module-* ngx_stream_lua-$ver || exit 1
@@ -751,7 +751,7 @@ mv openresty-opm-* opm-$ver || exit 1
 
 #################################
 
-ver=2.1-20241104
+ver=2.1-20250117
 $root/util/get-tarball "https://github.com/openresty/luajit2/archive/v$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 mv luajit2-* LuaJIT-$ver || exit 1
@@ -893,7 +893,7 @@ cd ..
 
 #################################
 
-ver=0.1.30
+ver=0.1.31
 $root/util/get-tarball "https://github.com/openresty/lua-resty-core/tarball/v$ver" -O "lua-resty-core-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-core-$ver.tar.gz || exit 1
 mv openresty-lua-resty-core-* lua-resty-core-$ver || exit 1
