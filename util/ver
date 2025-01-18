@@ -1,6 +1,6 @@
 #!/bin/bash
 
-main_ver=1.27.1
+main_ver=1.27.3
 minor_ver=2
 version=$main_ver.$minor_ver
 echo $version
