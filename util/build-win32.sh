@@ -2,12 +2,12 @@
 
 PCRE=pcre2-10.44
 ZLIB=zlib-1.3.1
-OPENSSL=openssl-1.1.1w
+OPENSSL=openssl-3.4.1
 JOBS=12
 
-# wget https://www.openssl.org/source/openssl-1.1.1w.tar.gz
+# wget https://github.com/openssl/openssl/releases/download/openssl-3.4.1/openssl-3.4.1.tar.gz
 # wget http://zlib.net/zlib-1.3.1.tar.gz
-# wget https://ftp.pcre.org/pub/pcre/pcre-8.45.tar.gz
+# wget https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.44/pcre2-10.44.tar.gz
 
 rm -rf objs || exit 1
 mkdir -p objs/lib || exit 1
@@ -20,7 +20,7 @@ cd ../..
 
 cd objs/lib/$OPENSSL || exit 1
 #patch -p1 < ../../../patches/openssl-1.1.0j-parallel_build_fix.patch || exit 1
-patch -p1 < ../../../patches/openssl-1.1.1f-sess_set_get_cb_yield.patch || exit 1
+patch -p1 < ../../../patches/openssl-3.4.1-sess_set_get_cb_yield.patch || exit 1
 #patch -p1 < ../../../patches/openssl-1.1.1d-win_fix.patch || exit 1
 #patch -p1 < ../../../patches/openssl-1.1.1e-sess_set_get_cb_yield.patch || exit 1
 cd ../../..
