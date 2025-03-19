@@ -181,7 +181,7 @@ sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Normal Build ===\n";
-$prefix = "/usr/local/openresty";
+$prefix = "/usr/local/openresty-norm";
 cleanup();
 unless ($opts{f}) {
     sh "./configure $cfg_opts -j$jobs";
