@@ -184,7 +184,7 @@ warn "\n=== Normal Build ===\n";
 $prefix = "/usr/local/openresty-norm";
 cleanup();
 unless ($opts{f}) {
-    sh "./configure $cfg_opts -j$jobs";
+    sh "./configure $cfg_opts --prefix=$prefix -j$jobs";
 }
 sh "$make -j$jobs";
 sh "sudo $make install";
