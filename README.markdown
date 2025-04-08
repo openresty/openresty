@@ -25,7 +25,7 @@ lots of 3rd-party nginx modules, as well as most of their external dependencies.
 This bundle is maintained by Yichun Zhang (agentzh).
 
 Because most of the nginx modules are developed by the bundle maintainers, it can ensure
-that all these modules are played well together.
+that all these modules play well together.
 
 The bundled software components are copyrighted by the respective copyright holders.
 
@@ -95,7 +95,7 @@ This feature is not available on Windows platforms.
 Mailing List
 ============
 
-You're very welcome to join the English OpenResty mailing list hosted on Google Groups:
+You are welcome to join the English OpenResty mailing list hosted on Google Groups:
 
 https://groups.google.com/group/openresty-en
 
@@ -108,7 +108,7 @@ https://groups.google.com/group/openresty
 Report Bugs
 ===========
 
-You're very welcome to report issues on GitHub:
+You are welcome to report issues on GitHub:
 
 https://github.com/openresty/openresty/issues
 
