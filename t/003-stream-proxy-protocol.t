@@ -4,7 +4,7 @@ master_on();
 workers(2);
 log_level('debug');
 
-repeat_each(1);
+repeat_each(2);
 plan tests => 14;
 
 #no_diff();
