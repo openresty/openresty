@@ -43,6 +43,7 @@ hello world
 qr/PROXY protocol v2 src: 127\.0\.0\.1 \d+, dst: 127\.0\.0\.1 \d+/
 
 
+
 === TEST 2: Stream with Proxy Protocol tunnel (IPV4)
 --- stream_config
     upstream backend {
@@ -73,6 +74,7 @@ qr/PROXY protocol v2 src: 1\.1\.1\.1 \d+, dst: 127\.0\.0\.1 \d+/
 [error]
 
 
+
 === TEST 3: Stream with Proxy Protocol tunnel (IPV6)
 --- stream_config
     upstream backend {
@@ -97,6 +99,7 @@ proxy_protocol
 2001:db8:85a3::8a2e:370:7334 via proxy protocol v2 IPv6
 --- no_error_log
 [error]
+
 
 
 === TEST 4: Stream with TLS Extended Property Validation
