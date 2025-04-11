@@ -1838,7 +1838,7 @@ clean:
 
 
 
-=== TEST 23: ngx_postgres not enabled but specify --with-pg_config
+=== TEST 22: ngx_postgres not enabled but specify --with-pg_config
 --- cmd: ./configure --with-pg_config=pg_config --dry-run
 --- out
 platform: linux (linux)
@@ -1849,7 +1849,7 @@ The http_postgres_module is not enabled while --with-pg_config is specified.
 
 
 
-=== TEST 24: --with-make option
+=== TEST 23: --with-make option
 --- cmd: ./configure --with-make=make --dry-run
 --- out
 platform: linux (linux)
@@ -1939,7 +1939,7 @@ clean:
 
 
 
-=== TEST 25: --with-luajit on Solaris
+=== TEST 24: --with-luajit on Solaris
 --- cmd: ./configure --with-luajit --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
@@ -2029,7 +2029,7 @@ clean:
 
 
 
-=== TEST 26: default on Solaris
+=== TEST 25: default on Solaris
 --- cmd: ./configure --dry-run --platform=solaris
 --- out
 platform: solaris (solaris)
@@ -2119,7 +2119,7 @@ clean:
 
 
 
-=== TEST 27: default on FreeBSD
+=== TEST 26: default on FreeBSD
 --- cmd: ./configure --dry-run --platform=freebsd
 --- out
 platform: freebsd (freebsd)
@@ -2209,7 +2209,7 @@ clean:
 
 
 
-=== TEST 28: --with-luajit on FreeBSD
+=== TEST 27: --with-luajit on FreeBSD
 --- cmd: ./configure --with-luajit --dry-run --platform=freebsd
 --- out
 platform: freebsd (freebsd)
@@ -2299,7 +2299,7 @@ clean:
 
 
 
-=== TEST 29: --with-luajit on Mac OS X
+=== TEST 28: --with-luajit on Mac OS X
 --- cmd: ./configure --dry-run --platform=darwin --with-luajit
 --- out
 platform: macosx (darwin)
@@ -2392,7 +2392,7 @@ Use of uninitialized value $v in scalar chomp at ./configure line 794.
 
 
 
-=== TEST 30: default on Mac OS X
+=== TEST 29: default on Mac OS X
 --- cmd: ./configure --dry-run --platform=darwin
 --- out
 platform: macosx (darwin)
@@ -2485,7 +2485,7 @@ Use of uninitialized value $v in scalar chomp at ./configure line 794.
 
 
 
-=== TEST 31: --with-debug on solaris
+=== TEST 30: --with-debug on solaris
 --- cmd: ./configure --dry-run --platform=solaris --with-debug
 --- out
 platform: solaris (solaris)
@@ -2576,7 +2576,7 @@ clean:
 
 
 
-=== TEST 32: --without-lua_cjson
+=== TEST 31: --without-lua_cjson
 --- cmd: ./configure --dry-run --without-lua_cjson
 --- out
 platform: linux (linux)
@@ -2664,7 +2664,7 @@ clean:
 
 
 
-=== TEST 33: --without-lua_tablepool
+=== TEST 32: --without-lua_tablepool
 --- cmd: ./configure --dry-run --without-lua_tablepool
 --- out
 platform: linux (linux)
@@ -2752,7 +2752,7 @@ clean:
 
 
 
-=== TEST 34: --without-lua_resty_shell
+=== TEST 33: --without-lua_resty_shell
 --- cmd: ./configure --dry-run --without-lua_resty_shell
 --- out
 platform: linux (linux)
@@ -2841,7 +2841,7 @@ clean:
 
 
 
-=== TEST 35: --without-lua_resty_signal
+=== TEST 34: --without-lua_resty_signal
 --- cmd: ./configure --dry-run --without-lua_resty_signal
 --- out
 platform: linux (linux)
@@ -2928,7 +2928,7 @@ clean:
 
 
 
-=== TEST 36: --without-lua_redis_parser & --without-lua_cjson
+=== TEST 35: --without-lua_redis_parser & --without-lua_cjson
 --- cmd: ./configure --dry-run --without-lua_redis_parser --without-lua_cjson
 --- out
 platform: linux (linux)
@@ -3014,7 +3014,7 @@ clean:
 
 
 
-=== TEST 37: disable rds-parser
+=== TEST 36: disable rds-parser
 --- cmd: ./configure --dry-run --without-lua_rds_parser
 --- out
 platform: linux (linux)
@@ -3102,7 +3102,7 @@ clean:
 
 
 
-=== TEST 38: --with-luajit=PATH
+=== TEST 37: --with-luajit=PATH
 --- cmd: ./configure --with-luajit=/tmp/luajit --dry-run
 --- out
 platform: linux (linux)
@@ -3186,7 +3186,7 @@ clean:
 
 
 
-=== TEST 39: ./configure with -jN
+=== TEST 38: ./configure with -jN
 --- cmd: ./configure --dry-run -j10
 --- out
 platform: linux (linux)
@@ -3276,7 +3276,7 @@ clean:
 
 
 
-=== TEST 40: --with-luajit & -jN
+=== TEST 39: --with-luajit & -jN
 --- cmd: ./configure --with-luajit --dry-run -j5
 --- out
 platform: linux (linux)
@@ -3366,7 +3366,7 @@ clean:
 
 
 
-=== TEST 41: relative path as the --add-module option's value
+=== TEST 40: relative path as the --add-module option's value
 --- cmd: ./configure --add-module=/path/to/some/module --add-module=../some/module/ --dry-run
 --- out
 platform: linux (linux)
@@ -3456,7 +3456,7 @@ clean:
 
 
 
-=== TEST 42: relative path as the --with-openssl option's value
+=== TEST 41: relative path as the --with-openssl option's value
 --- cmd: ./configure --with-openssl=../some/module/ --dry-run
 --- out
 platform: linux (linux)
@@ -3546,7 +3546,7 @@ clean:
 
 
 
-=== TEST 43: --without-lua_resty_memcached
+=== TEST 42: --without-lua_resty_memcached
 --- cmd: ./configure --dry-run --without-lua_resty_memcached
 --- out
 platform: linux (linux)
@@ -3635,7 +3635,7 @@ clean:
 
 
 
-=== TEST 44: --without-lua_resty_redis
+=== TEST 43: --without-lua_resty_redis
 --- cmd: ./configure --dry-run --without-lua_resty_redis
 --- out
 platform: linux (linux)
@@ -3724,7 +3724,7 @@ clean:
 
 
 
-=== TEST 45: --with-luajit-xcflags
+=== TEST 44: --with-luajit-xcflags
 --- cmd: ./configure --with-luajit --with-luajit-xcflags='-DLUAJIT_USE_VALGRIND' --dry-run
 --- out
 platform: linux (linux)
@@ -3814,7 +3814,7 @@ clean:
 
 
 
-=== TEST 46: --with-debug & luajit & --with-luajit-xcflags
+=== TEST 45: --with-debug & luajit & --with-luajit-xcflags
 --- cmd: ./configure --with-luajit --with-debug --dry-run --with-luajit-xcflags='-DLUAJIT_USE_VALGRIND'
 --- out
 platform: linux (linux)
@@ -3905,7 +3905,7 @@ clean:
 
 
 
-=== TEST 47: relative path as the --with-pcre option's value
+=== TEST 46: relative path as the --with-pcre option's value
 --- cmd: ./configure --with-pcre=../some/module/ --dry-run
 --- out
 platform: linux (linux)
@@ -3995,7 +3995,7 @@ clean:
 
 
 
-=== TEST 48: relative path as the --with-zlib option's value
+=== TEST 47: relative path as the --with-zlib option's value
 --- cmd: ./configure --with-zlib=../some/module/ --dry-run
 --- out
 platform: linux (linux)
@@ -4085,7 +4085,7 @@ clean:
 
 
 
-=== TEST 49: relative path as the --with-md5 option's value
+=== TEST 48: relative path as the --with-md5 option's value
 --- cmd: ./configure --with-md5=../some/module/ --dry-run
 --- out
 platform: linux (linux)
@@ -4175,7 +4175,7 @@ clean:
 
 
 
-=== TEST 50: relative path as the --with-sha1 option's value
+=== TEST 49: relative path as the --with-sha1 option's value
 --- cmd: ./configure --with-sha1=../some/module/ --dry-run
 --- out
 platform: linux (linux)
@@ -4265,7 +4265,7 @@ clean:
 
 
 
-=== TEST 51: relative path as the --with-libatomic option's value
+=== TEST 50: relative path as the --with-libatomic option's value
 --- cmd: ./configure --with-libatomic=../some/module/ --dry-run
 --- out
 platform: linux (linux)
@@ -4355,7 +4355,7 @@ clean:
 
 
 
-=== TEST 52: --without-lua_resty_dns
+=== TEST 51: --without-lua_resty_dns
 --- cmd: ./configure --dry-run --without-lua_resty_dns
 --- out
 platform: linux (linux)
@@ -4444,7 +4444,7 @@ clean:
 
 
 
-=== TEST 53: --prefix (relative path: "."), lua51
+=== TEST 52: --prefix (relative path: "."), lua51
 --- cmd: ./configure --prefix=. --dry-run
 --- out
 platform: linux (linux)
@@ -4536,7 +4536,7 @@ clean:
 
 
 
-=== TEST 54: --prefix (relative path: "."), luajit
+=== TEST 53: --prefix (relative path: "."), luajit
 --- cmd: ./configure --prefix=. --dry-run
 --- out
 platform: linux (linux)
@@ -4628,7 +4628,7 @@ clean:
 
 
 
-=== TEST 55: --prefix (relative path: ""), luajit
+=== TEST 54: --prefix (relative path: ""), luajit
 --- cmd: ./configure --prefix= --dry-run
 --- out
 platform: linux (linux)
@@ -4720,7 +4720,7 @@ clean:
 
 
 
-=== TEST 56: MSYS platform
+=== TEST 55: MSYS platform
 --- cmd: ./configure --prefix= --platform=msys --dry-run
 --- out
 platform: msys (msys)
@@ -4810,7 +4810,7 @@ clean:
 
 
 
-=== TEST 57: --with-pcre-opt='foo bar'
+=== TEST 56: --with-pcre-opt='foo bar'
 --- cmd: ./configure --dry-run --with-pcre-opt='-foo -bar' --with-zlib-opt="hello, '\world"
 --- out
 platform: linux (linux)
@@ -4900,7 +4900,7 @@ clean:
 
 
 
-=== TEST 58: --with-luajit-xcflags lua 5.2 compat
+=== TEST 57: --with-luajit-xcflags lua 5.2 compat
 --- cmd: ./configure --with-luajit-xcflags='-DLUAJIT_ENABLE_LUA52COMPAT' --dry-run
 --- out
 platform: linux (linux)
@@ -4990,7 +4990,7 @@ clean:
 
 
 
-=== TEST 59: --without-luajit-lua52
+=== TEST 58: --without-luajit-lua52
 --- cmd: ./configure --without-luajit-lua52 --dry-run
 --- out
 platform: linux (linux)
@@ -5080,7 +5080,7 @@ clean:
 
 
 
-=== TEST 60: --with-luajit-xcflags disable gc64
+=== TEST 59: --with-luajit-xcflags disable gc64
 --- cmd: ./configure --with-luajit-xcflags='-DLUAJIT_DISABLE_GC64' --dry-run
 --- out
 platform: linux (linux)
@@ -5170,7 +5170,7 @@ clean:
 
 
 
-=== TEST 61: --without-luajit-gc64
+=== TEST 60: --without-luajit-gc64
 --- cmd: ./configure --without-luajit-gc64 --dry-run
 --- out
 platform: linux (linux)
@@ -5260,7 +5260,7 @@ clean:
 
 
 
-=== TEST 62: --with-luajit-xcflags gc64 & --without-luajit-gc64
+=== TEST 61: --with-luajit-xcflags gc64 & --without-luajit-gc64
 --- cmd: ./configure --with-luajit-xcflags='-DLUAJIT_DISABLE_GC64' --without-luajit-gc64 --dry-run
 --- out
 platform: linux (linux)
@@ -5350,7 +5350,7 @@ clean:
 
 
 
-=== TEST 63: --sbin-path (absolute)
+=== TEST 62: --sbin-path (absolute)
 --- cmd: ./configure --sbin-path=/opt/blah/nginx --dry-run
 --- out
 platform: linux (linux)
@@ -5440,7 +5440,7 @@ clean:
 
 
 
-=== TEST 64: --sbin-path (relative)
+=== TEST 63: --sbin-path (relative)
 --- cmd: ./configure --sbin-path=../bin/nginx --dry-run
 --- out
 platform: linux (linux)
@@ -5530,7 +5530,7 @@ clean:
 
 
 
-=== TEST 65: --without-http_lua_upstream_module (on Linux)
+=== TEST 64: --without-http_lua_upstream_module (on Linux)
 --- cmd: ./configure --dry-run --without-http_lua_upstream_module
 --- out
 platform: linux (linux)
@@ -5619,7 +5619,7 @@ clean:
 
 
 
-=== TEST 66: --without-http_lua_module & --without-stream_lua_module
+=== TEST 65: --without-http_lua_module & --without-stream_lua_module
 --- cmd: ./configure --without-http_lua_module --without-stream_lua_module --dry-run
 --- out
 platform: linux (linux)
@@ -5676,7 +5676,7 @@ clean:
 
 
 
-=== TEST 67: relative path as the --add-dynamic-module option's value
+=== TEST 66: relative path as the --add-dynamic-module option's value
 --- cmd: ./configure --add-dynamic-module=/path/to/some/module --add-dynamic-module=../some/module/ --dry-run
 --- out
 platform: linux (linux)
@@ -5766,7 +5766,7 @@ clean:
 
 
 
-=== TEST 68: --without-stream_ssl_module and --without-http_ssl_module are respected
+=== TEST 67: --without-stream_ssl_module and --without-http_ssl_module are respected
 --- cmd: ./configure --without-http_ssl_module --without-stream_ssl_module --dry-run
 --- out
 platform: linux (linux)
@@ -5808,7 +5808,7 @@ Type the following commands to build and install:
 
 
 
-=== TEST 69: --without-stream_ssl_module and --with-stream_ssl_module specified at the same time causes errors
+=== TEST 68: --without-stream_ssl_module and --with-stream_ssl_module specified at the same time causes errors
 --- cmd: ./configure --with-stream_ssl_module --without-stream_ssl_module --dry-run
 --- out
 platform: linux (linux)
@@ -5819,7 +5819,7 @@ platform: linux (linux)
 
 
 
-=== TEST 70: --with-luajit-ldflags
+=== TEST 69: --with-luajit-ldflags
 --- cmd: ./configure --with-luajit --with-luajit-ldflags='-Wl,-rpath,/tmp/blah/foo' --dry-run
 --- out
 platform: linux (linux)
@@ -5906,4 +5906,3 @@ install: all
 
 clean:
 	rm -rf build *.exe *.dll openresty-*
-
