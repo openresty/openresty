@@ -74,7 +74,7 @@ install:
 script:
   - util/mirror-tarballs > build.log 2>&1 || (cat build.log && exit 1)
   - cd "openresty-$(./util/ver)"
-  - ./configure --with-http_v3_module --prefix=$OPENRESTY_PREFIX --with-cc-opt="-I$PCRE_INC -I$OPENSSL_INC" --with-ld-opt="-L$PCRE_LIB -L$OPENSSL_LIB -Wl,-rpath,$PCRE_LIB:$OPENSSL_LIB" --with-pcre-jit --with-http_ssl_module --with-debug -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
+  - ./configure --with-http_v3_module --with-stream_realip_module --with-http_realip_module --prefix=$OPENRESTY_PREFIX --with-cc-opt="-I$PCRE_INC -I$OPENSSL_INC" --with-ld-opt="-L$PCRE_LIB -L$OPENSSL_LIB -Wl,-rpath,$PCRE_LIB:$OPENSSL_LIB" --with-pcre-jit --with-http_ssl_module --with-debug -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
   - make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
   - sudo make install > build.log 2>&1 || (cat build.log && exit 1)
   - cd ..
