@@ -29,7 +29,8 @@ addons:
     - libpq-dev
 
 before_install:
-  - sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1
+  - sudo sysctl -w net.ipv6.conf.all.disable_ipv6=0
+  - sudo sysctl -w net.ipv6.conf.default.disable_ipv6=0
 
 cache:
   directories:
@@ -51,6 +52,7 @@ env:
 
 install:
   - cpanm --sudo --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
+  - git clone https://github.com/openresty/test-nginx.git
   - |
     if [ "$TRAVIS_CPU_ARCH" != "s390x" ]; then
       if [ ! -f download-cache/pcre2-$PCRE_VER.tar.gz ]; then wget -P download-cache https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${PCRE_VER}/pcre2-${PCRE_VER}.tar.gz; fi
@@ -81,4 +83,4 @@ script:
   - export PATH=$OPENRESTY_PREFIX/bin:$OPENRESTY_PREFIX/nginx/sbin:$PATH
   - nginx -V
   - ldd `which nginx`|grep -E 'luajit|ssl|pcre'
-  - prove -I. -r t/
+  - prove -Itest-nginx/inc -Itest-nginx/lib -I. -r t/
