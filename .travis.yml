@@ -39,7 +39,7 @@ cache:
 env:
   global:
     - JOBS=3
-    - PCRE_VER=10.44
+    - PCRE_VER=10.45
     - PCRE_PREFIX=/opt/pcre2
     - PCRE_LIB=$PCRE_PREFIX/lib
     - PCRE_INC=$PCRE_PREFIX/include

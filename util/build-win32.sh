@@ -1,13 +1,13 @@
 #!/bin/bash
 
-PCRE=pcre2-10.44
+PCRE=pcre2-10.45
 ZLIB=zlib-1.3.1
 OPENSSL=openssl-3.4.1
 JOBS=12
 
 # wget https://github.com/openssl/openssl/releases/download/openssl-3.4.1/openssl-3.4.1.tar.gz
 # wget http://zlib.net/zlib-1.3.1.tar.gz
-# wget https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.44/pcre2-10.44.tar.gz
+# wget https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.gz
 
 rm -rf objs || exit 1
 mkdir -p objs/lib || exit 1
