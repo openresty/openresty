@@ -28,15 +28,15 @@ diff --git a/src/http/v2/ngx_http_v2_filter_module.c b/src/http/v2/ngx_http_v2_f
 index 8621e7a..a76c677 100644
 --- a/src/http/v2/ngx_http_v2_filter_module.c
 +++ b/src/http/v2/ngx_http_v2_filter_module.c
-@@ -143,7 +143,7 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
+@@ -115,7 +115,7 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
      ngx_http_core_srv_conf_t  *cscf;
      u_char                     addr[NGX_SOCKADDR_STRLEN];
  
--    static const u_char nginx[5] = "\x84\xaa\x63\x55\xe7";
-+    static const u_char nginx[8] = "\x87\x3d\x65\xaa\xc2\xa1\x3e\xbf";
+-    static const u_char nginx[5] = { 0x84, 0xaa, 0x63, 0x55, 0xe7 };
++    static const u_char nginx[8] = { 0x87, 0x3d, 0x65, 0xaa, 0xc2, 0xa1, 0x3e, 0xbf};
  #if (NGX_HTTP_GZIP)
-     static const u_char accept_encoding[12] =
-         "\x8b\x84\x84\x2d\x69\x5b\x05\x44\x3c\x86\xaa\x6f";
+     static const u_char accept_encoding[12] = {
+         0x8b, 0x84, 0x84, 0x2d, 0x69, 0x5b, 0x05, 0x44, 0x3c, 0x86, 0xaa, 0x6f
 diff --git a/src/http/v3/ngx_http_v3_filter_module.c b/src/http/v3/ngx_http_v3_filter_module.c
 --- a/src/http/v3/ngx_http_v3_filter_module.c
 +++ b/src/http/v3/ngx_http_v3_filter_module.c
