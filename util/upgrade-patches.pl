@@ -10,8 +10,15 @@ my @files = `find patches -name '*.patch'`;
 for my $file (@files) {
     chomp $file;
     next unless $file =~ m{^patches/nginx/(?:$ver|$newver)/nginx-(?:$ver|$newver)-};
-    (my $newfile = $file) =~ s/nginx-$ver-/nginx-$newver-/g;
+    (my $newfile = $file) =~ s{nginx/$ver/}{nginx/$newver/}g;
+    $newfile =~ s/nginx-$ver-/nginx-$newver-/g;
     if ($newfile ne $file && !-f $newfile) {
+        my $newdir = "patches/nginx/$newver";
+        unless (-d $newdir) {
+            system("mkdir -p $newdir") == 0
+                or die "failed to create directory $newdir: $!\n";
+        }
+
         my $cmd = "cp $file $newfile";
         system($cmd) == 0
             or die "failed run command $cmd.\n";
@@ -46,4 +53,3 @@ sub version_to_int {
     $ver =~ s/\.(\d+)/sprintf("%03d", $1)/eg;
     $ver
 }
-
