@@ -6,6 +6,7 @@ use warnings;
 my $ver = shift or usage();
 my $newver = shift or usage();
 
+my $newdir = "patches/nginx/$newver";
 my @files = `find patches -name '*.patch'`;
 for my $file (@files) {
     chomp $file;
@@ -13,7 +14,6 @@ for my $file (@files) {
     (my $newfile = $file) =~ s{nginx/$ver/}{nginx/$newver/}g;
     $newfile =~ s/nginx-$ver-/nginx-$newver-/g;
     if ($newfile ne $file && !-f $newfile) {
-        my $newdir = "patches/nginx/$newver";
         unless (-d $newdir) {
             system("mkdir -p $newdir") == 0
                 or die "failed to create directory $newdir: $!\n";
