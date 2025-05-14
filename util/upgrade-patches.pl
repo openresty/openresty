@@ -9,7 +9,7 @@ my $newver = shift or usage();
 my @files = `find patches -name '*.patch'`;
 for my $file (@files) {
     chomp $file;
-    next unless $file =~ m{^patches/nginx-(?:$ver|$newver)-};
+    next unless $file =~ m{^patches/nginx/(?:$ver|$newver)/nginx-(?:$ver|$newver)-};
     (my $newfile = $file) =~ s/nginx-$ver-/nginx-$newver-/g;
     if ($newfile ne $file && !-f $newfile) {
         my $cmd = "cp $file $newfile";
