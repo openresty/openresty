@@ -6,11 +6,14 @@ use warnings;
 my $ver = shift or usage();
 my $newver = shift or usage();
 
+my $newdir = "patches/nginx/$newver";
+system("mkdir -p $newdir") == 0 or die "failed to create directory $newdir: $!\n";
 my @files = `find patches -name '*.patch'`;
 for my $file (@files) {
     chomp $file;
-    next unless $file =~ m{^patches/nginx-(?:$ver|$newver)-};
-    (my $newfile = $file) =~ s/nginx-$ver-/nginx-$newver-/g;
+    next unless $file =~ m{^patches/nginx/(?:$ver|$newver)/nginx-(?:$ver|$newver)-};
+    (my $newfile = $file) =~ s{nginx/$ver/}{nginx/$newver/}g;
+    $newfile =~ s/nginx-$ver-/nginx-$newver-/g;
     if ($newfile ne $file && !-f $newfile) {
         my $cmd = "cp $file $newfile";
         system($cmd) == 0
@@ -46,4 +49,3 @@ sub version_to_int {
     $ver =~ s/\.(\d+)/sprintf("%03d", $1)/eg;
     $ver
 }
-

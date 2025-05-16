@@ -33,7 +33,7 @@ tar -xzf nginx-$ver.tar.gz || exit 1
 cd nginx-$ver || exit 1
 
 echo "$info_txt applying the nginx-$main_ver-win32_max_err_str.patch"
-patch -p1 < $root/patches/nginx-$main_ver-win32_max_err_str.patch || exit 1
+patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-win32_max_err_str.patch || exit 1
 echo
 
 answer=`$root/util/ver-ge "$main_ver" 1.13.3`
@@ -46,34 +46,34 @@ fi
 answer=`$root/util/ver-ge "$main_ver" 1.13.3`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the stream_balancer_export patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-stream_balancer_export.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-stream_balancer_export.patch || exit 1
     echo
 
     echo "$info_txt applying the stream_proxy_get_next_upstream_tries patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-stream_proxy_get_next_upstream_tries.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-stream_proxy_get_next_upstream_tries.patch || exit 1
     echo
 
     echo "$info_txt applying the stream_proxy_timeout_fields patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-stream_proxy_timeout_fields.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-stream_proxy_timeout_fields.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.13.6`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the stream_ssl_preread_no_skip patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-stream_ssl_preread_no_skip.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-stream_ssl_preread_no_skip.patch || exit 1
     echo
 
     echo "$info_txt applying the resolver_conf_parsing patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-resolver_conf_parsing.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-resolver_conf_parsing.patch || exit 1
     echo
 
     echo "$info_txt applying the daemon_destroy_pool patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-daemon_destroy_pool.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-daemon_destroy_pool.patch || exit 1
     echo
 
     echo "$info_txt applying the init_cycle_pool_release patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-init_cycle_pool_release.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-init_cycle_pool_release.patch || exit 1
     echo
 fi
 
@@ -101,246 +101,246 @@ fi
 answer=`$root/util/ver-ge "$main_ver" 1.11.2`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the balancer_status_code patch"
-    patch -p1 < $root/patches/nginx-$main_ver-balancer_status_code.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-balancer_status_code.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.11.2`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the builtin_error_page_footer patch"
-    patch -p1 < $root/patches/nginx-$main_ver-builtin_error_page_footer.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-builtin_error_page_footer.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.11.2`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the delayed-posted-events patch"
-    patch -p1 < $root/patches/nginx-$main_ver-delayed_posted_events.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-delayed_posted_events.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.11.2`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the privileged-agent-process patch"
-    patch -p1 < $root/patches/nginx-$main_ver-privileged_agent_process.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-privileged_agent_process.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.19.3`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the privileged-agent-process-connections patch"
-    patch -p1 < $root/patches/nginx-$main_ver-privileged_agent_process_connections.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-privileged_agent_process_connections.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.21.4`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the privileged_agent_process_thread_pool patch"
-    patch -p1 < $root/patches/nginx-$main_ver-privileged_agent_process_thread_pool.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-privileged_agent_process_thread_pool.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.11.2`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the single-process-graceful-exit patch"
-    patch -p1 < $root/patches/nginx-$main_ver-single_process_graceful_exit.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-single_process_graceful_exit.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.11.2`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the intercept-error-log patch"
-    patch -p1 < $root/patches/nginx-$main_ver-intercept_error_log.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-intercept_error_log.patch || exit 1
     echo
 fi
 
 echo "$info_txt applying the upstream-pipelining patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-upstream_pipelining.patch || exit 1
+patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-upstream_pipelining.patch || exit 1
 echo
 
 echo "$info_txt applying the server_header patch for nginx"
-cp $root/patches/nginx-$main_ver-server_header.patch server_header.patch || exit 1
+cp $root/patches/nginx/$main_ver/nginx-$main_ver-server_header.patch server_header.patch || exit 1
 sed $"s/NGINX_VERSION \".unknown\"/NGINX_VERSION \".$minor_ver\"/" server_header.patch \
     > server_header.patch.tmp && mv -f server_header.patch.tmp server_header.patch || exit 1
 patch -p1 < server_header.patch || exit 1
 echo
 
-#patch -p1 < $root/patches/nginx-$main_ver-redirect_memcpy_overlap.patch || exit 1
+#patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-redirect_memcpy_overlap.patch || exit 1
 
 echo "$info_txt applying the no_error_pages patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-no_error_pages.patch || exit 1
+patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-no_error_pages.patch || exit 1
 echo
 
 echo "$info_txt applying the no_Werror patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-no_Werror.patch || exit 1
+patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-no_Werror.patch || exit 1
 echo
 
-#patch -p1 < $root/patches/nginx-$main_ver-epoll_check_stale_wev.patch || exit 1
+#patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-epoll_check_stale_wev.patch || exit 1
 
-#patch -p1 < $root/patches/nginx-$main_ver-request_body_in_single_buf.patch || exit 1
+#patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-request_body_in_single_buf.patch || exit 1
 
 #echo "INFO: applying the max_subrequests patch...";
-#patch -p1 < $root/patches/nginx-$main_ver-max_subrequests.patch || exit 1
+#patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-max_subrequests.patch || exit 1
 
 #echo "INFO: applying the subrequst_loop patch...";
-#patch -p1 -l < $root/patches/nginx-$main_ver-subrequest_loop.patch || exit 1
+#patch -p1 -l < $root/patches/nginx/$main_ver/nginx-$main_ver-subrequest_loop.patch || exit 1
 
 #echo "INFO: applying the gzip_empty_flush_buf patch...";
-#patch -p1 -l < $root/patches/nginx-$main_ver-gzip_empty_flush_buf.patch || exit 1
+#patch -p1 -l < $root/patches/nginx/$main_ver/nginx-$main_ver-gzip_empty_flush_buf.patch || exit 1
 
-#patch -p1 < $root/patches/nginx-$main_ver-variable_header_ignore_no_hash.patch || exit 1
+#patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-variable_header_ignore_no_hash.patch || exit 1
 
 #echo "applying the named_location_clear_mods_ctx patch"
-#patch -p1 < $root/patches/nginx-$main_ver-named_location_clear_mods_ctx.patch || exit 1
+#patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-named_location_clear_mods_ctx.patch || exit 1
 
 #echo "$info_txt applying the allow_request_body_updating patch for nginx"
-#patch -p1 < $root/patches/nginx-$main_ver-allow_request_body_updating.patch || exit 1
+#patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-allow_request_body_updating.patch || exit 1
 #echo
 
 echo "$info_txt applying the log_escape_non_ascii patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
+patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-log_escape_non_ascii.patch || exit 1
 echo
 
 #echo applying reset_wev_handler_in_named_locations.patch ...
-#patch -p1 < $root/patches/nginx-$main_ver-reset_wev_handler_in_named_locations.patch || exit 1
+#patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-reset_wev_handler_in_named_locations.patch || exit 1
 
 #echo applying filter_finalize_hang.patch ...
-#patch -p1 < $root/patches/nginx-$main_ver-filter_finalize_hang.patch || exit 1
+#patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-filter_finalize_hang.patch || exit 1
 
 answer=`$root/util/ver-ge "$main_ver" 1.2.3`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the add_core_vars_polluting_globals patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-add_core_vars_polluting_globals.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-add_core_vars_polluting_globals.patch || exit 1
     echo
 
     echo "$info_txt applying the resolver_debug_log_overflow patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-resolver_debug_log_overflow.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-resolver_debug_log_overflow.patch || exit 1
     echo
 
     echo "$info_txt applying the poll_del_event_at_exit patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-poll_del_event_at_exit.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-poll_del_event_at_exit.patch || exit 1
     echo
 fi
 
 #echo "INFO: applying null-character-fixes patch"
-#patch -p0 < $root/patches/nginx-$main_ver-null_character_fixes.patch || exit 1
+#patch -p0 < $root/patches/nginx/$main_ver/nginx-$main_ver-null_character_fixes.patch || exit 1
 
-#patch -p1 < $root/patches/nginx-$main_ver-gzip_ok_invalid_read_fix.patch || exit 1
+#patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-gzip_ok_invalid_read_fix.patch || exit 1
 
 answer=`$root/util/ver-ge "$main_ver" 1.7.9`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the location_if_inherits_proxy patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-location_if_inherits_proxy.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-location_if_inherits_proxy.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.5.3`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the upstream_truncation patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-upstream_truncation.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-upstream_truncation.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.5.3`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the channel-uninit-params patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-channel-uninit-params.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-channel-uninit-params.patch || exit 1
     echo
 fi
 
 #echo "$info_txt applying the dtrace patch for nginx"
-#patch -p1 < $root/patches/nginx-$main_ver-dtrace.patch || exit 1
+#patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-dtrace.patch || exit 1
 #echo
 
 answer=`$root/util/ver-ge "$main_ver" 1.2.6`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the upstream_test_connect_kqueue patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-upstream_test_connect_kqueue.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-upstream_test_connect_kqueue.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.5.13`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the slab_alloc_no_memory_as_info patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-slab_alloc_no_memory_as_info.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-slab_alloc_no_memory_as_info.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.2.7`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the resolver_wev_handler_segfault_with_poll patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-resolver_wev_handler_segfault_with_poll.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-resolver_wev_handler_segfault_with_poll.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.2.8`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the run_posted_requests_in_resolver patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-run_posted_requests_in_resolver.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-run_posted_requests_in_resolver.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.4.1`
 if [ "$answer" = "N" ]; then
-    echo "$info_txt applying patches/nginx-$main_ver-cve-2013-2070.patch for nginx"
-    patch -p0 < $root/patches/nginx-$main_ver-cve-2013-2070.patch || exit 1
+    echo "$info_txt applying patches/nginx/$main_ver/nginx-$main_ver-cve-2013-2070.patch for nginx"
+    patch -p0 < $root/patches/nginx/$main_ver/nginx-$main_ver-cve-2013-2070.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.5.3`
 if [ "$answer" = "N" ]; then
-    echo "$info_txt applying patches/nginx-$main_ver-invalid_referer_hash.patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-invalid_referer_hash.patch || exit 1
+    echo "$info_txt applying patches/nginx/$main_ver/nginx-$main_ver-invalid_referer_hash.patch for nginx"
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-invalid_referer_hash.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.5.3`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the unix_socket_accept_over_read patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-unix_socket_accept_over_read.patch || exit 1
+    patch -p1 < $root/patches/nginx/$ver/nginx-$ver-unix_socket_accept_over_read.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.5.3`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the gzip_buffered_bug patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-gzip_buffered_bug.patch || exit 1
+    patch -p1 < $root/patches/nginx/$ver/nginx-$ver-gzip_buffered_bug.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.5.7`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the gzip_flush_bug patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-gzip_flush_bug.patch || exit 1
+    patch -p1 < $root/patches/nginx/$ver/nginx-$ver-gzip_flush_bug.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.7.8`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the cache_lock_hang_in_subreq patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-cache_lock_hang_in_subreq.patch || exit 1
+    patch -p1 < $root/patches/nginx/$ver/nginx-$ver-cache_lock_hang_in_subreq.patch || exit 1
     echo
 fi
 
 echo "$info_txt applying the proxy_host_port_vars patch for nginx $ver"
-patch -p1 < $root/patches/nginx-$ver-proxy_host_port_vars.patch || exit 1
+patch -p1 < $root/patches/nginx/$ver/nginx-$ver-proxy_host_port_vars.patch || exit 1
 echo
 
 echo "$info_txt applying the cache_manager_exit patch for nginx $ver"
-patch -p1 < $root/patches/nginx-$ver-cache_manager_exit.patch || exit 1
+patch -p1 < $root/patches/nginx/$ver/nginx-$ver-cache_manager_exit.patch || exit 1
 echo
 
 answer=`$root/util/ver-ge "$main_ver" 1.7.4`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the proxy_ssl_handshake_timer patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-proxy_ssl_handshake_timer.patch || exit 1
+    patch -p1 < $root/patches/nginx/$ver/nginx-$ver-proxy_ssl_handshake_timer.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.7.4`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the geoip_init_var_fields patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-geoip_init_var_fields.patch || exit 1
+    patch -p1 < $root/patches/nginx/$ver/nginx-$ver-geoip_init_var_fields.patch || exit 1
     echo
 fi
 
@@ -352,58 +352,58 @@ if [ "$answer" = "N" ]; then
 fi
 
 echo "$info_txt applying the larger_max_error_str patch for nginx $ver"
-patch -p1 < $root/patches/nginx-$ver-larger_max_error_str.patch || exit 1
+patch -p1 < $root/patches/nginx/$ver/nginx-$ver-larger_max_error_str.patch || exit 1
 echo
 
 echo "$info_txt applying the pcre_conf_opt patch for nginx $ver"
-patch -p1 < $root/patches/nginx-$ver-pcre_conf_opt.patch || exit 1
+patch -p1 < $root/patches/nginx/$ver/nginx-$ver-pcre_conf_opt.patch || exit 1
 echo
 
 answer=`$root/util/ver-ge "$main_ver" 1.9.2`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the upstream_filter_finalize patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-upstream_filter_finalize.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-upstream_filter_finalize.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.5.9`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the resolve-names-with-a-trailing-dot patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-resolve-names-with-a-trailing-dot.patch || exit 1
+    patch -p1 < $root/patches/nginx/$ver/nginx-$ver-resolve-names-with-a-trailing-dot.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.7.1`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the setting_args_invalidates_uri patch for nginx $ver"
-    patch -p1 < $root/patches/nginx-$ver-setting_args_invalidates_uri.patch || exit 1
+    patch -p1 < $root/patches/nginx/$ver/nginx-$ver-setting_args_invalidates_uri.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.7.2`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the slab_defrag patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-slab_defrag.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-slab_defrag.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.7.8`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the resolver_del_event_invalid_read patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-resolver_del_event_invalid_read.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-resolver_del_event_invalid_read.patch || exit 1
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.7.7`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the hash_overflow patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-hash_overflow.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-hash_overflow.patch || exit 1
     echo
 fi
 
 if [ "$main_ver" = "1.9.7" ]; then
     echo "$info_txt applying the resolver_security_fixes patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-resolver_security_fixes.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-resolver_security_fixes.patch || exit 1
     echo
 fi
 
@@ -462,34 +462,34 @@ if [ "$answer" = "Y" ]; then
     answer=`$root/util/ver-ge "$main_ver" 1.21.0`
     if [ "$answer" = "N" ]; then
         echo "$info_txt applying the patch for nginx security issue https://hackerone.com/reports/513236"
-        patch -p1 < $root/patches/nginx-$main_ver-static_mod_escape_loc_hdr.patch
+        patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-static_mod_escape_loc_hdr.patch
         echo
     fi
 fi
 
 echo "$info_txt applying the always_enable_cc_feature_tests patch to nginx"
-patch -p1 < $root/patches/nginx-$main_ver-always_enable_cc_feature_tests.patch
+patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-always_enable_cc_feature_tests.patch
 echo
 
 echo "$info_txt applying the ssl_cert_cb_yield.patch patch to nginx"
-patch -p1 < $root/patches/nginx-$main_ver-ssl_cert_cb_yield.patch
+patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-ssl_cert_cb_yield.patch
 echo
 
 answer=`$root/util/ver-ge "$main_ver" 1.17.1`
 if [ "$answer" = "N" ]; then
     echo "$info_txt applying the ssl_pending_session.patch patch to nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-ssl_pending_session.patch
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-ssl_pending_session.patch
     echo
 else
     echo "$info_txt applying the ssl_sess_cb_yield.patch patch to nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-ssl_sess_cb_yield.patch
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-ssl_sess_cb_yield.patch
     echo
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.19.9`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying the ssl_client_hello_cb_yield.patch patch to nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-ssl_client_hello_cb_yield.patch
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-ssl_client_hello_cb_yield.patch
     echo
 fi
 
@@ -529,38 +529,38 @@ if [ "$answer" = "Y" ]; then
     answer=`$root/util/ver-ge "$main_ver" 1.27.4`
     if [ "$answer" = "N" ]; then
         echo "$info_txt applying the patch for nginx security advisory (CVE-2025-23419)"
-        patch -p1 < $root/patches/nginx-$main_ver-CVE-2025-23419.patch || exit 1
+        patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-CVE-2025-23419.patch || exit 1
     fi
 fi
 
 
 echo "$info_txt applying the upstream_timeout_fields patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-upstream_timeout_fields.patch || exit 1
+patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-upstream_timeout_fields.patch || exit 1
 echo
 
 echo "$info_txt applying the safe_resolver_ipv6_option patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-safe_resolver_ipv6_option.patch || exit 1
+patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-safe_resolver_ipv6_option.patch || exit 1
 echo
 
 echo "$info_txt applying the socket_cloexec patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-socket_cloexec.patch || exit 1
+patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-socket_cloexec.patch || exit 1
 echo
 
 echo "$info_txt applying the reuseport_close_unused_fds patch for nginx"
-patch -p1 < $root/patches/nginx-$main_ver-reuseport_close_unused_fds.patch || exit 1
+patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-reuseport_close_unused_fds.patch || exit 1
 echo
 
 
 answer=`$root/util/ver-ge "$main_ver" 1.19.9`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying nginx-$main_ver-proc_exit_handler patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-proc_exit_handler.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-proc_exit_handler.patch || exit 1
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.27.1`
 if [ "$answer" = "Y" ]; then
     echo "$info_txt applying nginx-$main_ver-stream_proxy_protocol_v2 patch for nginx"
-    patch -p1 < $root/patches/nginx-$main_ver-stream_proxy_protocol_v2.patch || exit 1
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-stream_proxy_protocol_v2.patch || exit 1
 fi
 
 cp $root/html/index.html docs/html/ || exit 1
@@ -568,7 +568,7 @@ cp $root/html/50x.html docs/html/ || exit 1
 
 cd .. || exit 1
 
-cp $root/patches/nginx-$main_ver-no_pool.patch ./nginx-no_pool.patch || exit 1
+cp $root/patches/nginx/$main_ver/nginx-$main_ver-no_pool.patch ./nginx-no_pool.patch || exit 1
 sed $"s/NGINX_VERSION \".unknown/NGINX_VERSION \".$minor_ver/" \
     ./nginx-no_pool.patch > ./nginx-no_pool.patch.tmp && \
     mv ./nginx-no_pool.patch.tmp ./nginx-no_pool.patch \
