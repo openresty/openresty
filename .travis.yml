@@ -38,7 +38,7 @@ cache:
 env:
   global:
     - JOBS=3
-    - PCRE_VER=10.44
+    - PCRE_VER=10.45
     - PCRE_PREFIX=/opt/pcre2
     - PCRE_LIB=$PCRE_PREFIX/lib
     - PCRE_INC=$PCRE_PREFIX/include
@@ -47,7 +47,7 @@ env:
     - OPENSSL_INC=$OPENSSL_PREFIX/include
     - OPENRESTY_PREFIX=/opt/openresty
   jobs:
-    - OPENSSL_VER=3.4.1 OPENSSL_PATCH_VER=3.4.1
+    - OPENSSL_VER=3.5.0 OPENSSL_PATCH_VER=3.5.0
 
 install:
   - cpanm --sudo --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
