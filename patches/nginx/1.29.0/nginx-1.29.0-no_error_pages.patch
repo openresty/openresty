@@ -1,6 +1,6 @@
-diff -upr nginx-1.28.0/src/http/ngx_http_core_module.c nginx-1.28.0-patched/src/http/ngx_http_core_module.c
---- nginx-1.28.0/src/http/ngx_http_core_module.c	2017-08-31 18:14:41.000000000 -0700
-+++ nginx-1.28.0-patched/src/http/ngx_http_core_module.c	2017-08-31 18:21:31.638098196 -0700
+diff -upr nginx-1.29.0/src/http/ngx_http_core_module.c nginx-1.29.0-patched/src/http/ngx_http_core_module.c
+--- nginx-1.29.0/src/http/ngx_http_core_module.c	2017-08-31 18:14:41.000000000 -0700
++++ nginx-1.29.0-patched/src/http/ngx_http_core_module.c	2017-08-31 18:21:31.638098196 -0700
 @@ -64,6 +64,8 @@ static char *ngx_http_core_directio(ngx_conf_t *cf, ngx_command_t *cmd,
      void *conf);
  static char *ngx_http_core_error_page(ngx_conf_t *cf, ngx_command_t *cmd,

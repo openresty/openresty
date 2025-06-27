@@ -17,10 +17,10 @@ old_pat=$(echo $old | sed 's/\./\\./g')
 topdir=`dirname $0`
 topdir="$topdir/.."
 
-cd $topdir/patches
+cd $topdir/patches/nginx
 
 if [ ! -d "$old" ]; then
-    echo "Error: patches/$old directory not found"
+    echo "Error: patches/nginx/$old directory not found"
     exit 1
 fi
 

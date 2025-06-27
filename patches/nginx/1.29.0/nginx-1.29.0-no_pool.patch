@@ -1,18 +1,18 @@
-diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.28.0/src/core/nginx.h nginx-1.28.0-patched/src/core/nginx.h
---- nginx-1.28.0/src/core/nginx.h	2016-04-19 09:02:38.000000000 -0700
-+++ nginx-1.28.0-patched/src/core/nginx.h	2016-04-21 16:25:07.452944624 -0700
+diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.29.0/src/core/nginx.h nginx-1.29.0-patched/src/core/nginx.h
+--- nginx-1.29.0/src/core/nginx.h	2016-04-19 09:02:38.000000000 -0700
++++ nginx-1.29.0-patched/src/core/nginx.h	2016-04-21 16:25:07.452944624 -0700
 @@ -10,7 +10,7 @@
  
  
  #define nginx_version      1027001
- #define NGINX_VERSION      "1.28.0"
+ #define NGINX_VERSION      "1.29.0"
 -#define NGINX_VER          "openresty/" NGINX_VERSION ".unknown"
 +#define NGINX_VER          "openresty/" NGINX_VERSION ".unknown (no pool)"
  
  #ifdef NGX_BUILD
-diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.28.0/src/core/ngx_array.c nginx-1.28.0-patched/src/core/ngx_array.c
---- nginx-1.28.0/src/core/ngx_array.c	2016-04-19 09:02:38.000000000 -0700
-+++ nginx-1.28.0-patched/src/core/ngx_array.c	2016-04-21 16:25:07.453947190 -0700
+diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.29.0/src/core/ngx_array.c nginx-1.29.0-patched/src/core/ngx_array.c
+--- nginx-1.29.0/src/core/ngx_array.c	2016-04-19 09:02:38.000000000 -0700
++++ nginx-1.29.0-patched/src/core/ngx_array.c	2016-04-21 16:25:07.453947190 -0700
 @@ -30,26 +30,30 @@ ngx_array_create(ngx_pool_t *p, ngx_uint
  void
  ngx_array_destroy(ngx_array_t *a)
@@ -160,9 +160,9 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.28.0/src/core/ngx_ar
      }
  
      elt = (u_char *) a->elts + a->size * a->nelts;
-diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.28.0/src/core/ngx_array.h nginx-1.28.0-patched/src/core/ngx_array.h
---- nginx-1.28.0/src/core/ngx_array.h	2016-04-19 09:02:38.000000000 -0700
-+++ nginx-1.28.0-patched/src/core/ngx_array.h	2016-04-21 16:25:07.453947190 -0700
+diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.29.0/src/core/ngx_array.h nginx-1.29.0-patched/src/core/ngx_array.h
+--- nginx-1.29.0/src/core/ngx_array.h	2016-04-19 09:02:38.000000000 -0700
++++ nginx-1.29.0-patched/src/core/ngx_array.h	2016-04-21 16:25:07.453947190 -0700
 @@ -13,12 +13,23 @@
  #include <ngx_core.h>
  
@@ -195,9 +195,9 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.28.0/src/core/ngx_ar
  
      array->elts = ngx_palloc(pool, n * size);
      if (array->elts == NULL) {
-diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.28.0/src/core/ngx_palloc.c nginx-1.28.0-patched/src/core/ngx_palloc.c
---- nginx-1.28.0/src/core/ngx_palloc.c	2016-04-19 09:02:38.000000000 -0700
-+++ nginx-1.28.0-patched/src/core/ngx_palloc.c	2016-04-21 16:25:45.912282685 -0700
+diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.29.0/src/core/ngx_palloc.c nginx-1.29.0-patched/src/core/ngx_palloc.c
+--- nginx-1.29.0/src/core/ngx_palloc.c	2016-04-19 09:02:38.000000000 -0700
++++ nginx-1.29.0-patched/src/core/ngx_palloc.c	2016-04-21 16:25:45.912282685 -0700
 @@ -9,34 +9,26 @@
  #include <ngx_core.h>
  
@@ -546,9 +546,9 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.28.0/src/core/ngx_pa
  
              return NGX_OK;
          }
-diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.28.0/src/core/ngx_palloc.h nginx-1.28.0-patched/src/core/ngx_palloc.h
---- nginx-1.28.0/src/core/ngx_palloc.h	2016-04-19 09:02:38.000000000 -0700
-+++ nginx-1.28.0-patched/src/core/ngx_palloc.h	2016-04-21 16:25:07.454949755 -0700
+diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.29.0/src/core/ngx_palloc.h nginx-1.29.0-patched/src/core/ngx_palloc.h
+--- nginx-1.29.0/src/core/ngx_palloc.h	2016-04-19 09:02:38.000000000 -0700
++++ nginx-1.29.0-patched/src/core/ngx_palloc.h	2016-04-21 16:25:07.454949755 -0700
 @@ -38,28 +38,21 @@ struct ngx_pool_cleanup_s {
  };
  
