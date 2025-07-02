@@ -518,9 +518,9 @@ if [ "$answer" = "Y" ]; then
     answer=`$root/util/ver-ge "$main_ver" 1.25.4`
     if [ "$answer" = "N" ]; then
         echo "$info_txt applying the patch for nginx security advisory (CVE-2024-24989)"
-        patch -p1 < $root/patches/nginx-1.25.3-CVE-2024-24989.patch || exit 1
+        patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-CVE-2024-24989.patch || exit 1
         echo "$info_txt applying the patch for nginx security advisory (CVE-2024-24990)"
-        patch -p1 < $root/patches/nginx-1.25.3-CVE-2024-24990.patch || exit 1
+        patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-CVE-2024-24990.patch || exit 1
     fi
 fi
 
