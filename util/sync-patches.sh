@@ -17,10 +17,19 @@ old_pat=$(echo $old | sed 's/\./\\./g')
 topdir=`dirname $0`
 topdir="$topdir/.."
 
-cd $topdir/patches
+cd $topdir/patches/nginx
 
-for file in `ls | grep nginx-$old`; do
+if [ ! -d "$old" ]; then
+    echo "Error: patches/nginx/$old directory not found"
+    exit 1
+fi
+
+mkdir -p "$new"
+
+for file in `ls $old/ | grep nginx-$old`; do
     #echo $file
-    new_file=`echo $file | sed s/1.27.0/1.27.1/`
-    sed "s/$old_pat/$new/g" $file | sed "s/\b$old_num\b/$new_num/g" > $new_file
+    new_file=`echo $file | sed s/$old/$new/`
+    sed "s/$old_pat/$new/g" "$old/$file" | sed "s/\b$old_num\b/$new_num/g" > "$new/$new_file"
 done
+
+echo "Patches synced from $old to $new"
