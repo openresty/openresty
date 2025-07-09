@@ -563,6 +563,12 @@ if [ "$answer" = "Y" ]; then
     patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-stream_proxy_protocol_v2.patch || exit 1
 fi
 
+answer=`$root/util/ver-ge "$main_ver" 1.27.1`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying nginx-$main_ver-quic_ssl_lua_yield patch for nginx"
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-quic_ssl_lua_yield.patch || exit 1
+fi
+
 cp $root/html/index.html docs/html/ || exit 1
 cp $root/html/50x.html docs/html/ || exit 1
 
@@ -619,7 +625,7 @@ mv openresty-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.37
+ver=0.39
 $root/util/get-tarball "https://github.com/openresty/headers-more-nginx-module/tarball/v$ver" -O headers-more-nginx-module-$ver.tar.gz || exit 1
 tar -xzf headers-more-nginx-module-$ver.tar.gz || exit 1
 mv openresty-headers-more-nginx-module-* headers-more-nginx-module-$ver || exit 1
