@@ -59,7 +59,7 @@ install:
       tar zxf download-cache/pcre2-$PCRE_VER.tar.gz
       cd pcre2-$PCRE_VER/
       ./configure --prefix=$PCRE_PREFIX --enable-jit --enable-utf --enable-unicode-properties > build.log 2>&1 || (cat build.log && exit 1)
-      make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
+      travis_wait 30 make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
       sudo PATH=$PATH make install > build.log 2>&1 || (cat build.log && exit 1)
       cd ..
     fi  
@@ -68,7 +68,7 @@ install:
   - cd openssl-$OPENSSL_VER/
   - patch -p1 < ../patches/openssl-$OPENSSL_PATCH_VER-sess_set_get_cb_yield.patch
   - ./config no-threads shared enable-ssl3 enable-ssl3-method -g --libdir=lib --prefix=$OPENSSL_PREFIX -DPURIFY > build.log 2>&1 || (cat build.log && exit 1)
-  - make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
+  - travis_wait 30 make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
   - sudo make PATH=$PATH install_sw > build.log 2>&1 || (cat build.log && exit 1)
   - cd ..
   - sudo ln -s /usr/bin/make /usr/bin/gmake
@@ -77,7 +77,7 @@ script:
   - util/mirror-tarballs > build.log 2>&1 || (cat build.log && exit 1)
   - cd "openresty-$(./util/ver)"
   - ./configure --with-http_v3_module --with-stream_realip_module --with-http_realip_module --prefix=$OPENRESTY_PREFIX --with-cc-opt="-I$PCRE_INC -I$OPENSSL_INC" --with-ld-opt="-L$PCRE_LIB -L$OPENSSL_LIB -Wl,-rpath,$PCRE_LIB:$OPENSSL_LIB" --with-pcre-jit --with-http_ssl_module --with-debug -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
-  - make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
+  - travis_wait 30 make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
   - sudo make install > build.log 2>&1 || (cat build.log && exit 1)
   - cd ..
   - export PATH=$OPENRESTY_PREFIX/bin:$OPENRESTY_PREFIX/nginx/sbin:$PATH

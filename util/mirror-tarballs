@@ -28,7 +28,7 @@ fi
 #################################
 
 ver="$main_ver"
-$root/util/get-tarball "https://openresty.org/download/nginx-$ver.tar.gz" -O nginx-$ver.tar.gz || exit 1
+$root/util/get-tarball "https://nginx.org/download/nginx-$ver.tar.gz" -O nginx-$ver.tar.gz || exit 1
 tar -xzf nginx-$ver.tar.gz || exit 1
 cd nginx-$ver || exit 1
 
@@ -518,9 +518,9 @@ if [ "$answer" = "Y" ]; then
     answer=`$root/util/ver-ge "$main_ver" 1.25.4`
     if [ "$answer" = "N" ]; then
         echo "$info_txt applying the patch for nginx security advisory (CVE-2024-24989)"
-        patch -p1 < $root/patches/nginx-CVE-2024-24989.patch || exit 1
+        patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-CVE-2024-24989.patch || exit 1
         echo "$info_txt applying the patch for nginx security advisory (CVE-2024-24990)"
-        patch -p1 < $root/patches/nginx-CVE-2024-24990.patch || exit 1
+        patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-CVE-2024-24990.patch || exit 1
     fi
 fi
 
@@ -569,8 +569,8 @@ if [ "$answer" = "Y" ]; then
     patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-quic_ssl_lua_yield.patch || exit 1
 fi
 
-cp $root/html/index.html docs/html/ || exit 1
-cp $root/html/50x.html docs/html/ || exit 1
+cp $root/html/index.html html/ || exit 1
+cp $root/html/50x.html html/ || exit 1
 
 cd .. || exit 1
 
