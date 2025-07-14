@@ -53,16 +53,13 @@ env:
 install:
   - cpanm --sudo --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
   - git clone https://github.com/openresty/test-nginx.git
-  - |
-    if [ "$TRAVIS_CPU_ARCH" != "s390x" ]; then
-      if [ ! -f download-cache/pcre2-$PCRE_VER.tar.gz ]; then wget -P download-cache https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${PCRE_VER}/pcre2-${PCRE_VER}.tar.gz; fi
-      tar zxf download-cache/pcre2-$PCRE_VER.tar.gz
-      cd pcre2-$PCRE_VER/
-      ./configure --prefix=$PCRE_PREFIX --enable-jit --enable-utf --enable-unicode-properties > build.log 2>&1 || (cat build.log && exit 1)
-      make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
-      sudo PATH=$PATH make install > build.log 2>&1 || (cat build.log && exit 1)
-      cd ..
-    fi  
+  - if [ ! -f download-cache/pcre2-$PCRE_VER.tar.gz ]; then wget -P download-cache https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${PCRE_VER}/pcre2-${PCRE_VER}.tar.gz; fi
+  - tar zxf download-cache/pcre2-$PCRE_VER.tar.gz
+  - cd pcre2-$PCRE_VER/
+  - ./configure --prefix=$PCRE_PREFIX --enable-jit --enable-utf --enable-unicode-properties > build.log 2>&1 || (cat build.log && exit 1)
+  - make -j$JOBS > build.log 2>&1 || (cat build.log && exit 1)
+  - sudo PATH=$PATH make install > build.log 2>&1 || (cat build.log && exit 1)
+  - cd ..  
   - if [ ! -f download-cache/openssl-$OPENSSL_VER.tar.gz ]; then wget -P download-cache https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VER}/openssl-${OPENSSL_VER}.tar.gz; fi
   - tar zxf download-cache/openssl-$OPENSSL_VER.tar.gz
   - cd openssl-$OPENSSL_VER/
