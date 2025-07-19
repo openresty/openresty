@@ -1,0 +1,51 @@
+diff --git a/src/event/ngx_event_openssl.c b/src/event/ngx_event_openssl.c
+index 9e8f424..8be4537 100644
+--- a/src/event/ngx_event_openssl.c
++++ b/src/event/ngx_event_openssl.c
+@@ -1921,6 +1921,9 @@ ngx_ssl_handshake(ngx_connection_t *c)
+ #   endif
+ #   ifdef SSL_ERROR_WANT_CLIENT_HELLO_CB
+         || sslerr == SSL_ERROR_WANT_CLIENT_HELLO_CB
++#   endif
++#   ifdef SSL_ERROR_WANT_RETRY_VERIFY
++        || sslerr == SSL_ERROR_WANT_RETRY_VERIFY
+ #   endif
+        )
+     {
+@@ -2135,6 +2138,23 @@ ngx_ssl_try_early_data(ngx_connection_t *c)
+     }
+ #endif
+ 
++#ifdef SSL_ERROR_WANT_RETRY_VERIFY
++    if (sslerr == SSL_ERROR_WANT_RETRY_VERIFY) {
++        c->read->handler = ngx_ssl_handshake_handler;
++        c->write->handler = ngx_ssl_handshake_handler;
++
++        if (ngx_handle_read_event(c->read, 0) != NGX_OK) {
++            return NGX_ERROR;
++        }
++
++        if (ngx_handle_write_event(c->write, 0) != NGX_OK) {
++            return NGX_ERROR;
++        }
++
++        return NGX_AGAIN;
++    }
++#endif
++
+     err = (sslerr == SSL_ERROR_SYSCALL) ? ngx_errno : 0;
+ 
+     c->ssl->no_wait_shutdown = 1;
+diff --git a/src/http/modules/ngx_http_proxy_module.c b/src/http/modules/ngx_http_proxy_module.c
+index c69a476..8309ff4 100644
+--- a/src/http/modules/ngx_http_proxy_module.c
++++ b/src/http/modules/ngx_http_proxy_module.c
+@@ -4987,7 +4987,7 @@ ngx_http_proxy_set_ssl(ngx_conf_t *cf, ngx_http_proxy_loc_conf_t *plcf)
+         return NGX_OK;
+     }
+ 
+-    if (ngx_ssl_create(plcf->upstream.ssl, plcf->ssl_protocols, NULL)
++    if (ngx_ssl_create(plcf->upstream.ssl, plcf->ssl_protocols, plcf)
+         != NGX_OK)
+     {
+         return NGX_ERROR;
