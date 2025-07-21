@@ -2,12 +2,12 @@
 
 PCRE=pcre2-10.45
 ZLIB=zlib-1.3.1
-OPENSSL=openssl-3.4.1
+OPENSSL=openssl-3.5.1
 JOBS=12
 
-# wget https://github.com/openssl/openssl/releases/download/openssl-3.4.1/openssl-3.4.1.tar.gz
-# wget http://zlib.net/zlib-1.3.1.tar.gz
-# wget https://github.com/PCRE2Project/pcre2/releases/download/pcre2-10.45/pcre2-10.45.tar.gz
+if [ ! -f ../$OPENSSL.tar.gz ]; then wget -O ../$OPENSSL.tar.gz https://github.com/openssl/openssl/releases/download/$OPENSSL/$OPENSSL.tar.gz; fi
+if [ ! -f ../$ZLIB.tar.gz ]; then wget -O ../$ZLIB.tar.gz http://zlib.net/$ZLIB.tar.gz; fi
+if [ ! -f ../$PCRE.tar.gz ]; then wget -O ../$PCRE.tar.gz https://github.com/PCRE2Project/pcre2/releases/download/$PCRE/$PCRE.tar.gz; fi
 
 rm -rf objs || exit 1
 mkdir -p objs/lib || exit 1
@@ -19,10 +19,7 @@ tar -xf ../../../$PCRE.tar.gz || exit 1
 cd ../..
 
 cd objs/lib/$OPENSSL || exit 1
-#patch -p1 < ../../../patches/openssl-1.1.0j-parallel_build_fix.patch || exit 1
-patch -p1 < ../../../patches/openssl-3.4.1-sess_set_get_cb_yield.patch || exit 1
-#patch -p1 < ../../../patches/openssl-1.1.1d-win_fix.patch || exit 1
-#patch -p1 < ../../../patches/openssl-1.1.1e-sess_set_get_cb_yield.patch || exit 1
+patch -p1 < ../../../patches/openssl-3.5.0-sess_set_get_cb_yield.patch || exit 1
 cd ../../..
 
     #--with-openssl-opt="no-asm" \
@@ -65,3 +62,4 @@ cd ../../..
 
 make -j$JOBS || exit 1
 exec make install
+
