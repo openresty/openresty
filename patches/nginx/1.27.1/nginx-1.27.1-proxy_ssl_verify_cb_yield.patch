@@ -49,3 +49,16 @@ index c69a476..8309ff4 100644
          != NGX_OK)
      {
          return NGX_ERROR;
+diff --git a/src/stream/ngx_stream_proxy_module.c b/src/stream/ngx_stream_proxy_module.c
+index 82dca1e..ba0cbe3 100644
+--- a/src/stream/ngx_stream_proxy_module.c
++++ b/src/stream/ngx_stream_proxy_module.c
+@@ -2293,7 +2293,7 @@ ngx_stream_proxy_set_ssl(ngx_conf_t *cf, ngx_stream_proxy_srv_conf_t *pscf)
+         return NGX_OK;
+     }
+ 
+-    if (ngx_ssl_create(pscf->ssl, pscf->ssl_protocols, NULL) != NGX_OK) {
++    if (ngx_ssl_create(pscf->ssl, pscf->ssl_protocols, pscf) != NGX_OK) {
+         return NGX_ERROR;
+     }
+ 
