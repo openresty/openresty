@@ -328,7 +328,7 @@ index 49888b986..27c927ee5 100644
 +            }
 +        }
 +
-+        crt = SSL_get0_peer_certificate(c->ssl->connection);
++        crt = SSL_get_peer_certificate(c->ssl->connection);
 +        if (crt != NULL) {
 +            tlv->client |= NGX_PROXY_PROTOCOL_V2_CLIENT_CERT_SESS;
 +
