@@ -19,7 +19,7 @@ tar -xf ../../../$PCRE.tar.gz || exit 1
 cd ../..
 
 cd objs/lib/$OPENSSL || exit 1
-patch -p1 < ../../../patches/openssl-3.5.0-sess_set_get_cb_yield.patch || exit 1
+patch -p1 < ../../../patches/openssl-3.5.2-sess_set_get_cb_yield.patch || exit 1
 cd ../../..
 
     #--with-openssl-opt="no-asm" \
