@@ -36,19 +36,20 @@ index 9e8f424..8be4537 100644
      err = (sslerr == SSL_ERROR_SYSCALL) ? ngx_errno : 0;
  
      c->ssl->no_wait_shutdown = 1;
-diff --git a/src/http/modules/ngx_http_proxy_module.c b/src/http/modules/ngx_http_proxy_module.c
-index c69a476..8309ff4 100644
---- a/src/http/modules/ngx_http_proxy_module.c
-+++ b/src/http/modules/ngx_http_proxy_module.c
-@@ -4987,7 +4987,7 @@ ngx_http_proxy_set_ssl(ngx_conf_t *cf, ngx_http_proxy_loc_conf_t *plcf)
-         return NGX_OK;
-     }
+diff --git a/src/event/ngx_event_openssl.h b/src/event/ngx_event_openssl.h
+index ebb2c35..0eaaa83 100644
+--- a/src/event/ngx_event_openssl.h
++++ b/src/event/ngx_event_openssl.h
+@@ -83,6 +83,9 @@
+ #endif
  
--    if (ngx_ssl_create(plcf->upstream.ssl, plcf->ssl_protocols, NULL)
-+    if (ngx_ssl_create(plcf->upstream.ssl, plcf->ssl_protocols, plcf)
-         != NGX_OK)
-     {
-         return NGX_ERROR;
+ 
++#define HAVE_PROXY_SSL_PATCH 1
++
++
+ typedef struct ngx_ssl_ocsp_s  ngx_ssl_ocsp_t;
+ 
+ 
 diff --git a/src/stream/ngx_stream_proxy_module.c b/src/stream/ngx_stream_proxy_module.c
 index 82dca1e..ba0cbe3 100644
 --- a/src/stream/ngx_stream_proxy_module.c
