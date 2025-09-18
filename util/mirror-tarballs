@@ -757,7 +757,7 @@ mv openresty-redis2-nginx-module-* redis2-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.30
+ver=0.32
 $root/util/get-tarball "https://github.com/openresty/resty-cli/tarball/v$ver" -O resty-cli-$ver.tar.gz || exit 1
 tar -xzf resty-cli-$ver.tar.gz || exit 1
 mv openresty-resty-cli-* resty-cli-$ver || exit 1
@@ -772,7 +772,7 @@ mv openresty-opm-* opm-$ver || exit 1
 
 #################################
 
-ver=2.1-20250529
+ver=2.1-20250826
 $root/util/get-tarball "https://github.com/openresty/luajit2/archive/v$ver.tar.gz" -O "LuaJIT-$ver.tar.gz" || exit 1
 tar -xzf LuaJIT-$ver.tar.gz || exit 1
 mv luajit2-* LuaJIT-$ver || exit 1
