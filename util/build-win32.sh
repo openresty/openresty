@@ -2,7 +2,7 @@
 
 PCRE=pcre2-10.46
 ZLIB=zlib-1.3.1
-OPENSSL=openssl-3.5.3
+OPENSSL=openssl-3.5.4
 JOBS=12
 
 if [ ! -f ../$OPENSSL.tar.gz ]; then wget -O ../$OPENSSL.tar.gz https://github.com/openssl/openssl/releases/download/$OPENSSL/$OPENSSL.tar.gz; fi
@@ -19,7 +19,7 @@ tar -xf ../../../$PCRE.tar.gz || exit 1
 cd ../..
 
 cd objs/lib/$OPENSSL || exit 1
-patch -p1 < ../../../patches/openssl-3.5.3-sess_set_get_cb_yield.patch || exit 1
+patch -p1 < ../../../patches/openssl-3.5.4-sess_set_get_cb_yield.patch || exit 1
 cd ../../..
 
     #--with-openssl-opt="no-asm" \

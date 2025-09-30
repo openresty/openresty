@@ -48,7 +48,7 @@ env:
     - OPENSSL_INC=$OPENSSL_PREFIX/include
     - OPENRESTY_PREFIX=/opt/openresty
   jobs:
-    - OPENSSL_VER=3.5.3 OPENSSL_PATCH_VER=3.5.3
+    - OPENSSL_VER=3.5.4 OPENSSL_PATCH_VER=3.5.4
 
 install:
   - cpanm --sudo --notest Test::Nginx IPC::Run3 > build.log 2>&1 || (cat build.log && exit 1)
