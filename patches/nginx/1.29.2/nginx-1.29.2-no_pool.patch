@@ -4,7 +4,7 @@ diff --minimal '--exclude=*.swp' '--exclude=*~' -up nginx-1.29.2/src/core/nginx.
 @@ -10,7 +10,7 @@
  
  
- #define nginx_version      1027001
+ #define nginx_version      1029002
  #define NGINX_VERSION      "1.29.2"
 -#define NGINX_VER          "openresty/" NGINX_VERSION ".unknown"
 +#define NGINX_VER          "openresty/" NGINX_VERSION ".unknown (no pool)"

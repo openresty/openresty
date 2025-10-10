@@ -8,7 +8,7 @@ my $newver = shift or usage();
 
 my $newdir = "patches/nginx/$newver";
 system("mkdir -p $newdir") == 0 or die "failed to create directory $newdir: $!\n";
-my @files = `find patches -name '*.patch'`;
+my @files = `find patches/nginx/$ver -name '*.patch'`;
 for my $file (@files) {
     chomp $file;
     next unless $file =~ m{^patches/nginx/(?:$ver|$newver)/nginx-(?:$ver|$newver)-};
