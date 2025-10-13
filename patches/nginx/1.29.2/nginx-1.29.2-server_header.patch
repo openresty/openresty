@@ -1,0 +1,66 @@
+diff --git a/src/core/nginx.h b/src/core/nginx.h
+index a3c0ef8..1263881 100644
+--- a/src/core/nginx.h
++++ b/src/core/nginx.h
+@@ -11,7 +11,7 @@
+ 
+ #define nginx_version      1029002
+ #define NGINX_VERSION      "1.29.2"
+-#define NGINX_VER          "nginx/" NGINX_VERSION
++#define NGINX_VER          "openresty/" NGINX_VERSION ".unknown"
+ 
+ #ifdef NGX_BUILD
+ #define NGINX_VER_BUILD    NGINX_VER " (" NGX_BUILD ")"
+diff --git a/src/http/ngx_http_header_filter_module.c b/src/http/ngx_http_header_filter_module.c
+index 9b89405..ca13f2a 100644
+--- a/src/http/ngx_http_header_filter_module.c
++++ b/src/http/ngx_http_header_filter_module.c
+@@ -46,7 +46,7 @@ ngx_module_t  ngx_http_header_filter_module = {
+ };
+ 
+ 
+-static u_char ngx_http_server_string[] = "Server: nginx" CRLF;
++static u_char ngx_http_server_string[] = "Server: openresty" CRLF;
+ static u_char ngx_http_server_full_string[] = "Server: " NGINX_VER CRLF;
+ static u_char ngx_http_server_build_string[] = "Server: " NGINX_VER_BUILD CRLF;
+ 
+diff --git a/src/http/v2/ngx_http_v2_filter_module.c b/src/http/v2/ngx_http_v2_filter_module.c
+index 8621e7a..a76c677 100644
+--- a/src/http/v2/ngx_http_v2_filter_module.c
++++ b/src/http/v2/ngx_http_v2_filter_module.c
+@@ -115,7 +115,7 @@ ngx_http_v2_header_filter(ngx_http_request_t *r)
+     ngx_http_core_srv_conf_t  *cscf;
+     u_char                     addr[NGX_SOCKADDR_STRLEN];
+ 
+-    static const u_char nginx[5] = { 0x84, 0xaa, 0x63, 0x55, 0xe7 };
++    static const u_char nginx[8] = { 0x87, 0x3d, 0x65, 0xaa, 0xc2, 0xa1, 0x3e, 0xbf};
+ #if (NGX_HTTP_GZIP)
+     static const u_char accept_encoding[12] = {
+         0x8b, 0x84, 0x84, 0x2d, 0x69, 0x5b, 0x05, 0x44, 0x3c, 0x86, 0xaa, 0x6f
+diff --git a/src/http/v3/ngx_http_v3_filter_module.c b/src/http/v3/ngx_http_v3_filter_module.c
+--- a/src/http/v3/ngx_http_v3_filter_module.c
++++ b/src/http/v3/ngx_http_v3_filter_module.c
+@@ -165,9 +165,9 @@
+         } else if (clcf->server_tokens == NGX_HTTP_SERVER_TOKENS_BUILD) {
+             n = sizeof(NGINX_VER_BUILD) - 1;
+ 
+         } else {
+-            n = sizeof("nginx") - 1;
++            n = sizeof("openresty") - 1;
+         }
+ 
+         len += ngx_http_v3_encode_field_lri(NULL, 0,
+                                             NGX_HTTP_V3_HEADER_SERVER,
+@@ -348,10 +348,10 @@
+             p = (u_char *) NGINX_VER_BUILD;
+             n = sizeof(NGINX_VER_BUILD) - 1;
+ 
+         } else {
+-            p = (u_char *) "nginx";
+-            n = sizeof("nginx") - 1;
++            p = (u_char *) "openresty";
++            n = sizeof("openresty") - 1;
+         }
+ 
+         ngx_log_debug2(NGX_LOG_DEBUG_HTTP, c->log, 0,
+                        "http3 output header: \"server: %*s\"", n, p);
