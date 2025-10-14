@@ -493,6 +493,13 @@ if [ "$answer" = "Y" ]; then
     echo
 fi
 
+answer=`$root/util/ver-ge "$main_ver" 1.27.1`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying the proxy_ssl_verify_cb_yield.patch patch to nginx"
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-proxy_ssl_verify_cb_yield.patch
+    echo
+fi
+
 answer=`$root/util/ver-ge "$main_ver" 0.6.18`
 if [ "$answer" = "Y" ]; then
     answer=`$root/util/ver-ge "$main_ver" 1.20.1`
