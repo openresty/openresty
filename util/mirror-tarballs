@@ -604,7 +604,7 @@ mv openresty-xss-nginx-module-* xss-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.3.3
+ver=0.3.4
 $root/util/get-tarball "https://github.com/simplresty/ngx_devel_kit/tarball/v$ver" -O ngx_devel_kit-$ver.tar.gz
 tar -xzf ngx_devel_kit-$ver.tar.gz || exit 1
 mv vision5-ngx_devel_kit-* ngx_devel_kit-$ver || exit 1
@@ -717,29 +717,10 @@ mv openresty-encrypted-session-nginx-module-* encrypted-session-nginx-module-$ve
 
 #################################
 
-ver=0.3.9
-$root/util/get-tarball "https://people.freebsd.org/~osa/ngx_http_redis-$ver.tar.gz" -O redis-nginx-module-$ver.tar.gz || exit 1
+ver=0.41
+$root/util/get-tarball "https://github.com/openresty/ngx_http_redis/archive/refs/tags/v$ver.tar.gz" -O redis-nginx-module-$ver.tar.gz || exit 1
 tar -xzf redis-nginx-module-$ver.tar.gz || exit 1
 mv ngx_http_redis-* redis-nginx-module-$ver || exit 1
-
-cd redis-nginx-module-$ver
-echo "applying ngx_http_redis-$ver-variables_in_redis_pass.patch"
-patch -p1 < $root/patches/ngx_http_redis-$ver-variables_in_redis_pass.patch || exit 1
-
-echo
-echo "applying ngx_http_redis-$ver-default_port_fix.patch"
-patch -p1 < $root/patches/ngx_http_redis-$ver-default_port_fix.patch || exit 1
-echo
-
-answer=`$root/util/ver-ge "$main_ver" 1.23.0`
-if [ "$answer" = "Y" ]; then
-echo
-echo "applying ngx_http_redis-$ver-remove_content_encoding.patch"
-patch -p1 < $root/patches/ngx_http_redis-$ver-remove_content_encoding.patch || exit 1
-echo
-fi
-
-cd ..
 
 #################################
 
@@ -772,7 +753,7 @@ resty_cli=resty-cli-$ver
 
 #################################
 
-ver=0.0.8
+ver=0.0.9
 $root/util/get-tarball "https://github.com/openresty/opm/tarball/v$ver" -O opm-$ver.tar.gz || exit 1
 tar -xzf opm-$ver.tar.gz || exit 1
 mv openresty-opm-* opm-$ver || exit 1
@@ -792,7 +773,7 @@ cd .. || exit 1
 
 #################################
 
-ver=2.1.0.14
+ver=2.1.0.15
 $root/util/get-tarball "https://github.com/openresty/lua-cjson/archive/$ver.tar.gz" -O "lua-cjson-$ver.tar.gz" || exit 1
 tar -xzf lua-cjson-$ver.tar.gz || exit 1
 
@@ -888,7 +869,7 @@ cd ..
 
 #################################
 
-ver=0.12
+ver=0.13
 $root/util/get-tarball "https://github.com/openresty/lua-resty-websocket/tarball/v$ver" -O "lua-resty-websocket-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-websocket-$ver.tar.gz || exit 1
 mv openresty-lua-resty-websocket-* lua-resty-websocket-$ver || exit 1
@@ -973,7 +954,7 @@ cd ..
 #################################
 
 rm *.tar.gz
-rm *.tar.bz2
+rm -fr *.tar.bz2
 
 cd ..
 cp $root/util/configure ./ || exit 1
