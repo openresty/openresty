@@ -576,6 +576,8 @@ if [ "$answer" = "Y" ]; then
     patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-quic_ssl_lua_yield.patch || exit 1
 fi
 
+mkdir -p html || exit 1
+
 cp $root/html/index.html html/ || exit 1
 cp $root/html/50x.html html/ || exit 1
 
