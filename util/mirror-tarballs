@@ -625,7 +625,7 @@ mv openresty-rds-json-nginx-module-* rds-json-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.09
+ver=0.10
 $root/util/get-tarball "https://github.com/openresty/rds-csv-nginx-module/tarball/v$ver" -O rds-csv-nginx-module-$ver.tar.gz || exit 1
 tar -xzf rds-csv-nginx-module-$ver.tar.gz || exit 1
 mv openresty-rds-csv-nginx-module-* rds-csv-nginx-module-$ver || exit 1
@@ -660,7 +660,7 @@ mv openresty-lua-upstream-nginx-module-* ngx_lua_upstream-$ver || exit 1
 
 #################################
 
-ver=0.0.17rc3
+ver=0.0.17rc4
 $root/util/get-tarball "https://github.com/openresty/stream-lua-nginx-module/tarball/v$ver" -O stream-lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf stream-lua-nginx-module-$ver.tar.gz || exit 1
 mv openresty-stream-lua-nginx-module-* ngx_stream_lua-$ver || exit 1
