@@ -1,5 +1,5 @@
 diff --git a/src/core/ngx_proxy_protocol.c b/src/core/ngx_proxy_protocol.c
-index 49888b986..27c927ee5 100644
+index 49888b9..ffaa994 100644
 --- a/src/core/ngx_proxy_protocol.c
 +++ b/src/core/ngx_proxy_protocol.c
 @@ -12,6 +12,39 @@
@@ -133,7 +133,7 @@ index 49888b986..27c927ee5 100644
      switch (c->sockaddr->sa_family) {
  
      case AF_INET:
-@@ -612,3 +706,360 @@ ngx_proxy_protocol_lookup_tlv(ngx_connection_t *c, ngx_str_t *tlvs,
+@@ -612,3 +706,362 @@ ngx_proxy_protocol_lookup_tlv(ngx_connection_t *c, ngx_str_t *tlvs,
  
      return NGX_DECLINED;
  }
@@ -328,7 +328,7 @@ index 49888b986..27c927ee5 100644
 +            }
 +        }
 +
-+        crt = SSL_get0_peer_certificate(c->ssl->connection);
++        crt = SSL_get_peer_certificate(c->ssl->connection);
 +        if (crt != NULL) {
 +            tlv->client |= NGX_PROXY_PROTOCOL_V2_CLIENT_CERT_SESS;
 +
@@ -357,6 +357,7 @@ index 49888b986..27c927ee5 100644
 +                                        NGX_PROXY_PROTOCOL_V2_SUBTYPE_SSL_CN,
 +                                        value, ngx_strlen(value));
 +                            if (pos == NULL) {
++                                X509_free(crt);
 +                                return NULL;
 +                            }
 +                        }
@@ -365,6 +366,7 @@ index 49888b986..27c927ee5 100644
 +            }
 +        }
 +
++        X509_free(crt);
 +
 +        crt = SSL_get_certificate(c->ssl->connection);
 +        if (crt != NULL) {
@@ -495,7 +497,7 @@ index 49888b986..27c927ee5 100644
 +
 +
 diff --git a/src/core/ngx_proxy_protocol.h b/src/core/ngx_proxy_protocol.h
-index d1749f57b..bc2e0a240 100644
+index d1749f5..bc2e0a2 100644
 --- a/src/core/ngx_proxy_protocol.h
 +++ b/src/core/ngx_proxy_protocol.h
 @@ -29,7 +29,7 @@ struct ngx_proxy_protocol_s {
@@ -508,10 +510,10 @@ index d1749f57b..bc2e0a240 100644
      ngx_str_t *value);
  
 diff --git a/src/mail/ngx_mail_proxy_module.c b/src/mail/ngx_mail_proxy_module.c
-index 1c6d0372e..0c8da3018 100644
+index 84a7f61..756eabc 100644
 --- a/src/mail/ngx_mail_proxy_module.c
 +++ b/src/mail/ngx_mail_proxy_module.c
-@@ -904,7 +904,7 @@ ngx_mail_proxy_send_proxy_protocol(ngx_mail_session_t *s)
+@@ -916,7 +916,7 @@ ngx_mail_proxy_send_proxy_protocol(ngx_mail_session_t *s)
                     "mail proxy send PROXY protocol header");
  
      p = ngx_proxy_protocol_write(s->connection, buf,
@@ -521,7 +523,7 @@ index 1c6d0372e..0c8da3018 100644
          ngx_mail_proxy_internal_server_error(s);
          return NGX_ERROR;
 diff --git a/src/stream/ngx_stream_proxy_module.c b/src/stream/ngx_stream_proxy_module.c
-index 0dbbc5af6..3bc99f760 100644
+index 77da786..64bddc5 100644
 --- a/src/stream/ngx_stream_proxy_module.c
 +++ b/src/stream/ngx_stream_proxy_module.c
 @@ -30,7 +30,7 @@ typedef struct {
@@ -561,7 +563,7 @@ index 0dbbc5af6..3bc99f760 100644
  
      { ngx_string("proxy_half_close"),
        NGX_STREAM_MAIN_CONF|NGX_STREAM_SRV_CONF|NGX_CONF_FLAG,
-@@ -940,7 +948,7 @@ ngx_stream_proxy_init_upstream(ngx_stream_session_t *s)
+@@ -945,7 +953,7 @@ ngx_stream_proxy_init_upstream(ngx_stream_session_t *s)
              return;
          }
  
@@ -570,7 +572,7 @@ index 0dbbc5af6..3bc99f760 100644
          if (p == NULL) {
              ngx_stream_proxy_finalize(s, NGX_STREAM_INTERNAL_SERVER_ERROR);
              return;
-@@ -948,8 +956,8 @@ ngx_stream_proxy_init_upstream(ngx_stream_session_t *s)
+@@ -953,8 +961,8 @@ ngx_stream_proxy_init_upstream(ngx_stream_session_t *s)
  
          cl->buf->pos = p;
  
@@ -581,7 +583,7 @@ index 0dbbc5af6..3bc99f760 100644
          if (p == NULL) {
              ngx_stream_proxy_finalize(s, NGX_STREAM_INTERNAL_SERVER_ERROR);
              return;
-@@ -989,7 +997,7 @@ static ngx_int_t
+@@ -994,7 +1002,7 @@ static ngx_int_t
  ngx_stream_proxy_send_proxy_protocol(ngx_stream_session_t *s)
  {
      u_char                  *p;
@@ -590,7 +592,7 @@ index 0dbbc5af6..3bc99f760 100644
      ssize_t                  n, size;
      ngx_connection_t        *c, *pc;
      ngx_stream_upstream_t   *u;
-@@ -1002,15 +1010,15 @@ ngx_stream_proxy_send_proxy_protocol(ngx_stream_session_t *s)
+@@ -1007,15 +1015,15 @@ ngx_stream_proxy_send_proxy_protocol(ngx_stream_session_t *s)
      ngx_log_debug0(NGX_LOG_DEBUG_STREAM, c->log, 0,
                     "stream proxy send PROXY protocol header");
  
@@ -610,7 +612,7 @@ index 0dbbc5af6..3bc99f760 100644
      pc = u->peer.connection;
  
      size = p - buf;
-@@ -2237,7 +2245,7 @@ ngx_stream_proxy_create_srv_conf(ngx_conf_t *cf)
+@@ -2242,7 +2250,7 @@ ngx_stream_proxy_create_srv_conf(ngx_conf_t *cf)
      conf->responses = NGX_CONF_UNSET_UINT;
      conf->next_upstream_tries = NGX_CONF_UNSET_UINT;
      conf->next_upstream = NGX_CONF_UNSET;
@@ -619,7 +621,7 @@ index 0dbbc5af6..3bc99f760 100644
      conf->local = NGX_CONF_UNSET_PTR;
      conf->socket_keepalive = NGX_CONF_UNSET;
      conf->half_close = NGX_CONF_UNSET;
-@@ -2293,7 +2301,7 @@ ngx_stream_proxy_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
+@@ -2298,7 +2306,7 @@ ngx_stream_proxy_merge_srv_conf(ngx_conf_t *cf, void *parent, void *child)
  
      ngx_conf_merge_value(conf->next_upstream, prev->next_upstream, 1);
  
@@ -629,7 +631,7 @@ index 0dbbc5af6..3bc99f760 100644
      ngx_conf_merge_ptr_value(conf->local, prev->local, NULL);
  
 diff --git a/src/stream/ngx_stream_upstream.h b/src/stream/ngx_stream_upstream.h
-index c581aa0be..e3424310b 100644
+index 495555e..2f989ac 100644
 --- a/src/stream/ngx_stream_upstream.h
 +++ b/src/stream/ngx_stream_upstream.h
 @@ -146,7 +146,7 @@ typedef struct {
