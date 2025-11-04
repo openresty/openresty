@@ -1,0 +1,20 @@
+diff --git a/src/http/ngx_http_request.c b/src/http/ngx_http_request.c
+index 16d79c4..760e0e5 100644
+--- a/src/http/ngx_http_request.c
++++ b/src/http/ngx_http_request.c
+@@ -2559,8 +2559,15 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+             return;
+         }
+ 
++#if (NGX_HTTP_V2)
++        if (r->http_version < NGX_HTTP_VERSION_20 || r == r->main) {
++            ngx_http_terminate_request(r, rc);
++            return;
++        }
++#else
+         ngx_http_terminate_request(r, rc);
+         return;
++#endif
+     }
+ 
+     if (rc >= NGX_HTTP_SPECIAL_RESPONSE
