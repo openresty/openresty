@@ -576,6 +576,12 @@ if [ "$answer" = "Y" ]; then
     patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-quic_ssl_lua_yield.patch || exit 1
 fi
 
+answer=`$root/util/ver-ge "$main_ver" 1.27.1`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying nginx-$main_ver-http2_subreq_error_wakeup patch for nginx"
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-http2_subreq_error_wakeup.patch || exit 1
+fi
+
 cp $root/html/index.html docs/html/ || exit 1
 cp $root/html/50x.html docs/html/ || exit 1
 

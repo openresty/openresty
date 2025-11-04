@@ -1,0 +1,47 @@
+diff --git a/src/http/ngx_http_request.c b/src/http/ngx_http_request.c
+index 9593b7f..990ae95 100644
+--- a/src/http/ngx_http_request.c
++++ b/src/http/ngx_http_request.c
+@@ -2560,6 +2560,42 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+             return;
+         }
+ 
++        if (r != r->main && r->parent) {
++            pr = r->parent;
++
++            ngx_log_debug2(NGX_LOG_DEBUG_HTTP, c->log, 0,
++                           "http finalize subrequest with error, "
++                           "waking parent: \"%V?%V\"",
++                           &pr->uri, &pr->args);
++
++            if (!r->done) {
++                r->done = 1;
++
++                if (r->main->count > 0) {
++                    r->main->count--;
++                }
++
++                if (pr->postponed && pr->postponed->request == r) {
++                    pr->postponed = pr->postponed->next;
++                }
++
++                if (r == c->data) {
++                    c->data = pr;
++                }
++
++                if (ngx_http_post_request(pr, NULL) != NGX_OK) {
++                    r->main->count++;
++                    ngx_http_terminate_request(r, 0);
++                    return;
++                }
++
++                ngx_log_debug2(NGX_LOG_DEBUG_HTTP, c->log, 0,
++                               "http wake parent request: \"%V?%V\"",
++                               &pr->uri, &pr->args);
++                return;
++            }
++        }
++
+         ngx_http_terminate_request(r, rc);
+         return;
+     }
