@@ -425,6 +425,12 @@ shell $cmd, $dry_run;
 push @make_cmds, "cd $root_dir/build/$ngx_dir && "
     . "\$(MAKE)";
 
+    # Generate resty.index for restydoc
+    push @make_cmds,
+        "cd $root_dir/bundle/resty-cli-0.32 && "
+        . "perl -I./bin bin/restydoc-index --outdir ../build $root_dir/bundle/lua-resty-core-0.1.32R1";
+
+
 push @make_install_cmds, "cd $root_dir/build/$ngx_dir && "
     . "\$(MAKE) install DESTDIR=\$(DESTDIR)";
 
