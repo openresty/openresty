@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+# Script to set up the OpenResty APT repository on Debian/Ubuntu systems.
+#
+# This script installs the OpenResty GPG signing key (using SHA-512
+# self-signatures, compatible with Debian's post-2026-02-01 policy that
+# rejects SHA-1) and configures the APT source list.
+#
+# Usage:
+#   sudo bash util/setup-apt-repo
+#
+# Or from the repository root:
+#   sudo ./util/setup-apt-repo
+
+set -euo pipefail
+
+if [ "$(id -u)" -ne 0 ]; then
+    echo "Error: this script must be run as root (use sudo)" >&2
+    exit 1
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+
+KEYRING_DIR="/usr/share/keyrings"
+KEYRING_PATH="$KEYRING_DIR/openresty.gpg"
+SOURCES_LIST="/etc/apt/sources.list.d/openresty.list"
+
+# Detect distribution
+if [ -f /etc/os-release ]; then
+    . /etc/os-release
+    DISTRO="$ID"
+    CODENAME="${VERSION_CODENAME:-$(lsb_release -cs 2>/dev/null || echo '')}"
+else
+    echo "Error: cannot detect distribution (missing /etc/os-release)" >&2
+    exit 1
+fi
+
+case "$DISTRO" in
+    debian|ubuntu|linuxmint|pop)
+        ;;
+    *)
+        echo "Warning: unsupported distribution '$DISTRO', proceeding anyway" >&2
+        ;;
+esac
+
+if [ -z "$CODENAME" ]; then
+    echo "Error: cannot detect distribution codename" >&2
+    exit 1
+fi
+
+echo "Installing OpenResty GPG signing key to $KEYRING_PATH ..."
+install -d -m 0755 "$KEYRING_DIR"
+install -m 0644 "$REPO_ROOT/openresty.gpg" "$KEYRING_PATH"
+
+echo "Configuring APT source in $SOURCES_LIST ..."
+cat > "$SOURCES_LIST" <<EOF
+deb [signed-by=$KEYRING_PATH] http://openresty.org/package/$DISTRO $CODENAME openresty
+EOF
+
+echo "Running apt-get update for the openresty repository ..."
+apt-get update -o Dir::Etc::sourcelist="$SOURCES_LIST" \
+               -o Dir::Etc::sourceparts="-" \
+               -o APT::Get::List-Cleanup="0" \
+               -q
+
+echo "Done. You can now install packages, e.g.:"
+echo "  sudo apt-get install openresty"
