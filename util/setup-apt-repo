@@ -36,11 +36,30 @@ else
     exit 1
 fi
 
+# Map derivative distributions to their upstream (debian or ubuntu).
+# OpenResty only publishes packages under /package/debian and /package/ubuntu,
+# so derivatives like Linux Mint or Pop!_OS must be resolved to their parent.
 case "$DISTRO" in
-    debian|ubuntu|linuxmint|pop)
+    debian|ubuntu)
         ;;
     *)
-        echo "Warning: unsupported distribution '$DISTRO', proceeding anyway" >&2
+        UPSTREAM=""
+        # Check for UBUNTU_CODENAME first (set by Ubuntu derivatives)
+        if [ -n "${UBUNTU_CODENAME:-}" ]; then
+            DISTRO="ubuntu"
+            CODENAME="$UBUNTU_CODENAME"
+            UPSTREAM="ubuntu"
+        elif echo "${ID_LIKE:-}" | grep -qw ubuntu; then
+            DISTRO="ubuntu"
+            UPSTREAM="ubuntu"
+        elif echo "${ID_LIKE:-}" | grep -qw debian; then
+            DISTRO="debian"
+            UPSTREAM="debian"
+        else
+            echo "Error: unsupported distribution '$DISTRO' (expected debian, ubuntu, or a derivative)" >&2
+            exit 1
+        fi
+        echo "Detected derivative distribution, mapping to upstream: $UPSTREAM" >&2
         ;;
 esac
 
@@ -49,13 +68,19 @@ if [ -z "$CODENAME" ]; then
     exit 1
 fi
 
+# Ensure ca-certificates is available for HTTPS transport
+if ! dpkg -s ca-certificates >/dev/null 2>&1; then
+    echo "Installing ca-certificates for HTTPS repository access ..."
+    apt-get update -qq && apt-get install -y -qq ca-certificates
+fi
+
 echo "Installing OpenResty GPG signing key to $KEYRING_PATH ..."
 install -d -m 0755 "$KEYRING_DIR"
 install -m 0644 "$REPO_ROOT/openresty.gpg" "$KEYRING_PATH"
 
 echo "Configuring APT source in $SOURCES_LIST ..."
 cat > "$SOURCES_LIST" <<EOF
-deb [signed-by=$KEYRING_PATH] http://openresty.org/package/$DISTRO $CODENAME openresty
+deb [signed-by=$KEYRING_PATH] https://openresty.org/package/$DISTRO $CODENAME openresty
 EOF
 
 echo "Running apt-get update for the openresty repository ..."
