@@ -1,0 +1,117 @@
+diff --binary -Nur nginx-1.13.7.1-original/auto/cc/msvc nginx-1.13.7.1-msvc/auto/cc/msvc
+--- nginx-1.13.7.1-original/auto/cc/msvc	2017-11-21 19:09:44 +0400
++++ nginx-1.13.7.1-msvc/auto/cc/msvc	2018-01-07 13:00:37 +0400
+@@ -13,6 +13,7 @@
+ 
+ NGX_MSVC_VER=`$NGX_WINE $CC 2>&1 | grep 'Compiler Version' 2>&1 \
+                                  | sed -e 's/^.* Version \(.*\)/\1/'`
++NGX_MSVC_TYPE=`echo $NGX_MSVC_VER | sed -e 's/^.* for \([a-zA-Z0-9]*\)$/\1/'`
+ 
+ echo " + cl version: $NGX_MSVC_VER"
+ 
+@@ -120,11 +121,11 @@
+ 
+ 
+ # precompiled headers
+-CORE_DEPS="$CORE_DEPS $NGX_OBJS/ngx_config.pch"
+-CORE_LINK="$CORE_LINK $NGX_OBJS/ngx_pch.obj"
+-NGX_PCH="$NGX_OBJS/ngx_config.pch"
+-NGX_BUILD_PCH="-Ycngx_config.h -Fp$NGX_OBJS/ngx_config.pch"
+-NGX_USE_PCH="-Yungx_config.h -Fp$NGX_OBJS/ngx_config.pch"
++#CORE_DEPS="$CORE_DEPS $NGX_OBJS/ngx_config.pch"
++#CORE_LINK="$CORE_LINK $NGX_OBJS/ngx_pch.obj"
++#NGX_PCH="$NGX_OBJS/ngx_config.pch"
++#NGX_BUILD_PCH="-Ycngx_config.h -Fp$NGX_OBJS/ngx_config.pch"
++#NGX_USE_PCH="-Yungx_config.h -Fp$NGX_OBJS/ngx_config.pch"
+ 
+ 
+ # the resource file
+diff --binary -Nur nginx-1.13.7.1-original/auto/feature nginx-1.13.7.1-msvc/auto/feature
+--- nginx-1.13.7.1-original/auto/feature	2017-11-21 19:09:44 +0400
++++ nginx-1.13.7.1-msvc/auto/feature	2018-01-07 13:13:18 +0400
+@@ -38,15 +38,19 @@
+ 
+ END
+ 
+-
+-ngx_test="$CC $CC_TEST_FLAGS $CC_AUX_FLAGS $ngx_feature_inc_path \
+-          -o $NGX_AUTOTEST $NGX_AUTOTEST.c $NGX_TEST_LD_OPT $ngx_feature_libs"
++ngx_test=
++if [ "$NGX_CC_NAME" = msvc ]; then
++    ngx_test="$CC $CC_TEST_FLAGS $CC_AUX_FLAGS $ngx_feature_inc_path \
++              $NGX_AUTOTEST.c $ngx_feature_libs -link -out:$NGX_AUTOTEST $NGX_TEST_LD_OPT"
++else
++    ngx_test="$CC $CC_TEST_FLAGS $CC_AUX_FLAGS $ngx_feature_inc_path \
++              -o $NGX_AUTOTEST $NGX_AUTOTEST.c $NGX_TEST_LD_OPT $ngx_feature_libs"
++fi
+ 
+ ngx_feature_inc_path=
+ 
+ eval "/bin/sh -c \"$ngx_test\" >> $NGX_AUTOCONF_ERR 2>&1"
+ 
+-
+ if [ -x $NGX_AUTOTEST ]; then
+ 
+     case "$ngx_feature_run" in
+diff --binary -Nur nginx-1.13.7.1-original/auto/lib/openssl/make nginx-1.13.7.1-msvc/auto/lib/openssl/make
+--- nginx-1.13.7.1-original/auto/lib/openssl/make	2017-11-21 19:09:44 +0400
++++ nginx-1.13.7.1-msvc/auto/lib/openssl/make	2018-01-01 17:32:30 +0400
+@@ -10,7 +10,7 @@
+         cat << END                                            >> $NGX_MAKEFILE
+ 
+ $OPENSSL/openssl/include/openssl/ssl.h:	$NGX_MAKEFILE
+-	\$(MAKE) -f auto/lib/openssl/makefile.msvc			\
++	\$(MAKE) -f auto/lib/openssl/makefile-$NGX_MSVC_TYPE.msvc			\
+ 		OPENSSL="$OPENSSL" OPENSSL_OPT="$OPENSSL_OPT"
+ 
+ END
+diff --binary -Nur nginx-1.13.7.1-original/auto/lib/openssl/makefile-x64.msvc nginx-1.13.7.1-msvc/auto/lib/openssl/makefile-x64.msvc
+--- nginx-1.13.7.1-original/auto/lib/openssl/makefile-x64.msvc	1970-01-01 04:00:00 +0400
++++ nginx-1.13.7.1-msvc/auto/lib/openssl/makefile-x64.msvc	2018-01-10 16:50:39 +0400
+@@ -0,0 +1,21 @@
++
++# Copyright (C) Igor Sysoev
++# Copyright (C) Nginx, Inc.
++
++
++all:
++    cd $(OPENSSL)
++
++    perl Configure VC-WIN64A no-shared              \
++        --prefix="%cd%/openssl"                     \
++        --openssldir="%cd%/openssl/ssl"             \
++        $(OPENSSL_OPT)
++
++    if exist ms\do_win64a.bat (                     \
++        ms\do_win64a                                \
++        && $(MAKE) -f ms\nt.mak                     \
++        && $(MAKE) -f ms\nt.mak install             \
++    ) else (                                        \
++        $(MAKE)                                     \
++        && $(MAKE) install_sw                       \
++    )
+diff --binary -Nur nginx-1.13.7.1-original/auto/lib/openssl/makefile-x86.msvc nginx-1.13.7.1-msvc/auto/lib/openssl/makefile-x86.msvc
+--- nginx-1.13.7.1-original/auto/lib/openssl/makefile-x86.msvc	1970-01-01 04:00:00 +0400
++++ nginx-1.13.7.1-msvc/auto/lib/openssl/makefile-x86.msvc	2018-01-10 16:49:41 +0400
+@@ -0,0 +1,21 @@
++
++# Copyright (C) Igor Sysoev
++# Copyright (C) Nginx, Inc.
++
++
++all:
++    cd $(OPENSSL)
++
++    perl Configure VC-WIN32 no-shared               \
++        --prefix="%cd%/openssl"                     \
++        --openssldir="%cd%/openssl/ssl"             \
++        $(OPENSSL_OPT)
++
++    if exist ms\do_nasm.bat (                       \
++        ms\do_nasm                                  \
++        && $(MAKE) -f ms\nt.mak                     \
++        && $(MAKE) -f ms\nt.mak install             \
++    ) else (                                        \
++        $(MAKE)                                     \
++        && $(MAKE) install_sw                       \
++    )
