@@ -12,7 +12,7 @@ index ba8e81e..62ccd72 100644
  #define BIO_CB_FREE 0x01
  #define BIO_CB_READ 0x02
 diff --git a/include/openssl/ssl.h.in b/include/openssl/ssl.h.in
-index bdcc685..becc8ec 100644
+index bdcc685..63c7e02 100644
 --- a/include/openssl/ssl.h.in
 +++ b/include/openssl/ssl.h.in
 @@ -911,6 +911,7 @@ __owur int SSL_extension_supported(unsigned int ext_type);
@@ -40,12 +40,7 @@ index bdcc685..becc8ec 100644
  #ifndef OPENSSL_NO_DEPRECATED_3_0
  #define SSL_CTRL_SET_TMP_DH 3
  #define SSL_CTRL_SET_TMP_ECDH 4
-@@ -1752,10 +1756,12 @@ __owur unsigned int SSL_SESSION_get_compress_id(const SSL_SESSION *s);
- #ifndef OPENSSL_NO_STDIO
- int SSL_SESSION_print_fp(FILE *fp, const SSL_SESSION *ses);
- #endif
-+SSL_SESSION *SSL_magic_pending_session_ptr(void);
- int SSL_SESSION_print(BIO *fp, const SSL_SESSION *ses);
+@@ -1756,6 +1760,7 @@ int SSL_SESSION_print(BIO *fp, const SSL_SESSION *ses);
  int SSL_SESSION_print_keylog(BIO *bp, const SSL_SESSION *x);
  int SSL_SESSION_up_ref(SSL_SESSION *ses);
  void SSL_SESSION_free(SSL_SESSION *ses);
