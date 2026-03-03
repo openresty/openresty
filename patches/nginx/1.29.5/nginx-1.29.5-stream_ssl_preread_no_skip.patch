@@ -1,0 +1,18 @@
+diff --git a/src/stream/ngx_stream_ssl_preread_module.c b/src/stream/ngx_stream_ssl_preread_module.c
+index 3fc83ff2f..7e65d65be 100644
+--- a/src/stream/ngx_stream_ssl_preread_module.c
++++ b/src/stream/ngx_stream_ssl_preread_module.c
+@@ -190,11 +190,11 @@ ngx_stream_ssl_preread_handler(ngx_stream_session_t *s)
+         }
+ 
+         if (rc == NGX_OK) {
+-            return ngx_stream_ssl_preread_servername(s, &ctx->host);
++            rc = ngx_stream_ssl_preread_servername(s, &ctx->host);
+         }
+ 
+         if (rc != NGX_AGAIN) {
+-            return rc;
++            return rc == NGX_OK ? NGX_DECLINED : rc;
+         }
+ 
+         p += len;
