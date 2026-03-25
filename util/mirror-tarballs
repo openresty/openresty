@@ -565,6 +565,9 @@ if [ "$answer" = "Y" ]; then
 
         echo "$info_txt applying the patch for nginx security advisory (CVE-2026-32647)"
         patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-CVE-2026-32647.patch || exit 1
+
+        echo "$info_txt applying the patch for nginx security advisory (CVE-2026-27654)"
+        patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-CVE-2026-27654.patch || exit 1
     fi
 fi
 
