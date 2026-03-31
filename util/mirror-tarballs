@@ -520,6 +520,12 @@ if [ "$answer" = "Y" ]; then
     fi
 fi
 
+answer=`$root/util/ver-ge "$main_ver" 1.19.1`
+if [ "$answer" = "Y" ]; then
+    echo "$info_txt applying the patch for balancer_pool_max_retry"
+    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-balancer_pool_max_retry.patch || exit 1
+fi
+
 answer=`$root/util/ver-ge "$main_ver" 1.25.3`
 if [ "$answer" = "Y" ]; then
     answer=`$root/util/ver-ge "$main_ver" 1.25.4`
