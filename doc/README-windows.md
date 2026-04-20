@@ -18,11 +18,11 @@ Table of Contents
 Description
 ===========
 
-The official binary Win32 and Win64 distributions of OpenResty can be downloaded from the following web page:
+The official Win32 and Win64 binary distributions of OpenResty can be downloaded from the following web page:
 
 https://openresty.org/en/download.html
 
-To start the NGINX server of the nginx server of the Win32 binary distribution of OpenResty:
+To start the nginx server from the Win32 binary distribution of OpenResty:
 
 ```bash
 start nginx
@@ -87,9 +87,8 @@ Hello, OpenResty!
 ```
 
 The `resty` command-line utility requires a Perl interpreter installed in your
-system and visible to your PATH environment. Any perl distributions should
-work, including StrawberryPerl, ActivePerl, and MSYS2 perl.
-recommended though).
+system and visible in your `PATH` environment variable. Any Perl distribution
+should work, including Strawberry Perl, ActivePerl, and MSYS2 Perl.
 
 Debugging
 =========
@@ -97,7 +96,7 @@ Debugging
 Debug symbols are enabled even in release builds. So that when things go very wrong,
 one can still debug things with tools like MSYS2 GDB.
 
-Inclusion of debug symbols make the binary files (`.exe` and `.dll` files) much larger,
+Inclusion of debug symbols makes the binary files (`.exe` and `.dll` files) much larger,
 but it generally will not load into memory during normal execution on a modern operating
 system.
 
@@ -113,7 +112,6 @@ This Win32/Win64 build of OpenResty is mainly for developers who want to develop
 in native Windows environment (though they eventually push the finished work onto a Linux or *BSD box, most of the time).
 
 [Back to TOC](#table-of-contents)
-
 TODO
 ====
 
@@ -131,7 +129,7 @@ NGINX debugging logs, disabling C compiler optimizations, and enabling all the a
 Details About The Building Process
 ==================================
 
-Usually you do not need to worry about how the Win32/Win64 binaries were built on the maintainers''
+Usually you do not need to worry about how the Win32/Win64 binaries were built on the maintainers'
 side. But if you do, please read on.
 
 The Win32/Win64 build of OpenResty is currently built via the MSYS2/MinGW toolchain, including
@@ -235,4 +233,3 @@ Redistribution and use in source and binary forms, with or without modification,
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 [Back to TOC](#table-of-contents)
-

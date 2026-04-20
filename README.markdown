@@ -62,11 +62,10 @@ sudo dnf install perl dos2unix mercurial
 ```
 
 [Back to TOC](#table-of-contents)
-
 Additional Features
 ===================
 
-In additional to the standard nginx core features, this bundle also supports the following:
+In addition to the standard nginx core features, this bundle also supports the following:
 
 [Back to TOC](#table-of-contents)
 
@@ -143,4 +142,3 @@ NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 [Back to TOC](#table-of-contents)
-
