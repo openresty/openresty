@@ -861,12 +861,57 @@ mv openresty-lua-resty-redis-* lua-resty-redis-$ver || exit 1
 
 #################################
 
-ver=0.28
+ver=0.30
 $root/util/get-tarball "https://github.com/openresty/lua-resty-mysql/tarball/v$ver" -O "lua-resty-mysql-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-mysql-$ver.tar.gz || exit 1
 mv openresty-lua-resty-mysql-* lua-resty-mysql-$ver || exit 1
 cd lua-resty-mysql-$ver || exit 1
 sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
+
+#################################
+ver=1.1.1
+$root/util/get-tarball "https://github.com/spacewander/lua-resty-rsa/archive/refs/tags/v$ver.tar.gz" -O "lua-resty-rsa-$ver.tar.gz" || exit 1
+tar -xzf lua-resty-rsa-$ver.tar.gz || exit 1
+cd lua-resty-rsa-$ver || exit 1
+sed 's/\$(DESTDIR)\//$(DESTDIR)/g' Makefile > mk || exit 1
+mv mk Makefile || exit 1
+cd ..
+#################################
+
+ver=1.7.1
+$root/util/get-tarball "https://github.com/fffonion/lua-resty-openssl/archive/refs/tags/$ver.tar.gz" -O lua-resty-openssl-$ver.tar.gz || exit 1
+tar -xzf lua-resty-openssl-$ver.tar.gz || exit 1
+cd lua-resty-openssl-$ver || exit 1
+cat > mk <<EOF
+OPENRESTY_PREFIX=/usr/local/openresty
+
+PREFIX :=          /usr/local
+LUA_LIB_DIR :=     \$(OPENRESTY_PREFIX)/lualib
+INSTALL := install
+
+.PHONY: all install
+
+all:
+
+install: all
+	\$(INSTALL) -d \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl
+	\$(INSTALL) -d \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl/auxiliary
+	\$(INSTALL) -d \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl/include
+	\$(INSTALL) -d \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl/include/evp
+	\$(INSTALL) -d \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl/include/x509
+	\$(INSTALL) -d \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl/x509
+	\$(INSTALL) -d \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl/x509/extension
+	\$(INSTALL) lib/resty/*.lua \$(DESTDIR)\$(LUA_LIB_DIR)/resty
+	\$(INSTALL) lib/resty/openssl/*.lua \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl
+	\$(INSTALL) lib/resty/openssl/auxiliary/*.lua \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl/auxiliary
+	\$(INSTALL) lib/resty/openssl/include/*.lua \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl/include
+	\$(INSTALL) lib/resty/openssl/include/evp/*.lua \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl/include/evp
+	\$(INSTALL) lib/resty/openssl/include/x509/*.lua \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl/include/x509
+	\$(INSTALL) lib/resty/openssl/x509/*.lua \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl/x509
+	\$(INSTALL) lib/resty/openssl/x509/extension/*.lua \$(DESTDIR)\$(LUA_LIB_DIR)/resty/openssl/x509/extension
+EOF
 mv mk Makefile || exit 1
 cd ..
 

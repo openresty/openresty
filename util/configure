@@ -237,6 +237,12 @@ for my $opt (@ARGV) {
     } elsif ($opt eq '--without-lua_resty_core') {
         $resty_opts{no_lua_resty_core} = 1;
 
+    } elsif ($opt eq '--without-lua_resty_rsa') {
+        $resty_opts{no_lua_resty_rsa} = 1;
+
+    } elsif ($opt eq '--without-lua_resty_openssl') {
+        $resty_opts{no_lua_resty_openssl} = 1;
+
     } elsif ($opt eq '--without-lua_resty_upstream_healthcheck') {
         $resty_opts{no_lua_resty_upstream_healthcheck} = 1;
 
@@ -1129,7 +1135,7 @@ _EOC_
 
         for my $key (qw(dns memcached redis mysql string upload websocket
                         lock lrucache core upstream_healthcheck limit_traffic
-                        shell))
+                        shell rsa openssl))
         {
             add_lua_lib($opts, "lua_resty", $key);
         }
@@ -1343,6 +1349,8 @@ _EOC_
                                      the lua-resty-shell library)
   --without-lua_resty_shell          disable the lua-resty-shell library
   --without-lua_resty_core           disable the lua-resty-core library
+  --without-lua_resty_rsa            disable the lua-resty-rsa library
+  --without-lua_resty_openssl        disable the lua-resty-openssl library
 
   --with-luajit=DIR                  use the external LuaJIT 2.1 installation specified by DIR
   --with-luajit-xcflags=FLAGS        Specify extra C compiler flags for LuaJIT 2.1
