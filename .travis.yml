@@ -51,7 +51,7 @@ env:
     - OPENSSL_VER=3.5.6 OPENSSL_PATCH_VER=3.5.5
 
 install:
-  - cpanm --sudo --notest Test::Nginx IPC::Run3 IPC::Run > build.log 2>&1 || (cat build.log && exit 1)
+  - cpanm --sudo --notest Test2::Suite Test::Nginx IPC::Run3 IPC::Run > build.log 2>&1 || (cat build.log && exit 1)
   - git clone https://github.com/openresty/test-nginx.git
   - if [ ! -f download-cache/pcre2-$PCRE_VER.tar.gz ]; then wget -P download-cache https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${PCRE_VER}/pcre2-${PCRE_VER}.tar.gz; fi
   - tar zxf download-cache/pcre2-$PCRE_VER.tar.gz
