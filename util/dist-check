@@ -58,6 +58,10 @@ if ($^O eq 'darwin') {
     }
 }
 
+if ($^O eq 'freebsd') {
+    $cfg_opts .= " --with-luajit-xcflags='-fPIC'"
+}
+
 my $prefix;
 
 my $config = do { local $/; <DATA> };
@@ -206,7 +210,7 @@ cleanup();
 unless ($opts{f}) {
     my $more_cfg_opts = '';
     if ($lua eq 'LuaJIT') {
-        $more_cfg_opts .= " --with-luajit-xcflags='-DLUA_USE_TRACE_LOGS'"
+        $more_cfg_opts .= " --with-luajit-xcflags='-DLUA_USE_TRACE_LOGS -fPIC'"
     }
     sh "./configure --with-debug $cfg_opts $more_cfg_opts --prefix=$prefix -j$jobs";
 }
