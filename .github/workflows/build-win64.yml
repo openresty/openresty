@@ -25,21 +25,14 @@ jobs:
           install: >-
             mingw-w64-x86_64-gcc
             mingw-w64-x86_64-perl
-            mingw-w64-x86_64-libwinpthread-git
             mingw-w64-x86_64-make
             make
             perl
+            wget
             dos2unix
             zip
             unzip
-            diffutils
             patch
-
-      - name: Download dependencies
-        run: |
-          cd util
-          mkdir -p ../objs/lib
-          bash build-win32.sh download-only || true
 
       - name: Build OpenResty
         run: |
