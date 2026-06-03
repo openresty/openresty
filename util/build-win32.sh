@@ -2,17 +2,48 @@
 
 PCRE=pcre2-10.47
 ZLIB=zlib-1.3.2
-OPENSSL=openssl-3.5.6
+OPENSSL=openssl-3.5.5
 JOBS=12
 
-if [ ! -f ../$OPENSSL.tar.gz ]; then wget -O ../$OPENSSL.tar.gz https://github.com/openssl/openssl/releases/download/$OPENSSL/$OPENSSL.tar.gz; fi
-if [ ! -f ../$ZLIB.tar.gz ]; then wget -O ../$ZLIB.tar.gz http://zlib.net/$ZLIB.tar.gz; fi
-if [ ! -f ../$PCRE.tar.gz ]; then wget -O ../$PCRE.tar.gz https://github.com/PCRE2Project/pcre2/releases/download/$PCRE/$PCRE.tar.gz; fi
+# 下载函数：用 curl 替代 wget，支持重试和重定向
+download() {
+    local url="$1"
+    local out="$2"
+    curl -fL --retry 5 -C - -o "$out" "$url" 2>&1
+}
+
+if [ ! -f ../$OPENSSL.tar.gz ]; then
+    echo "==> Downloading $OPENSSL..."
+    download "https://github.com/openssl/openssl/releases/download/$OPENSSL/$OPENSSL.tar.gz" ../$OPENSSL.tar.gz
+fi
+if [ ! -f ../$ZLIB.tar.gz ]; then
+    echo "==> Downloading $ZLIB..."
+    download "https://github.com/madler/zlib/releases/download/v1.3.2/$ZLIB.tar.gz" ../$ZLIB.tar.gz
+fi
+if [ ! -f ../$PCRE.tar.gz ]; then
+    echo "==> Downloading $PCRE..."
+    download "https://github.com/PCRE2Project/pcre2/releases/download/$PCRE/$PCRE.tar.gz" ../$PCRE.tar.gz
+fi
+
+# 验证下载文件完整性
+for f in ../$OPENSSL.tar.gz ../$ZLIB.tar.gz ../$PCRE.tar.gz; do
+    if [ ! -f "$f" ]; then
+        echo "ERROR: $f not found!"
+        exit 1
+    fi
+    # 用 tar -tf 验证 gzip/tar 完整性（只列出内容不解压）
+    if ! gzip -t "$f" 2>/dev/null; then
+        echo "ERROR: $f is corrupted (gzip check failed), removing and retrying..."
+        rm -f "$f"
+        exit 1
+    fi
+    echo "OK: $f passed integrity check"
+done
 
 rm -rf objs || exit 1
 mkdir -p objs/lib || exit 1
 cd objs/lib || exit 1
-ls ../../..
+echo "==> Extracting archives..."
 tar -xf ../../../$OPENSSL.tar.gz || exit 1
 tar -xf ../../../$ZLIB.tar.gz || exit 1
 tar -xf ../../../$PCRE.tar.gz || exit 1
