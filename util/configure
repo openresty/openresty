@@ -841,6 +841,15 @@ _END_
             $lib = File::Spec->catfile($luajit_root, $luajit_prefix, "lib");
             $inc = File::Spec->catfile($luajit_root, $luajit_prefix,
                                        "include", "luajit-2.1");
+
+            # nginx ngx_lua module on win32 links with -llua51,
+            # but non-msys LuaJIT build produces libluajit-5.1.a.
+            # Copy it so ngx_lua can find it during nginx configure.
+            if (-f "$lib/libluajit-5.1.a") {
+                shell "cp $lib/libluajit-5.1.a $lib/liblua51.a", $dry_run;
+            } elsif (-f "$lib/libluajit.a") {
+                shell "cp $lib/libluajit.a $lib/liblua51.a", $dry_run;
+            }
         }
 
         push @make_cmds, "cd $root_dir/build/$luajit_src && "
