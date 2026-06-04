@@ -28,6 +28,7 @@ jobs:
             mingw-w64-x86_64-make
             make
             perl
+            git
             wget
             dos2unix
             zip
@@ -35,6 +36,9 @@ jobs:
             patch
 
       - name: Prepare bundle (download dependencies)
+        env:
+          LANG: C
+          LC_ALL: C
         run: |
           make
 
