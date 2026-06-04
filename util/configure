@@ -60,7 +60,7 @@ if ($OS =~ /solaris|sunos/i) {
 } elsif ($OS =~ /^(?:openbsd|netbsd|dragonfly)$/) {
     $platform = 'bsd';
 
-} elsif ($OS eq 'msys') {
+} elsif ($OS eq 'msys' || $OS eq 'cygwin') {
     $platform = 'msys';
 
 } else {
@@ -833,6 +833,22 @@ _END_
             shell "cd src && install -m 0644 lua.h lualib.h lauxlib.h "
                   . "luaconf.h lua.hpp luajit.h $inc/",
                   $dry_run;
+
+            # nginx ngx_lua module on win32 links with -llua51,
+            # but LuaJIT only produces lua51.dll (no import library).
+            # Use gendef + dlltool to create liblua51.a from the DLL.
+            my $dll = File::Spec->catfile($lib, "lua51.dll");
+            if (-f $dll) {
+                my $def = File::Spec->catfile($lib, "lua51.def");
+                my $implib = File::Spec->catfile($lib, "liblua51.a");
+                shell "gendef $dll $def 2>/dev/null || "
+                      . "gendef $dll 2>/dev/null", $dry_run;
+                if (-f $def || -f "lua51.def") {
+                    my $actual_def = -f $def ? $def : "lua51.def";
+                    shell "dlltool -d $actual_def -D $dll -l $implib",
+                          $dry_run;
+                }
+            }
 
         } else {
             shell "${make} install$extra_opts PREFIX=$luajit_prefix "
