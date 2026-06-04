@@ -92,6 +92,18 @@ PATH="/usr/bin:$PATH" ./configure \
     --with-openssl=objs/lib/$OPENSSL \
     -j$JOBS || exit 1
 
+# Fix: ngx_lua's config on win32 looks for -llua51 (liblua51.a),
+# but non-msys LuaJIT build produces libluajit-5.1.a.
+# Create a win32-compatible copy so the linker can find it.
+LUAJIT_LIB_DIR="build/luajit-root/luajit/lib"
+if [ -f "$LUAJIT_LIB_DIR/libluajit-5.1.a" ]; then
+    echo "==> Creating liblua51.a for win32 compatibility..."
+    cp "$LUAJIT_LIB_DIR/libluajit-5.1.a" "$LUAJIT_LIB_DIR/liblua51.a"
+elif [ -f "$LUAJIT_LIB_DIR/libluajit.a" ]; then
+    echo "==> Creating liblua51.a (from libluajit.a) for win32 compatibility..."
+    cp "$LUAJIT_LIB_DIR/libluajit.a" "$LUAJIT_LIB_DIR/liblua51.a"
+fi
+
 make -j$JOBS || exit 1
 exec make install
 
