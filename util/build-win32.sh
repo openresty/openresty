@@ -55,7 +55,8 @@ cd ../../..
 
     #--with-openssl-opt="no-asm" \
 
-./configure \
+# Use MSYS2 perl instead of MinGW perl for configure (returns $^O='msys', not 'MSWin32')
+PATH="/usr/bin:$PATH" ./configure \
     --with-cc=gcc \
     --prefix= \
     --with-cc-opt='-DFD_SETSIZE=1024' \
