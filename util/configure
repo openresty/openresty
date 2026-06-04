@@ -1070,8 +1070,11 @@ _EOC_
 
             if ($platform eq 'msys') {
                 my $luajit_root = File::Spec->rel2abs("luajit-root");
+                # Link directly against the DLL instead of -llua51.
+                # MinGW ld can resolve symbols from .dll files directly,
+                # which is more reliable than gendef/dlltool import libs.
                 $extra_opts .=
-                    " CJSON_LDFLAGS=\"-shared -L$luajit_root -llua51\"";
+                    " CJSON_LDFLAGS=\"-shared $luajit_root/lua51.dll\"";
             }
 
             if ($on_solaris) {
@@ -1132,7 +1135,7 @@ _EOC_
 
             } elsif ($platform eq 'msys') {
                 my $luajit_root = File::Spec->rel2abs("luajit-root");
-                $extra_opts .= " LDFLAGS=\"-shared -L$luajit_root -llua51\"";
+                $extra_opts .= " LDFLAGS=\"-shared $luajit_root/lua51.dll\"";
             }
 
             if (defined $cc) {
@@ -1168,7 +1171,7 @@ _EOC_
 
             if ($platform eq 'msys') {
                 my $luajit_root = File::Spec->rel2abs("luajit-root");
-                $extra_opts .= " LDFLAGS=\"-shared -L$luajit_root -llua51\"";
+                $extra_opts .= " LDFLAGS=\"-shared $luajit_root/lua51.dll\"";
             }
 
             if ($on_solaris) {
@@ -1219,7 +1222,7 @@ _EOC_
 
             if ($platform eq 'msys') {
                 my $luajit_root = File::Spec->rel2abs("luajit-root");
-                $extra_opts .= " LDFLAGS=\"-shared -L$luajit_root -llua51\"";
+                $extra_opts .= " LDFLAGS=\"-shared $luajit_root/lua51.dll\"";
             }
 
             if ($on_solaris) {
