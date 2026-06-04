@@ -131,82 +131,69 @@ NGINX debugging logs, disabling C compiler optimizations, and enabling all the a
 Details About The Building Process
 ==================================
 
-Usually you do not need to worry about how the Win32/Win64 binaries were built on the maintainers''
-side. But if you do, please read on.
+If you want to build OpenResty on native Windows, the maintainers use the MSYS2 + MinGW
+toolchain (run from the "MSYS2 MINGW64" shortcut). Below is a concise, practical
+workflow using MSYS2 (follow the steps in order):
 
-The Win32/Win64 build of OpenResty is currently built via the MSYS2/MinGW toolchain, including
-MinGW gcc 7.2.3, MSYS2 perl 5.24.4, MSYS2 bash, MSYS2 make, and etc. Basically, it is currently built via
- the following commands:
+1. Install MSYS2
+
+   - Install from https://www.msys2.org/ and then open the "MSYS2 MINGW64" shortcut
+     (do not use the "MSYS2 MSYS" shortcut).
+
+2. Install the toolchain and dependencies
 
 ```bash
-PCRE=pcre-8.42
-ZLIB=zlib-1.2.11
-OPENSSL=openssl-1.1.0h
-
-mkdir -p objs/lib || exit 1
-cd objs/lib || exit 1
-ls ../../..
-tar -xf ../../../$OPENSSL.tar.gz || exit 1
-tar -xf ../../../$ZLIB.tar.gz || exit 1
-tar -xf ../../../$PCRE.tar.gz || exit 1
-cd ../..
-
-cd objs/lib/$OPENSSL || exit 1
-patch -p1 < ../../../patches/openssl-1.1.0d-sess_set_get_cb_yield.patch || exit 1
-cd ../../..
-
-./configure \
-    --with-cc=gcc \
-    --with-ipv6 \
-    --prefix= \
-    --with-cc-opt='-DFD_SETSIZE=1024' \
-    --sbin-path=nginx.exe \
-    --with-pcre-jit \
-    --without-http_rds_json_module \
-    --without-http_rds_csv_module \
-    --without-lua_rds_parser \
-    --with-ipv6 \
-    --with-stream \
-    --with-stream_ssl_module \
-    --with-stream_ssl_preread_module \
-    --with-http_v2_module \
-    --without-mail_pop3_module \
-    --without-mail_imap_module \
-    --without-mail_smtp_module \
-    --with-http_stub_status_module \
-    --with-http_realip_module \
-    --with-http_addition_module \
-    --with-http_auth_request_module \
-    --with-http_secure_link_module \
-    --with-http_random_index_module \
-    --with-http_gzip_static_module \
-    --with-http_sub_module \
-    --with-http_dav_module \
-    --with-http_flv_module \
-    --with-http_mp4_module \
-    --with-http_gunzip_module \
-    --with-select_module \
-    --with-luajit-xcflags="-DLUAJIT_NUMMODE=2 -DLUAJIT_ENABLE_LUA52COMPAT" \
-    --with-pcre=objs/lib/$PCRE \
-    --with-zlib=objs/lib/$ZLIB \
-    --with-openssl=objs/lib/$OPENSSL \
-    -j9 || exit 1
-
-make -j9
-make install
+pacman -Syu                              # initial update (may require reopening the shell)
+pacman -S mingw-w64-x86_64-toolchain     # MinGW gcc / binutils for build outputs
+pacman -S base-devel                     # MSYS build tools: make, patch, etc.
+pacman -S perl make vim                  # ensure /usr/bin/perl and /usr/bin/make are available
 ```
 
-where the dependency library source tarballs for OpenSSL, Zlib, and PCRE are downloaded
-from their official sites, respectively.
+3. Prepare source and dependencies
 
-We automate these commands in a dedicated shell script named [build-win32.sh](https://github.com/openresty/openresty/blob/master/util/build-win32.sh).
+```bash
+cd ~
+curl -LO https://openresty.org/download/openresty-<version>.tar.gz
+tar zxf openresty-<version>.tar.gz
+cd openresty-<version>
+```
 
-Furthermore, we automate the packaging process of the resulting binaries and supporting files
-with this [package-win32.sh](https://github.com/openresty/openresty/blob/master/util/package-win32.sh)
-script.
+4. Verify the environment
 
-Usually you can just download and use the binary distribution of OpenResty without
-installing the build toolchain.
+```bash
+echo $MSYSTEM             # should output: MINGW64
+gcc -dumpmachine          # should output: x86_64-w64-mingw32
+perl -e 'print "$^O\n"'   # should output: cygwin or msys
+make --version            # should output GNU Make x.x
+```
+
+All four checks should pass before continuing. If any check fails, fix the environment first
+(ensure you are using the MSYS2 MINGW64 shell and that /mingw64/bin appears before other tool
+locations in PATH).
+
+5. Build
+
+In the OpenResty source directory, the maintainers provide a helper script for the common
+build steps:
+
+```bash
+./util/build-win32.sh
+```
+
+This script automatically downloads and extracts required dependencies (OpenSSL, zlib, PCRE2,
+etc.), then runs `./configure`, `make`, and `make install` to produce `nginx.exe`.
+
+Notes
+-----
+- If you need to customize compile options (for example, change parallel job counts or
+  dependency versions), edit the variables in `util/build-win32.sh`: `PCRE`, `ZLIB`, `OPENSSL`,
+  and `JOBS`.
+- In the MSYS2 MINGW64 shell, `gcc` normally points to the MinGW-w64 compiler; do not build
+  in the MSYS (non-MINGW) shell.
+- If OpenSSL or other dependencies require additional patches, the patch files are located in
+  the `patches/` directory and the script will apply them automatically.
+
+Usually you can just download the official binary distribution instead of building locally.
 
 [Back to TOC](#table-of-contents)
 
