@@ -28,6 +28,7 @@ jobs:
             mingw-w64-x86_64-make
             make
             perl
+            perl-podlators
             git
             wget
             dos2unix
