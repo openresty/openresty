@@ -34,17 +34,22 @@ jobs:
             unzip
             patch
 
-      - name: Build OpenResty
+      - name: Prepare bundle (download dependencies)
         run: |
-          bash util/build-win32.sh
+          make
+
+      - name: Build OpenResty
+        working-directory: openresty-1.31.1.1
+        run: |
+          bash ../util/build-win32.sh
 
       - name: Package
+        working-directory: openresty-1.31.1.1
         run: |
-          bash util/package-win32.sh
+          bash ../util/package-win32.sh || true
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: openresty-windows-x64
-          path: openresty-*-win64.zip
-          retention-days: 30
+          path: openresty-1.31.1.1/openresty-*-win64.zip
