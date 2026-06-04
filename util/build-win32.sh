@@ -53,11 +53,21 @@ cd objs/lib/$OPENSSL || exit 1
 patch -p1 < ../../../patches/openssl-3.5.5-sess_set_get_cb_yield.patch || exit 1
 cd ../../..
 
-    #--with-openssl-opt="no-asm" \
+# Patch nginx's auto/lib/openssl/make to force mingw64 target on MSYS2/MinGW.
+# Cannot edit the file in-place in the repo because openresty-* is gitignored.
+# Instead, patch it right after extraction and before ./configure.
+echo "==> Patching nginx auto/lib/openssl/make for mingw64 target..."
+sed -i 's|OPENSSL_CONFIG_CMD="\./config"|OPENSSL_CONFIG_CMD="./Configure"|' \
+    openresty-1.31.1.1/bundle/nginx-1.31.1/auto/lib/openssl/make
+sed -i 's|OPENSSL_CONFIG_OPTS=""|OPENSSL_CONFIG_OPTS="mingw64"|' \
+    openresty-1.31.1.1/bundle/nginx-1.31.1/auto/lib/openssl/make
+# Verify the patch took effect
+grep -q 'Configure.*mingw64' openresty-1.31.1.1/bundle/nginx-1.31.1/auto/lib/openssl/make \
+    && echo "OK: openssl/make patched for mingw64" \
+    || { echo "ERROR: failed to patch openssl/make"; exit 1; }
 
 # Use MSYS2 perl instead of MinGW perl for configure (returns $^O='msys', not 'MSWin32')
-# Export MSYSTEM to ensure nginx auto/lib/openssl/make picks mingw64 target
-# instead of auto-detecting VC-WIN64A (which requires NASM not in CI runner)
+# Export MSYSTEM to ensure the msys detection in nginx configure works properly
 export MSYSTEM=MINGW64
 PATH="/usr/bin:$PATH" ./configure \
     --with-cc=gcc \
