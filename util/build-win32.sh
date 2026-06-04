@@ -56,6 +56,9 @@ cd ../../..
     #--with-openssl-opt="no-asm" \
 
 # Use MSYS2 perl instead of MinGW perl for configure (returns $^O='msys', not 'MSWin32')
+# Export MSYSTEM to ensure nginx auto/lib/openssl/make picks mingw64 target
+# instead of auto-detecting VC-WIN64A (which requires NASM not in CI runner)
+export MSYSTEM=MINGW64
 PATH="/usr/bin:$PATH" ./configure \
     --with-cc=gcc \
     --prefix= \
