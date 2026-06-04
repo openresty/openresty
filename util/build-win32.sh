@@ -90,7 +90,6 @@ PATH="/usr/bin:$PATH" ./configure \
     --with-pcre=objs/lib/$PCRE \
     --with-zlib=objs/lib/$ZLIB \
     --with-openssl=objs/lib/$OPENSSL \
-    --with-openssl-opt="mingw64" \
     -j$JOBS || exit 1
 
 make -j$JOBS || exit 1
