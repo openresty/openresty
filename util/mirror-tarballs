@@ -1139,8 +1139,8 @@ if [ "$SKIP_RESTYDOC" != 1 ]; then
     $restydoc_index --outdir bundle $root/doc/LuaJIT-2.1 || echo "WARNING: restydoc-index for LuaJIT failed"
 fi
 
-# generate restydoc index from openresty docs
-
+# generate restydoc index from openresty docs (skip on Windows CI)
+if [ "$SKIP_RESTYDOC" != 1 ]; then
 for indir in bundle/*/; do
     #echo "processing directory $indir ..."
     if [ "$indir" == "bundle/pod/" ]; then
@@ -1150,8 +1150,9 @@ for indir in bundle/*/; do
         continue
     fi
     echo "restydoc-index --outdir bundle $indir"
-    $restydoc_index --outdir $curdir/bundle $indir || exit 1
+    $restydoc_index --outdir $curdir/bundle $indir || echo "WARNING: restydoc-index failed for $indir"
 done
+fi
 
 cd $curdir || exit 1
 #find bundle -name '*.md' -delete
