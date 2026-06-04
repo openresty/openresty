@@ -751,6 +751,15 @@ _END_
             $luajit_xcflags .= " -fno-stack-check";
         }
 
+        if ($platform eq 'msys') {
+            # LuaJIT luaconf.h uses LUA_BUILD_AS_DLL + LUA_CORE/LUA_LIB
+            # to control __declspec(dllexport/dllimport) on Windows.
+            # The Makefile defines LUA_BUILD_AS_DLL but NOT LUA_CORE,
+            # so all LUA_API symbols end up as dllimport (unexported).
+            # Without this, gendef sees no exports and lua-cjson/FFI checks fail.
+            $luajit_xcflags .= " -DLUA_CORE";
+        }
+
         if ($opts->{debug}) {
             $luajit_xcflags .= " -DLUA_USE_APICHECK -DLUA_USE_ASSERT";
 
