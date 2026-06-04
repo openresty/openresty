@@ -842,13 +842,20 @@ _END_
             $inc = File::Spec->catfile($luajit_root, $luajit_prefix,
                                        "include", "luajit-2.1");
 
-            # nginx ngx_lua module on win32 links with -llua51,
-            # but non-msys LuaJIT build produces libluajit-5.1.a.
-            # Copy it so ngx_lua can find it during nginx configure.
-            if (-f "$lib/libluajit-5.1.a") {
-                shell "cp $lib/libluajit-5.1.a $lib/liblua51.a", $dry_run;
-            } elsif (-f "$lib/libluajit.a") {
-                shell "cp $lib/libluajit.a $lib/liblua51.a", $dry_run;
+            # Debug: show platform and what's in the lib dir
+            print "DEBUG: \$^O=$OS, platform=$platform\n";
+            print "DEBUG: LuaJIT lib dir ($lib) contents:\n";
+            shell "ls -la $lib/ 2>/dev/null || echo '(lib dir empty or missing)'", $dry_run;
+
+            # nginx ngx_lua module on win32 links with -llua51.
+            # LuaJIT may produce various .a names; find any and copy to liblua51.a.
+            my $cp_cmd = "for f in $lib/libluajit*.a $lib/liblua*.a $lib/lua51*.a; do "
+                       . '[ -f "$f" ] && cp "$f" ' . "$lib/liblua51.a" . ' && '
+                       . 'echo "DEBUG: copied $f -> liblua51.a" && break; done';
+            shell $cp_cmd, $dry_run;
+
+            unless (-f "$lib/liblua51.a") {
+                warn "WARNING: No LuaJIT .a library found in $lib\n";
             }
         }
 
