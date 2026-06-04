@@ -751,14 +751,12 @@ _END_
             $luajit_xcflags .= " -fno-stack-check";
         }
 
-        if ($platform eq 'msys') {
-            # LuaJIT luaconf.h uses LUA_BUILD_AS_DLL + LUA_CORE/LUA_LIB
-            # to control __declspec(dllexport/dllimport) on Windows.
-            # The Makefile defines LUA_BUILD_AS_DLL but NOT LUA_CORE,
-            # so all LUA_API symbols end up as dllimport (unexported).
-            # Without this, gendef sees no exports and lua-cjson/FFI checks fail.
-            $luajit_xcflags .= " -DLUA_CORE";
-        }
+        # NOTE: Do NOT add -DLUA_CORE here for msys.
+        # Every LuaJIT .c source file already has `#define LUA_CORE`
+        # at the top, so adding it via XCFLAGS is redundant and only
+        # produces ~80 "LUA_CORE redefined" warnings.
+        # The DLL export is handled by the import library generation
+        # step below (via --out-implib copy or dlltool fallback).
 
         if ($opts->{debug}) {
             $luajit_xcflags .= " -DLUA_USE_APICHECK -DLUA_USE_ASSERT";
@@ -860,20 +858,42 @@ _END_
                 print "DEBUG: linker import lib $built_implib not found, "
                       . "trying fallback...\n";
 
-                # Fallback: gendef + dlltool
+                # Fallback: create import library from DLL
                 my $dll = File::Spec->catfile($lib, "lua51.dll");
                 if (-f $dll) {
                     my $def = File::Spec->catfile($lib, "lua51.def");
-                    shell "gendef $dll > $def 2>&1", $dry_run;
-                    if (-f $def && -s $def > 128) {
-                        shell "dlltool -m i386:x86-64 -d $def "
-                              . "-D $dll -l $target_implib 2>&1", $dry_run;
+
+                    # Method 1: gendef (outputs .def to stdout, must redirect)
+                    # NOTE: do NOT redirect stderr (2>&1) into the .def file
+                    shell "gendef $dll > $def", $dry_run;
+                    if (-f $def) {
+                        my $def_size = -s $def;
+                        print "DEBUG: gendef produced $def ($def_size bytes)\n";
+                        if ($def_size > 128) {
+                            shell "dlltool -m i386:x86-64 -d $def "
+                                  . "-D $dll -l $target_implib", $dry_run;
+                        } else {
+                            print "DEBUG: $def too small, trying raw dump\n";
+                            # Show what gendef actually produced
+                            shell "cat $def", $dry_run;
+                        }
+                    }
+
+                    # Method 2: If gendef/dlltool didn't work, try
+                    # dlltool --export-all-symbols (no .def needed)
+                    if (!-f $target_implib || !-s $target_implib) {
+                        print "DEBUG: gendef approach failed, "
+                              . "trying --export-all-symbols\n";
+                        shell "dlltool --export-all-symbols "
+                              . "-m i386:x86-64 -D $dll "
+                              . "-l $target_implib", $dry_run;
                     }
                 }
             }
 
-            if (-f $target_implib) {
-                print "DEBUG: import lib $target_implib ready\n";
+            if (-f $target_implib && -s $target_implib) {
+                print "DEBUG: import lib $target_implib ready ("
+                      . (-s $target_implib) . " bytes)\n";
             } else {
                 warn "WARNING: failed to create $target_implib\n";
             }
