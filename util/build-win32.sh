@@ -53,18 +53,31 @@ cd objs/lib/$OPENSSL || exit 1
 patch -p1 < ../../../patches/openssl-3.5.5-sess_set_get_cb_yield.patch || exit 1
 cd ../../..
 
-# Patch nginx's auto/lib/openssl/make to force mingw64 target on MSYS2/MinGW.
-# Cannot edit the file in-place in the repo because openresty-* is gitignored.
-# Instead, patch it right after extraction and before ./configure.
+# Patch nginx's auto/lib/openssl/make to force mingw64 target.
+# This script runs from inside openresty-1.31.1.1/ (CI working-directory),
+# and bundle/ is populated by the "Prepare bundle" step (Makefile downloads
+# nginx tarball and extracts it under bundle/).
+# We patch here instead of in the repo because .gitignore has openresty-*
+# which blocks committing any files under the openresty source tree.
 echo "==> Patching nginx auto/lib/openssl/make for mingw64 target..."
-sed -i 's|OPENSSL_CONFIG_CMD="\./config"|OPENSSL_CONFIG_CMD="./Configure"|' \
-    openresty-1.31.1.1/bundle/nginx-1.31.1/auto/lib/openssl/make
-sed -i 's|OPENSSL_CONFIG_OPTS=""|OPENSSL_CONFIG_OPTS="mingw64"|' \
-    openresty-1.31.1.1/bundle/nginx-1.31.1/auto/lib/openssl/make
-# Verify the patch took effect
-grep -q 'Configure.*mingw64' openresty-1.31.1.1/bundle/nginx-1.31.1/auto/lib/openssl/make \
-    && echo "OK: openssl/make patched for mingw64" \
-    || { echo "ERROR: failed to patch openssl/make"; exit 1; }
+NGINX_MAKE="bundle/nginx-1.31.1/auto/lib/openssl/make"
+if [ ! -f "$NGINX_MAKE" ]; then
+    # Fallback: try absolute path relative to repo root
+    REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+    NGINX_MAKE="$REPO_ROOT/openresty-1.31.1.1/bundle/nginx-1.31.1/auto/lib/openssl/make"
+fi
+if [ -f "$NGINX_MAKE" ]; then
+    # Replace ./config with ./Configure and force mingw64 target
+    sed -i 's|OPENSSL_CONFIG_CMD="\./config"|OPENSSL_CONFIG_CMD="./Configure"|' "$NGINX_MAKE"
+    sed -i 's|OPENSSL_CONFIG_OPTS=""|OPENSSL_CONFIG_OPTS="mingw64"|' "$NGINX_MAKE"
+    grep -q 'Configure.*mingw64' "$NGINX_MAKE" \
+        && echo "OK: $NGINX_MAKE patched for mingw64" \
+        || { echo "ERROR: failed to patch $NGINX_MAKE"; exit 1; }
+else
+    echo "ERROR: cannot find nginx auto/lib/openssl/make at $NGINX_MAKE"
+    echo "Ensure 'make' (Prepare bundle step) has been run first."
+    exit 1
+fi
 
 # Use MSYS2 perl instead of MinGW perl for configure (returns $^O='msys', not 'MSWin32')
 # Export MSYSTEM to ensure the msys detection in nginx configure works properly
