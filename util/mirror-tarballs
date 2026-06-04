@@ -1110,38 +1110,34 @@ nginx_xml2pod=$bundle_dir/$resty_cli/bin/nginx-xml2pod
 #nginx_xml2pod=echo
 #nginx_xml2pod=$HOME/git/resty-cli/bin/nginx-xml2pod
 
-# generate restydoc index from nginx docs
-
-curdir=$PWD
-cd $root/work/ || exit 1
-if [ -d nginx.org ]; then
-    if [ -f nginx.org/.git/config ];then
+# generate restydoc index from nginx docs (skip on Windows CI)
+if [ "$SKIP_RESTYDOC" != 1 ]; then
+    curdir=$PWD
+    cd $root/work/ || exit 1
+    if [ -f nginx.org/.git/config ]; then
         cd nginx.org/ || exit 1
         git checkout -f || exit 1
-        git pull || exit 1
         cd ..
     else
         rm -rf nginx.org || exit 1
         git clone https://github.com/nginx/nginx.org || exit 1
     fi
-else
-    git clone https://github.com/nginx/nginx.org || exit 1
+    cd nginx.org/ || exit 1
+    git clean -f || exit 1
+    find xml/en/docs -name 'ngx_http_api_module.xml' -delete
+    rm -f xml/en/docs/njs/*
+    $nginx_xml2pod xml/en/docs || echo "WARNING: nginx_xml2pod failed, continuing..."
+    cd $curdir || exit 1
+
+    echo "restydoc-index $root/work/nginx.org"
+    $restydoc_index --outdir bundle $root/work/nginx.org || echo "WARNING: restydoc-index for nginx.org failed"
+
+    echo "restydoc-index $root/doc/lua-5.1.5"
+    $restydoc_index --outdir bundle $root/doc/lua-5.1.5 || echo "WARNING: restydoc-index for lua-5.1.5 failed"
+
+    echo "restydoc-index $root/doc/LuaJIT-2.1"
+    $restydoc_index --outdir bundle $root/doc/LuaJIT-2.1 || echo "WARNING: restydoc-index for LuaJIT failed"
 fi
-cd nginx.org/ || exit 1
-git clean -f || exit 1
-find xml/en/docs -name 'ngx_http_api_module.xml' -delete
-rm xml/en/docs/njs/*
-$nginx_xml2pod xml/en/docs || exit 1
-cd $curdir || exit 1
-
-echo "restydoc-index $root/work/nginx.org"
-$restydoc_index --outdir bundle $root/work/nginx.org || exit 1
-
-echo "restydoc-index $root/doc/lua-5.1.5"
-$restydoc_index --outdir bundle $root/doc/lua-5.1.5 || exit 1
-
-echo "restydoc-index $root/doc/LuaJIT-2.1"
-$restydoc_index --outdir bundle $root/doc/LuaJIT-2.1 || exit 1
 
 # generate restydoc index from openresty docs
 

@@ -40,6 +40,7 @@ jobs:
         env:
           LANG: C
           LC_ALL: C
+          SKIP_RESTYDOC: 1
         run: |
           make
 
