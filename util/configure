@@ -899,11 +899,16 @@ _END_
                                     $in_exports = 1;
                                     next;
                                 }
-                                last if $in_exports && /^\s+\[/;
                                 next unless $in_exports;
-                                if (/^\s*\d+\s+(\S+)/) {
+                                # Entries are formatted as:
+                                #         [   0] lua_absindex
+                                if (/^\s*\[\s*\d+\]\s+(\S+)/) {
                                     print $deffh "  $1\n";
+                                    next;
                                 }
+                                # Non-empty, non-ordinal line
+                                # means we've left the table
+                                last if !/^\s*$/;
                             }
                             close($objdump);
                             close($deffh);
