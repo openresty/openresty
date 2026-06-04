@@ -879,14 +879,48 @@ _END_
                         }
                     }
 
-                    # Method 2: If gendef/dlltool didn't work, try
-                    # dlltool --export-all-symbols (no .def needed)
+                    # Method 2: Extract exports from DLL using objdump.
+                    # dlltool --export-all-symbols works with object
+                    # files, not with -D DLL input. Use objdump -p to
+                    # read the PE export table and build a .def file.
                     if (!-f $target_implib || !-s $target_implib) {
                         print "DEBUG: gendef approach failed, "
-                              . "trying --export-all-symbols\n";
-                        shell "dlltool --export-all-symbols "
-                              . "-m i386:x86-64 -D $dll "
-                              . "-l $target_implib", $dry_run;
+                              . "extracting exports with objdump\n";
+                        open(my $objdump, '-|',
+                             "objdump -p $dll 2>/dev/null")
+                            or warn "Cannot run objdump: $!";
+                        if ($objdump) {
+                            open(my $deffh, '>', $def)
+                                or die "Cannot write $def: $!";
+                            print $deffh "EXPORTS\n";
+                            my $in_exports = 0;
+                            while (<$objdump>) {
+                                if (/^\s*\[Ordinal\/Name Pointer\] Table$/) {
+                                    $in_exports = 1;
+                                    next;
+                                }
+                                last if $in_exports && /^\s+\[/;
+                                next unless $in_exports;
+                                if (/^\s*\d+\s+(\S+)/) {
+                                    print $deffh "  $1\n";
+                                }
+                            }
+                            close($objdump);
+                            close($deffh);
+
+                            my $def_size = -s $def;
+                            print "DEBUG: objdump produced $def ("
+                                  . "$def_size bytes)\n";
+                            if ($def_size > 128) {
+                                shell "dlltool -m i386:x86-64 -d $def "
+                                      . "-D $dll -l $target_implib",
+                                      $dry_run;
+                            } else {
+                                print "DEBUG: objdump .def too small, "
+                                      . "dumping:\n";
+                                shell "cat $def", $dry_run;
+                            }
+                        }
                     }
                 }
             }
