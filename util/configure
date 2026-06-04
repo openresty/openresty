@@ -844,32 +844,38 @@ _END_
                   $dry_run;
 
             # nginx ngx_lua module on win32 links with -llua51,
-            # but LuaJIT only produces lua51.dll (no import library).
-            # Use gendef + dlltool to create liblua51.a from the DLL.
-            my $dll = File::Spec->catfile($lib, "lua51.dll");
-            if (-f $dll) {
-                my $def = File::Spec->catfile($lib, "lua51.def");
-                my $implib = File::Spec->catfile($lib, "liblua51.a");
+            # so we need an import library named liblua51.a.
+            # LuaJIT's linker already creates libluajit-5.1.dll.a via
+            # -Wl,--out-implib. Copy that instead of using gendef/dlltool
+            # (which has compatibility issues with the PE format).
+            my $built_implib =
+                File::Spec->catfile("src", "libluajit-5.1.dll.a");
+            my $target_implib =
+                File::Spec->catfile($lib, "liblua51.a");
 
-                # gendef outputs .def to stdout, must redirect
-                my $gendef_cmd = "$dll > $def";
-                print "DEBUG: running: gendef $gendef_cmd\n";
-                shell "gendef $gendef_cmd 2>&1", $dry_run;
+            if (-f $built_implib && -s $built_implib) {
+                shell "cp $built_implib $target_implib", $dry_run;
+                print "DEBUG: copied $built_implib -> $target_implib\n";
+            } else {
+                print "DEBUG: linker import lib $built_implib not found, "
+                      . "trying fallback...\n";
 
-                if (-f $def && -s $def) {
-                    print "DEBUG: created $def (" . (-s $def) . " bytes), "
-                          . "now running dlltool\n";
-                    shell "dlltool -m i386:x86-64 -d $def "
-                          . "-D $dll -l $implib 2>&1", $dry_run;
-                } else {
-                    warn "WARNING: gendef failed to create $def\n";
+                # Fallback: gendef + dlltool
+                my $dll = File::Spec->catfile($lib, "lua51.dll");
+                if (-f $dll) {
+                    my $def = File::Spec->catfile($lib, "lua51.def");
+                    shell "gendef $dll > $def 2>&1", $dry_run;
+                    if (-f $def && -s $def > 128) {
+                        shell "dlltool -m i386:x86-64 -d $def "
+                              . "-D $dll -l $target_implib 2>&1", $dry_run;
+                    }
                 }
+            }
 
-                if (-f $implib) {
-                    print "DEBUG: created import lib $implib\n";
-                } else {
-                    warn "WARNING: failed to create $implib\n";
-                }
+            if (-f $target_implib) {
+                print "DEBUG: import lib $target_implib ready\n";
+            } else {
+                warn "WARNING: failed to create $target_implib\n";
             }
 
         } else {
