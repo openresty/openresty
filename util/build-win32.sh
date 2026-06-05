@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Prepend MSYS2 /usr/bin to PATH so MSYS2 perl (/usr/bin/perl) is found
+# before MinGW perl (/mingw64/bin/perl). OpenSSL's ./Configure script
+# requires a perl that produces Unix-style paths (forward slashes).
+# The MinGW perl (MSWin32) produces backslash paths and causes Configure to
+# fail with "This perl implementation doesn't produce Unix like paths".
+export PATH="/usr/bin:$PATH"
+
 PCRE=pcre2-10.47
 ZLIB=zlib-1.3.2
 OPENSSL=openssl-3.5.5
@@ -81,10 +88,7 @@ else
     exit 1
 fi
 
-# Use MSYS2 perl instead of MinGW perl for configure (returns $^O='msys', not 'MSWin32')
-# Export MSYSTEM to ensure the msys detection in nginx configure works properly
-export MSYSTEM=MINGW64
-PATH="/usr/bin:$PATH" ./configure \
+./configure \
     --with-cc=gcc \
     --prefix= \
     --with-cc-opt='-DFD_SETSIZE=1024' \
