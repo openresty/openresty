@@ -125,5 +125,12 @@ fi
     -j$JOBS || exit 1
 
 make -j$JOBS || exit 1
+
+# Create empty resty.index for Windows CI where SKIP_RESTYDOC=1
+# (restydoc-index is skipped to avoid Perl/pod2text compatibility issues)
+mkdir -p build
+touch build/resty.index
+mkdir -p build/pod
+
 exec make install
 
