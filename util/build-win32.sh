@@ -67,10 +67,12 @@ if [ ! -f "$NGINX_MAKE" ]; then
     NGINX_MAKE="$REPO_ROOT/openresty-1.31.1.1/bundle/nginx-1.31.1/auto/lib/openssl/make"
 fi
 if [ -f "$NGINX_MAKE" ]; then
-    # Replace ./config with ./Configure and force mingw64 target
-    sed -i 's|OPENSSL_CONFIG_CMD="\./config"|OPENSSL_CONFIG_CMD="./Configure"|' "$NGINX_MAKE"
-    sed -i 's|OPENSSL_CONFIG_OPTS=""|OPENSSL_CONFIG_OPTS="mingw64"|' "$NGINX_MAKE"
-    grep -q 'Configure.*mingw64' "$NGINX_MAKE" \
+    # The original nginx auto/lib/openssl/make has this line:
+    #   && ./config --prefix=$ngx_prefix no-shared no-threads $OPENSSL_OPT \
+    # On MSYS2/MinGW we need to use ./Configure mingw64 instead of ./config
+    # to avoid OpenSSL auto-detecting VC-WIN64A (which requires NASM).
+    sed -i 's|\&\& \./config --prefix=|\&\& ./Configure mingw64 --prefix=|' "$NGINX_MAKE"
+    grep -q 'Configure mingw64' "$NGINX_MAKE" \
         && echo "OK: $NGINX_MAKE patched for mingw64" \
         || { echo "ERROR: failed to patch $NGINX_MAKE"; exit 1; }
 else
