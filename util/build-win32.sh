@@ -90,6 +90,7 @@ fi
 
 ./configure \
     --with-cc=gcc \
+    --platform=msys \
     --prefix= \
     --with-cc-opt='-DFD_SETSIZE=1024' \
     --sbin-path=nginx.exe \
