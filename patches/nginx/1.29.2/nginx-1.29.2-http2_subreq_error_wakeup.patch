@@ -32,7 +32,7 @@ index ad11f147f..b0c5fd262 100644
  #define NGX_HTTP_MAX_URI_CHANGES           10
  #define NGX_HTTP_MAX_SUBREQUESTS           50
  
-+#define NGX_HTTP_OPENRESTY_LUA_SUBREQUEST
++#define NGX_HTTP_OPENRESTY_LUA_SUBREQUEST  1
 +
  /* must be 2^n */
  #define NGX_HTTP_LC_HEADER_LEN             32
@@ -41,7 +41,7 @@ index ad11f147f..b0c5fd262 100644
      unsigned                          internal:1;
      unsigned                          error_page:1;
      unsigned                          filter_finalize:1;
-+    unsigned                          filter_finalize:1;
++    unsigned                          lua_subrequest:1;
      unsigned                          post_action:1;
      unsigned                          request_complete:1;
      unsigned                          request_output:1;

@@ -41,7 +41,7 @@ index 1b012f810..2f358d1c9 100644
      unsigned                          internal:1;
      unsigned                          error_page:1;
      unsigned                          filter_finalize:1;
-+    unsigned                          lua_subrequest:1
++    unsigned                          lua_subrequest:1;
      unsigned                          post_action:1;
      unsigned                          request_complete:1;
      unsigned                          request_output:1;
