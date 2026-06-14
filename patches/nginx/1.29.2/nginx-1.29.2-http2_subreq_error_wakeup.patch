@@ -1,13 +1,19 @@
 diff --git a/src/http/ngx_http_request.c b/src/http/ngx_http_request.c
-index 16d79c4..760e0e5 100644
+index 16d79c490..2c2566c63 100644
 --- a/src/http/ngx_http_request.c
 +++ b/src/http/ngx_http_request.c
-@@ -2559,8 +2559,15 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
+@@ -2559,8 +2559,21 @@ ngx_http_finalize_request(ngx_http_request_t *r, ngx_int_t rc)
              return;
          }
  
 +#if (NGX_HTTP_V2)
-+        if (r->http_version < NGX_HTTP_VERSION_20 || r == r->main) {
++        if (r->http_version >= NGX_HTTP_VERSION_20
++            && r != r->main
++            && r->post_subrequest
++            && r->lua_subrequest)
++        {
++            /* fall through to normal subrequest finalization */
++        } else {
 +            ngx_http_terminate_request(r, rc);
 +            return;
 +        }
@@ -18,3 +24,24 @@ index 16d79c4..760e0e5 100644
      }
  
      if (rc >= NGX_HTTP_SPECIAL_RESPONSE
+diff --git a/src/http/ngx_http_request.h b/src/http/ngx_http_request.h
+index ad11f147f..b0c5fd262 100644
+--- a/src/http/ngx_http_request.h
++++ b/src/http/ngx_http_request.h
+@@ -12,6 +12,8 @@
+ #define NGX_HTTP_MAX_URI_CHANGES           10
+ #define NGX_HTTP_MAX_SUBREQUESTS           50
+ 
++#define NGX_HTTP_OPENRESTY_LUA_SUBREQUEST  1
++
+ /* must be 2^n */
+ #define NGX_HTTP_LC_HEADER_LEN             32
+ 
+@@ -544,6 +546,7 @@ struct ngx_http_request_s {
+     unsigned                          internal:1;
+     unsigned                          error_page:1;
+     unsigned                          filter_finalize:1;
++    unsigned                          lua_subrequest:1;
+     unsigned                          post_action:1;
+     unsigned                          request_complete:1;
+     unsigned                          request_output:1;
