@@ -6,28 +6,9 @@ on:
   pull_request:
     branches: [master]
   workflow_dispatch:
-    inputs:
-      include_ibm_power_z:
-        description: Run IBM Power/Z jobs. Requires IBM actionspz onboarding.
-        required: false
-        default: false
-        type: boolean
 
 permissions:
   contents: read
-
-env:
-  JOBS: 3
-  PCRE_VER: "10.47"
-  PCRE_PREFIX: /opt/pcre2
-  PCRE_LIB: /opt/pcre2/lib
-  PCRE_INC: /opt/pcre2/include
-  OPENSSL_VER: "3.5.6"
-  OPENSSL_PATCH_VER: "3.5.5"
-  OPENSSL_PREFIX: /opt/ssl3
-  OPENSSL_LIB: /opt/ssl3/lib
-  OPENSSL_INC: /opt/ssl3/include
-  OPENRESTY_PREFIX: /opt/openresty
 
 jobs:
   build:
@@ -41,44 +22,30 @@ jobs:
             runner: ubuntu-22.04
           - arch: arm64
             runner: ubuntu-22.04-arm
-
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Cache downloaded tarballs
-        uses: actions/cache@v4
-        with:
-          path: download-cache
-          key: linux-build-${{ matrix.arch }}-${{ env.PCRE_VER }}-${{ env.OPENSSL_VER }}-${{ hashFiles('util/mirror-tarballs') }}
-          restore-keys: |
-            linux-build-${{ matrix.arch }}-${{ env.PCRE_VER }}-${{ env.OPENSSL_VER }}-
-            linux-build-${{ matrix.arch }}-
-
-      - name: Enable IPv6
-        run: |
-          sudo sysctl -w net.ipv6.conf.all.disable_ipv6=0
-          sudo sysctl -w net.ipv6.conf.default.disable_ipv6=0
-
-      - name: Build and test
-        run: bash .github/scripts/linux-build-test.sh
-
-  ibm-power-z-build:
-    name: Linux ${{ matrix.arch }}
-    if: ${{ vars.ENABLE_IBM_POWER_Z_RUNNERS == 'true' || (github.event_name == 'workflow_dispatch' && inputs.include_ibm_power_z) }}
-    runs-on: ${{ matrix.runner }}
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
           - arch: s390x
             runner: ubuntu-22.04-s390x
           - arch: ppc64le
             runner: ubuntu-22.04-ppc64le
 
+    env:
+      JOBS: 3
+      PCRE_VER: "10.47"
+      PCRE_PREFIX: /opt/pcre2
+      PCRE_LIB: /opt/pcre2/lib
+      PCRE_INC: /opt/pcre2/include
+      OPENSSL_VER: "3.5.6"
+      OPENSSL_PATCH_VER: "3.5.5"
+      OPENSSL_PREFIX: /opt/ssl3
+      OPENSSL_LIB: /opt/ssl3/lib
+      OPENSSL_INC: /opt/ssl3/include
+      OPENRESTY_PREFIX: /opt/openresty
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+
+      - name: Prepare cache directory
+        run: mkdir -p download-cache
 
       - name: Cache downloaded tarballs
         uses: actions/cache@v4
@@ -94,5 +61,81 @@ jobs:
           sudo sysctl -w net.ipv6.conf.all.disable_ipv6=0
           sudo sysctl -w net.ipv6.conf.default.disable_ipv6=0
 
-      - name: Build and test
-        run: bash .github/scripts/linux-build-test.sh
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            axel \
+            build-essential \
+            ca-certificates \
+            cpanminus \
+            dos2unix \
+            git \
+            libgd-dev \
+            libpcre3 \
+            libpcre3-dev \
+            libpq-dev \
+            mercurial \
+            patch \
+            perl \
+            wget
+
+          cpanm --sudo --notest Test2::Suite Test::Nginx IPC::Run3 IPC::Run
+
+      - name: Check out test-nginx
+        run: |
+          rm -rf test-nginx
+          git clone --depth 1 https://github.com/openresty/test-nginx.git
+
+      - name: Build PCRE2
+        run: |
+          if [ ! -f "download-cache/pcre2-$PCRE_VER.tar.gz" ]; then
+            wget -P download-cache "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${PCRE_VER}/pcre2-${PCRE_VER}.tar.gz"
+          fi
+
+          rm -rf "pcre2-$PCRE_VER"
+          tar zxf "download-cache/pcre2-$PCRE_VER.tar.gz"
+          cd "pcre2-$PCRE_VER"
+          ./configure --prefix="$PCRE_PREFIX" --enable-jit --enable-utf --enable-unicode-properties
+          make "-j$JOBS"
+          sudo env PATH="$PATH" make install
+
+      - name: Build OpenSSL
+        run: |
+          if [ ! -f "download-cache/openssl-$OPENSSL_VER.tar.gz" ]; then
+            wget -P download-cache "https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VER}/openssl-${OPENSSL_VER}.tar.gz"
+          fi
+
+          rm -rf "openssl-$OPENSSL_VER"
+          tar zxf "download-cache/openssl-$OPENSSL_VER.tar.gz"
+          cd "openssl-$OPENSSL_VER"
+          patch -p1 < "../patches/openssl-$OPENSSL_PATCH_VER-sess_set_get_cb_yield.patch"
+          ./config no-threads shared enable-ssl3 enable-ssl3-method -g --libdir=lib --prefix="$OPENSSL_PREFIX" -DPURIFY
+          make "-j$JOBS"
+          sudo make PATH="$PATH" install_sw
+
+      - name: Build and test OpenResty
+        run: |
+          sudo ln -sf /usr/bin/make /usr/bin/gmake
+
+          util/mirror-tarballs
+          cd "openresty-$(./util/ver)"
+          ./configure \
+            --with-http_v3_module \
+            --with-stream_realip_module \
+            --with-http_realip_module \
+            --prefix="$OPENRESTY_PREFIX" \
+            --with-cc-opt="-I$PCRE_INC -I$OPENSSL_INC" \
+            --with-ld-opt="-L$PCRE_LIB -L$OPENSSL_LIB -Wl,-rpath,$PCRE_LIB:$OPENSSL_LIB" \
+            --with-pcre-jit \
+            --with-http_ssl_module \
+            --with-debug \
+            "-j$JOBS"
+          make "-j$JOBS"
+          sudo make install
+          cd ..
+
+          export PATH="$OPENRESTY_PREFIX/bin:$OPENRESTY_PREFIX/nginx/sbin:$PATH"
+          nginx -V
+          ldd "$(command -v nginx)" | grep -E 'luajit|ssl|pcre'
+          prove -Itest-nginx/inc -Itest-nginx/lib -I. -r t/
