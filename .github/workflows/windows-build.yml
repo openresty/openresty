@@ -1,0 +1,65 @@
+name: Windows build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Windows ${{ matrix.host_arch }} host
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - host_arch: x86_64
+            runner: windows-2022
+            msystem: MINGW64
+            toolchain: mingw-w64-x86_64-toolchain
+          - host_arch: arm64
+            runner: windows-11-arm
+            msystem: MINGW64
+            toolchain: mingw-w64-x86_64-toolchain
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: ${{ matrix.msystem }}
+          update: true
+          install: >-
+            base-devel
+            dos2unix
+            git
+            make
+            mercurial
+            patch
+            perl
+            unzip
+            wget
+            zip
+            ${{ matrix.toolchain }}
+
+      - name: Create source bundle
+        run: bash util/mirror-tarballs
+
+      - name: Build OpenResty
+        run: |
+          uname -a
+          cd "openresty-$(./util/ver)"
+          bash ./util/build-win32.sh
+          ./nginx.exe -V 2>&1
