@@ -12,11 +12,22 @@ permissions:
 
 jobs:
   build:
-    name: macOS x86_64
-    runs-on: macos-15-intel
+    name: macOS ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: macos-15-intel
+            jobs: 3
+          - arch: arm64
+            runner: macos-15
+            jobs: 3
 
     env:
-      JOBS: 3
+      JOBS: ${{ matrix.jobs }}
       PCRE_VER: "10.47"
       PCRE_PREFIX: /opt/pcre2
       PCRE_LIB: /opt/pcre2/lib
@@ -39,9 +50,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: download-cache
-          key: macos-build-${{ env.PCRE_VER }}-${{ env.OPENSSL_VER }}-${{ hashFiles('util/mirror-tarballs') }}
+          key: macos-build-${{ matrix.arch }}-${{ env.PCRE_VER }}-${{ env.OPENSSL_VER }}-${{ hashFiles('util/mirror-tarballs') }}
           restore-keys: |
-            macos-build-${{ env.PCRE_VER }}-${{ env.OPENSSL_VER }}-
+            macos-build-${{ matrix.arch }}-${{ env.PCRE_VER }}-${{ env.OPENSSL_VER }}-
+            macos-build-${{ matrix.arch }}-
             macos-build-
 
       - name: Install dependencies
