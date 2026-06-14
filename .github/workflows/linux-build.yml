@@ -1,0 +1,195 @@
+name: Linux build and test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Linux ${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            platform: amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            platform: arm64
+            runner: ubuntu-24.04-arm
+          - arch: s390x
+            platform: s390x
+            runner: ubuntu-latest
+          - arch: ppc64le
+            platform: ppc64le
+            runner: ubuntu-latest
+
+    env:
+      JOBS: 3
+      PCRE_VER: "10.47"
+      PCRE_PREFIX: /opt/pcre2
+      PCRE_LIB: /opt/pcre2/lib
+      PCRE_INC: /opt/pcre2/include
+      OPENSSL_VER: "3.5.6"
+      OPENSSL_PATCH_VER: "3.5.5"
+      OPENSSL_PREFIX: /opt/ssl3
+      OPENSSL_LIB: /opt/ssl3/lib
+      OPENSSL_INC: /opt/ssl3/include
+      OPENRESTY_PREFIX: /opt/openresty
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Prepare cache directory
+        run: mkdir -p download-cache
+
+      - name: Cache downloaded tarballs
+        uses: actions/cache@v4
+        with:
+          path: download-cache
+          key: linux-build-${{ matrix.arch }}-${{ env.PCRE_VER }}-${{ env.OPENSSL_VER }}-${{ hashFiles('util/mirror-tarballs') }}
+          restore-keys: |
+            linux-build-${{ matrix.arch }}-${{ env.PCRE_VER }}-${{ env.OPENSSL_VER }}-
+            linux-build-${{ matrix.arch }}-
+
+      - name: Enable IPv6
+        run: |
+          sudo sysctl -w net.ipv6.conf.all.disable_ipv6=0
+          sudo sysctl -w net.ipv6.conf.default.disable_ipv6=0
+
+      - name: Set up QEMU
+        if: matrix.arch == 's390x' || matrix.arch == 'ppc64le'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: ${{ matrix.platform }}
+
+      - name: Build and test
+        run: |
+          docker run --rm \
+            --platform "linux/${{ matrix.platform }}" \
+            --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+            --sysctl net.ipv6.conf.default.disable_ipv6=0 \
+            -e DEBIAN_FRONTEND=noninteractive \
+            -e JOBS \
+            -e PCRE_VER \
+            -e PCRE_PREFIX \
+            -e PCRE_LIB \
+            -e PCRE_INC \
+            -e OPENSSL_VER \
+            -e OPENSSL_PATCH_VER \
+            -e OPENSSL_PREFIX \
+            -e OPENSSL_LIB \
+            -e OPENSSL_INC \
+            -e OPENRESTY_PREFIX \
+            -v "${GITHUB_WORKSPACE}:/workspace" \
+            -w /workspace \
+            ubuntu:20.04 \
+            bash -euxo pipefail <<'EOF'
+          run_logged() {
+            log="$1"
+            shift
+
+            set +e
+            "$@" > "$log" 2>&1 &
+            pid="$!"
+            elapsed=0
+
+            while kill -0 "$pid" 2>/dev/null; do
+              sleep 1
+              elapsed="$((elapsed + 1))"
+
+              if [ "$elapsed" -ge 60 ]; then
+                echo "still running: $*"
+                elapsed=0
+              fi
+            done
+
+            wait "$pid"
+            status="$?"
+            set -e
+
+            if [ "$status" -ne 0 ]; then
+              cat "$log"
+              exit "$status"
+            fi
+          }
+
+          apt-get update
+          apt-get install -y --no-install-recommends \
+            axel \
+            build-essential \
+            ca-certificates \
+            cpanminus \
+            dos2unix \
+            git \
+            libgd-dev \
+            libpcre3 \
+            libpcre3-dev \
+            libpq-dev \
+            mercurial \
+            patch \
+            perl \
+            wget
+
+          run_logged build.log cpanm --notest Test2::Suite Test::Nginx IPC::Run3 IPC::Run
+
+          rm -rf test-nginx
+          git clone --depth 1 https://github.com/openresty/test-nginx.git
+
+          if [ ! -f "download-cache/pcre2-$PCRE_VER.tar.gz" ]; then
+            wget -P download-cache "https://github.com/PCRE2Project/pcre2/releases/download/pcre2-${PCRE_VER}/pcre2-${PCRE_VER}.tar.gz"
+          fi
+
+          rm -rf "pcre2-$PCRE_VER"
+          tar zxf "download-cache/pcre2-$PCRE_VER.tar.gz"
+          cd "pcre2-$PCRE_VER"
+          run_logged build.log ./configure --prefix="$PCRE_PREFIX" --enable-jit --enable-utf --enable-unicode-properties
+          run_logged build.log make "-j$JOBS"
+          run_logged build.log env PATH="$PATH" make install
+          cd ..
+
+          if [ ! -f "download-cache/openssl-$OPENSSL_VER.tar.gz" ]; then
+            wget -P download-cache "https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VER}/openssl-${OPENSSL_VER}.tar.gz"
+          fi
+
+          rm -rf "openssl-$OPENSSL_VER"
+          tar zxf "download-cache/openssl-$OPENSSL_VER.tar.gz"
+          cd "openssl-$OPENSSL_VER"
+          patch -p1 < "../patches/openssl-$OPENSSL_PATCH_VER-sess_set_get_cb_yield.patch"
+          run_logged build.log ./config no-threads shared enable-ssl3 enable-ssl3-method -g --libdir=lib --prefix="$OPENSSL_PREFIX" -DPURIFY
+          run_logged build.log make "-j$JOBS"
+          run_logged build.log make PATH="$PATH" install_sw
+          cd ..
+
+          ln -sf /usr/bin/make /usr/bin/gmake
+
+          run_logged build.log util/mirror-tarballs
+          cd "openresty-$(./util/ver)"
+          run_logged build.log ./configure \
+            --with-http_v3_module \
+            --with-stream_realip_module \
+            --with-http_realip_module \
+            --prefix="$OPENRESTY_PREFIX" \
+            --with-cc-opt="-I$PCRE_INC -I$OPENSSL_INC" \
+            --with-ld-opt="-L$PCRE_LIB -L$OPENSSL_LIB -Wl,-rpath,$PCRE_LIB:$OPENSSL_LIB" \
+            --with-pcre-jit \
+            --with-http_ssl_module \
+            --with-debug \
+            "-j$JOBS"
+          run_logged build.log make "-j$JOBS"
+          run_logged build.log make install
+          cd ..
+
+          export PATH="$OPENRESTY_PREFIX/bin:$OPENRESTY_PREFIX/nginx/sbin:$PATH"
+          nginx -V
+          ldd "$(command -v nginx)" | grep -E 'luajit|ssl|pcre'
+          prove -Itest-nginx/inc -Itest-nginx/lib -I. -r t/
+          EOF
