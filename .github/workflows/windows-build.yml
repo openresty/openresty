@@ -1,0 +1,51 @@
+name: Windows build
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Windows x86_64
+    runs-on: windows-2022
+
+    defaults:
+      run:
+        shell: msys2 {0}
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+          update: true
+          install: >-
+            base-devel
+            dos2unix
+            git
+            make
+            mercurial
+            patch
+            perl
+            unzip
+            wget
+            zip
+            mingw-w64-x86_64-toolchain
+
+      - name: Create source bundle
+        run: bash util/mirror-tarballs
+
+      - name: Build OpenResty
+        run: |
+          cd "openresty-$(./util/ver)"
+          bash ./util/build-win32.sh
+          ./nginx.exe -V 2>&1
