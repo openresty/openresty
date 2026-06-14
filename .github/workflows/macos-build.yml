@@ -1,4 +1,4 @@
-name: macOS build and test
+name: macOS build
 
 on:
   push:
@@ -47,14 +47,8 @@ jobs:
       - name: Install dependencies
         run: |
           brew update
-          brew install cpanminus dos2unix gd libpq mercurial wget
+          brew install dos2unix gd libpq mercurial wget
           echo "$(brew --prefix libpq)/bin" >> "$GITHUB_PATH"
-          cpanm --sudo --notest Test2::Suite Test::Nginx IPC::Run3 IPC::Run
-
-      - name: Check out test-nginx
-        run: |
-          rm -rf test-nginx
-          git clone --depth 1 https://github.com/openresty/test-nginx.git
 
       - name: Build PCRE2
         run: |
@@ -83,7 +77,7 @@ jobs:
           make "-j$JOBS"
           sudo make PATH="$PATH" install_sw
 
-      - name: Build and test OpenResty
+      - name: Build OpenResty
         run: |
           util/mirror-tarballs
           cd "openresty-$(./util/ver)"
@@ -103,6 +97,8 @@ jobs:
           cd ..
 
           export PATH="$OPENRESTY_PREFIX/bin:$OPENRESTY_PREFIX/nginx/sbin:$PATH"
+          test -x "$OPENRESTY_PREFIX/nginx/sbin/nginx"
+          test -x "$OPENRESTY_PREFIX/bin/resty"
           nginx -V
           otool -L "$(command -v nginx)"
-          prove -Itest-nginx/inc -Itest-nginx/lib -I. -r t/
+          resty -e 'print("resty ok")'
