@@ -72,7 +72,7 @@ my $dsn = "DBI:mysql:database=$database;host=$server;port=$port;mysql_server_pre
 my $dbh = DBI->connect($dsn, $user, $password, { RaiseError => 1, AutoCommit => 0 });
 
 if ($reset) {
-    $dbh->do("truncate $model");
+    $dbh->do("truncate " . $dbh->quote_identifier($model));
 }
 
 if ($update_col) { $step = 1 }
@@ -102,10 +102,11 @@ while (<>) {
 
     if (!defined $sth) {
         @cols = reverse sort keys %$row;
-        my $cols = join ',', @cols;
+        my $cols = join ',', map { $dbh->quote_identifier($_) } @cols;
         my @holders = map { '?' } @cols;
         my $holders = join ',', @holders;
-        $sth = $dbh->prepare("insert into $model ($cols) values ($holders)");
+        my $quoted_model = $dbh->quote_identifier($model);
+        $sth = $dbh->prepare("insert into $quoted_model ($cols) values ($holders)");
     }
 
     my @vals;
