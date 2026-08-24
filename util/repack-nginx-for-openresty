@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+usage() {
+    cat >&2 <<'EOF'
+Usage: util/repack-nginx-for-openresty VERSION [OUTPUT]
+
+Export release-VERSION from the sibling nginx Git repository and package it
+with the source layout used by OpenResty's nginx mirror, then upload it to the
+OpenResty download server.  OUTPUT defaults to nginx-VERSION.tar.gz.
+
+Examples:
+  util/repack-nginx-for-openresty 1.31.4
+  util/repack-nginx-for-openresty 1.31.4 nginx-1.31.4.tar.gz
+
+Environment override:
+  NGINX_REPO               nginx Git repository (default: sibling ../nginx)
+  NGINX_UPLOAD_DESTINATION scp destination (default: OpenResty download server)
+  SCP_BIN                  scp executable (default: scp)
+EOF
+    exit 2
+}
+
+die() {
+    echo "error: $*" >&2
+    exit 1
+}
+
+[[ $# -ge 1 && $# -le 2 ]] || usage
+
+version=$1
+[[ $version =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] \
+    || die "invalid nginx version: $version"
+
+output=${2:-nginx-${version}.tar.gz}
+[[ -n $output ]] || die "output path must not be empty"
+[[ ! -e $output && ! -L $output ]] || die "output already exists: $output"
+
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+openresty_repo=$(cd -- "$script_dir/.." && pwd -P)
+nginx_repo=${NGINX_REPO:-$openresty_repo/../nginx}
+tag_ref=refs/tags/release-$version
+upload_destination=${NGINX_UPLOAD_DESTINATION:-ec2-user@openresty.org:/mnt/c/www-agentzh-misc-nginx/}
+scp_bin=${SCP_BIN:-scp}
+
+command -v git >/dev/null 2>&1 || die "git is required"
+command -v "$scp_bin" >/dev/null 2>&1 || die "scp executable not found: $scp_bin"
+[[ -d $nginx_repo ]] || die "nginx repository does not exist: $nginx_repo"
+git -C "$nginx_repo" rev-parse --git-dir >/dev/null 2>&1 \
+    || die "not a Git repository: $nginx_repo"
+git -C "$nginx_repo" rev-parse --verify --quiet "$tag_ref^{commit}" \
+    >/dev/null || die "tag not found in $nginx_repo: $tag_ref"
+
+tar_bin=tar
+tar_version=$(tar --version 2>/dev/null || true)
+if [[ $tar_version != *"GNU tar"* ]]; then
+    if command -v gtar >/dev/null 2>&1 \
+        && [[ $(gtar --version 2>/dev/null || true) == *"GNU tar"* ]]; then
+        tar_bin=gtar
+    else
+        die "GNU tar is required (install it as tar or gtar)"
+    fi
+fi
+
+work_dir=$(mktemp -d "${TMPDIR:-/tmp}/repack-nginx.XXXXXX") \
+    || die "failed to create a temporary directory"
+output_tmp=
+cleanup() {
+    rm -rf -- "$work_dir"
+    if [[ -n $output_tmp ]]; then
+        rm -f -- "$output_tmp"
+    fi
+}
+trap cleanup EXIT
+trap 'exit 130' HUP INT TERM
+
+source_root=$work_dir/nginx-$version
+echo "Exporting $tag_ref from $nginx_repo"
+git -C "$nginx_repo" archive --format=tar --prefix="nginx-$version/" \
+    "$tag_ref" | "$tar_bin" -xf - -C "$work_dir"
+
+[[ -d $source_root ]] || die "git archive has an unexpected layout"
+[[ -f $source_root/auto/configure ]] \
+    || die "$tag_ref does not contain auto/configure"
+
+# The repository keeps configure under auto/.  OpenResty's mirrored source
+# archives expose it as a regular executable at the source root.
+mv -- "$source_root/auto/configure" "$source_root/configure"
+
+chmod -R u=rwX,go=rX "$source_root"
+
+output_dir=$(dirname -- "$output")
+[[ -d $output_dir ]] || die "output directory does not exist: $output_dir"
+output_tmp=$(mktemp "$output_dir/.nginx-${version}.XXXXXX") \
+    || die "failed to create a temporary output file"
+
+# Fixed metadata and gzip -n make the result reproducible across machines.
+(
+    cd "$work_dir"
+    "$tar_bin" --sort=name --format=gnu --owner=0 --group=0 \
+        --numeric-owner --mtime=@0 -cf - "nginx-$version"
+) | gzip -n -9 > "$output_tmp"
+
+chmod 644 "$output_tmp"
+mv -- "$output_tmp" "$output"
+output_tmp=
+
+echo "Created $output"
+if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum "$output"
+elif command -v shasum >/dev/null 2>&1; then
+    shasum -a 256 "$output"
+fi
+
+echo "Uploading $output to $upload_destination"
+"$scp_bin" -- "$output" "$upload_destination"
+echo "Uploaded $output"
