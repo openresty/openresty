@@ -1,0 +1,536 @@
+#!/usr/bin/env bash
+
+set -u
+
+# This is a batch operation.  Never open less/an editor or wait for an
+# interactive GitHub/Git credential prompt in the middle of the repository
+# loop.
+export PAGER=cat
+export GIT_PAGER=cat
+export GH_PAGER=cat
+export GIT_EDITOR=true
+export GIT_SEQUENCE_EDITOR=true
+export GIT_MERGE_AUTOEDIT=no
+export GIT_TERMINAL_PROMPT=0
+export GH_PROMPT_DISABLED=1
+
+usage() {
+    cat <<'EOF'
+Usage: util/update-ci-nginx-version [--dry-run] NGINX_VERSION
+
+Update the nginx version used by CI in sibling OpenResty repositories listed
+in util/mirror-tarballs, then commit each update and create a GitHub pull
+request.  The non-dry-run mode requires an authenticated GitHub CLI (`gh`).
+
+Options:
+  -n, --dry-run  Show which repositories can be updated without pulling,
+                 modifying, pushing, or creating pull requests.
+  -h, --help     Show this help.
+EOF
+}
+
+dry_run=0
+
+case "${1:-}" in
+    -n|--dry-run)
+        dry_run=1
+        shift
+        ;;
+    -h|--help)
+        usage
+        exit 0
+        ;;
+esac
+
+if [ "$#" -ne 1 ]; then
+    usage >&2
+    exit 2
+fi
+
+nginx_version=$1
+
+case "$nginx_version" in
+    *[!0-9.]*|.*|*.|*..*)
+        echo "ERROR: invalid nginx version: $nginx_version" >&2
+        exit 2
+        ;;
+esac
+
+if ! [[ "$nginx_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "ERROR: nginx version must have the form X.Y.Z: $nginx_version" >&2
+    exit 2
+fi
+
+script_dir=$(cd "$(dirname "$0")" && pwd -P) || exit 1
+root=$(cd "$script_dir/.." && pwd -P) || exit 1
+parent=$(dirname "$root")
+mirror_tarballs="$root/util/mirror-tarballs"
+feature_branch="update-ci-nginx-$nginx_version"
+commit_title="tests: update nginx to $nginx_version"
+
+if [ ! -f "$mirror_tarballs" ]; then
+    echo "ERROR: cannot find $mirror_tarballs" >&2
+    exit 1
+fi
+
+for command in git perl; do
+    if ! command -v "$command" >/dev/null 2>&1; then
+        echo "ERROR: required command not found: $command" >&2
+        exit 1
+    fi
+done
+
+retry_network() {
+    local attempt=1
+    local output
+    local status
+
+    while [ "$attempt" -le 3 ]; do
+        output=$("$@")
+        status=$?
+        if [ "$status" -eq 0 ]; then
+            [ -z "$output" ] || printf '%s\n' "$output"
+            return 0
+        fi
+
+        if [ "$attempt" -eq 3 ]; then
+            return "$status"
+        fi
+
+        echo "[RETRY] network command failed; retry $attempt of 2" >&2
+        attempt=$((attempt + 1))
+        sleep 2
+    done
+}
+
+if [ "$dry_run" -eq 0 ]; then
+    if ! command -v gh >/dev/null 2>&1; then
+        echo "ERROR: GitHub CLI (gh) is required to create pull requests" >&2
+        exit 1
+    fi
+
+    if ! retry_network gh auth status --hostname github.com \
+        >/dev/null 2>&1
+    then
+        echo "ERROR: GitHub CLI is not authenticated; run: gh auth login" >&2
+        exit 1
+    fi
+fi
+
+branch_for() {
+    case "$1" in
+        luajit2) echo v2.1-agentzh ;;
+        *)       echo master ;;
+    esac
+}
+
+has_tracked_changes() {
+    [ -n "$(git -C "$1" status --porcelain --untracked-files=no \
+        --ignore-submodules=untracked 2>/dev/null)" ]
+}
+
+show_tracked_changes() {
+    git -C "$1" status --short --untracked-files=no \
+        --ignore-submodules=untracked | sed 's/^/       /'
+}
+
+is_openresty_origin() {
+    origin_url=$(git -C "$1" remote get-url origin 2>/dev/null) || return 1
+    case "$origin_url" in
+        git@github.com:openresty/"$2"|git@github.com:openresty/"$2".git|\
+        https://github.com/openresty/"$2"|https://github.com/openresty/"$2".git|\
+        ssh://git@github.com/openresty/"$2"|ssh://git@github.com/openresty/"$2".git)
+            return 0
+            ;;
+    esac
+    return 1
+}
+
+has_ci_config() {
+    for file in .travis.yml .gitlab-ci.yml appveyor.yml appveyor.yaml \
+        circle.yml Jenkinsfile .circleci/config.yml .circleci/config.yaml
+    do
+        [ ! -f "$1/$file" ] || return 0
+    done
+
+    [ -d "$1/.github/workflows" ] || return 1
+    find "$1/.github/workflows" -maxdepth 1 -type f \
+        \( -name '*.yml' -o -name '*.yaml' \) -print -quit \
+        | grep -q .
+}
+
+created=0
+existing=0
+ready=0
+unchanged=0
+skipped=0
+ignored=0
+failed=0
+
+echo "Target nginx version: $nginx_version"
+echo "Feature branch: $feature_branch"
+[ "$dry_run" -eq 0 ] || \
+    echo "Dry run: pulls, updates, commits, pushes, and PRs are disabled"
+echo
+
+while IFS= read -r repo; do
+    [ -n "$repo" ] || continue
+
+    repo_dir="$parent/$repo"
+    branch=$(branch_for "$repo")
+
+    if ! git -C "$repo_dir" rev-parse --is-inside-work-tree \
+        >/dev/null 2>&1
+    then
+        echo "[SKIP] $repo: repository not found at $repo_dir"
+        skipped=$((skipped + 1))
+        continue
+    fi
+
+    if ! is_openresty_origin "$repo_dir" "$repo"; then
+        echo "[IGNORE] $repo: origin is not openresty/$repo"
+        ignored=$((ignored + 1))
+        continue
+    fi
+
+    if ! has_ci_config "$repo_dir"; then
+        echo "[IGNORE] $repo: no CI configuration"
+        ignored=$((ignored + 1))
+        continue
+    fi
+
+    if has_tracked_changes "$repo_dir"; then
+        echo "[SKIP] $repo: working tree has tracked changes"
+        show_tracked_changes "$repo_dir"
+        skipped=$((skipped + 1))
+        continue
+    fi
+
+    if [ "$dry_run" -eq 1 ]; then
+        if git -C "$repo_dir" show-ref --verify --quiet \
+            "refs/heads/$feature_branch"
+        then
+            echo "[RESUME] $repo: local branch exists; head=$feature_branch"
+        else
+            echo "[READY] $repo: no tracked changes; base=$branch head=$feature_branch"
+        fi
+        ready=$((ready + 1))
+        continue
+    fi
+
+    if ! git -C "$repo_dir" checkout -q "$branch"; then
+        echo "[FAIL] $repo: cannot check out branch $branch" >&2
+        failed=$((failed + 1))
+        continue
+    fi
+
+    echo "[PULL] $repo ($branch)"
+    if ! retry_network git -C "$repo_dir" pull --ff-only origin "$branch"; then
+        echo "[FAIL] $repo: git pull failed" >&2
+        failed=$((failed + 1))
+        continue
+    fi
+
+    # A pull hook may modify tracked files.  Do not mix those changes with
+    # this update.  Untracked files are intentionally allowed.
+    if has_tracked_changes "$repo_dir"; then
+        echo "[SKIP] $repo: tracked changes appeared after git pull"
+        show_tracked_changes "$repo_dir"
+        skipped=$((skipped + 1))
+        continue
+    fi
+
+    local_branch=0
+    new_branch=0
+    if git -C "$repo_dir" show-ref --verify --quiet \
+        "refs/heads/$feature_branch"
+    then
+        local_branch=1
+    fi
+
+    if ! remote_branch=$(retry_network git -C "$repo_dir" ls-remote --heads origin \
+        "refs/heads/$feature_branch")
+    then
+        echo "[FAIL] $repo: cannot check the remote feature branch" >&2
+        failed=$((failed + 1))
+        continue
+    fi
+
+    if [ "$local_branch" -eq 1 ]; then
+        echo "[RESUME] $repo: using local branch $feature_branch"
+        if ! git -C "$repo_dir" checkout -q "$feature_branch"; then
+            echo "[FAIL] $repo: cannot check out branch $feature_branch" >&2
+            failed=$((failed + 1))
+            continue
+        fi
+
+        if [ -n "$remote_branch" ]; then
+            if ! retry_network git -C "$repo_dir" fetch -q origin \
+                "$feature_branch:refs/remotes/origin/$feature_branch" \
+                || ! git -C "$repo_dir" merge --ff-only \
+                    "refs/remotes/origin/$feature_branch"
+            then
+                echo "[FAIL] $repo: cannot fast-forward the existing feature branch" >&2
+                failed=$((failed + 1))
+                continue
+            fi
+        fi
+
+    elif [ -n "$remote_branch" ]; then
+        echo "[RESUME] $repo: checking out remote branch $feature_branch"
+        if ! retry_network git -C "$repo_dir" fetch -q origin \
+            "$feature_branch:refs/remotes/origin/$feature_branch" \
+            || ! git -C "$repo_dir" checkout -q --track \
+                "origin/$feature_branch"
+        then
+            echo "[FAIL] $repo: cannot check out remote branch $feature_branch" >&2
+            failed=$((failed + 1))
+            continue
+        fi
+
+    else
+        new_branch=1
+        if ! git -C "$repo_dir" checkout -q -b "$feature_branch"; then
+            echo "[FAIL] $repo: cannot create branch $feature_branch" >&2
+            failed=$((failed + 1))
+            continue
+        fi
+    fi
+
+    ci_files=()
+    for file in \
+        "$repo_dir/.travis.yml" \
+        "$repo_dir/.gitlab-ci.yml" \
+        "$repo_dir/appveyor.yml" \
+        "$repo_dir/appveyor.yaml" \
+        "$repo_dir/circle.yml" \
+        "$repo_dir/Jenkinsfile" \
+        "$repo_dir/.circleci/config.yml" \
+        "$repo_dir/.circleci/config.yaml"
+    do
+        [ ! -f "$file" ] || ci_files+=("$file")
+    done
+
+    if [ -d "$repo_dir/.github/workflows" ]; then
+        while IFS= read -r -d '' file; do
+            ci_files+=("$file")
+        done < <(find "$repo_dir/.github/workflows" -maxdepth 1 -type f \
+            \( -name '*.yml' -o -name '*.yaml' \) -print0)
+    fi
+
+    changed_files=()
+    edit_failed=0
+    for file in "${ci_files[@]}"; do
+        if ! NGINX_TARGET_VERSION="$nginx_version" perl -i -pe '
+            BEGIN {
+                $version = $ENV{NGINX_TARGET_VERSION};
+                $current_file = "";
+            }
+
+            if ($current_file ne $ARGV) {
+                $current_file = $ARGV;
+                undef $matrix_indent;
+                undef $nginx_matrix_indent;
+            }
+
+            # Track a GitHub Actions YAML matrix so that a version written on
+            # the following line is updated as well:
+            #
+            #   matrix:
+            #     nginx:
+            #       - 1.31.3
+            #
+            # Limit this to an nginx key nested below matrix.  This avoids
+            # treating unrelated YAML lists or an nginx service as versions.
+            if ($ARGV =~ /\.ya?ml\z/i) {
+                ($indent_text) = /^([[:space:]]*)/;
+                $indent = length $indent_text;
+                $has_content = !/^[[:space:]]*(?:#|$)/;
+
+                if (defined $nginx_matrix_indent) {
+                    if (/^[[:space:]]*-[[:space:]]*["\x27]?
+                        [0-9]+\.[0-9]+\.[0-9]+/x)
+                    {
+                        s{^([[:space:]]*-[[:space:]]*)(["\x27]?)
+                            ([0-9]+\.[0-9]+\.[0-9]+)\2
+                            ([[:space:]]*(?:\#.*)?$)}
+                         {$1 . $2 . $version . $2 . $4}ex;
+                    } elsif ($has_content && $indent <= $nginx_matrix_indent) {
+                        undef $nginx_matrix_indent;
+                    }
+                }
+
+                if (defined $matrix_indent
+                    && $has_content
+                    && $indent <= $matrix_indent
+                    && !/^[[:space:]]*matrix[[:space:]]*:/i)
+                {
+                    undef $matrix_indent;
+                    undef $nginx_matrix_indent;
+                }
+
+                if (/^([[:space:]]*)matrix[[:space:]]*:[[:space:]]*$/i) {
+                    $matrix_indent = length $1;
+                } elsif (defined $matrix_indent && $indent > $matrix_indent
+                    && /^([[:space:]]*)nginx[[:space:]]*:[[:space:]]*$/i)
+                {
+                    $nginx_matrix_indent = length $1;
+                }
+            }
+
+            unless (/^[[:space:]]*#/) {
+                # NGINX_VERSION=1.2.3, NGINX_VERSION: "1.2.3", and
+                # nginx-version: [1.2.3].  Requiring = or : avoids changing
+                # compatibility thresholds after a $NGINX_VERSION reference.
+                s{(\bNGINX(?:_|-)VERSION\b[[:space:]]*(?:=|:)
+                    [[:space:]]*(?:["\x27]|\[)?[[:space:]]*)
+                    ([0-9]+\.[0-9]+\.[0-9]+)}
+                 {$1 . $version}igex;
+
+                # Human-readable job names and literal nginx tarball names,
+                # such as "nginx 1.2.3" and "nginx-1.2.3.tar.gz".
+                s{(\bnginx\b(?:[[:space:]]+version)?[[:space:]/_-]*)
+                    ([0-9]+\.[0-9]+\.[0-9]+)}
+                 {$1 . $version}igex;
+            }
+        ' "$file"
+        then
+            echo "[FAIL] $repo: cannot update ${file#"$repo_dir"/}" >&2
+            edit_failed=1
+            break
+        fi
+
+        relative_file=${file#"$repo_dir"/}
+        if ! git -C "$repo_dir" diff --quiet -- "$relative_file"; then
+            changed_files+=("$relative_file")
+        fi
+    done
+
+    if [ "$edit_failed" -ne 0 ]; then
+        failed=$((failed + 1))
+        continue
+    fi
+
+    if [ "${#changed_files[@]}" -eq 0 ] && [ "$new_branch" -eq 1 ]; then
+        if ! git -C "$repo_dir" checkout -q "$branch" \
+            || ! git -C "$repo_dir" branch -d "$feature_branch" >/dev/null
+        then
+            echo "[FAIL] $repo: cannot remove the empty feature branch" >&2
+            failed=$((failed + 1))
+            continue
+        fi
+
+        echo "[OK]   $repo: no CI nginx version needed changing"
+        unchanged=$((unchanged + 1))
+        continue
+    fi
+
+    if [ "${#changed_files[@]}" -gt 0 ]; then
+        if ! git -C "$repo_dir" diff --check -- "${changed_files[@]}"; then
+            echo "[FAIL] $repo: updated files failed git diff --check" >&2
+            failed=$((failed + 1))
+            continue
+        fi
+
+        if ! git -C "$repo_dir" add -- "${changed_files[@]}" \
+            || ! git -C "$repo_dir" diff --cached --check \
+            || ! git -C "$repo_dir" commit -m "$commit_title"
+        then
+            echo "[FAIL] $repo: cannot commit the CI update" >&2
+            failed=$((failed + 1))
+            continue
+        fi
+    fi
+
+    if has_tracked_changes "$repo_dir"; then
+        echo "[FAIL] $repo: tracked changes remain after git commit" >&2
+        show_tracked_changes "$repo_dir"
+        failed=$((failed + 1))
+        continue
+    fi
+
+    if ! ahead=$(git -C "$repo_dir" rev-list --count \
+        "$branch..$feature_branch")
+    then
+        echo "[FAIL] $repo: cannot compare base and feature branches" >&2
+        failed=$((failed + 1))
+        continue
+    fi
+
+    if [ "$ahead" -gt 0 ]; then
+        if ! retry_network git -C "$repo_dir" push -u origin "$feature_branch"; then
+            echo "[FAIL] $repo: cannot push branch $feature_branch" >&2
+            failed=$((failed + 1))
+            continue
+        fi
+    fi
+
+    if ! pr_info=$(retry_network gh pr list \
+        --repo "openresty/$repo" \
+        --head "$feature_branch" \
+        --state all \
+        --limit 1 \
+        --json state,url \
+        --jq '.[] | [.state, .url] | @tsv')
+    then
+        echo "[FAIL] $repo: cannot query existing pull requests" >&2
+        failed=$((failed + 1))
+        continue
+    fi
+
+    if [ -n "$pr_info" ]; then
+        IFS=$'\t' read -r pr_state pr_url <<< "$pr_info"
+        echo "[EXISTS] $repo: PR is $pr_state"
+        echo "         $pr_url"
+        existing=$((existing + 1))
+        continue
+    fi
+
+    if [ "$ahead" -eq 0 ]; then
+        echo "[OK]   $repo: feature branch has no changes relative to $branch"
+        unchanged=$((unchanged + 1))
+        continue
+    fi
+
+    pr_body="Update the nginx version used by CI tests to $nginx_version."
+    if ! pr_url=$(retry_network gh pr create \
+        --repo "openresty/$repo" \
+        --base "$branch" \
+        --head "$feature_branch" \
+        --title "$commit_title" \
+        --body "$pr_body")
+    then
+        # The request may have succeeded remotely while the response was lost.
+        pr_url=$(retry_network gh pr list \
+            --repo "openresty/$repo" \
+            --head "$feature_branch" \
+            --state open \
+            --limit 1 \
+            --json url \
+            --jq '.[0].url // ""') || pr_url=
+        if [ -z "$pr_url" ]; then
+            echo "[FAIL] $repo: branch was pushed but PR creation failed" >&2
+            failed=$((failed + 1))
+            continue
+        fi
+    fi
+
+    echo "[DONE] $repo: ${changed_files[*]:-resumed existing commits}"
+    echo "       $pr_url"
+    created=$((created + 1))
+done < <(
+    perl -ne '
+        while (m{https?://github\.com/openresty/([A-Za-z0-9_.-]+)}g) {
+            print "$1\n";
+        }
+    ' "$mirror_tarballs" | sort -u
+)
+
+echo
+if [ "$dry_run" -eq 1 ]; then
+    echo "Summary: ready=$ready ignored=$ignored skipped=$skipped failed=$failed"
+else
+    echo "Summary: created=$created existing=$existing unchanged=$unchanged ignored=$ignored skipped=$skipped failed=$failed"
+fi
+
+[ "$failed" -eq 0 ]

@@ -1,0 +1,389 @@
+#!/usr/bin/env bash
+
+set -u
+
+export PAGER=cat
+export GH_PAGER=cat
+export GH_PROMPT_DISABLED=1
+
+usage() {
+    cat <<'EOF'
+Usage: util/check-ci-nginx-version [--merge] NGINX_VERSION
+
+Show CI status for pull requests created by update-ci-nginx-version.  The
+repository list comes from util/mirror-tarballs, and the script looks for the
+update-ci-nginx-NGINX_VERSION branch in every openresty repository.  After a
+successful merge, the corresponding local repository is switched to the PR
+base branch and fast-forwarded from origin.  Already-merged matching PRs are
+also synchronized when --merge is used again.
+
+Options:
+  --merge  Admin-merge each open PR when all reported CI checks pass. Uses
+           rebase merge for linear history and bypasses approval requirements.
+
+Exit status:
+  0  All discovered checks have completed successfully.
+  1  At least one check failed, or a GitHub query failed.
+  8  No failures, but at least one check is still pending.
+EOF
+}
+
+merge_successful=0
+nginx_version=
+
+while [ "$#" -gt 0 ]; do
+    case "$1" in
+        --merge)
+            merge_successful=1
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -*)
+            echo "ERROR: unknown option: $1" >&2
+            usage >&2
+            exit 2
+            ;;
+        *)
+            if [ -n "$nginx_version" ]; then
+                usage >&2
+                exit 2
+            fi
+            nginx_version=$1
+            ;;
+    esac
+    shift
+done
+
+if [ -z "$nginx_version" ]; then
+    usage >&2
+    exit 2
+fi
+
+if ! [[ "$nginx_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "ERROR: nginx version must have the form X.Y.Z: $nginx_version" >&2
+    exit 2
+fi
+
+for command in gh git perl; do
+    if ! command -v "$command" >/dev/null 2>&1; then
+        echo "ERROR: required command not found: $command" >&2
+        exit 1
+    fi
+done
+
+retry_network() {
+    local attempt=1
+    local output
+    local retryable_error
+    local status
+
+    retryable_error='(^|[^[:alpha:]])(unexpected )?EOF([^[:alpha:]]|$)'
+    retryable_error+='|timed? out|timeout|connection (reset|refused)'
+    retryable_error+='|could not resolve|temporary failure in name resolution'
+    retryable_error+='|network is unreachable|TLS handshake|dial tcp'
+    retryable_error+='|remote end hung up|HTTP (408|429|5[0-9][0-9])'
+
+    while [ "$attempt" -le 3 ]; do
+        output=$("$@" 2>&1)
+        status=$?
+        if [ "$status" -eq 0 ]; then
+            [ -z "$output" ] || printf '%s\n' "$output"
+            return 0
+        fi
+
+        if ! printf '%s\n' "$output" | grep -Eiq "$retryable_error"
+        then
+            [ -z "$output" ] || printf '%s\n' "$output" >&2
+            return "$status"
+        fi
+
+        [ -z "$output" ] || printf '%s\n' "$output" >&2
+        if [ "$attempt" -eq 3 ]; then
+            return "$status"
+        fi
+        echo "[RETRY] network command failed; retry $attempt of 2" >&2
+        attempt=$((attempt + 1))
+        sleep 2
+    done
+}
+
+if ! retry_network gh auth status --hostname github.com >/dev/null 2>&1; then
+    echo "ERROR: GitHub CLI is not authenticated; run: gh auth login" >&2
+    exit 1
+fi
+
+script_dir=$(cd "$(dirname "$0")" && pwd -P) || exit 1
+root=$(cd "$script_dir/.." && pwd -P) || exit 1
+parent=$(dirname "$root")
+mirror_tarballs="$root/util/mirror-tarballs"
+feature_branch="update-ci-nginx-$nginx_version"
+
+if [ ! -f "$mirror_tarballs" ]; then
+    echo "ERROR: cannot find $mirror_tarballs" >&2
+    exit 1
+fi
+
+passed=0
+pending=0
+failed=0
+no_checks=0
+no_pr=0
+errors=0
+ignored=0
+merged=0
+merge_requested=0
+merge_failed=0
+synced=0
+sync_failed=0
+
+is_openresty_origin() {
+    origin_url=$(git -C "$1" remote get-url origin 2>/dev/null) || return 1
+    case "$origin_url" in
+        git@github.com:openresty/"$2"|git@github.com:openresty/"$2".git|\
+        https://github.com/openresty/"$2"|https://github.com/openresty/"$2".git|\
+        ssh://git@github.com/openresty/"$2"|ssh://git@github.com/openresty/"$2".git)
+            return 0
+            ;;
+    esac
+    return 1
+}
+
+has_ci_config() {
+    for file in .travis.yml .gitlab-ci.yml appveyor.yml appveyor.yaml \
+        circle.yml Jenkinsfile .circleci/config.yml .circleci/config.yaml
+    do
+        [ ! -f "$1/$file" ] || return 0
+    done
+    [ -d "$1/.github/workflows" ] || return 1
+    find "$1/.github/workflows" -maxdepth 1 -type f \
+        \( -name '*.yml' -o -name '*.yaml' \) -print -quit \
+        | grep -q .
+}
+
+has_tracked_changes() {
+    [ -n "$(git -C "$1" status --porcelain --untracked-files=no \
+        --ignore-submodules=untracked 2>/dev/null)" ]
+}
+
+sync_local_base() {
+    local repo=$1
+    local repo_dir=$2
+    local base_branch=$3
+
+    if has_tracked_changes "$repo_dir"; then
+        echo "[SYNC FAIL] $repo: local repository has tracked changes" >&2
+        git -C "$repo_dir" status --short --untracked-files=no \
+            --ignore-submodules=untracked | sed 's/^/            /' >&2
+        return 1
+    fi
+
+    if git -C "$repo_dir" show-ref --verify --quiet \
+        "refs/heads/$base_branch"
+    then
+        if ! git -C "$repo_dir" checkout -q "$base_branch"; then
+            echo "[SYNC FAIL] $repo: cannot check out $base_branch" >&2
+            return 1
+        fi
+    else
+        if ! retry_network git -C "$repo_dir" fetch -q origin \
+            "$base_branch:refs/remotes/origin/$base_branch" \
+            || ! git -C "$repo_dir" checkout -q --track \
+                "origin/$base_branch"
+        then
+            echo "[SYNC FAIL] $repo: cannot create local $base_branch" >&2
+            return 1
+        fi
+    fi
+
+    if ! retry_network git -C "$repo_dir" pull --ff-only origin \
+        "$base_branch"
+    then
+        echo "[SYNC FAIL] $repo: cannot fast-forward $base_branch" >&2
+        return 1
+    fi
+
+    echo "[SYNCED] $repo: checked out and updated $base_branch"
+}
+
+echo "CI status for branch: $feature_branch"
+echo
+
+while IFS= read -r repo; do
+    [ -n "$repo" ] || continue
+
+    repo_dir="$parent/$repo"
+    if ! is_openresty_origin "$repo_dir" "$repo" \
+        || ! has_ci_config "$repo_dir"
+    then
+        ignored=$((ignored + 1))
+        continue
+    fi
+
+    github_repo="openresty/$repo"
+
+    if ! pr_info=$(retry_network gh pr list \
+        --repo "$github_repo" \
+        --state all \
+        --head "$feature_branch" \
+        --limit 1 \
+        --json number,state,url,headRefOid,baseRefName \
+        --jq '.[] | [.number, .state, .url, .headRefOid, .baseRefName] | @tsv')
+    then
+        echo "[ERROR] $repo: cannot query pull requests"
+        errors=$((errors + 1))
+        continue
+    fi
+
+    if [ -z "$pr_info" ]; then
+        echo "[NO PR] $repo"
+        no_pr=$((no_pr + 1))
+        continue
+    fi
+
+    IFS=$'\t' read -r pr_number pr_state pr_url pr_head_oid pr_base_ref \
+        <<< "$pr_info"
+
+    if ! checks=$(retry_network gh pr view "$pr_number" \
+        --repo "$github_repo" \
+        --json statusCheckRollup \
+        --jq '.statusCheckRollup[] |
+            if .__typename == "CheckRun" then
+                [.name,
+                 (if .conclusion != "" then .conclusion else .status end),
+                 (.detailsUrl // "")]
+            else
+                [.context, .state, (.targetUrl // "")]
+            end | @tsv')
+    then
+        echo "[ERROR] $repo: cannot query checks for PR #$pr_number"
+        echo "        $pr_url"
+        errors=$((errors + 1))
+        continue
+    fi
+
+    if [ -z "$checks" ]; then
+        echo "[NO CI] $repo: PR #$pr_number ($pr_state)"
+        echo "        $pr_url"
+        no_checks=$((no_checks + 1))
+        continue
+    fi
+
+    repo_checks=0
+    repo_pending=0
+    repo_failed=0
+
+    while IFS=$'\t' read -r check_name check_state check_url; do
+        [ -n "$check_name" ] || continue
+        repo_checks=$((repo_checks + 1))
+
+        case "$check_state" in
+            SUCCESS|NEUTRAL|SKIPPED)
+                ;;
+            QUEUED|IN_PROGRESS|WAITING|PENDING|EXPECTED|'')
+                repo_pending=$((repo_pending + 1))
+                ;;
+            *)
+                repo_failed=$((repo_failed + 1))
+                ;;
+        esac
+    done <<< "$checks"
+
+    if [ "$repo_failed" -gt 0 ]; then
+        result=FAIL
+        failed=$((failed + 1))
+    elif [ "$repo_pending" -gt 0 ]; then
+        result=PENDING
+        pending=$((pending + 1))
+    else
+        result=PASS
+        passed=$((passed + 1))
+    fi
+
+    echo "[$result] $repo: PR #$pr_number ($pr_state), checks=$repo_checks"
+    echo "        $pr_url"
+
+    while IFS=$'\t' read -r check_name check_state check_url; do
+        [ -n "$check_name" ] || continue
+        printf '        %-15s %s' "$check_state" "$check_name"
+        [ -z "$check_url" ] || printf '  %s' "$check_url"
+        printf '\n'
+    done <<< "$checks"
+
+    if [ "$merge_successful" -eq 1 ] && [ "$pr_state" = MERGED ]; then
+        if sync_local_base "$repo" "$repo_dir" "$pr_base_ref"; then
+            synced=$((synced + 1))
+        else
+            sync_failed=$((sync_failed + 1))
+        fi
+        continue
+    fi
+
+    if [ "$merge_successful" -eq 1 ] \
+        && [ "$result" = PASS ] \
+        && [ "$pr_state" = OPEN ]
+    then
+        if retry_network gh pr merge "$pr_number" \
+            --repo "$github_repo" \
+            --rebase \
+            --admin \
+            --match-head-commit "$pr_head_oid"
+        then
+            post_merge_state=$(retry_network gh pr view "$pr_number" \
+                --repo "$github_repo" \
+                --json state \
+                --jq .state) || post_merge_state=
+            if [ "$post_merge_state" = MERGED ]; then
+                echo "[MERGED] $repo: PR #$pr_number"
+                merged=$((merged + 1))
+                if sync_local_base "$repo" "$repo_dir" "$pr_base_ref"; then
+                    synced=$((synced + 1))
+                else
+                    sync_failed=$((sync_failed + 1))
+                fi
+            else
+                echo "[MERGE REQUESTED] $repo: PR #$pr_number"
+                merge_requested=$((merge_requested + 1))
+            fi
+        else
+            post_merge_state=$(retry_network gh pr view "$pr_number" \
+                --repo "$github_repo" \
+                --json state \
+                --jq .state) || post_merge_state=
+            if [ "$post_merge_state" = MERGED ]; then
+                echo "[MERGED] $repo: PR #$pr_number"
+                merged=$((merged + 1))
+                if sync_local_base "$repo" "$repo_dir" "$pr_base_ref"; then
+                    synced=$((synced + 1))
+                else
+                    sync_failed=$((sync_failed + 1))
+                fi
+            else
+                echo "[MERGE FAIL] $repo: PR #$pr_number" >&2
+                merge_failed=$((merge_failed + 1))
+            fi
+        fi
+    fi
+done < <(
+    perl -ne '
+        while (m{https?://github\.com/openresty/([A-Za-z0-9_.-]+)}g) {
+            print "$1\n";
+        }
+    ' "$mirror_tarballs" | sort -u
+)
+
+echo
+echo "Summary: pass=$passed pending=$pending failed=$failed no_ci=$no_checks no_pr=$no_pr ignored=$ignored merged=$merged merge_requested=$merge_requested merge_failed=$merge_failed synced=$synced sync_failed=$sync_failed errors=$errors"
+
+if [ "$failed" -gt 0 ] || [ "$errors" -gt 0 ] \
+    || [ "$merge_failed" -gt 0 ] || [ "$sync_failed" -gt 0 ]
+then
+    exit 1
+fi
+
+if [ "$pending" -gt 0 ]; then
+    exit 8
+fi
+
+exit 0
