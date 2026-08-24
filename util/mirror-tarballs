@@ -698,8 +698,11 @@ fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.27.1`
 if [ "$answer" = "Y" ]; then
-    echo "$info_txt applying nginx-$main_ver-stream_proxy_protocol_v2 patch for nginx"
-    patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-stream_proxy_protocol_v2.patch || exit 1
+    answer=`$root/util/ver-ge "$main_ver" 1.31.4`
+    if [ "$answer" = "N" ]; then
+        echo "$info_txt applying nginx-$main_ver-stream_proxy_protocol_v2 patch for nginx"
+       patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-stream_proxy_protocol_v2.patch || exit 1
+    fi
 fi
 
 answer=`$root/util/ver-ge "$main_ver" 1.27.1`

@@ -33,7 +33,7 @@ jobs:
       PCRE_PREFIX: /opt/pcre2
       PCRE_LIB: /opt/pcre2/lib
       PCRE_INC: /opt/pcre2/include
-      OPENSSL_VER: "3.5.6"
+      OPENSSL_VER: "3.5.7"
       OPENSSL_PATCH_VER: "3.5.5"
       OPENSSL_PREFIX: /opt/ssl3
       OPENSSL_LIB: /opt/ssl3/lib

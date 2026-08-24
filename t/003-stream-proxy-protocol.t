@@ -151,6 +151,6 @@ foreach my $name ('test') {
 --- stream_request eval
     "GET /t4 HTTP/1.0\r\nHost: localhost\r\n\r\n";
 --- stream_response_like
-127.0.0.1 TLSv1.3   TLS_AES_256_GCM_SHA384  RSA-SHA256 RSA2048  0 via proxy protocol v2 IPv4
+127.0.0.1 TLSv1.3   TLS_AES_256_GCM_SHA384  RSA-SHA256 RSA2048  1 via proxy protocol v2 IPv4
 --- no_error_log
 [error]
