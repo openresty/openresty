@@ -2,6 +2,8 @@ diff --git a/src/stream/ngx_stream_upstream_round_robin.c b/src/stream/ngx_strea
 index 526de3a..b531ce1 100644
 --- a/src/stream/ngx_stream_upstream_round_robin.c
 +++ b/src/stream/ngx_stream_upstream_round_robin.c
+@@ -10,0 +11 @@
++#include <ngx_stream_upstream_round_robin.h>
 @@ -21,10 +21,6 @@ static void ngx_stream_upstream_notify_round_robin_peer(
  
  #if (NGX_STREAM_SSL)
