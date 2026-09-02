@@ -37,9 +37,13 @@ diff --git a/src/stream/ngx_stream_upstream_round_robin.h b/src/stream/ngx_strea
 index 35d9fce..75f3e31 100644
 --- a/src/stream/ngx_stream_upstream_round_robin.h
 +++ b/src/stream/ngx_stream_upstream_round_robin.h
-@@ -142,5 +142,15 @@ ngx_int_t ngx_stream_upstream_get_round_robin_peer(ngx_peer_connection_t *pc,
+@@ -244,9 +244,19 @@ ngx_int_t ngx_stream_upstream_get_round_robin_peer(ngx_peer_connection_t *pc,
  void ngx_stream_upstream_free_round_robin_peer(ngx_peer_connection_t *pc,
      void *data, ngx_uint_t state);
+ void ngx_stream_upstream_free_round_robin_peer_locked(ngx_peer_connection_t *pc,
+     void *data, ngx_uint_t state);
+ void ngx_stream_upstream_notify_round_robin_peer_locked(
+     ngx_peer_connection_t *pc, void *data, ngx_uint_t type);
  
 +#if (NGX_STREAM_SSL)
 +ngx_int_t ngx_stream_upstream_set_round_robin_peer_session(
