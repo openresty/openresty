@@ -1,0 +1,441 @@
+diff --git a/src/core/ngx_resolver.c b/src/core/ngx_resolver.c
+index 1372154..2fec962 100644
+--- a/src/core/ngx_resolver.c
++++ b/src/core/ngx_resolver.c
+@@ -68,6 +68,11 @@ typedef struct {
+ #define ngx_resolver_node(n)  ngx_rbtree_data(n, ngx_resolver_node_t, node)
+ 
+ 
++#if !(NGX_WIN32)
++#include "ngx_resolver_hosts.c"
++#endif
++
++
+ static ngx_int_t ngx_udp_connect(ngx_resolver_connection_t *rec);
+ static ngx_int_t ngx_tcp_connect(ngx_resolver_connection_t *rec);
+ 
+@@ -494,6 +499,27 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
+         }
+ #endif
+ 
++#if !(NGX_WIN32)
++        if (ngx_strncmp(names[i].data, "hosts=", 6) == 0) {
++            if (ngx_strcmp(&names[i].data[6], "on") == 0) {
++                r->use_hosts = 1;
++
++            } else if (ngx_strcmp(&names[i].data[6], "off") != 0) {
++                r->use_hosts = 1;
++            }
++
++            if (r->use_hosts) {
++                if (ngx_resolver_parse_hosts_file(cf->log, &r->hosts) != NGX_OK) {
++                    ngx_conf_log_error(NGX_LOG_EMERG, cf, 0,
++                                       "unable to parse /etc/hosts");
++                    return NULL;
++                }
++            }
++
++            continue;
++        }
++#endif
++
+         ngx_memzero(&u, sizeof(ngx_url_t));
+ 
+         u.url = names[i];
+@@ -586,6 +612,13 @@ ngx_resolver_cleanup(void *data)
+             ngx_resolver_free(r, rec[i].write_buf);
+         }
+     }
++
++#if !(NGX_WIN32)
++    if (r->hosts != NULL) {
++        ngx_destroy_pool(r->hosts->pool);
++        r->hosts = NULL;
++    }
++#endif
+ }
+ 
+ 
+@@ -683,6 +716,15 @@ ngx_resolve_name(ngx_resolver_ctx_t *ctx)
+         return NGX_OK;
+     }
+ 
++#if !(NGX_WIN32)
++    if (ctx->resolver->use_hosts
++        && ngx_resolve_find_hosts(ctx) == NGX_OK)
++    {
++        ctx->handler(ctx);
++        return NGX_OK;
++    }
++#endif
++
+     if (ctx->service.len) {
+         slen = ctx->service.len;
+ 
+diff --git a/src/core/ngx_resolver.h b/src/core/ngx_resolver.h
+index 06026b7..a8d33ee 100644
+--- a/src/core/ngx_resolver.h
++++ b/src/core/ngx_resolver.h
+@@ -176,6 +176,7 @@ struct ngx_resolver_s {
+     ngx_queue_t               addr_expire_queue;
+ 
+     unsigned                  ipv4:1;
++    unsigned                  use_hosts:1;
+ 
+ #if (NGX_HAVE_INET6)
+     unsigned                  ipv6:1;
+@@ -191,6 +192,7 @@ struct ngx_resolver_s {
+     time_t                    valid;
+ 
+     ngx_uint_t                log_level;
++    ngx_array_t              *hosts;
+ };
+ 
+ 
+diff --git a/src/core/ngx_resolver_hosts.c b/src/core/ngx_resolver_hosts.c
+new file mode 100644
+index 0000000..8457700
+--- /dev/null
++++ b/src/core/ngx_resolver_hosts.c
+@@ -0,0 +1,341 @@
++#define HOSTS_FILE            "/etc/hosts"
++#define HOST_CHECK_INTERVAL   10
++
++
++typedef struct ngx_resolve_host_s {
++    ngx_str_t    name;
++    ngx_array_t  ipv4;
++#if (NGX_HAVE_INET6)
++    ngx_array_t  ipv6;
++#endif
++} ngx_resolve_host_t;
++
++
++static inline u_char *
++ngx_resolve_hosts_trim(u_char *str)
++{
++    u_char *start = str;
++    u_char *end;
++
++    while (isspace((unsigned char) *start)) {
++        start++;
++    }
++
++    if (*start == 0) {
++        return start;
++    }
++
++    end = start + ngx_strlen(start) - 1;
++    while (end > start && isspace((unsigned char) *end)) {
++        end--;
++    }
++
++    *(end + 1) = '\0';
++    return start;
++}
++
++
++static ngx_int_t
++ngx_resolver_hosts_parse_line(ngx_pool_t *temp_pool,
++                              ngx_pool_t *pool, u_char *line,
++                              ngx_array_t *hosts)
++{
++    char       *saveptr = NULL;
++    u_char     *ip = (u_char *) strtok_r((char *) line, " \t", &saveptr);
++    u_char     *name;
++    size_t      len;
++    ngx_str_t   name_str;
++    ngx_addr_t  addr;
++    ngx_log_t  *log;
++    ngx_resolve_host_t *host;
++    log = temp_pool->log;
++
++    if (ip == NULL) {
++        return NGX_OK;
++    }
++
++    if (ngx_parse_addr(pool, &addr, ip, ngx_strlen(ip)) != NGX_OK) {
++        ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,
++                      "failed to parse '%s' in /etc/hosts", ip);
++        return NGX_DECLINED;
++    }
++
++    while ((name = (u_char *) strtok_r(NULL, " \t", &saveptr)) != NULL) {
++        ngx_uint_t           i;
++        ngx_resolver_addr_t *resolv_addr;
++        len = ngx_strlen(name);
++
++        if (len == 0) {
++            continue;
++        }
++
++        ngx_strlow(name, name, len);
++        name_str.data = name;
++        name_str.len = len;
++        host = NULL;
++
++        for (i = 0; i < hosts->nelts; i++) {
++            ngx_resolve_host_t *t = &((ngx_resolve_host_t *) hosts->elts)[i];
++
++            if (t->name.len == len
++                && ngx_memcmp(t->name.data, name, len) == 0) {
++                host = t;
++                break;
++            }
++        }
++
++        if (host == NULL) {
++            host = ngx_array_push(hosts);
++
++            if (host == NULL) {
++                return NGX_ERROR;
++            }
++
++            if (ngx_array_init(&host->ipv4, pool, 1,
++                               sizeof(ngx_resolver_addr_t)) != NGX_OK) {
++                return NGX_ERROR;
++            }
++
++#if (NGX_HAVE_INET6)
++
++            if (ngx_array_init(&host->ipv6, pool, 1,
++                               sizeof(ngx_resolver_addr_t)) != NGX_OK) {
++                return NGX_ERROR;
++            }
++
++#endif
++            host->name.data = ngx_pstrdup(pool, &name_str);
++
++            if (host->name.data == NULL) {
++                return NGX_ERROR;
++            }
++
++            host->name.len = len;
++        }
++
++        if (addr.sockaddr->sa_family == AF_INET) {
++            resolv_addr = ngx_array_push(&host->ipv4);
++#if (NGX_HAVE_INET6)
++
++        } else {
++            resolv_addr = ngx_array_push(&host->ipv6);
++#endif
++        }
++
++        if (resolv_addr == NULL) {
++            return NGX_ERROR;
++        }
++
++        resolv_addr->sockaddr = addr.sockaddr;
++        resolv_addr->socklen = addr.socklen;
++        resolv_addr->name.data = NULL;
++        resolv_addr->name.len = 0;
++        resolv_addr->priority = 1;
++        resolv_addr->weight = 1;
++    }
++
++    return NGX_OK;
++}
++
++
++static ngx_int_t
++ngx_resolver_parse_hosts_file(ngx_log_t *log, ngx_array_t **phosts)
++{
++    ngx_file_info_t                  fi;
++    ngx_fd_t                         fd = -1;
++    ngx_file_t                       file;
++    u_char                          *buf;
++    ssize_t                          n, i, sz;
++    ngx_int_t                        rc;
++    ngx_pool_t                      *temp_pool = NULL;
++    ngx_pool_t                      *pool = NULL;
++    ngx_array_t                     *hosts;
++
++    *phosts= NULL;
++    file.name.data = (u_char *) HOSTS_FILE;
++    file.name.len = sizeof(HOSTS_FILE) - 1;
++    fd = ngx_open_file(file.name.data, NGX_FILE_RDONLY, NGX_FILE_OPEN, 0);
++
++    if (fd == NGX_INVALID_FILE) {
++        ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,
++                      ngx_open_file_n " \"%s\" failed", file.name.data);
++        goto destroy_pool;
++    }
++
++    rc = ngx_file_info(HOSTS_FILE, &fi);
++
++    if (rc != 0) {
++        ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,
++                      "ngx_file_info \"%s\" failed", file.name.data);
++        goto destroy_pool;
++    }
++
++    sz = ngx_file_size(&fi);
++    temp_pool = ngx_create_pool(NGX_DEFAULT_POOL_SIZE, log);
++    if (temp_pool == NULL) {
++        ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,
++                      "ngx_create_pool failed when parsing /etc/hosts");
++        return NGX_ERROR;
++    }
++
++    pool = ngx_create_pool(NGX_DEFAULT_POOL_SIZE, log);
++    if (pool == NULL) {
++        ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,
++                      "ngx_create_pool failed when parsing /etc/hosts");
++        goto destroy_pool;
++    }
++
++    hosts = ngx_palloc(pool, sizeof(ngx_array_t));
++    if (hosts == NULL) {
++        ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,
++                      "allocate hosts failed when parsing /etc/hosts");
++        goto destroy_pool;
++    }
++
++    if (ngx_array_init(hosts, pool, 1, sizeof(ngx_resolve_host_t)) != NGX_OK) {
++        ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,
++                      "init hosts array failed when parsing /etc/hosts");
++        goto destroy_pool;
++    }
++
++    ngx_memzero(&file, sizeof(ngx_file_t));
++    file.fd = fd;
++    file.log = log;
++    buf = ngx_palloc(temp_pool, sz + 1);
++
++    if (buf == NULL) {
++        ngx_log_error(NGX_LOG_EMERG, log, ngx_errno,
++                      "alloc memory for file content failed when parsing /etc/hosts");
++        goto destroy_pool;
++    }
++
++    buf[sz] = '\0';
++    n = ngx_read_file(&file, buf, sz, 0);
++
++    if (n != sz) {
++        ngx_log_error(NGX_LOG_ALERT, log, ngx_errno,
++                      ngx_read_file_n " \"%s\" failed", file.name.data);
++        goto destroy_pool;
++    }
++
++    if (ngx_close_file(file.fd) == NGX_FILE_ERROR) {
++        ngx_log_error(NGX_LOG_ALERT, log, ngx_errno,
++                      ngx_close_file_n " \"%s\" failed", file.name.data);
++    }
++
++    fd = NGX_INVALID_FILE;
++
++    for (i = 0; i < n;) {
++        u_char   *line;
++        ssize_t   j = i;
++
++        while (j < n) {
++            u_char c = buf[j];
++
++            if (c == '\r') {
++                buf[j++] = '\0';
++
++                if (buf[j] == '\n') {
++                    buf[j++] = '\0';
++                }
++
++                break;
++            }
++
++            if (c == '\n') {
++                buf[j++] = '\0';
++                break;
++            }
++
++            j++;
++        }
++
++        line = &buf[i];
++        line = ngx_resolve_hosts_trim(line);
++        i = j;
++
++        if (line[0] == '#' || line[0] == ';') {
++            continue;
++        }
++
++        if (ngx_strlen(line) == 0) {
++            continue;
++        }
++
++        rc = ngx_resolver_hosts_parse_line(temp_pool, pool, line, hosts);
++
++        if (rc == NGX_ERROR) {
++            goto destroy_pool;
++        }
++    }
++
++    ngx_destroy_pool(temp_pool);
++
++    if (hosts->nelts == 0) {
++        ngx_destroy_pool(pool);
++        *phosts = NULL;
++
++    } else {
++        *phosts = hosts;
++    }
++
++    return NGX_OK;
++
++destroy_pool:
++
++    if (temp_pool != NULL) {
++        ngx_destroy_pool(temp_pool);
++    }
++
++    if (pool != NULL) {
++        ngx_destroy_pool(pool);
++    }
++
++    if (fd != NGX_INVALID_FILE && ngx_close_file(fd) == NGX_FILE_ERROR) {
++        ngx_log_error(NGX_LOG_ALERT, log, ngx_errno,
++                      ngx_close_file_n " \"%s\" failed", file.name.data);
++    }
++
++    return NGX_ERROR;
++}
++
++
++static ngx_int_t
++ngx_resolve_find_hosts(ngx_resolver_ctx_t *ctx)
++{
++    ngx_uint_t i;
++    ngx_array_t *hosts;
++
++    hosts = ctx->resolver->hosts;
++
++    if (hosts == NULL) {
++        return NGX_DECLINED;
++    }
++
++    for (i = 0; i < hosts->nelts; i++) {
++        ngx_resolve_host_t *host;
++        host = &((ngx_resolve_host_t *) hosts->elts)[i];
++
++        if (host->name.len == ctx->name.len
++            && ngx_strncasecmp(ctx->name.data, host->name.data, ctx->name.len) == 0) {
++            ctx->state = NGX_OK;
++
++            if (ctx->resolver->ipv4 && host->ipv4.nelts > 0) {
++                ctx->naddrs = host->ipv4.nelts;
++                ctx->addrs = host->ipv4.elts;
++                return NGX_OK;
++            }
++
++#if (NGX_HAVE_INET6)
++            if (ctx->resolver->ipv6 && host->ipv6.nelts > 0) {
++                ctx->naddrs = host->ipv6.nelts;
++                ctx->addrs = host->ipv6.elts;
++                return NGX_OK;
++            }
++#endif
++            break;
++        }
++    }
++
++    return NGX_DECLINED;
++}
