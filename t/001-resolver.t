@@ -15,6 +15,9 @@ no_long_string();
 
 run_tests();
 
+# INFO messages about skipped zone IDs are suppressed during configuration
+# parsing. Check the usable resolver list rather than expecting those messages.
+
 __DATA__
 
 === TEST 1: use system resolver
@@ -410,8 +413,6 @@ done
 [emerg]
 --- grep_error_log eval: qr/(?:ignoring IPv6 resolver address with zone ID:|parsed a resolver:) ".+"/
 --- grep_error_log_out
-ignoring IPv6 resolver address with zone ID: "fe80::9683:c4ff:fe35:ac1%enp1s0"
-ignoring IPv6 resolver address with zone ID: "fe80::1%2"
 parsed a resolver: "119.29.29.29"
 parsed a resolver: "[2001:4860:4860::8888]"
 parsed a resolver: "8.8.8.8"
@@ -439,7 +440,6 @@ done
 --- grep_error_log eval: qr/(?:ignoring IPv6 resolver address with zone ID:|parsed a resolver:) ".+"/
 --- grep_error_log_out
 parsed a resolver: "119.29.29.29"
-ignoring IPv6 resolver address with zone ID: "fe80::9683:c4ff:fe35:ac1%enp1s0"
 
 
 
@@ -462,9 +462,7 @@ done
 [emerg]
 --- grep_error_log eval: qr/(?:ignoring IPv6 resolver address with zone ID:|parsed a resolver:) ".+"/
 --- grep_error_log_out
-ignoring IPv6 resolver address with zone ID: "fe80::1%eth0"
 parsed a resolver: "119.29.29.29"
-ignoring IPv6 resolver address with zone ID: "fe80::2%3"
 parsed a resolver: "[2001:4860:4860::8888]"
 
 
@@ -478,10 +476,10 @@ nameserver fe80::1%eth0
 "
 --- must_die
 --- error_log
-[warn]
-ignoring IPv6 resolver address with zone ID: "fe80::1%eth0"
 no name servers defined
 --- no_error_log
+[warn]
+ignoring IPv6 resolver address with zone ID:
 unable to parse local resolver
 
 
@@ -507,7 +505,6 @@ done
 [emerg]
 --- grep_error_log eval: qr/(?:ignoring IPv6 resolver address with zone ID:|parsed a resolver:) ".+"/
 --- grep_error_log_out
-ignoring IPv6 resolver address with zone ID: "fe80:0000:0000:0000:9683:c4ff:fe35:0ac1%enp1s0"
 parsed a resolver: "119.29.29.29"
 
 
@@ -532,4 +529,3 @@ done
 [emerg]
 --- grep_error_log eval: qr/(?:ignoring IPv6 resolver address with zone ID:|parsed a resolver:) ".+"/
 --- grep_error_log_out
-ignoring IPv6 resolver address with zone ID: "fe80::1%eth0"

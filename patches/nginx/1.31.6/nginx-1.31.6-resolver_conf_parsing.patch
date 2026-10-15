@@ -149,7 +149,7 @@ index cd55520c..dade1846 100644
 +                    if (ngx_strlchr(u.url.data, u.url.data + u.url.len,
 +                                    '%') != NULL)
 +                    {
-+                        ngx_conf_log_error(NGX_LOG_WARN, cf, 0,
++                        ngx_conf_log_error(NGX_LOG_INFO, cf, 0,
 +                                           "ignoring IPv6 resolver address"
 +                                           " with zone ID: \"%V\"", &u.url);
 +

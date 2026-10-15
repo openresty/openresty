@@ -89,7 +89,7 @@ path to be used for parsing, for example: `local=/tmp/test.conf`.
 When `local=off`, parsing will be disabled (this is the default).
 
 IPv6 nameservers with a zone ID (for example, `fe80::1%eth0`) in the resolver
-file are skipped with a warning. If no usable nameservers remain, including
+file are skipped. If no usable nameservers remain, including
 explicitly configured addresses, configuration fails.
 
 This feature is not available on Windows platforms.

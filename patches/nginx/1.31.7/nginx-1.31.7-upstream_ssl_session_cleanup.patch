@@ -1,0 +1,117 @@
+Upstream: free per-peer cached SSL_SESSION at cycle pool destruction.
+
+When proxy_ssl_session_reuse is on (the default) and the upstream
+speaks TLSv1.3, every NewSessionTicket the server sends causes
+ngx_http_upstream_save_round_robin_peer_session() to take an extra
+SSL_SESSION reference and store it in peer->ssl_session, freeing
+the previously stored one. The very last session stored on the peer
+is, however, never freed -- the round-robin module has no shutdown
+hook that walks peers and releases peer->ssl_session.
+
+Under --with-no_pool + valgrind this shows up as a "definitely lost"
+record per upstream peer per worker exit, e.g.:
+
+  928 (direct) + 6,602 (indirect) bytes in 1 block ... definitely lost
+    at malloc
+    by CRYPTO_malloc
+    by ssl_session_dup_intern  (ssl_sess.c:142)
+    by ssl_session_dup         (ssl_sess.c:283)
+    by tls_process_new_session_ticket  (statem_clnt.c:2772)
+    ... by ngx_ssl_recv
+    by ngx_http_upstream_process_header
+
+Register a cf->pool cleanup at upstream init time that walks the
+primary and backup peer lists and calls ngx_ssl_free_session() on
+any peer that still holds a session. Skip zone-resident peers --
+they keep serialized session bytes in slab memory which is released
+together with the shm zone.
+
+diff --git a/src/http/ngx_http_upstream_round_robin.c b/src/http/ngx_http_upstream_round_robin.c
+--- a/src/http/ngx_http_upstream_round_robin.c
++++ b/src/http/ngx_http_upstream_round_robin.c
+@@ -29,6 +29,7 @@
+     void *data);
+ static void ngx_http_upstream_empty_save_session(ngx_peer_connection_t *pc,
+     void *data);
++static void ngx_http_upstream_rr_peers_ssl_session_cleanup(void *data);
+
+ #endif
+
+@@ -42,6 +43,9 @@
+     ngx_http_upstream_server_t    *server;
+     ngx_http_upstream_rr_peer_t   *peer, **peerp;
+     ngx_http_upstream_rr_peers_t  *peers, *backup;
++#if (NGX_HTTP_SSL)
++    ngx_pool_cleanup_t            *cln;
++#endif
+ #if (NGX_HTTP_UPSTREAM_ZONE)
+     ngx_uint_t                     resolve;
+     ngx_http_core_loc_conf_t      *clcf;
+@@ -153,6 +157,16 @@
+             return NGX_ERROR;
+         }
+
++#if (NGX_HTTP_SSL)
++        cln = ngx_pool_cleanup_add(cf->pool, 0);
++        if (cln == NULL) {
++            return NGX_ERROR;
++        }
++
++        cln->handler = ngx_http_upstream_rr_peers_ssl_session_cleanup;
++        cln->data = peers;
++#endif
++
+         peers->single = (n == 1);
+         peers->number = n;
+         peers->weighted = (w != n);
+@@ -423,6 +437,16 @@
+         return NGX_ERROR;
+     }
+
++#if (NGX_HTTP_SSL)
++    cln = ngx_pool_cleanup_add(cf->pool, 0);
++    if (cln == NULL) {
++        return NGX_ERROR;
++    }
++
++    cln->handler = ngx_http_upstream_rr_peers_ssl_session_cleanup;
++    cln->data = peers;
++#endif
++
+     peers->single = (n == 1);
+     peers->number = n;
+     peers->weighted = 0;
+@@ -1276,4 +1300,33 @@
+     return;
+ }
+
++
++static void
++ngx_http_upstream_rr_peers_ssl_session_cleanup(void *data)
++{
++    ngx_http_upstream_rr_peers_t  *peers = data;
++
++    ngx_http_upstream_rr_peer_t   *peer;
++    ngx_http_upstream_rr_peers_t  *p;
++
++    for (p = peers; p; p = p->next) {
++#if (NGX_HTTP_UPSTREAM_ZONE)
++        /*
++         * peers backed by a shared-memory zone keep serialized session
++         * bytes in the slab pool, which is released together with the
++         * shm zone -- nothing to free here.
++         */
++        if (p->shpool) {
++            continue;
++        }
++#endif
++        for (peer = p->peer; peer; peer = peer->next) {
++            if (peer->ssl_session) {
++                ngx_ssl_free_session(peer->ssl_session);
++                peer->ssl_session = NULL;
++            }
++        }
++    }
++}
++
+ #endif
