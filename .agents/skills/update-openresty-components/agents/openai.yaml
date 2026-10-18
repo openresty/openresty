@@ -1,0 +1,3 @@
+interface:
+  display_name: "OpenResty Component Update"
+  short_description: "Refresh bundle tags and release functional component changes"
