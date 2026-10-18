@@ -1,0 +1,3 @@
+interface:
+  display_name: "OpenResty nginx Core Upgrade"
+  short_description: "Upgrade nginx patches, build OpenResty, and run tests"
