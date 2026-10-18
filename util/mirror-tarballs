@@ -787,7 +787,7 @@ mv openresty-drizzle-nginx-module-* drizzle-nginx-module-$ver || exit 1
 
 #################################
 
-ver=0.10.32rc5
+ver=0.10.32rc6
 $root/util/get-tarball "https://github.com/openresty/lua-nginx-module/archive/v$ver.tar.gz" -O lua-nginx-module-$ver.tar.gz || exit 1
 tar -xzf lua-nginx-module-$ver.tar.gz || exit 1
 mv lua-nginx-module-$ver ngx_lua-$ver || exit 1
@@ -894,7 +894,7 @@ resty_cli=resty-cli-$ver
 
 #################################
 
-ver=0.0.10
+ver=0.0.12
 $root/util/get-tarball "https://github.com/openresty/opm/tarball/v$ver" -O opm-$ver.tar.gz || exit 1
 tar -xzf opm-$ver.tar.gz || exit 1
 mv openresty-opm-* opm-$ver || exit 1
@@ -914,7 +914,7 @@ cd .. || exit 1
 
 #################################
 
-ver=2.1.0.19
+ver=2.1.0.20
 $root/util/get-tarball "https://github.com/openresty/lua-cjson/archive/$ver.tar.gz" -O "lua-cjson-$ver.tar.gz" || exit 1
 tar -xzf lua-cjson-$ver.tar.gz || exit 1
 
@@ -959,7 +959,7 @@ cd ..
 
 #################################
 
-ver=0.33
+ver=0.34
 $root/util/get-tarball "https://github.com/openresty/lua-resty-redis/tarball/v$ver" -O "lua-resty-redis-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-redis-$ver.tar.gz || exit 1
 mv openresty-lua-resty-redis-* lua-resty-redis-$ver || exit 1
@@ -1055,7 +1055,7 @@ cd ..
 
 #################################
 
-ver=0.14
+ver=0.15
 $root/util/get-tarball "https://github.com/openresty/lua-resty-websocket/tarball/v$ver" -O "lua-resty-websocket-$ver.tar.gz" || exit 1
 tar -xzf lua-resty-websocket-$ver.tar.gz || exit 1
 mv openresty-lua-resty-websocket-* lua-resty-websocket-$ver || exit 1
