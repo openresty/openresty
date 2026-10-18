@@ -1,0 +1,3 @@
+interface:
+  display_name: "OpenResty CI nginx Version Update"
+  short_description: "Update sibling CI nginx versions and open PRs"

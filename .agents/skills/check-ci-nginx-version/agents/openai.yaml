@@ -1,0 +1,3 @@
+interface:
+  display_name: "OpenResty CI nginx PR Check and Repair"
+  short_description: "Check component PRs, repair CI, and report every status"
