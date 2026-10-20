@@ -63,3 +63,10 @@ jobs:
           cd "openresty-$(./util/ver)"
           bash ./util/build-win32.sh
           ./nginx.exe -V 2>&1
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openresty-windows-${{ matrix.host_arch }}
+          path: openresty-*-${{ matrix.host_arch }}.zip
+          if-no-files-found: error
+          retention-days: 90
