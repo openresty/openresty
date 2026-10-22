@@ -665,6 +665,13 @@ if [ "$answer" = "Y" ]; then
 
 fi
 
+if [ "$main_ver" = "1.27.1" ]; then
+    for cve in 15176 93479 95101 97629 97205; do
+        echo "$info_txt applying the patch for nginx security advisory (CVE-2026-$cve)"
+        patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-CVE-2026-$cve.patch || exit 1
+    done
+fi
+
 
 echo "$info_txt applying the upstream_timeout_fields patch for nginx"
 patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-upstream_timeout_fields.patch || exit 1
