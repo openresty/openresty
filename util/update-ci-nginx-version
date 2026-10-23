@@ -411,6 +411,85 @@ while IFS= read -r repo; do
         continue
     fi
 
+    # Do not commit or publish an update while an active CI input, matrix
+    # entry, job label, or nginx download reference still names another
+    # version. This catches incomplete edits such as an ASan-only matrix row.
+    stale_versions=()
+    for file in "${ci_files[@]}"; do
+        while IFS= read -r stale_version; do
+            [ -z "$stale_version" ] || stale_versions+=("$stale_version")
+        done < <(NGINX_TARGET_VERSION="$nginx_version" perl -ne '
+            BEGIN {
+                $target = $ENV{NGINX_TARGET_VERSION};
+                $current_file = "";
+            }
+
+            if ($current_file ne $ARGV) {
+                $current_file = $ARGV;
+                undef $matrix_indent;
+                undef $nginx_matrix_indent;
+            }
+
+            $stale = 0;
+            if ($ARGV =~ /\.ya?ml\z/i) {
+                ($indent_text) = /^([[:space:]]*)/;
+                $indent = length $indent_text;
+                $has_content = !/^[[:space:]]*(?:#|$)/;
+
+                if (defined $nginx_matrix_indent) {
+                    if (/^[[:space:]]*-[[:space:]]*["\x27]?
+                        ([0-9]+\.[0-9]+\.[0-9]+)/x)
+                    {
+                        $stale = 1 if $1 ne $target;
+                    } elsif ($has_content && $indent <= $nginx_matrix_indent) {
+                        undef $nginx_matrix_indent;
+                    }
+                }
+
+                if (defined $matrix_indent
+                    && $has_content
+                    && $indent <= $matrix_indent
+                    && !/^[[:space:]]*matrix[[:space:]]*:/i)
+                {
+                    undef $matrix_indent;
+                    undef $nginx_matrix_indent;
+                }
+
+                if (/^([[:space:]]*)matrix[[:space:]]*:[[:space:]]*$/i) {
+                    $matrix_indent = length $1;
+                } elsif (defined $matrix_indent && $indent > $matrix_indent
+                    && /^([[:space:]]*)nginx[[:space:]]*:[[:space:]]*$/i)
+                {
+                    $nginx_matrix_indent = length $1;
+                }
+            }
+
+            unless (/^[[:space:]]*#/) {
+                if (/\bNGINX(?:_|-)VERSION\b[[:space:]]*(?:=|:)
+                    [[:space:]]*(?:["\x27]|\[)?[[:space:]]*
+                    ([0-9]+\.[0-9]+\.[0-9]+)/ix)
+                {
+                    $stale = 1 if $1 ne $target;
+                }
+
+                if (/\bnginx(?:[[:space:]]+version)?[[:space:]\/_-]+
+                    ([0-9]+\.[0-9]+\.[0-9]+)/ix)
+                {
+                    $stale = 1 if $1 ne $target;
+                }
+            }
+
+            print "$ARGV:$.:$_" if $stale;
+        ' "$file")
+    done
+
+    if [ "${#stale_versions[@]}" -gt 0 ]; then
+        echo "[FAIL] $repo: CI still contains nginx versions other than $nginx_version" >&2
+        printf '       %s\n' "${stale_versions[@]}" >&2
+        failed=$((failed + 1))
+        continue
+    fi
+
     if [ "${#changed_files[@]}" -eq 0 ] && [ "$new_branch" -eq 1 ]; then
         if ! git -C "$repo_dir" checkout -q "$branch" \
             || ! git -C "$repo_dir" branch -d "$feature_branch" >/dev/null
