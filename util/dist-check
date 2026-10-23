@@ -63,6 +63,7 @@ if ($^O eq 'freebsd') {
 }
 
 my $prefix;
+my $prefix_base = $ENV{DIST_CHECK_PREFIX} || "/usr/local/openresty";
 
 my $config = do { local $/; <DATA> };
 
@@ -80,7 +81,7 @@ write_config_file "/tmp/nginx.conf";
 if (1) {
 
 warn "\n=== --without-stream ===\n";
-$prefix = "/usr/local/openresty-nostream";
+$prefix = "$prefix_base-nostream";
 cleanup();
 unless ($opts{f}) {
     sh "./configure $cfg_opts --without-stream --prefix=$prefix -j$jobs";
@@ -121,7 +122,7 @@ sh "sudo $prefix/nginx/sbin/nginx -sstop";
 #sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Without Gzip/SSL/PCRE ===\n";
-$prefix = "/usr/local/openresty-nogzip";
+$prefix = "$prefix_base-nogzip";
 cleanup();
 unless ($opts{f}) {
     sh "./configure $cfg_opts --without-http_rewrite_module --without-http_ssl_module --without-pcre --without-http_gzip_module --prefix=$prefix -j$jobs";
@@ -146,7 +147,7 @@ sh "sudo $prefix/nginx/sbin/nginx -sstop";
 $cfg_opts .= " --with-http_iconv_module";
 
 warn "\n=== --with-threads ===\n";
-$prefix = "/usr/local/openresty-threads";
+$prefix = "$prefix_base-threads";
 cleanup();
 unless ($opts{f}) {
     sh "./configure $cfg_opts --with-threads --prefix=$prefix -j$jobs";
@@ -165,7 +166,7 @@ sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== No Pool Build ===\n";
-$prefix = "/usr/local/openresty-nopool";
+$prefix = "$prefix_base-nopool";
 cleanup();
 unless ($opts{f}) {
     sh "./configure --with-no-pool-patch $cfg_opts --prefix=$prefix -j$jobs > /dev/null";
@@ -185,7 +186,7 @@ sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Normal Build ===\n";
-$prefix = "/usr/local/openresty-norm";
+$prefix = "$prefix_base-norm";
 cleanup();
 unless ($opts{f}) {
     sh "./configure $cfg_opts --prefix=$prefix -j$jobs";
@@ -205,7 +206,7 @@ sh qq{$prefix/bin/restydoc opm | grep -E '^Status\$'};
 sh "sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Debug Build ===\n";
-$prefix = "/usr/local/openresty-debug";
+$prefix = "$prefix_base-debug";
 cleanup();
 unless ($opts{f}) {
     my $more_cfg_opts = '';

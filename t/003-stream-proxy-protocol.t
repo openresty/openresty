@@ -126,7 +126,7 @@ proxy_protocol
         }
     }
 --- post_setup_server_root
-my $d = "t/servroot/conf";
+my $d = Test::Nginx::Util::server_root() . "/conf";
 open my $fh, '>', "$d/openssl.conf" or die "can`t open $d/openssl.conf: $!";
 print $fh <<'END';
 [ req ]
