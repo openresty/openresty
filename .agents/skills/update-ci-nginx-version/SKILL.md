@@ -64,6 +64,8 @@ Preserve intentional historical-version coverage, compatibility thresholds, and 
 
 Review the full diff per repository before committing. Verify that the changed value reaches every intended build, retained old versions have a reason, and referenced download or build inputs can supply the target version. Identify unavailable inputs as blockers instead of changing unrelated release infrastructure.
 
+Before committing, enumerate every active nginx version in the effective CI configuration, including every `matrix.include` job, sanitizer job, job label, `NGINX_VERSION` input, and literal nginx download reference. Do not assume a remaining older version is intentional because it appeared in the base or has a special label such as ASan. Keep it only when repository documentation or an explicit user requirement establishes that older-version coverage is intentional; record that reason. If any old version is unexplained, stop before commit or push and resolve it. Run the helper's stale-version validation after editing and inspect its output.
+
 If CI already uses the target or needs no effective change, record the repository as unchanged. Do not create empty commits or PRs.
 
 ## 5. Verify, Commit, and Open the PR
