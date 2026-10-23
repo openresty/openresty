@@ -1,5 +1,5 @@
 diff --git a/src/core/ngx_resolver.c b/src/core/ngx_resolver.c
-index cd55520c..dade1846 100644
+index 4d1fd62c..602ab113 100644
 --- a/src/core/ngx_resolver.c
 +++ b/src/core/ngx_resolver.c
 @@ -9,12 +9,26 @@
@@ -29,7 +29,7 @@ index cd55520c..dade1846 100644
  
  typedef struct {
      u_char  ident_hi;
-@@ -131,6 +145,203 @@ static ngx_resolver_node_t *ngx_resolver_lookup_addr6(ngx_resolver_t *r,
+@@ -131,6 +145,213 @@ static ngx_resolver_node_t *ngx_resolver_lookup_addr6(ngx_resolver_t *r,
  #endif
  
  
@@ -98,7 +98,7 @@ index cd55520c..dade1846 100644
 +    }
 +
 +    for (i = 0; i < n && total < MAXNS; /* void */) {
-+        if (buf[i] == '#' || buf[i] == ';') {
++        if (state != sw_address && (buf[i] == '#' || buf[i] == ';')) {
 +            state = sw_skip;
 +        }
 +
@@ -119,21 +119,35 @@ index cd55520c..dade1846 100644
 +            break;
 +
 +        case sw_spaces:
++            if (buf[i] == CR || buf[i] == LF) {
++                state = sw_nameserver;
++                break;
++            }
++
 +            if (buf[i] != '\t' && buf[i] != ' ') {
 +                address = i;
 +                state = sw_address;
++                continue;
 +            }
 +
 +            break;
 +
 +        case sw_address:
 +
-+            if (buf[i] == CR || buf[i] == LF || i == n - 1) {
++            if (buf[i] == ' ' || buf[i] == '\t'
++                || buf[i] == '#' || buf[i] == ';'
++                || buf[i] == CR || buf[i] == LF || i == n - 1)
++            {
++                state = (buf[i] == CR || buf[i] == LF) ? sw_nameserver : sw_skip;
++
 +                ngx_memzero(&u, sizeof(ngx_url_t));
 +
 +                u.url.data = buf + address;
 +
-+                if (i == n - 1 && buf[i] != CR && buf[i] != LF) {
++                if (i == n - 1 && buf[i] != CR && buf[i] != LF
++                    && buf[i] != ' ' && buf[i] != '\t'
++                    && buf[i] != '#' && buf[i] != ';')
++                {
 +                    u.url.len = n - address;
 +
 +                } else {
@@ -152,8 +166,6 @@ index cd55520c..dade1846 100644
 +                        ngx_conf_log_error(NGX_LOG_INFO, cf, 0,
 +                                           "ignoring IPv6 resolver address"
 +                                           " with zone ID: \"%V\"", &u.url);
-+
-+                        state = sw_nameserver;
 +
 +                        break;
 +                    }
@@ -208,8 +220,6 @@ index cd55520c..dade1846 100644
 +                ngx_conf_log_error(NGX_LOG_NOTICE, cf, 0,
 +                                   "parsed a resolver: \"%V\"", &u.url);
 +#endif
-+
-+                state = sw_nameserver;
 +            }
 +
 +            break;
@@ -233,7 +243,7 @@ index cd55520c..dade1846 100644
  ngx_resolver_t *
  ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
  {
-@@ -246,6 +457,39 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
+@@ -246,6 +467,39 @@ ngx_resolver_create(ngx_conf_t *cf, ngx_str_t *names, ngx_uint_t n)
          }
  #endif
  
