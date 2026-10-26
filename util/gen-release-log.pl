@@ -157,10 +157,6 @@ sub git_diff ($$) {
         my $otag = $old_ref->{$repo_name};
         my $ntag = $new_ref->{$repo_name};
         my $repo_dir = File::Spec->catdir($repos_dir, $repo_name);
-        if ($new_tag eq 'HEAD') {
-            $ntag = sh 'git', '-C', $repo_dir, 'describe', '--abbrev=0', '--tags';
-        }
-
         my $target_ref = "refs/tags/$ntag";
 
         if ($otag ne $ntag) {
@@ -176,7 +172,7 @@ sub git_diff ($$) {
             printf "%s\n", join "\n", @lines;
 
         } else {
-            warn "# Pass: $repo_name: latest!";
+            warn "# Pass: $repo_name: unchanged!";
         }
     }
 }
