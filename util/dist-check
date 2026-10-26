@@ -64,8 +64,11 @@ if ($^O eq 'freebsd') {
 
 my $prefix;
 my $prefix_base = $ENV{DIST_CHECK_PREFIX} || "/usr/local/openresty";
+my $sudo = $ENV{DIST_CHECK_SUDO} // "sudo";
+my $port = $ENV{DIST_CHECK_PORT} || 8081;
 
 my $config = do { local $/; <DATA> };
+$config =~ s/(listen\s+\*:)80;/$1$port;/;
 
 sub write_config_file ($) {
     my $outfile = shift;
@@ -87,17 +90,17 @@ unless ($opts{f}) {
     sh "./configure $cfg_opts --without-stream --prefix=$prefix -j$jobs";
 }
 sh "$make -j$jobs";
-sh "sudo $make install";
-sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+sh "$sudo $make install";
+sh "$sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep -v 'stream_proxy'";
-#system "[ -f '$prefix/nginx/logs/nginx.pid' ] && sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
-sh "sudo $prefix/nginx/sbin/nginx";
-sh "curl -si localhost/lua|grep $lua";
-sh "curl -si localhost/lua|grep $ver";
-sh "curl -si localhost/cjson|grep 'json.safe: '";
+#system "[ -f '$prefix/nginx/logs/nginx.pid' ] && $sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
+sh "$sudo $prefix/nginx/sbin/nginx";
+sh "curl -si localhost:$port/lua|grep $lua";
+sh "curl -si localhost:$port/lua|grep $ver";
+sh "curl -si localhost:$port/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty --no-stream -e 'ngx.say("Hello World!")'|grep 'Hello World'};
-sh "sudo $prefix/nginx/sbin/nginx -sstop";
+sh "$sudo $prefix/nginx/sbin/nginx -sstop";
 
 }
 
@@ -108,18 +111,18 @@ sh "sudo $prefix/nginx/sbin/nginx -sstop";
 #sh "./configure $cfg_opts --with-dtrace-probes --without-stream --prefix=$prefix -j$jobs";
 #}
 #sh "$make -j$jobs";
-#sh "sudo $make install";
-#sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+#sh "$sudo $make install";
+#sh "$sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 #sh "$prefix/nginx/sbin/nginx -V 2>\&1", $ver;
 #sh "$prefix/nginx/sbin/nginx -V 2>\&1", "--with-stream", 1;
 #sh "$prefix/nginx/sbin/nginx -V 2>\&1", "--with-dtrace-probes";
-#system "[ -f '$prefix/nginx/logs/nginx.pid' ] && sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
-#sh "sudo $prefix/nginx/sbin/nginx";
-#sh "curl -si localhost/lua|grep $lua";
-#sh "curl -si localhost/lua|grep $ver";
-#sh "curl -si localhost/cjson|grep 'json.safe: '";
+#system "[ -f '$prefix/nginx/logs/nginx.pid' ] && $sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
+#sh "$sudo $prefix/nginx/sbin/nginx";
+#sh "curl -si localhost:$port/lua|grep $lua";
+#sh "curl -si localhost:$port/lua|grep $ver";
+#sh "curl -si localhost:$port/cjson|grep 'json.safe: '";
 #sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'}, 'Hello World';
-#sh "sudo $prefix/nginx/sbin/nginx -sstop";
+#sh "$sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Without Gzip/SSL/PCRE ===\n";
 $prefix = "$prefix_base-nogzip";
@@ -128,20 +131,20 @@ unless ($opts{f}) {
     sh "./configure $cfg_opts --without-http_rewrite_module --without-http_ssl_module --without-pcre --without-http_gzip_module --prefix=$prefix -j$jobs";
 }
 sh "$make -j$jobs";
-sh "sudo $make install";
-sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+sh "$sudo $make install";
+sh "$sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--without-http_gzip_module'";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep -v -q '\\--with-http_ssl_module'";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--without-pcre'";
-system "[ -f '$prefix/nginx/logs/nginx.pid' ] && sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
+system "[ -f '$prefix/nginx/logs/nginx.pid' ] && $sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
 if (0) {
-sh "sudo $prefix/nginx/sbin/nginx";
-sh "curl -si localhost/lua|grep $lua";
-sh "curl -si localhost/lua|grep $ver";
-sh "curl -si localhost/cjson|grep 'json.safe: '";
+sh "$sudo $prefix/nginx/sbin/nginx";
+sh "curl -si localhost:$port/lua|grep $lua";
+sh "curl -si localhost:$port/lua|grep $ver";
+sh "curl -si localhost:$port/cjson|grep 'json.safe: '";
 #sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
-sh "sudo $prefix/nginx/sbin/nginx -sstop";
+sh "$sudo $prefix/nginx/sbin/nginx -sstop";
 }
 
 $cfg_opts .= " --with-http_iconv_module";
@@ -153,17 +156,17 @@ unless ($opts{f}) {
     sh "./configure $cfg_opts --with-threads --prefix=$prefix -j$jobs";
 }
 sh "$make -j$jobs";
-sh "sudo $make install";
-sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+sh "$sudo $make install";
+sh "$sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-threads'";
-system "[ -f '$prefix/nginx/logs/nginx.pid' ] && sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
-sh "sudo $prefix/nginx/sbin/nginx";
-sh "curl -si localhost/lua|grep $lua";
-sh "curl -si localhost/lua|grep $ver";
-sh "curl -si localhost/cjson|grep 'json.safe: '";
+system "[ -f '$prefix/nginx/logs/nginx.pid' ] && $sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
+sh "$sudo $prefix/nginx/sbin/nginx";
+sh "curl -si localhost:$port/lua|grep $lua";
+sh "curl -si localhost:$port/lua|grep $ver";
+sh "curl -si localhost:$port/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
-sh "sudo $prefix/nginx/sbin/nginx -sstop";
+sh "$sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== No Pool Build ===\n";
 $prefix = "$prefix_base-nopool";
@@ -172,18 +175,18 @@ unless ($opts{f}) {
     sh "./configure --with-no-pool-patch $cfg_opts --prefix=$prefix -j$jobs > /dev/null";
 }
 sh "$make -j$jobs > /dev/null";
-sh "sudo $make install > /dev/null";
-sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+sh "$sudo $make install > /dev/null";
+sh "$sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 #sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-no-pool-patch'";
-system "[ -f '$prefix/nginx/logs/nginx.pid' ] && sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
-sh "sudo $prefix/nginx/sbin/nginx";
-sh "curl -si localhost/lua|grep $lua";
-sh "curl -si localhost/lua|grep $ver";
-sh "curl -si localhost/lua|grep 'no pool'";
-sh "curl -si localhost/cjson|grep 'json.safe: '";
+system "[ -f '$prefix/nginx/logs/nginx.pid' ] && $sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
+sh "$sudo $prefix/nginx/sbin/nginx";
+sh "curl -si localhost:$port/lua|grep $lua";
+sh "curl -si localhost:$port/lua|grep $ver";
+sh "curl -si localhost:$port/lua|grep 'no pool'";
+sh "curl -si localhost:$port/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
-sh "sudo $prefix/nginx/sbin/nginx -sstop";
+sh "$sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Normal Build ===\n";
 $prefix = "$prefix_base-norm";
@@ -192,18 +195,18 @@ unless ($opts{f}) {
     sh "./configure $cfg_opts --prefix=$prefix -j$jobs";
 }
 sh "$make -j$jobs";
-sh "sudo $make install";
-sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+sh "$sudo $make install";
+sh "$sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
-system "[ -f '$prefix/nginx/logs/nginx.pid' ] && sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
-sh "sudo $prefix/nginx/sbin/nginx";
-sh "curl -si localhost/lua|grep $lua";
-sh "curl -si localhost/lua|grep $ver";
-sh "curl -si localhost/cjson|grep 'json.safe: '";
+system "[ -f '$prefix/nginx/logs/nginx.pid' ] && $sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
+sh "$sudo $prefix/nginx/sbin/nginx";
+sh "curl -si localhost:$port/lua|grep $lua";
+sh "curl -si localhost:$port/lua|grep $ver";
+sh "curl -si localhost:$port/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 sh qq{$prefix/bin/restydoc -s listen | grep 'configures the port to accept HTTP/2'};
 sh qq{$prefix/bin/restydoc opm | grep -E '^Status\$'};
-sh "sudo $prefix/nginx/sbin/nginx -sstop";
+sh "$sudo $prefix/nginx/sbin/nginx -sstop";
 
 warn "\n=== Debug Build ===\n";
 $prefix = "$prefix_base-debug";
@@ -216,17 +219,17 @@ unless ($opts{f}) {
     sh "./configure --with-debug $cfg_opts $more_cfg_opts --prefix=$prefix -j$jobs";
 }
 sh "$make -j$jobs";
-sh "sudo $make install";
-sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+sh "$sudo $make install";
+sh "$sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-debug'";
-system "[ -f '$prefix/nginx/logs/nginx.pid' ] && sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
-sh "sudo $prefix/nginx/sbin/nginx";
-sh "curl -si localhost/lua|grep $lua";
-sh "curl -si localhost/lua|grep $ver";
-sh "curl -si localhost/cjson|grep 'json.safe: '";
+system "[ -f '$prefix/nginx/logs/nginx.pid' ] && $sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
+sh "$sudo $prefix/nginx/sbin/nginx";
+sh "curl -si localhost:$port/lua|grep $lua";
+sh "curl -si localhost:$port/lua|grep $ver";
+sh "curl -si localhost:$port/cjson|grep 'json.safe: '";
 sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
-sh "sudo $prefix/nginx/sbin/nginx -sstop";
+sh "$sudo $prefix/nginx/sbin/nginx -sstop";
 
 #warn "\n=== DTrace Build ===\n";
 #$prefix = "/usr/local/openresty-dtrace";
@@ -235,24 +238,24 @@ sh "sudo $prefix/nginx/sbin/nginx -sstop";
 #sh "./configure $cfg_opts --with-dtrace-probes --prefix=$prefix -j$jobs";
 #}
 #sh "$make -j$jobs";
-#sh "sudo $make install";
-#sh "sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
+#sh "$sudo $make install";
+#sh "$sudo cp /tmp/nginx.conf $prefix/nginx/conf/nginx.conf";
 #sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep $ver";
 #sh "$prefix/nginx/sbin/nginx -V 2>&1 |grep '\\--with-dtrace-probes'";
-#system "[ -f '$prefix/nginx/logs/nginx.pid' ] && sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
-#sh "sudo $prefix/nginx/sbin/nginx";
-#sh "curl -si localhost/lua|grep $lua";
-#sh "curl -si localhost/lua|grep $ver";
-#sh "curl -si localhost/cjson|grep 'json.safe: '";
+#system "[ -f '$prefix/nginx/logs/nginx.pid' ] && $sudo kill \$(cat '$prefix/nginx/logs/nginx.pid') > /dev/null 2>&1";
+#sh "$sudo $prefix/nginx/sbin/nginx";
+#sh "curl -si localhost:$port/lua|grep $lua";
+#sh "curl -si localhost:$port/lua|grep $ver";
+#sh "curl -si localhost:$port/cjson|grep 'json.safe: '";
 #if ($^O eq 'linux') {
 #sh "stap -L 'process(\"$prefix/nginx/sbin/nginx\").mark(\"*\")'|grep http__lua__coroutine__done";
 #
 #} elsif ($^O eq 'freebsd' || $^O eq 'darwin' || $^O eq 'solaris') {
-#sh "sudo dtrace -l|grep http-lua-coroutine-done";
+#sh "$sudo dtrace -l|grep http-lua-coroutine-done";
 #}
 #sh qq{$prefix/bin/resty -e 'ngx.say("Hello World!")'|grep 'Hello World'};
 
-#sh "sudo $prefix/nginx/sbin/nginx -sstop";
+#sh "$sudo $prefix/nginx/sbin/nginx -sstop";
 
 sub sh ($@) {
     my $cmd = shift;
@@ -286,7 +289,7 @@ sub sh ($@) {
 }
 
 sub cleanup () {
-    sh "sudo rm -rf $prefix/lualib $prefix/luajit $prefix/bin $prefix/nginx/sbin $prefix/nginx/html"
+    sh "$sudo rm -rf $prefix/lualib $prefix/luajit $prefix/bin $prefix/nginx/sbin $prefix/nginx/html"
        . " $prefix/site $prefix/pod $prefix/resty.index";
 }
 
