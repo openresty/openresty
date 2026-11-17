@@ -529,3 +529,143 @@ done
 [emerg]
 --- grep_error_log eval: qr/(?:ignoring IPv6 resolver address with zone ID:|parsed a resolver:) ".+"/
 --- grep_error_log_out
+
+
+
+=== TEST 18: trailing spaces and tabs
+--- config
+    resolver local=../html/resolv.conf;
+
+    location = /t {
+        return 200 "done\n";
+    }
+--- user_files eval
+">>> resolv.conf
+nameserver 127.0.0.1 \t\nnameserver ::1\t \n"
+--- request
+GET /t
+--- response_body
+done
+--- no_error_log
+[error]
+[emerg]
+--- grep_error_log eval: qr/(?:ignoring IPv6 resolver address with zone ID:|parsed a resolver:) ".+"/
+--- grep_error_log_out
+parsed a resolver: "127.0.0.1"
+parsed a resolver: "[::1]"
+
+
+
+=== TEST 19: inline comments
+--- config
+    resolver local=../html/resolv.conf;
+
+    location = /t {
+        return 200 "done\n";
+    }
+--- user_files eval
+">>> resolv.conf
+nameserver 127.0.0.1#first\nnameserver ::1 ; second\n"
+--- request
+GET /t
+--- response_body
+done
+--- no_error_log
+[error]
+[emerg]
+--- grep_error_log eval: qr/(?:ignoring IPv6 resolver address with zone ID:|parsed a resolver:) ".+"/
+--- grep_error_log_out
+parsed a resolver: "127.0.0.1"
+parsed a resolver: "[::1]"
+
+
+
+=== TEST 20: trailing whitespace at EOF
+--- config
+    resolver local=../html/resolv.conf;
+
+    location = /t {
+        return 200 "done\n";
+    }
+--- user_files eval
+">>> resolv.conf
+nameserver 127.0.0.1 \t"
+--- request
+GET /t
+--- response_body
+done
+--- no_error_log
+[error]
+[emerg]
+--- grep_error_log eval: qr/(?:ignoring IPv6 resolver address with zone ID:|parsed a resolver:) ".+"/
+--- grep_error_log_out
+parsed a resolver: "127.0.0.1"
+
+
+
+=== TEST 21: inline comment at EOF
+--- config
+    resolver local=../html/resolv.conf;
+
+    location = /t {
+        return 200 "done\n";
+    }
+--- user_files eval
+">>> resolv.conf
+nameserver 127.0.0.1;last"
+--- request
+GET /t
+--- response_body
+done
+--- no_error_log
+[error]
+[emerg]
+--- grep_error_log eval: qr/(?:ignoring IPv6 resolver address with zone ID:|parsed a resolver:) ".+"/
+--- grep_error_log_out
+parsed a resolver: "127.0.0.1"
+
+
+
+=== TEST 22: zone ID with trailing comment
+--- config
+    resolver local=../html/resolv.conf;
+
+    location = /t {
+        return 200 "done\n";
+    }
+--- user_files eval
+">>> resolv.conf
+nameserver fe80::1%eth0 # skipped\r\nnameserver 127.0.0.1 \t\r\n"
+--- request
+GET /t
+--- response_body
+done
+--- no_error_log
+[error]
+[emerg]
+--- grep_error_log eval: qr/(?:ignoring IPv6 resolver address with zone ID:|parsed a resolver:) ".+"/
+--- grep_error_log_out
+parsed a resolver: "127.0.0.1"
+
+
+
+=== TEST 23: blank address does not consume next line
+--- config
+    resolver local=../html/resolv.conf;
+
+    location = /t {
+        return 200 "done\n";
+    }
+--- user_files eval
+">>> resolv.conf
+nameserver \t\nnameserver 127.0.0.1\n"
+--- request
+GET /t
+--- response_body
+done
+--- no_error_log
+[error]
+[emerg]
+--- grep_error_log eval: qr/(?:ignoring IPv6 resolver address with zone ID:|parsed a resolver:) ".+"/
+--- grep_error_log_out
+parsed a resolver: "127.0.0.1"

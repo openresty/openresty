@@ -1,8 +1,8 @@
 #!/bin/bash
 
-PCRE=pcre2-10.47
+PCRE=pcre2-10.49
 ZLIB=zlib-1.3.2
-OPENSSL=openssl-3.5.6
+OPENSSL=openssl-3.5.9
 JOBS=12
 
 if [ ! -f ../$OPENSSL.tar.gz ]; then wget -O ../$OPENSSL.tar.gz https://github.com/openssl/openssl/releases/download/$OPENSSL/$OPENSSL.tar.gz; fi

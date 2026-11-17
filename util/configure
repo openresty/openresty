@@ -1235,6 +1235,12 @@ _EOC_
         $opts_line .= " \\\n  --add-module=$dir";
     }
 
+    unless ($opts->{no_lua_resty_openssl}) {
+        my $dir = auto_complete "../lua-resty-openssl-aux-module";
+
+        $opts_line .= " \\\n  --add-module=$dir";
+    }
+
     return $opts_line;
 }
 
