@@ -76,3 +76,4 @@ html_out/
 TODO
 doc/LuaJIT-2.1/changes.pod
 t/servroot
+/AGENTS.md
