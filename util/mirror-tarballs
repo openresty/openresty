@@ -670,6 +670,11 @@ if [ "$main_ver" = "1.27.1" ]; then
         echo "$info_txt applying the patch for nginx security advisory (CVE-2026-$cve)"
         patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-CVE-2026-$cve.patch || exit 1
     done
+
+    for cve in 123634 123007 121810 123633 118899 113425 125283 120967 123640; do
+        echo "$info_txt applying the patch for nginx security advisory (CVE-2026-$cve)"
+        patch -p1 < $root/patches/nginx/$main_ver/nginx-$main_ver-CVE-2026-$cve.patch || exit 1
+    done
 fi
 
 
