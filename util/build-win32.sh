@@ -6,7 +6,7 @@ OPENSSL=openssl-3.5.9
 JOBS=12
 
 if [ ! -f ../$OPENSSL.tar.gz ]; then wget -O ../$OPENSSL.tar.gz https://github.com/openssl/openssl/releases/download/$OPENSSL/$OPENSSL.tar.gz; fi
-if [ ! -f ../$ZLIB.tar.gz ]; then wget -O ../$ZLIB.tar.gz http://zlib.net/$ZLIB.tar.gz; fi
+if [ ! -f ../$ZLIB.tar.gz ]; then wget -O ../$ZLIB.tar.gz https://zlib.net/fossils/$ZLIB.tar.gz; fi
 if [ ! -f ../$PCRE.tar.gz ]; then wget -O ../$PCRE.tar.gz https://github.com/PCRE2Project/pcre2/releases/download/$PCRE/$PCRE.tar.gz; fi
 
 rm -rf objs || exit 1
