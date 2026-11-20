@@ -59,8 +59,7 @@ jobs:
       - name: Install dependencies
         run: |
           brew update
-          brew install dos2unix gd libpq mercurial wget
-          echo "$(brew --prefix libpq)/bin" >> "$GITHUB_PATH"
+          brew install dos2unix wget
 
       - name: Build PCRE2
         run: |
