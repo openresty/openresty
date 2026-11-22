@@ -67,6 +67,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: openresty-windows-${{ matrix.host_arch }}
-          path: openresty-*-${{ matrix.host_arch }}.zip
+          path: |
+            openresty-*/nginx.exe
+            openresty-*/lua51.dll
           if-no-files-found: error
           retention-days: 90
